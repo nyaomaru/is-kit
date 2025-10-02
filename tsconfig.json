@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/esm",
+    "rootDir": "./src",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "ES2022",
+    "declarationDir": "dist/types",
+    "strict": true,
+    "declaration": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "isolatedModules": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "tests"]
+}

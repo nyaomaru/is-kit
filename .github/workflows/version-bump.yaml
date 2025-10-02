@@ -1,0 +1,72 @@
+name: Version Bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Select version bump type"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.4
+          run_install: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate new version
+        id: version
+        run: |
+          NEW_VERSION=$(pnpm version ${{ inputs.release_type }} --no-git-tag-version | awk '{print $NF}')
+          echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Create new branch
+        run: |
+          git checkout -b release/${{ env.new_version }}
+
+      - name: Commit & Push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json pnpm-lock.yaml
+          git commit -m "chore(release): bump version to ${{ env.new_version }}"
+          git push origin release/${{ env.new_version }}
+
+      - name: Create Pull Request
+        run: |
+          gh pr create \
+            --base main \
+            --head release/${{ env.new_version }} \
+            --title "Release: ${{ env.new_version }}" \
+            --body "Auto-generated release PR for version ${{ env.new_version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify about Major Release (if major)
+        if: inputs.release_type == 'major'
+        run: |
+          echo "🚨 Major version update detected! Please review and merge manually."

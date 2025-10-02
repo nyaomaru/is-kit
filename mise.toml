@@ -1,0 +1,39 @@
+###############################################
+# Runtime/tooling configuration for this repo #
+# Used by: https://mise.jdx.dev/              #
+###############################################
+
+# Environment defaults
+[env]
+NODE_ENV = "development"
+
+# Tool versions to match local dev and CI
+[tools]
+node = "22"        # CI uses Node 22
+pnpm = "10.12.4"   # From packageManager field
+
+# Developer tasks (run with: `mise run <task>`)
+[tasks.setup]
+description = "Install dependencies via pnpm"
+run = "pnpm install"
+
+[tasks.lint]
+description = "Run ESLint over the repo"
+run = "pnpm lint"
+
+[tasks.build]
+description = "Bundle via tsup to dist/"
+run = "pnpm build"
+
+[tasks.test]
+description = "Run Jest runtime tests"
+run = "pnpm test"
+
+[tasks.test-types]
+description = "Run tsd type tests"
+run = "pnpm test:types"
+
+[tasks.ci]
+description = "Run lint, build, runtime and type tests"
+depends = ["lint", "build", "test", "test-types"]
+
