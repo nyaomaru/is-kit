@@ -7,7 +7,7 @@ export type HeroSectionProps = { description: string };
 export function HeroSection({ description }: HeroSectionProps) {
   return (
     <section className='mb-16 flex flex-col items-center text-center'>
-      <Link href='https://github.com/nyaomaru/is-kit' className='mb-6'>
+      <Link href='https://github.com/nyaomaru/is-kit' className='mb-6 mt-10'>
         <Image
           src='/iskit_logo1.svg'
           alt='is-kit logo'
