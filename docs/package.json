@@ -1,7 +1,7 @@
 {
   "name": "is-kit-docs",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Documentation site for is-kit (Next.js + shadcn)",
   "scripts": {
     "dev": "next dev",
