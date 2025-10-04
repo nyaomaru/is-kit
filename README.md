@@ -1,7 +1,7 @@
 # is-kit
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/nyaomaru/is-kit/docs/public/iskit_logo1.svg" width="200px" align="center" alt="is-kit logo" />
+    <img src="https://raw.githubusercontent.com/nyaomaru/is-kit/main/docs/public/iskit_logo1.svg" width="200px" align="center" alt="is-kit logo" />
 </p>
 
 Lightweight, zero-dependency toolkit for building `isFoo` style type guards in TypeScript.
