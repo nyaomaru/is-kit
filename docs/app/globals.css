@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Base theme switched to dark: rgb(23,25,23) */
+  --background: 120 4% 9%;
+  --foreground: 86 33% 50%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 86 33% 50%;
+  --popover: 120 4% 9%;
+  --popover-foreground: 86 33% 50%;
+  --card: 120 4% 9%;
+  --card-foreground: 86 33% 50%;
+  /* Primary rgb(134,170,87) exact HSL */
+  --primary: 86 33% 50%;
+  /* Hover color for primary (rgb 79,91,57 ≈ hsl(81,23%,29%)) */
+  --primary-hover: 81 23% 29%;
+  --border: 86 33% 50%;
+  --input: 86 33% 50%;
+  --primary-foreground: 0 0% 100%;
+  /* Secondary as white */
+  --secondary: 0 0% 100%;
+  --secondary-foreground: 86 33% 50%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 86 33% 50%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 86 33% 50%;
+  --ring: 86 33% 50%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 120 4% 9%;
+  --foreground: 86 33% 50%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 86 33% 50%;
+  --popover: 120 4% 9%;
+  --popover-foreground: 86 33% 50%;
+  --card: 120 4% 9%;
+  --card-foreground: 86 33% 50%;
+  --border: 86 33% 50%;
+  --input: 86 33% 50%;
+  --primary: 86 33% 50%;
+  --primary-hover: 81 23% 29%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 100%;
+  --secondary-foreground: 86 33% 50%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 86 33% 50%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 86 33% 50%;
+  --ring: 86 33% 50%;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Courier New', monospace;
+  /* Keep vertical scrollbar space reserved to avoid header/content shift */
+  overflow-y: scroll;
+}
+
+/* Selection state uses primary color */
+::selection {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--background));
+}
+
+/* Avoid layout shift when scrollbars appear/disappear */
+html {
+  scrollbar-gutter: stable both-edges;
+}
+
+.container {
+  width: 100%;
+}
+
+/* Global border default to primary */
+*, *::before, *::after {
+  border-color: hsl(var(--primary));
+}
+
+/* Link hover: keep color; use underline animation via .link-underline */
+a:hover {
+  color: inherit;
+}
+.group:hover .group-hover\:text-primary {
+  color: inherit !important;
+}
+
+/* Animated underline utility */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 0;
+  background-color: hsl(var(--primary));
+  transition: width 0.5s ease;
+}
+.link-underline:hover::after { width: 100%; }
+.link-underline:focus-visible::after { width: 100%; }
+/* Trigger underline when hovering the parent link area (wider hit target) */
+.group:hover .link-underline::after { width: 100%; }
+.group:focus-visible .link-underline::after { width: 100%; }
+
+/* ==============================
+   Scrollbar styling (primary)
+   ============================== */
+/* Firefox */
+* {
+  /* Make Firefox scrollbar a bit thicker */
+  scrollbar-width: auto;
+  scrollbar-color: hsl(var(--primary)) transparent;
+}
+
+/* WebKit-based (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  /* Thicker scrollbar for WebKit browsers */
+  width: 14px;
+  height: 14px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary) / 0.5);
+  border-radius: 9999px;
+  border: 3px solid transparent; /* keep the inner thumb shape when thicker */
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--primary));
+}
+
+/* ==============================
+   Typewriter animation (CSS-only)
+   ============================== */
+@keyframes tw-typing {
+  from { width: 0; }
+  to { width: calc(var(--tw-chars) * 1ch); }
+}
+@keyframes tw-caret {
+  50% { border-color: transparent; }
+}
+.tw-typewriter {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0; /* animated to text width */
+  border-right: var(--tw-caret-width, 2px) solid currentColor;
+  animation:
+    tw-typing var(--tw-duration) steps(var(--tw-chars)) var(--tw-delay) both,
+    tw-caret var(--tw-caret-blink, 1s) steps(1) infinite;
+}
+.tw-typewriter.tw-no-caret {
+  border-right: 0;
+  animation: tw-typing var(--tw-duration) steps(var(--tw-chars)) var(--tw-delay) both;
+}

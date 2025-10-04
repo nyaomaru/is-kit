@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+
+.github/prompts
+# Keep docs app tracked, but ignore generated API assets and build outputs
+docs/public/api
+docs/.next
+docs/.vercel

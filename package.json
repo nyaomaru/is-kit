@@ -1,0 +1,67 @@
+{
+  "name": "is-kit",
+  "version": "0.0.1",
+  "description": "Make 'isXXX' easier. Let's make your code type safe and more readable!",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "test": "jest",
+    "test:types": "tsd",
+    "lint": "eslint .",
+    "build": "tsup",
+    "typedoc": "typedoc --out docs/public/api"
+  },
+  "keywords": [
+    "is",
+    "isXXX",
+    "isKit",
+    "type guards",
+    "type safe",
+    "type checking"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyaomaru/is-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nyaomaru/is-kit/issues"
+  },
+  "homepage": "https://github.com/nyaomaru/is-kit#readme",
+  "author": "nyaomaru",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@types/jest": "^30.0.0",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "jest": "^30.0.5",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.1",
+    "tsd": "^0.33.0",
+    "tsup": "^8.5.0",
+    "typedoc": "^0.28.12",
+    "typescript": "^5.9.2"
+  },
+  "tsd": {
+    "directory": "tests-d",
+    "compilerOptions": {
+      "baseUrl": "."
+    }
+  }
+}

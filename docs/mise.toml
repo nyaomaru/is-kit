@@ -1,0 +1,17 @@
+###############################################
+# Runtime/tooling configuration for this repo #
+# Used by: https://mise.jdx.dev/              #
+###############################################
+
+# Environment defaults
+[env]
+NODE_ENV = "development"
+
+# Tool versions to match local dev and CI
+[tools]
+node = "22"
+pnpm = "10.12.4"
+
+[tasks.dev]
+description = "Run dev server"
+run = "pnpm dev"
