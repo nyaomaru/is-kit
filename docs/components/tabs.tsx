@@ -185,9 +185,9 @@ export function Tabs({
   }
 
   return (
-    <div className={cn('rounded-md border overflow-hidden', className)}>
+    <div className={cn('w-full max-w-full rounded-md border overflow-hidden', className)}>
       <div
-        className={`grid ${gridCols} divide-x divide-primary/30 border-b border-primary/40`}
+        className={`grid ${gridCols} w-full divide-x divide-primary/30 border-b border-primary/40`}
         role='tablist'
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
@@ -217,7 +217,7 @@ export function Tabs({
       </div>
       <div
         id={activePanelId}
-        className={cn('p-4', contentClassName)}
+        className={cn('w-full p-4', contentClassName)}
         role='tabpanel'
         aria-labelledby={activeTabId}
         tabIndex={0}

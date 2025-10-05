@@ -6,6 +6,7 @@ import {
   DOCS_TOGGLE_SIDEBAR_EVENT,
   type ToggleSidebarEvent,
 } from "@/lib/events";
+import { cn } from "@/lib/utils";
 
 export type SidebarLayoutProps = {
   defaultSidebarOpen?: boolean;
@@ -22,6 +23,7 @@ export function SidebarLayout({
   const computedDefaultOpen =
     defaultSidebarOpen ?? pathname?.startsWith("/api-reference") === true;
   const [open, setOpen] = useState(computedDefaultOpen);
+  const [showDivider, setShowDivider] = useState(computedDefaultOpen);
 
   useEffect(() => {
     setOpen(computedDefaultOpen);
@@ -34,10 +36,21 @@ export function SidebarLayout({
     return () => window.removeEventListener(DOCS_TOGGLE_SIDEBAR_EVENT, handler);
   }, []);
 
+  useEffect(() => {
+    setShowDivider(open);
+  }, [open]);
+
   return (
-    <div className="flex">
+    <div className="flex w-full overflow-hidden">
       <Sidebar sections={sections} open={open} className="bg-background" />
-      <div className="flex-1">{children}</div>
+      <div
+        className={cn(
+          "relative flex-1 min-w-0 overflow-x-hidden md:pl-6 md:before:pointer-events-none md:before:absolute md:before:inset-y-0 md:before:left-0 md:before:w-px md:before:bg-border md:before:opacity-0 md:before:transition-opacity md:before:duration-300 md:before:content-['']",
+          showDivider && "md:before:opacity-100"
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

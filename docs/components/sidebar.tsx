@@ -17,7 +17,7 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
   return (
     <aside
       className={cn(
-        'sticky top-14 mt-14 h-[calc(100vh-3.5rem)] overflow-y-auto shrink-0 transition-[width,opacity] duration-200 border-r pr-3 bg-background',
+        'sticky top-14 mt-14 h-[calc(100vh-3.5rem)] overflow-y-auto shrink-0 transition-[width,opacity] duration-200 pr-3 bg-background',
         open ? 'w-60 opacity-100' : 'w-0 opacity-0 pointer-events-none',
         className
       )}

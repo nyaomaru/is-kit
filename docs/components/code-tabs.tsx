@@ -67,11 +67,11 @@ export function CodeTabs({
         const showCopyButton = !!copy;
 
         return (
-          <div className="relative overflow-x-auto text-sm">
+          <div className="relative w-full overflow-x-auto text-sm">
             <CodeBlock
               code={code}
               language={language}
-              className={cn('w-full', codeClassName, showCopyButton && 'pr-16')}
+              className={cn('w-full max-w-full', codeClassName, showCopyButton && 'pr-16')}
             />
             {showCopyButton ? (
               <CopyButton

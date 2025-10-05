@@ -15,7 +15,7 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           className={cn(
-            'w-full overflow-x-auto rounded-md border bg-zinc-50 p-4 text-sm dark:bg-zinc-900',
+            'w-full max-w-full overflow-x-auto rounded-md border bg-zinc-50 p-4 text-sm dark:bg-zinc-900',
             className
           )}
           style={{ ...style, background: 'transparent' }}

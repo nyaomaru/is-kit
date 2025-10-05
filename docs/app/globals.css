@@ -64,6 +64,7 @@ body {
   font-family: 'Courier New', monospace;
   /* Keep vertical scrollbar space reserved to avoid header/content shift */
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 /* Selection state uses primary color */

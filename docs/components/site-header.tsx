@@ -48,7 +48,7 @@ export function SiteHeader() {
             </Link>
           </Heading>
         </div>
-        <nav className='flex items-center gap-4 text-sm text-muted-foreground'>
+        <nav className='hidden md:flex items-center gap-4 text-sm text-muted-foreground'>
           <Link href='/' className='group'>
             <span className='link-underline'>Home</span>
           </Link>
