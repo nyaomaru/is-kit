@@ -7,6 +7,8 @@
 Lightweight, zero-dependency toolkit for building `isFoo` style type guards in TypeScript.
 Runtime-safe 🛡️, composable 🧩, and ergonomic ✨.
 
+[👉 See full document](https://is-kit-docs.vercel.app/)
+
 ## Why?
 
 Tired of writing the same `isFoo` again and again?
