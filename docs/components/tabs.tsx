@@ -52,7 +52,10 @@ export function Tabs({
   const baseId = useId();
   const values = useMemo(() => items.map((item) => item.value), [items]);
 
-  function getFallbackTabValue(values: string[], defaultValue: string): string | undefined {
+  function getFallbackTabValue(
+    values: string[],
+    defaultValue: string
+  ): string | undefined {
     if (values.length === 0) return undefined;
     if (defaultValue && values.includes(defaultValue)) return defaultValue;
     return values[0];
@@ -181,7 +184,9 @@ export function Tabs({
   const activeDescriptor = useMemo(() => {
     if (!descriptors.length) return undefined;
     if (!active) return descriptors[0];
-    return descriptors.find(({ item }) => item.value === active) ?? descriptors[0];
+    return (
+      descriptors.find(({ item }) => item.value === active) ?? descriptors[0]
+    );
   }, [descriptors, active]);
 
   const activeValue = activeDescriptor?.item.value ?? active ?? '';
@@ -193,7 +198,12 @@ export function Tabs({
   }
 
   return (
-    <div className={cn('w-full max-w-full rounded-md border overflow-hidden', className)}>
+    <div
+      className={cn(
+        'w-full max-w-full rounded-md border overflow-hidden',
+        className
+      )}
+    >
       <div
         className={`grid ${gridCols} w-full divide-x divide-primary/30 border-b border-primary/40`}
         role='tablist'
@@ -225,7 +235,7 @@ export function Tabs({
       </div>
       <div
         id={activePanelId}
-        className={cn('w-full p-4', contentClassName)}
+        className={cn('w-full p-6', contentClassName)}
         role='tabpanel'
         aria-labelledby={activeTabId}
         tabIndex={0}
