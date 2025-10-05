@@ -61,7 +61,7 @@ body {
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-sans, 'Source Sans 3'), system-ui, -apple-system, 'Segoe UI', sans-serif;
   /* Keep vertical scrollbar space reserved to avoid header/content shift */
   overflow-y: scroll;
   overflow-x: hidden;
