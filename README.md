@@ -11,9 +11,6 @@
     <a href="https://jsr.io/@nyaomaru/is-kit">
         <img src="https://img.shields.io/jsr/v/@nyaomaru/is-kit" alt="JSR">
     </a>
-    <a href="https://github.com/nyaomaru/is-kit/blob/main/LICENSE">
-        <img src="https://img.shields.io/npm/l/@nyaomaru/is-kit.svg?sanitize=true" alt="License">
-    </a>
 </p>
 
 Lightweight, zero-dependency toolkit for building `isFoo` style type guards in TypeScript.
