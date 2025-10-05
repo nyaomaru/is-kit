@@ -1,11 +1,25 @@
 # is-kit
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/nyaomaru/is-kit/docs/public/iskit_logo1.svg" width="200px" align="center" alt="is-kit logo" />
+    <img src="https://raw.githubusercontent.com/nyaomaru/is-kit/main/docs/public/iskit_logo1.svg" width="200px" align="center" alt="is-kit logo" />
+</p>
+
+<p align="center">
+    <a href="(https://www.npmjs.com/package/is-kit">
+        <img src="https://img.shields.io/npm/v/is-kit.svg" alt="npm version">
+    </a>
+    <a href="https://jsr.io/@nyaomaru/is-kit">
+        <img src="https://img.shields.io/jsr/v/@nyaomaru/is-kit" alt="JSR">
+    </a>
+    <a href="https://github.com/nyaomaru/is-kit/blob/main/LICENSE">
+        <img src="https://img.shields.io/npm/l/@nyaomaru/is-kit.svg?sanitize=true" alt="License">
+    </a>
 </p>
 
 Lightweight, zero-dependency toolkit for building `isFoo` style type guards in TypeScript.
 Runtime-safe 🛡️, composable 🧩, and ergonomic ✨.
+
+[👉 See full document](https://is-kit-docs.vercel.app/)
 
 ## Why?
 

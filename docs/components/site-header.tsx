@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Heading } from '@/components/ui/heading';
 import { DOCS_TOGGLE_SIDEBAR_EVENT } from '@/lib/events';
+import { SiteNav } from '@/components/site-nav';
 
 export function SiteHeader() {
   const handleToggle = () => {
@@ -48,32 +49,7 @@ export function SiteHeader() {
             </Link>
           </Heading>
         </div>
-        <nav className='flex items-center gap-4 text-sm text-muted-foreground'>
-          <Link href='/' className='group'>
-            <span className='link-underline'>Home</span>
-          </Link>
-          <a href='/api-reference' className='group'>
-            <span className='link-underline'>API</span>
-          </a>
-          <a
-            href='https://github.com/nyaomaru/is-kit'
-            target='_blank'
-            rel='noreferrer'
-            className='group'
-          >
-            <span className='link-underline'>GitHub</span>
-          </a>
-          <span className='mx-2 text-primary'>|</span>
-          <Link href='/en' className='group'>
-            <span className='link-underline'>EN</span>
-          </Link>
-          <Link href='/ja' className='group'>
-            <span className='link-underline'>JA</span>
-          </Link>
-          <Link href='/nl' className='group'>
-            <span className='link-underline'>NL</span>
-          </Link>
-        </nav>
+        <SiteNav className='hidden md:flex items-center gap-4 text-sm text-muted-foreground' />
       </div>
     </header>
   );

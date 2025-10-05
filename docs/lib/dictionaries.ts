@@ -1,6 +1,9 @@
 import type { Locale } from '@/constants/i18n';
 import { DEFAULT_LOCALE } from '@/constants/i18n';
 
+/**
+ * Bundle of locale-specific copy consumed by the docs landing page sections.
+ */
 type Dict = {
   top: {
     title: string;
@@ -147,13 +150,21 @@ const nl: Dict = {
   },
 };
 
-// Map locales to dictionaries for consistency with constants
+/**
+ * Mapping of available locales to their translated messaging.
+ */
 export const DICTIONARIES: Record<Locale, Dict> = {
   en,
   ja,
   nl,
 };
 
+/**
+ * Resolve the dictionary for a given locale, falling back to the default when
+ * an unsupported locale is requested.
+ * @param locale Locale identifier taken from the URL.
+ * @returns Translated content used to render the docs homepage.
+ */
 export async function getDictionary(locale: Locale): Promise<Dict> {
   return DICTIONARIES[locale] ?? DICTIONARIES[DEFAULT_LOCALE];
 }

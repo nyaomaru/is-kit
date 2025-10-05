@@ -1,11 +1,24 @@
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 
-type ApiReferenceCardProps = {
-  title: string;
+type ApiReferenceField = {
+  /** Parameter or option identifier displayed in code font. */
+  name: string;
+  /** Type or shape shown alongside the identifier. */
+  type: string;
+  /** Optional explanatory blurb for the entry. */
   description?: string;
-  parameters?: { name: string; type: string; description?: string }[];
-  options?: { name: string; type: string; description?: string }[];
+};
+
+type ApiReferenceCardProps = {
+  /** Title rendered at the top of the reference card. */
+  title: string;
+  /** Introductory text summarising the API surface. */
+  description?: string;
+  /** List of positional or required parameters. */
+  parameters?: ApiReferenceField[];
+  /** Additional options or configuration entries. */
+  options?: ApiReferenceField[];
 };
 
 export function APIReferenceCard({

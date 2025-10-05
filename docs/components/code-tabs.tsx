@@ -6,8 +6,11 @@ import { CopyButton } from '@/components/copy-button';
 import { cn } from '@/lib/utils';
 
 type CopyButtonOptions = {
+  /** Accessible label for the copy button when provided. */
   ariaLabel?: string;
+  /** Extra classes merged into the copy button. */
   className?: string;
+  /** Override for the copied-state reset timeout. */
   resetAfterMs?: number;
 };
 
@@ -15,20 +18,32 @@ type CopyButtonOptions = {
  * Configuration for a single tabbed code example rendered by {@link CodeTabs}.
  */
 export type CodeTabItem = {
+  /** Stable value used for tab state and switching. */
   value: string;
+  /** Optional label shown in the tab trigger; defaults to `value`. */
   label?: string;
+  /** Code snippet rendered inside the tab panel. */
   code: string;
+  /** Syntax highlighting language for the snippet. */
   language?: string;
+  /** Additional classes for the underlying `CodeBlock`. */
   codeClassName?: string;
+  /** Copy button configuration enabling clipboard support. */
   copy?: CopyButtonOptions;
 };
 
 export type CodeTabsProps = {
+  /** Tab definitions including snippet content. */
   items: readonly CodeTabItem[];
+  /** Value selected on initial render; defaults to the first tab. */
   defaultValue?: string;
+  /** Classes applied to the surrounding `Tabs` wrapper. */
   className?: string;
+  /** Classes applied to the tab panel container. */
   contentClassName?: string;
+  /** Accessible name for the tablist when not labelled elsewhere. */
   ariaLabel?: string;
+  /** Id of a visible label describing the tablist. */
   ariaLabelledBy?: string;
 };
 
@@ -67,11 +82,11 @@ export function CodeTabs({
         const showCopyButton = !!copy;
 
         return (
-          <div className="relative overflow-x-auto text-sm">
+          <div className="relative w-full overflow-x-auto text-sm">
             <CodeBlock
               code={code}
               language={language}
-              className={cn('w-full', codeClassName, showCopyButton && 'pr-16')}
+              className={cn('w-full max-w-full', codeClassName, showCopyButton && 'pr-16')}
             />
             {showCopyButton ? (
               <CopyButton

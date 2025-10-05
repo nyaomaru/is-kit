@@ -9,10 +9,15 @@ import {
 
 // CSS-driven typewriter: no JS timers/state. See globals.css for keyframes.
 export type TypewriterProps = {
+  /** Text rendered with a typewriter animation. */
   text: string;
-  speedMs?: number; // per-character ms
+  /** Duration in milliseconds per character reveal. */
+  speedMs?: number;
+  /** Delay in milliseconds before the animation starts. */
   startDelayMs?: number;
+  /** Extra classes merged with the typewriter span. */
   className?: string;
+  /** Whether to render the blinking caret animation. */
   cursor?: boolean;
 };
 

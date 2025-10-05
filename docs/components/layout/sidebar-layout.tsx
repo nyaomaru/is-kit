@@ -6,10 +6,14 @@ import {
   DOCS_TOGGLE_SIDEBAR_EVENT,
   type ToggleSidebarEvent,
 } from "@/lib/events";
+import { cn } from "@/lib/utils";
 
 export type SidebarLayoutProps = {
+  /** Controls whether the sidebar starts open when the layout mounts. */
   defaultSidebarOpen?: boolean;
+  /** Navigation sections rendered inside the sidebar component. */
   sections: SidebarSection[];
+  /** Main content rendered alongside the sidebar. */
   children: React.ReactNode;
 };
 
@@ -21,11 +25,33 @@ export function SidebarLayout({
   const pathname = usePathname();
   const computedDefaultOpen =
     defaultSidebarOpen ?? pathname?.startsWith("/api-reference") === true;
-  const [open, setOpen] = useState(computedDefaultOpen);
+
+  const isMobileViewport = () =>
+    typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+
+  const [open, setOpen] = useState(() =>
+    isMobileViewport() ? false : computedDefaultOpen
+  );
+  const [showDivider, setShowDivider] = useState(() =>
+    isMobileViewport() ? false : computedDefaultOpen
+  );
 
   useEffect(() => {
+    if (isMobileViewport()) {
+      setOpen(false);
+      setShowDivider(false);
+      return;
+    }
+
     setOpen(computedDefaultOpen);
+    setShowDivider(computedDefaultOpen);
   }, [computedDefaultOpen]);
+
+  useEffect(() => {
+    if (!isMobileViewport()) return;
+    setOpen(false);
+    setShowDivider(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handler = (_toggleSidebarEvent: ToggleSidebarEvent) =>
@@ -34,10 +60,51 @@ export function SidebarLayout({
     return () => window.removeEventListener(DOCS_TOGGLE_SIDEBAR_EVENT, handler);
   }, []);
 
+  useEffect(() => {
+    setShowDivider(open);
+  }, [open]);
+
+  useEffect(() => {
+    if (!isMobileViewport() || !open) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
   return (
-    <div className="flex">
+    <div className="relative flex w-full overflow-hidden">
       <Sidebar sections={sections} open={open} className="bg-background" />
-      <div className="flex-1">{children}</div>
+      {open ? (
+        <div
+          role="presentation"
+          className="fixed inset-x-0 top-14 bottom-0 z-30 bg-background/70 backdrop-blur-sm md:hidden"
+          onClick={() => setOpen(false)}
+        />
+      ) : null}
+      <div
+        className={cn(
+          "relative flex-1 min-w-0 overflow-x-hidden md:pl-6 md:before:pointer-events-none md:before:absolute md:before:inset-y-0 md:before:left-0 md:before:w-px md:before:bg-border md:before:opacity-0 md:before:transition-opacity md:before:duration-300 md:before:content-['']",
+          showDivider && "md:before:opacity-100"
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

@@ -10,8 +10,11 @@ import {
 import { FEATURED_API_ITEMS } from '@/constants/api-items';
 
 export type ApiReferencePreviewProps = {
+  /** Custom section id enabling deep-linking; defaults to `api-reference`. */
   id?: string;
+  /** Heading displayed above the featured API cards. */
   title: string;
+  /** Label for the call-to-action button linking to the full reference. */
   fullReferenceLinkText: string;
 };
 

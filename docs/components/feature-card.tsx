@@ -6,8 +6,11 @@ import {
 } from '@/components/ui/card';
 
 export type FeatureCardProps = {
+  /** Optional anchor target used to link directly to the card. */
   id?: string;
+  /** Heading text rendered at the top of the card. */
   title: string;
+  /** Supporting copy that explains the feature. */
   description: string;
 };
 
