@@ -31,8 +31,10 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
   return (
     <aside
       className={cn(
-        'sticky top-14 mt-14 h-[calc(100vh-3.5rem)] overflow-y-auto shrink-0 transition-[width,opacity] duration-200 pr-3 bg-background',
-        open ? 'w-60 opacity-100' : 'w-0 opacity-0 pointer-events-none',
+        'fixed inset-x-0 top-14 bottom-0 z-40 h-[calc(100vh-3.5rem)] overflow-y-auto bg-background p-4 transition-transform duration-200 ease-out md:sticky md:top-14 md:mt-14 md:h-[calc(100vh-3.5rem)] md:translate-x-0 md:p-0 md:pr-3',
+        open
+          ? 'translate-x-0 opacity-100 pointer-events-auto w-full md:w-60'
+          : '-translate-x-full opacity-0 pointer-events-none w-full md:w-0',
         className
       )}
       aria-hidden={!open}
@@ -70,8 +72,9 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
           </div>
         ))}
         <SiteNav
-          className='sm:hidden flex-col items-start gap-4 text-sm text-muted-foreground ml-2'
+          orientation='vertical'
           showSeparators={false}
+          className='sm:hidden ml-2 mt-6'
         />
       </nav>
     </aside>

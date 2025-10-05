@@ -12,7 +12,7 @@ export default function HomePage() {
         Redirecting to localized docs…
       </Paragraph>
       <Paragraph>
-        Try <TextLink href='/en'>/en</TextLink> or{' '}
+        Try <TextLink href='/en'>/en</TextLink> or
         <TextLink href='/ja'>/ja</TextLink>.
       </Paragraph>
     </div>

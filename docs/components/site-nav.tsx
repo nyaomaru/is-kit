@@ -5,17 +5,24 @@ import { cn } from '@/lib/utils';
 type SiteNavProps = {
   /** Optional extra classes applied to the nav container. */
   className?: string;
-  /** Whether to show separators between links. Default: false */
+  /** Whether to show separators between links. Defaults to true. */
   showSeparators?: boolean;
+  /** Layout direction for the nav links. Defaults to `horizontal`. */
+  orientation?: 'horizontal' | 'vertical';
 };
 
-export function SiteNav({ className, showSeparators = true }: SiteNavProps) {
+export function SiteNav({
+  className,
+  showSeparators = true,
+  orientation = 'horizontal',
+}: SiteNavProps) {
+  const baseClasses =
+    orientation === 'horizontal'
+      ? 'flex items-center gap-4 text-sm text-muted-foreground'
+      : 'flex flex-col items-start gap-3 text-sm text-muted-foreground';
   return (
     <nav
-      className={cn(
-        'flex items-center gap-4 text-sm text-muted-foreground',
-        className
-      )}
+      className={cn(baseClasses, className)}
     >
       <Link href='/' className='group'>
         <span className='link-underline'>Home</span>
@@ -31,7 +38,9 @@ export function SiteNav({ className, showSeparators = true }: SiteNavProps) {
       >
         <span className='link-underline'>GitHub</span>
       </a>
-      {showSeparators && <span className='mx-2 text-primary'>|</span>}
+      {showSeparators && orientation === 'horizontal' ? (
+        <span className='mx-2 text-primary'>|</span>
+      ) : null}
       <Link href='/en' className='group'>
         <span className='link-underline'>EN</span>
       </Link>
