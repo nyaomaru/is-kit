@@ -4,25 +4,33 @@ import type { KeyboardEvent } from 'react';
 
 import { cn } from '@/lib/utils';
 
-type TabItem = { value: string; label?: string };
+type TabItem = {
+  /** Stable identifier that maps tab to its panel. */
+  value: string;
+  /** Optional human readable label shown in the tab button. */
+  label?: string;
+};
 
 export type TabsProps = {
+  /** Tabs rendered across the top of the control. */
   items: readonly TabItem[];
+  /** Value selected when the component mounts. */
   defaultValue: string;
+  /** Optional classes applied to the outer tab container. */
   className?: string;
+  /** Interval in milliseconds between automatic tab advances; disabled when undefined or 0. */
   autoAdvanceMs?: number;
+  /** Whether navigation wraps around when moving past the first/last tab via keyboard. */
   loop?: boolean;
-  /** optional extra classes for tabpanel container (e.g., min-h-32) */
+  /** Extra classes for the tabpanel container (e.g., min-h-32). */
   contentClassName?: string;
+  /** Callback fired after the active tab changes. */
   onChange?: (value: string) => void;
-  /**
-   * Accessible name for the tablist when there is no visible label bound via aria-labelledby.
-   */
+  /** Accessible name for the tablist when aria-labelledby is unavailable. */
   ariaLabel?: string;
-  /**
-   * Id of an element labelling the tablist. Prefer this over ariaLabel when possible.
-   */
+  /** Element id that labels the tablist; preferred over ariaLabel. */
   ariaLabelledBy?: string;
+  /** Render prop that receives the currently active tab value. */
   children?: (active: string) => React.ReactNode;
 };
 

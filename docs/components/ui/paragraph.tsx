@@ -18,6 +18,7 @@ const paragraphVariants = cva('', {
 
 type ParagraphProps = React.HTMLAttributes<HTMLParagraphElement> &
   VariantProps<typeof paragraphVariants> & {
+    /** Visual style applied to the paragraph. */
     variant?: 'default' | 'muted' | 'lead';
   };
 

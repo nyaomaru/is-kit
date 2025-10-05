@@ -9,8 +9,11 @@ import {
 import { cn } from "@/lib/utils";
 
 export type SidebarLayoutProps = {
+  /** Controls whether the sidebar starts open when the layout mounts. */
   defaultSidebarOpen?: boolean;
+  /** Navigation sections rendered inside the sidebar component. */
   sections: SidebarSection[];
+  /** Main content rendered alongside the sidebar. */
   children: React.ReactNode;
 };
 

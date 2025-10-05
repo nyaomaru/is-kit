@@ -1,7 +1,10 @@
 import React from 'react';
 import { Paragraph } from '@/components/ui/paragraph';
 
-export type LoadingOverlayProps = { label?: string };
+export type LoadingOverlayProps = {
+  /** Accessible label announced while loading is in progress. */
+  label?: string;
+};
 export function LoadingOverlay({ label = 'Loading…' }: LoadingOverlayProps) {
   return (
     <div

@@ -3,10 +3,13 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 type SiteNavProps = {
+  /** Optional extra classes applied to the nav container. */
   className?: string;
+  /** Whether to show separators between links. Default: false */
+  showSeparators?: boolean;
 };
 
-export function SiteNav({ className }: SiteNavProps) {
+export function SiteNav({ className, showSeparators = true }: SiteNavProps) {
   return (
     <nav
       className={cn(
@@ -28,7 +31,7 @@ export function SiteNav({ className }: SiteNavProps) {
       >
         <span className='link-underline'>GitHub</span>
       </a>
-      <span className='mx-2 text-primary'>|</span>
+      {showSeparators && <span className='mx-2 text-primary'>|</span>}
       <Link href='/en' className='group'>
         <span className='link-underline'>EN</span>
       </Link>

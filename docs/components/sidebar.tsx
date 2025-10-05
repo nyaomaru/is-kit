@@ -2,13 +2,27 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { SiteNav } from '@/components/site-nav';
 
-type SidebarItem = { href: string; label: string };
-type SidebarSection = { title: string; items: SidebarItem[] };
+type SidebarItem = {
+  /** Destination path for the sidebar entry. */
+  href: string;
+  /** Text shown for the navigation link. */
+  label: string;
+};
+type SidebarSection = {
+  /** Heading displayed above the grouped links. */
+  title: string;
+  /** Links included within the section. */
+  items: SidebarItem[];
+};
 
 export type SidebarProps = {
+  /** Navigation groups rendered in the sidebar. */
   sections: SidebarSection[];
+  /** Whether the sidebar content is visible. */
   open: boolean;
+  /** Additional classes merged onto the aside element. */
   className?: string;
 };
 
@@ -55,6 +69,10 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
             </ul>
           </div>
         ))}
+        <SiteNav
+          className='sm:hidden flex-col items-start gap-4 text-sm text-muted-foreground ml-2'
+          showSeparators={false}
+        />
       </nav>
     </aside>
   );

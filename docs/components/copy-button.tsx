@@ -3,8 +3,11 @@ import { useState } from 'react';
 import { COPY_BUTTON_RESET_MS } from '@/constants/ui';
 
 export type CopyButtonProps = {
+  /** Raw string copied to the clipboard when the button is pressed. */
   text: string;
+  /** Extra classes merged onto the button element. */
   className?: string;
+  /** Milliseconds before the copied state resets back to idle. */
   resetAfterMs?: number;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 

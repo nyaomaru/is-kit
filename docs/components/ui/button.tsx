@@ -29,6 +29,9 @@ const buttonVariants = cva(
   }
 );
 
+/**
+ * Props for the shared button component, including variant and size modifiers.
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}

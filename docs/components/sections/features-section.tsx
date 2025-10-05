@@ -13,15 +13,22 @@ import {
 } from '@/constants/features';
 
 type FeatureItem = {
+  /** Unique identifier used for keys and tab values. */
   id: string;
+  /** Title displayed for the feature. */
   title: string;
+  /** Supporting copy describing the feature. */
   description: string;
 };
 
 export type FeaturesSectionProps = {
+  /** Section id for deep-linking; defaults to `features`. */
   id?: string;
+  /** Heading rendered above the section content. */
   title: string;
+  /** Collection of feature entries to display. */
   items: FeatureItem[];
+  /** Presentation mode for the features grid or tabbed layout. */
   variant?: 'grid' | 'tabs';
   /** Auto-advance interval when variant="tabs". Set to 0 to disable. */
   autoAdvanceMs?: number;

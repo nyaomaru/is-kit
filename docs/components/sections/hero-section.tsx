@@ -3,7 +3,10 @@ import Image from 'next/image';
 
 import { Paragraph } from '@/components/ui/paragraph';
 
-export type HeroSectionProps = { description: string };
+export type HeroSectionProps = {
+  /** Localized lead-in copy rendered under the logo. */
+  description: string;
+};
 export function HeroSection({ description }: HeroSectionProps) {
   return (
     <section className='mb-16 flex flex-col items-center text-center'>

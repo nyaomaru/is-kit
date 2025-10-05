@@ -2,8 +2,11 @@ import { Highlight, themes } from 'prism-react-renderer';
 import { cn } from '@/lib/utils';
 
 export type CodeBlockProps = {
+  /** Source code rendered inside the block. */
   code: string;
+  /** Language token used for Prism syntax highlighting. */
   language?: string;
+  /** Additional classes merged into the wrapping <pre>. */
   className?: string;
 };
 

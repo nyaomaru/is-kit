@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
+/** Next.js link props reused by the stylised inline link component. */
 type TextLinkProps = React.ComponentPropsWithoutRef<typeof Link>;
 
 /**

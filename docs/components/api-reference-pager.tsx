@@ -2,7 +2,12 @@ import Link from 'next/link';
 import { apiSections } from '@/constants/api-sections';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-type Item = { href: string; label: string };
+type Item = {
+  /** URL for the API reference entry. */
+  href: string;
+  /** Human readable label for navigation. */
+  label: string;
+};
 
 function flatten(sections = apiSections): Item[] {
   const out: Item[] = [];
@@ -12,7 +17,10 @@ function flatten(sections = apiSections): Item[] {
   return out;
 }
 
-export type ApiReferencePagerProps = { currentHref: string };
+export type ApiReferencePagerProps = {
+  /** Href of the item currently in view; used to compute the next link. */
+  currentHref: string;
+};
 export function ApiReferencePager({ currentHref }: ApiReferencePagerProps) {
   const list = flatten();
   const idx = list.findIndex((x) => x.href === currentHref);
