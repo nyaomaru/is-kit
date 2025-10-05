@@ -1,10 +1,11 @@
 {
   "name": "@nyaomaru/is-kit",
   "version": "1.0.0",
-  "exports": {
-    ".": "./src/index.ts"
+  "exports": "./src/index.ts",
+  "imports": {
+    "@/": "./src/"
   },
   "publish": {
-    "include": ["src/**/*", "README.md", "LICENSE"]
+    "include": ["src", "README.md", "LICENSE"]
   }
 }
