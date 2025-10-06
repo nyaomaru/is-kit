@@ -1,7 +1,7 @@
 # is-kit
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/nyaomaru/is-kit/main/docs/public/iskit-logo_700_500.png" width="200px" align="center" alt="is-kit logo" />
+    <img src="https://raw.githubusercontent.com/nyaomaru/is-kit/main/docs/public/iskit-logo_700_500.png" width="700px" align="center" alt="is-kit logo" />
 </p>
 
 <p align="center">
