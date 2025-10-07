@@ -66,18 +66,18 @@ export function Tabs({
     [defaultValue, values]
   );
   const [active, setActive] = useState<string | undefined>(fallbackValue);
-  const gridCols = useMemo(() => {
+  const gridClasses = useMemo(() => {
     switch (items.length) {
       case 1:
-        return 'grid-cols-1';
+        return ['md:grid-cols-1'];
       case 2:
-        return 'grid-cols-2';
+        return ['md:grid-cols-2'];
       case 3:
-        return 'grid-cols-3';
+        return ['md:grid-cols-3'];
       case 4:
-        return 'grid-cols-4';
+        return ['md:grid-cols-4'];
       default:
-        return 'auto-cols-fr grid-flow-col';
+        return ['md:auto-cols-fr', 'md:grid-flow-col'];
     }
   }, [items.length]);
 
@@ -199,39 +199,41 @@ export function Tabs({
 
   return (
     <div
-      className={cn(
-        'w-full max-w-full rounded-md border overflow-hidden',
-        className
-      )}
+      className={cn('w-full max-w-full rounded-md border', className)}
     >
-      <div
-        className={`grid ${gridCols} w-full divide-x divide-primary/30 border-b border-primary/40`}
-        role='tablist'
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledBy}
-        aria-orientation='horizontal'
-        onKeyDown={handleKeyDown}
-      >
-        {descriptors.map(({ item, tabId, panelId }) => (
-          <button
-            key={item.value}
-            type='button'
-            className={cn(
-              'w-full px-3 py-2 text-sm text-center transition-colors',
-              active === item.value
-                ? 'bg-primary/20 text-primary font-medium border-l-2 border-primary'
-                : 'hover:bg-primary/10'
-            )}
-            id={tabId}
-            role='tab'
-            aria-controls={panelId}
-            aria-selected={active === item.value}
-            tabIndex={active === item.value ? 0 : -1}
-            onClick={() => activate(item.value)}
-          >
-            {item.label ?? item.value}
-          </button>
-        ))}
+      <div className='overflow-x-auto md:overflow-x-visible'>
+        <div
+          className={cn(
+            'flex w-full min-w-max divide-x divide-primary/30 border-b border-primary/40 md:grid md:min-w-0',
+            gridClasses
+          )}
+          role='tablist'
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-orientation='horizontal'
+          onKeyDown={handleKeyDown}
+        >
+          {descriptors.map(({ item, tabId, panelId }) => (
+            <button
+              key={item.value}
+              type='button'
+              className={cn(
+                'flex-none whitespace-nowrap px-3 py-2 text-sm text-center transition-colors md:flex-1 md:whitespace-normal',
+                active === item.value
+                  ? 'bg-primary/20 text-primary font-medium border-l-2 border-primary'
+                  : 'hover:bg-primary/10'
+              )}
+              id={tabId}
+              role='tab'
+              aria-controls={panelId}
+              aria-selected={active === item.value}
+              tabIndex={active === item.value ? 0 : -1}
+              onClick={() => activate(item.value)}
+            >
+              {item.label ?? item.value}
+            </button>
+          ))}
+        </div>
       </div>
       <div
         id={activePanelId}
