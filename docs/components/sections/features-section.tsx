@@ -74,24 +74,28 @@ export function FeaturesSection({
               items.find((feature) => feature.id === active) ?? items[0];
             if (!current) return null;
             return (
-              <div className="max-w-prose">
-                <Heading variant="h3" className="mb-2 text-lg">
-                  <Typewriter
-                    key={current.id + '-title'}
-                    text={current.title}
-                    speedMs={TYPEWRITER_TITLE_SPEED_MS}
-                    startDelayMs={TYPEWRITER_TITLE_START_DELAY_MS}
-                    cursor={false}
-                    className="inline"
-                  />
-                </Heading>
-                <Paragraph className="text-muted-foreground">
-                  <Typewriter
-                    key={current.id + '-desc'}
-                    text={current.description}
-                    startDelayMs={TYPEWRITER_DESC_START_DELAY_MS}
-                  />
-                </Paragraph>
+              <div className="max-w-full">
+                <div className="max-w-full overflow-x-auto">
+                  <div className="min-w-max space-y-3 md:min-w-0 md:max-w-prose">
+                    <Heading variant="h3" className="text-lg">
+                      <Typewriter
+                        key={current.id + '-title'}
+                        text={current.title}
+                        speedMs={TYPEWRITER_TITLE_SPEED_MS}
+                        startDelayMs={TYPEWRITER_TITLE_START_DELAY_MS}
+                        cursor={false}
+                        className="inline"
+                      />
+                    </Heading>
+                    <Paragraph className="text-muted-foreground">
+                      <Typewriter
+                        key={current.id + '-desc'}
+                        text={current.description}
+                        startDelayMs={TYPEWRITER_DESC_START_DELAY_MS}
+                      />
+                    </Paragraph>
+                  </div>
+                </div>
               </div>
             );
           }}
