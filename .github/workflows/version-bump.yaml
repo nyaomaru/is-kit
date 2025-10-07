@@ -8,20 +8,25 @@ on:
         required: true
         default: "patch"
         type: choice
-        options:
-          - patch
-          - minor
-          - major
+        options: [patch, minor, major]
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -45,28 +50,32 @@ jobs:
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Create new branch
-        run: |
-          git checkout -b release/${{ env.new_version }}
+        run: git checkout -b "release/${{ env.new_version }}"
 
-      - name: Commit & Push changes
+      - name: Configure git (bot identity)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json pnpm-lock.yaml
-          git commit -m "chore(release): bump version to ${{ env.new_version }}"
-          git push origin release/${{ env.new_version }}
+
+      - name: Update remote to use token
+        run: |
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git remote -v
+
+      - name: Commit & Push changes
+        run: |
+          git add package.json pnpm-lock.yaml || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(release): bump version to ${{ env.new_version }}"
+          else
+            echo "No changes to commit"
+          fi
+          git push -u origin "HEAD:release/${{ env.new_version }}"
 
       - name: Create Pull Request
         run: |
           gh pr create \
             --base main \
-            --head release/${{ env.new_version }} \
+            --head "release/${{ env.new_version }}" \
             --title "Release: ${{ env.new_version }}" \
             --body "Auto-generated release PR for version ${{ env.new_version }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Notify about Major Release (if major)
-        if: inputs.release_type == 'major'
-        run: |
-          echo "🚨 Major version update detected! Please review and merge manually."
