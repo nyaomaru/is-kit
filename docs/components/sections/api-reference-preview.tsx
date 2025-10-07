@@ -43,7 +43,7 @@ export function APIReferencePreview({
                   <CardTitle className='inline-block text-lg underline-offset-4'>
                     {item.title}
                   </CardTitle>
-                  <div className='mt-1 h-px w-0 bg-primary transition-[width] duration-500 group-hover:w-full' />
+                  <div className='h-px w-0 bg-primary transition-[width] duration-500 group-hover:w-full' />
                 </div>
                 <CardDescription>{item.description}</CardDescription>
               </CardHeader>

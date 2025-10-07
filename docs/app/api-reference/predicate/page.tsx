@@ -1,7 +1,8 @@
-import { Heading } from "@/components/ui/heading";
-import { Paragraph } from "@/components/ui/paragraph";
-import { CodeBlock } from "@/components/code-block";
-import { ApiReferencePager } from "@/components/api-reference-pager";
+import { ApiReferencePager } from '@/components/api-reference-pager';
+import { CodeBlock } from '@/components/code-block';
+import { Heading } from '@/components/ui/heading';
+import { Paragraph } from '@/components/ui/paragraph';
+import { Stack } from '@/components/ui/stack';
 
 const sample = `import { predicateToRefine, and, isNumber } from 'is-kit';
 
@@ -36,19 +37,23 @@ if (isPositiveNumber(maybeNumber)) {
 
 export default function PredicatePage() {
   return (
-    <div className="container mx-auto px-4 py-10 space-y-6">
-      <Heading variant="h1">predicate</Heading>
-      <Paragraph>Helpers to adapt boolean predicates to refinements.</Paragraph>
-      <CodeBlock code={sample} language="ts" />
-      <Heading variant="h2" className="mt-8">
-        True refinement (brand) example
-      </Heading>
-      <Paragraph className="text-muted-foreground">
-        When you want the type to actually narrow, define a true refinement on
-        your side (e.g., a branded type) and compose it with and().
-      </Paragraph>
-      <CodeBlock code={sampleTrueRefinement} language="ts" />
-      <ApiReferencePager currentHref="/api-reference/predicate" />
-    </div>
+    <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h1'>predicate</Heading>
+        <Paragraph>
+          Helpers to adapt boolean predicates to refinements.
+        </Paragraph>
+        <CodeBlock code={sample} language='ts' />
+      </Stack>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h2'>True refinement (brand) example</Heading>
+        <Paragraph className='text-muted-foreground'>
+          When you want the type to actually narrow, define a true refinement on
+          your side (e.g., a branded type) and compose it with and().
+        </Paragraph>
+        <CodeBlock code={sampleTrueRefinement} language='ts' />
+      </Stack>
+      <ApiReferencePager currentHref='/api-reference/predicate' />
+    </Stack>
   );
 }

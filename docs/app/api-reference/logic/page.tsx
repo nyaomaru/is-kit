@@ -1,7 +1,8 @@
+import { ApiReferencePager } from '@/components/api-reference-pager';
+import { CodeBlock } from '@/components/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
-import { CodeBlock } from '@/components/code-block';
-import { ApiReferencePager } from '@/components/api-reference-pager';
+import { Stack } from '@/components/ui/stack';
 
 const sample = `import { and, or, not, predicateToRefine, isString, isNumber } from 'is-kit';
 
@@ -60,29 +61,26 @@ validCircle(shapeRect); // false (not a circle)`;
 
 export default function LogicPage() {
   return (
-    <div className='container mx-auto px-4 py-10 space-y-6'>
-      <Heading variant='h1'>logic</Heading>
-      <Paragraph>
-        Logical combinators to compose guards and refinements in a type-safe
-        way.
-      </Paragraph>
-      <CodeBlock code={sample} language='ts' />
-      <Heading variant='h2' className='mt-10'>
-        andAll
-      </Heading>
-      <Paragraph className='mb-2'>
-        Chain multiple refinements after a precondition.
-      </Paragraph>
-      <CodeBlock language='ts' code={sampleAndAll} />
-
-      <Heading variant='h2' className='mt-10'>
-        guardIn
-      </Heading>
-      <Paragraph className='mb-2'>
-        Adapt a guard to a broader domain and keep composing.
-      </Paragraph>
-      <CodeBlock language='ts' code={sampleGuardIn} />
+    <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h1'>logic</Heading>
+        <Paragraph>
+          Logical combinators to compose guards and refinements in a type-safe
+          way.
+        </Paragraph>
+        <CodeBlock code={sample} language='ts' />
+      </Stack>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h2'>andAll</Heading>
+        <Paragraph>Chain multiple refinements after a precondition.</Paragraph>
+        <CodeBlock language='ts' code={sampleAndAll} />
+      </Stack>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h2'>guardIn</Heading>
+        <Paragraph>Adapt a guard to a broader domain and keep composing.</Paragraph>
+        <CodeBlock language='ts' code={sampleGuardIn} />
+      </Stack>
       <ApiReferencePager currentHref='/api-reference/logic' />
-    </div>
+    </Stack>
   );
 }
