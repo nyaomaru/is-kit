@@ -45,7 +45,9 @@ export function APIReferencePreview({
                   </CardTitle>
                   <div className='h-px w-0 bg-primary transition-[width] duration-500 group-hover:w-full' />
                 </div>
-                <CardDescription>{item.description}</CardDescription>
+                <CardDescription className='mt-3'>
+                  {item.description}
+                </CardDescription>
               </CardHeader>
             </Card>
           </Link>
