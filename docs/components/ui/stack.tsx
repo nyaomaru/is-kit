@@ -21,11 +21,27 @@ const stackVariants = cva('flex flex-col', {
 
 type StackTag = 'div' | 'section' | 'article' | 'main' | 'aside' | 'nav';
 
-type StackProps = React.HTMLAttributes<HTMLElement> &
-  VariantProps<typeof stackVariants> & {
+type StackProps<Tag extends StackTag = 'div'> = VariantProps<
+  typeof stackVariants
+> &
+  Omit<JSX.IntrinsicElements[Tag], 'className' | 'ref'> & {
+    /** Tailwind utility classes merged onto the rendered element. */
+    className?: string;
     /** Semantic element to render; defaults to `div`. */
-    variant?: StackTag;
+    variant?: Tag;
   };
+
+type ElementFromTag<Tag extends StackTag> =
+  JSX.IntrinsicElements[Tag] extends React.DetailedHTMLProps<
+    React.HTMLAttributes<infer Element>,
+    any
+  >
+    ? Element
+    : never;
+
+type StackComponent = <Tag extends StackTag = 'div'>(
+  props: StackProps<Tag> & { ref?: React.Ref<ElementFromTag<Tag>> }
+) => React.ReactElement | null;
 
 /**
  * Vertical layout primitive with configurable gap and semantic element.
@@ -33,18 +49,20 @@ type StackProps = React.HTMLAttributes<HTMLElement> &
  * @param gap Vertical spacing between children.
  * @returns Stack layout element with merged class names.
  */
-export const Stack = React.forwardRef<HTMLElement, StackProps>(
-  ({ className, gap, variant = 'div', ...props }, ref) => {
-    const Tag = variant;
-    return (
-      <Tag
-        ref={ref}
-        className={cn(stackVariants({ gap }), className)}
-        {...props}
-      />
-    );
-  }
-);
-Stack.displayName = 'Stack';
+const StackBase = <Tag extends StackTag = 'div'>(
+  { className, gap, variant, ...props }: StackProps<Tag>,
+  ref: React.ForwardedRef<ElementFromTag<Tag>>
+) => {
+  const Component = (variant ?? 'div') as StackTag;
+  return React.createElement(Component, {
+    ...(props as Record<string, unknown>),
+    ref,
+    className: cn(stackVariants({ gap }), className),
+  } as React.Attributes & JSX.IntrinsicElements[Tag]);
+};
+
+StackBase.displayName = 'Stack';
+
+export const Stack = React.forwardRef(StackBase) as StackComponent;
 
 export { stackVariants };
