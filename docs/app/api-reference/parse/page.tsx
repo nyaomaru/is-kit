@@ -1,7 +1,8 @@
-import { Heading } from "@/components/ui/heading";
-import { Paragraph } from "@/components/ui/paragraph";
-import { CodeBlock } from "@/components/code-block";
-import { ApiReferencePager } from "@/components/api-reference-pager";
+import { ApiReferencePager } from '@/components/api-reference-pager';
+import { CodeBlock } from '@/components/code-block';
+import { Heading } from '@/components/ui/heading';
+import { Paragraph } from '@/components/ui/paragraph';
+import { Stack } from '@/components/ui/stack';
 
 const sample = `import { safeParse, safeParseWith, predicateToRefine, and, isString, isNumber } from 'is-kit';
 
@@ -17,13 +18,15 @@ const parseResult2 = parseEven(4); // { valid: true, value: 4 }`;
 
 export default function ParsePage() {
   return (
-    <div className="container mx-auto px-4 py-10 space-y-6">
-      <Heading variant="h1">parse</Heading>
-      <Paragraph>
-        Runtime-safe parsing helpers returning tagged results.
-      </Paragraph>
-      <CodeBlock code={sample} language="ts" />
-      <ApiReferencePager currentHref="/api-reference/parse" />
-    </div>
+    <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h1'>parse</Heading>
+        <Paragraph>
+          Runtime-safe parsing helpers returning tagged results.
+        </Paragraph>
+        <CodeBlock code={sample} language='ts' />
+      </Stack>
+      <ApiReferencePager currentHref='/api-reference/parse' />
+    </Stack>
   );
 }

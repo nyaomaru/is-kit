@@ -10,7 +10,7 @@ type Dict = {
     description: string;
     button: { playground: string };
     installation: { title: string };
-    usage: { title: string; examples: string };
+    usage: { title: string };
     features: {
       title: string;
       stringDivision: { title: string; description: string };
@@ -31,20 +31,23 @@ const en: Dict = {
       'Type-safe utilities and combinators for building isXXX guards in TypeScript. Lightweight and zero-dependency.',
     button: { playground: 'Open Playground' },
     installation: { title: 'Installation' },
-    usage: { title: 'Usage', examples: 'examples' },
+    usage: { title: 'Usage' },
     features: {
       title: 'Features',
       stringDivision: {
         title: 'Type-safe predicates',
-        description: 'Author and compose predicates that refine types precisely.',
+        description:
+          'Author and compose predicates that refine types precisely.',
       },
       arrayProcessing: {
         title: 'Composable logic',
-        description: 'Combine guards with and/or/not while preserving inference.',
+        description:
+          'Combine guards with and/or/not while preserving inference.',
       },
       nestedArray: {
         title: 'Collection helpers',
-        description: 'Validate arrays, tuples, records with ergonomic combinators.',
+        description:
+          'Validate arrays, tuples, records with ergonomic combinators.',
       },
       flexibleOutput: {
         title: 'Strict nullability',
@@ -73,7 +76,7 @@ const ja: Dict = {
       'TypeScript で isXXX ガードを安全に作るためのユーティリティ。軽量・依存ゼロ。',
     button: { playground: 'プレイグラウンドを開く' },
     installation: { title: 'インストール' },
-    usage: { title: '使い方', examples: '例' },
+    usage: { title: '使い方' },
     features: {
       title: '特徴',
       stringDivision: {
@@ -115,7 +118,7 @@ const nl: Dict = {
       'Type-veilige hulpprogramma’s om isXXX-guards te bouwen in TypeScript. Lichtgewicht, geen dependencies.',
     button: { playground: 'Playground openen' },
     installation: { title: 'Installatie' },
-    usage: { title: 'Gebruik', examples: 'voorbeelden' },
+    usage: { title: 'Gebruik' },
     features: {
       title: 'Functies',
       stringDivision: {

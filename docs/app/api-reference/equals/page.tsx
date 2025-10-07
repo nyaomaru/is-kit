@@ -1,7 +1,8 @@
-import { Heading } from "@/components/ui/heading";
-import { Paragraph } from "@/components/ui/paragraph";
-import { CodeBlock } from "@/components/code-block";
-import { ApiReferencePager } from "@/components/api-reference-pager";
+import { ApiReferencePager } from '@/components/api-reference-pager';
+import { CodeBlock } from '@/components/code-block';
+import { Heading } from '@/components/ui/heading';
+import { Paragraph } from '@/components/ui/paragraph';
+import { Stack } from '@/components/ui/stack';
 
 const sample = `import { equals } from 'is-kit';
 
@@ -21,21 +22,23 @@ hasId1({ id: 1 }); // true`;
 
 export default function EqualsPage() {
   return (
-    <div className="container mx-auto px-4 py-10 space-y-6">
-      <Heading variant="h1">equals</Heading>
-      <Paragraph>
-        Value equality with Object.is semantics; suitable for precise
-        comparisons.
-      </Paragraph>
-      <CodeBlock code={sample} language="ts" />
-      <Heading variant="h2" className="mt-10">
-        equalsBy / equalsKey
-      </Heading>
-      <Paragraph className="mb-2">
-        Compare by derived values or by property keys when building guards.
-      </Paragraph>
-      <CodeBlock language="ts" code={sampleEqualsByAndKey} />
-      <ApiReferencePager currentHref="/api-reference/equals" />
-    </div>
+    <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h1'>equals</Heading>
+        <Paragraph>
+          Value equality with Object.is semantics; suitable for precise
+          comparisons.
+        </Paragraph>
+        <CodeBlock code={sample} language='ts' />
+      </Stack>
+      <Stack variant='section' gap='md'>
+        <Heading variant='h2'>equalsBy / equalsKey</Heading>
+        <Paragraph>
+          Compare by derived values or by property keys when building guards.
+        </Paragraph>
+        <CodeBlock language='ts' code={sampleEqualsByAndKey} />
+      </Stack>
+      <ApiReferencePager currentHref='/api-reference/equals' />
+    </Stack>
   );
 }
