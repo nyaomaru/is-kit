@@ -88,7 +88,7 @@ export function SidebarLayout({
   }, [open]);
 
   return (
-    <div className="relative flex w-full overflow-hidden">
+    <div className="relative flex w-full overflow-x-hidden">
       <Sidebar sections={sections} open={open} className="bg-background" />
       {open ? (
         <div
@@ -100,7 +100,7 @@ export function SidebarLayout({
       <div
         className={cn(
           "relative flex-1 min-w-0 overflow-x-hidden md:pl-6 md:before:pointer-events-none md:before:absolute md:before:inset-y-0 md:before:left-0 md:before:w-px md:before:bg-border md:before:opacity-0 md:before:transition-opacity md:before:duration-300 md:before:content-['']",
-          showDivider && "md:before:opacity-100"
+          showDivider && "md:ml-60 md:before:opacity-100"
         )}
       >
         {children}
