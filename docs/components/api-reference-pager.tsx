@@ -32,7 +32,7 @@ export function ApiReferencePager({ currentHref }: ApiReferencePagerProps) {
   const next = idx >= 0 ? list[idx + 1] : undefined;
 
   return (
-    <nav aria-label='API pager' className='mt-4'>
+    <nav aria-label='API pager' className='mt-1'>
       <div className='grid grid-cols-1 gap-4 md:grid-cols-3 items-stretch w-full'>
         <Link
           href='/api-reference'
