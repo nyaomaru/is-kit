@@ -6,6 +6,7 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 type Item = {
   /** URL for the API reference entry. */
@@ -25,14 +26,22 @@ function flatten(sections = apiSections): Item[] {
 export type ApiReferencePagerProps = {
   /** Href of the item currently in view; used to compute the next link. */
   currentHref: string;
+  /** Tailwind class overrides merged onto the container nav. */
+  className?: string;
 };
-export function ApiReferencePager({ currentHref }: ApiReferencePagerProps) {
+export function ApiReferencePager({
+  currentHref,
+  className,
+}: ApiReferencePagerProps) {
   const list = flatten();
   const idx = list.findIndex((x) => x.href === currentHref);
   const next = idx >= 0 ? list[idx + 1] : undefined;
 
   return (
-    <nav aria-label='API pager' className='mt-1'>
+    <nav
+      aria-label='API pager'
+      className={cn('mt-1', className)}
+    >
       <div className='grid grid-cols-1 gap-4 md:grid-cols-3 items-stretch w-full'>
         <Link
           href='/api-reference'
