@@ -15,11 +15,13 @@ export default function ApiIndexPage() {
   return (
     <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
       <Stack variant='section' gap='sm'>
-        <Heading variant='h1'>API Reference</Heading>
-        <Paragraph className='text-muted-foreground'>
-          Explore the available functions and combinators. Use the sidebar to
-          navigate.
-        </Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h1'>API Reference</Heading>
+          <Paragraph className='text-muted-foreground'>
+            Explore the available functions and combinators. Use the sidebar to
+            navigate.
+          </Paragraph>
+        </Stack>
       </Stack>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
         {items.map((item) => (

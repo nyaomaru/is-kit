@@ -14,10 +14,12 @@ export default function OneOfValuesPage() {
   return (
     <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
       <Stack variant='section' gap='md'>
-        <Heading variant='h1'>oneOfValues</Heading>
-        <Paragraph>
-          Guard for literal value sets; uses exact equality semantics.
-        </Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h1'>oneOfValues</Heading>
+          <Paragraph>
+            Guard for literal value sets; uses exact equality semantics.
+          </Paragraph>
+        </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
       <ApiReferencePager currentHref='/api-reference/combinators/one-of-values' />

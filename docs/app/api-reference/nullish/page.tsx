@@ -25,10 +25,12 @@ export default function NullishPage() {
   return (
     <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
       <Stack variant='section' gap='md'>
-        <Heading variant='h1'>nullish</Heading>
-        <Paragraph>
-          Nullability helpers to widen or narrow optionality.
-        </Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h1'>nullish</Heading>
+          <Paragraph>
+            Nullability helpers to widen or narrow optionality.
+          </Paragraph>
+        </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
       <ApiReferencePager currentHref='/api-reference/nullish' />
