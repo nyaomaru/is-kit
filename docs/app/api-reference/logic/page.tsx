@@ -63,21 +63,29 @@ export default function LogicPage() {
   return (
     <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
       <Stack variant='section' gap='md'>
-        <Heading variant='h1'>logic</Heading>
-        <Paragraph>
-          Logical combinators to compose guards and refinements in a type-safe
-          way.
-        </Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h1'>logic</Heading>
+          <Paragraph>
+            Logical combinators to compose guards and refinements in a type-safe
+            way.
+          </Paragraph>
+        </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
       <Stack variant='section' gap='md'>
-        <Heading variant='h2'>andAll</Heading>
-        <Paragraph>Chain multiple refinements after a precondition.</Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h2'>andAll</Heading>
+          <Paragraph>Chain multiple refinements after a precondition.</Paragraph>
+        </Stack>
         <CodeBlock language='ts' code={sampleAndAll} />
       </Stack>
       <Stack variant='section' gap='md'>
-        <Heading variant='h2'>guardIn</Heading>
-        <Paragraph>Adapt a guard to a broader domain and keep composing.</Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h2'>guardIn</Heading>
+          <Paragraph>
+            Adapt a guard to a broader domain and keep composing.
+          </Paragraph>
+        </Stack>
         <CodeBlock language='ts' code={sampleGuardIn} />
       </Stack>
       <ApiReferencePager currentHref='/api-reference/logic' />

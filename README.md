@@ -96,6 +96,8 @@ These primitives plug into higher-level combinators like `struct` when you need 
 
 ## API Reference
 
+[👉 See full document](https://is-kit-docs.vercel.app/)
+
 👉 See the docs app under `docs/` (API Reference section). Each helper is documented with runnable examples.
 
 ## Development

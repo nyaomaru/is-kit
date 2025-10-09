@@ -31,7 +31,7 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
   return (
     <aside
       className={cn(
-        'fixed inset-x-0 top-14 bottom-0 z-40 h-[calc(100vh-3.5rem)] overflow-y-auto bg-background p-4 transition-transform duration-200 ease-out md:left-0 md:right-auto md:w-60 md:border-r md:border-border md:p-0 md:pr-4 md:transition-[transform,opacity] md:duration-200 md:ease-in-out',
+        'fixed inset-x-0 top-14 bottom-0 z-40 h-[calc(100vh-3.5rem)] overflow-y-auto bg-background p-4 transition-transform duration-200 ease-out md:left-0 md:right-auto md:w-40 md:border-r md:border-border md:p-0 md:pr-4 md:transition-[transform,opacity] md:duration-200 md:ease-in-out',
         open
           ? 'translate-x-0 opacity-100 pointer-events-auto w-full md:translate-x-0'
           : '-translate-x-full opacity-0 pointer-events-none w-full md:-translate-x-full',

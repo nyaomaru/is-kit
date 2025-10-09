@@ -1,12 +1,12 @@
-"use client";
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { Sidebar, type SidebarSection } from "@/components/sidebar";
+'use client';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { Sidebar, type SidebarSection } from '@/components/sidebar';
 import {
   DOCS_TOGGLE_SIDEBAR_EVENT,
   type ToggleSidebarEvent,
-} from "@/lib/events";
-import { cn } from "@/lib/utils";
+} from '@/lib/events';
+import { cn } from '@/lib/utils';
 
 export type SidebarLayoutProps = {
   /** Controls whether the sidebar starts open when the layout mounts. */
@@ -24,10 +24,11 @@ export function SidebarLayout({
 }: SidebarLayoutProps) {
   const pathname = usePathname();
   const computedDefaultOpen =
-    defaultSidebarOpen ?? pathname?.startsWith("/api-reference") === true;
+    defaultSidebarOpen ?? pathname?.startsWith('/api-reference') === true;
 
   const isMobileViewport = () =>
-    typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+    typeof window !== 'undefined' &&
+    window.matchMedia('(max-width: 767px)').matches;
 
   const [open, setOpen] = useState(() =>
     isMobileViewport() ? false : computedDefaultOpen
@@ -88,19 +89,19 @@ export function SidebarLayout({
   }, [open]);
 
   return (
-    <div className="relative flex w-full overflow-x-hidden">
-      <Sidebar sections={sections} open={open} className="bg-background" />
+    <div className='relative flex w-full overflow-x-hidden'>
+      <Sidebar sections={sections} open={open} className='bg-background' />
       {open ? (
         <div
-          role="presentation"
-          className="fixed inset-x-0 top-14 bottom-0 z-30 bg-background/70 backdrop-blur-sm md:hidden"
+          role='presentation'
+          className='fixed inset-x-0 top-14 bottom-0 z-30 bg-background/70 backdrop-blur-sm md:hidden'
           onClick={() => setOpen(false)}
         />
       ) : null}
       <div
         className={cn(
-          "relative flex-1 min-w-0 overflow-x-hidden md:pl-6 md:before:pointer-events-none md:before:absolute md:before:inset-y-0 md:before:left-0 md:before:w-px md:before:bg-border md:before:opacity-0 md:before:transition-opacity md:before:duration-300 md:before:content-['']",
-          showDivider && "md:ml-60 md:before:opacity-100"
+          "relative flex-1 min-w-0 overflow-x-hidden md:before:pointer-events-none md:before:absolute md:before:inset-y-0 md:before:left-0 md:before:w-px md:before:bg-border md:before:opacity-0 md:before:transition-opacity md:before:duration-300 md:before:content-['']",
+          showDivider && 'md:ml-40'
         )}
       >
         {children}

@@ -15,8 +15,7 @@ const isEvenRefine = predicateToRefine<number>(isEvenBool);
 
 const isEvenNumber = and(isNumber, isEvenRefine);
 isEvenNumber(3); // false
-isEvenNumber(4); // true
-`;
+isEvenNumber(4); // true`;
 
 const sampleTrueRefinement = `import { and, isNumber } from 'is-kit';
 
@@ -39,18 +38,22 @@ export default function PredicatePage() {
   return (
     <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
       <Stack variant='section' gap='md'>
-        <Heading variant='h1'>predicate</Heading>
-        <Paragraph>
-          Helpers to adapt boolean predicates to refinements.
-        </Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h1'>predicate</Heading>
+          <Paragraph>
+            Helpers to adapt boolean predicates to refinements.
+          </Paragraph>
+        </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
       <Stack variant='section' gap='md'>
-        <Heading variant='h2'>True refinement (brand) example</Heading>
-        <Paragraph className='text-muted-foreground'>
-          When you want the type to actually narrow, define a true refinement on
-          your side (e.g., a branded type) and compose it with and().
-        </Paragraph>
+        <Stack gap='xs'>
+          <Heading variant='h2'>True refinement (brand) example</Heading>
+          <Paragraph className='text-muted-foreground'>
+            When you want the type to actually narrow, define a true refinement
+            on your side (e.g., a branded type) and compose it with and().
+          </Paragraph>
+        </Stack>
         <CodeBlock code={sampleTrueRefinement} language='ts' />
       </Stack>
       <ApiReferencePager currentHref='/api-reference/predicate' />
