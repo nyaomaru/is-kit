@@ -167,7 +167,7 @@ a:hover {
     width: 0;
   }
   to {
-    width: calc(var(--tw-chars) * 1ch);
+    width: calc(var(--tw-chars) * var(--tw-char-width, 0.95ch));
   }
 }
 @keyframes tw-caret {

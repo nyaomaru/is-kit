@@ -7,6 +7,17 @@ import {
   TYPEWRITER_CARET_BLINK_MS,
 } from '@/constants/ui';
 
+/** CSS variable bag consumed by the typewriter animation in globals.css. */
+type TypewriterStyle = React.CSSProperties & {
+  '--tw-chars'?: string;
+  '--tw-speed'?: string;
+  '--tw-delay'?: string;
+  '--tw-duration'?: string;
+  '--tw-char-width'?: string;
+  '--tw-caret-width'?: string;
+  '--tw-caret-blink'?: string;
+};
+
 // CSS-driven typewriter: no JS timers/state. See globals.css for keyframes.
 export type TypewriterProps = {
   /** Text rendered with a typewriter animation. */
@@ -29,14 +40,6 @@ export function Typewriter({
   cursor = true,
 }: TypewriterProps) {
   const safeText = useMemo(() => text ?? '', [text]);
-  type TypewriterStyle = React.CSSProperties & {
-    '--tw-chars'?: string;
-    '--tw-speed'?: string;
-    '--tw-delay'?: string;
-    '--tw-duration'?: string;
-    '--tw-caret-width'?: string;
-    '--tw-caret-blink'?: string;
-  };
   const style: TypewriterStyle = {
     // CSS vars used by globals.css animations
     '--tw-chars': String(safeText.length),
