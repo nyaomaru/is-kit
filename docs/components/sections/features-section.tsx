@@ -43,12 +43,12 @@ export function FeaturesSection({
 }: FeaturesSectionProps) {
   const titleId = `${id}-title`;
   return (
-    <section id={id} aria-labelledby={titleId} className="mb-16">
-      <Heading id={titleId} variant="h2" className="mb-6">
+    <section id={id} aria-labelledby={titleId} className='mb-16'>
+      <Heading id={titleId} variant='h2' className='mb-6'>
         {title}
       </Heading>
       {variant === 'grid' ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {items.map((feature) => (
             <FeatureCard
               key={feature.id}
@@ -74,20 +74,20 @@ export function FeaturesSection({
               items.find((feature) => feature.id === active) ?? items[0];
             if (!current) return null;
             return (
-              <div className="max-w-full">
-                <div className="max-w-full overflow-x-auto">
-                  <div className="min-w-max space-y-3 md:min-w-0 md:max-w-prose">
-                    <Heading variant="h3" className="text-lg">
+              <div className='max-w-full'>
+                <div className='max-w-full overflow-x-auto'>
+                  <div className='min-w-max space-y-3 md:min-w-0 md:max-w-prose'>
+                    <Heading variant='h3' className='text-lg'>
                       <Typewriter
                         key={current.id + '-title'}
                         text={current.title}
                         speedMs={TYPEWRITER_TITLE_SPEED_MS}
                         startDelayMs={TYPEWRITER_TITLE_START_DELAY_MS}
                         cursor={false}
-                        className="inline"
+                        className='inline'
                       />
                     </Heading>
-                    <Paragraph className="text-muted-foreground">
+                    <Paragraph className='text-muted-foreground' spacing='flat'>
                       <Typewriter
                         key={current.id + '-desc'}
                         text={current.description}
