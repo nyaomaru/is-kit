@@ -198,9 +198,7 @@ export function Tabs({
   }
 
   return (
-    <div
-      className={cn('w-full max-w-full rounded-md border', className)}
-    >
+    <div className={cn('w-full max-w-full rounded-md border', className)}>
       <div className='overflow-x-auto md:overflow-x-visible'>
         <div
           className={cn(
@@ -220,7 +218,7 @@ export function Tabs({
               className={cn(
                 'flex-none whitespace-nowrap px-3 py-2 text-sm text-center transition-colors md:flex-1 md:whitespace-normal',
                 active === item.value
-                  ? 'bg-primary/20 text-primary font-medium border-l-2 border-primary'
+                  ? 'bg-primary/20 text-primary font-medium border-primary'
                   : 'hover:bg-primary/10'
               )}
               id={tabId}
