@@ -61,7 +61,12 @@ body {
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: var(--font-sans, 'Source Sans 3'), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family:
+    var(--font-sans, 'Source Sans 3'),
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
   /* Keep vertical scrollbar space reserved to avoid header/content shift */
   overflow-y: scroll;
   overflow-x: hidden;
@@ -83,7 +88,9 @@ html {
 }
 
 /* Global border default to primary */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   border-color: hsl(var(--primary));
 }
 
@@ -109,27 +116,35 @@ a:hover {
   background-color: hsl(var(--primary));
   transition: width 0.5s ease;
 }
-.link-underline:hover::after { width: 100%; }
-.link-underline:focus-visible::after { width: 100%; }
+.link-underline:hover::after {
+  width: 100%;
+}
+.link-underline:focus-visible::after {
+  width: 100%;
+}
 /* Trigger underline when hovering the parent link area (wider hit target) */
-.group:hover .link-underline::after { width: 100%; }
-.group:focus-visible .link-underline::after { width: 100%; }
+.group:hover .link-underline::after {
+  width: 100%;
+}
+.group:focus-visible .link-underline::after {
+  width: 100%;
+}
 
 /* ==============================
    Scrollbar styling (primary)
    ============================== */
 /* Firefox */
 * {
-  /* Make Firefox scrollbar a bit thicker */
-  scrollbar-width: auto;
+  /* Use thin scrollbar to reduce perceived width */
+  scrollbar-width: thin;
   scrollbar-color: hsl(var(--primary)) transparent;
 }
 
 /* WebKit-based (Chrome, Edge, Safari) */
 *::-webkit-scrollbar {
-  /* Thicker scrollbar for WebKit browsers */
-  width: 14px;
-  height: 14px;
+  /* Match thin scrollbar profile for WebKit browsers */
+  width: 0.5rem;
+  height: 0.5rem;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
@@ -137,7 +152,7 @@ a:hover {
 *::-webkit-scrollbar-thumb {
   background-color: hsl(var(--primary) / 0.5);
   border-radius: 9999px;
-  border: 3px solid transparent; /* keep the inner thumb shape when thicker */
+  border: 2px solid transparent; /* preserve inner thumb space with thinner width */
   background-clip: content-box;
 }
 *::-webkit-scrollbar-thumb:hover {
@@ -148,11 +163,17 @@ a:hover {
    Typewriter animation (CSS-only)
    ============================== */
 @keyframes tw-typing {
-  from { width: 0; }
-  to { width: calc(var(--tw-chars) * 1ch); }
+  from {
+    width: 0;
+  }
+  to {
+    width: calc(var(--tw-chars) * 1ch);
+  }
 }
 @keyframes tw-caret {
-  50% { border-color: transparent; }
+  50% {
+    border-color: transparent;
+  }
 }
 .tw-typewriter {
   display: inline-block;
@@ -166,5 +187,6 @@ a:hover {
 }
 .tw-typewriter.tw-no-caret {
   border-right: 0;
-  animation: tw-typing var(--tw-duration) steps(var(--tw-chars)) var(--tw-delay) both;
+  animation: tw-typing var(--tw-duration) steps(var(--tw-chars)) var(--tw-delay)
+    both;
 }
