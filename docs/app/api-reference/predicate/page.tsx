@@ -15,8 +15,7 @@ const isEvenRefine = predicateToRefine<number>(isEvenBool);
 
 const isEvenNumber = and(isNumber, isEvenRefine);
 isEvenNumber(3); // false
-isEvenNumber(4); // true
-`;
+isEvenNumber(4); // true`;
 
 const sampleTrueRefinement = `import { and, isNumber } from 'is-kit';
 
