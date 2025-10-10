@@ -50,7 +50,7 @@ const isShort = predicateToRefine<string>((s) => s.length <= 3);
 const isShortString = and(isString, isShort); // isShortString: (value: unknown) => value is string
 
 const evaluations = ['ok', 'toolong', 123].map((value) => isShortString(value));
-// evaluations === [true, false, false]
+// evaluations: [true, false, false]
 or(isString, isNumber)('x'); // true
 not(isString)(42); // true`,
   parse: `import { safeParse, struct, isNumber, isString } from 'is-kit';
