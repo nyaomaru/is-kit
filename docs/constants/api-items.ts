@@ -75,13 +75,13 @@ export const API_ITEMS: ApiItem[] = [
 
 export const FEATURED_API_HREFS: readonly string[] = [
   '/api-reference/define',
+  '/api-reference/combinators/struct',
   '/api-reference/logic',
   '/api-reference/parse',
-  '/api-reference/combinators/struct',
-  '/api-reference/combinators/array-of',
-  '/api-reference/combinators/one-of',
+  '/api-reference/primitive',
+  '/api-reference/predicate',
 ] as const;
 
-export const FEATURED_API_ITEMS: ApiItem[] = FEATURED_API_HREFS
-  .map((href) => API_ITEMS.find((it) => it.href === href))
-  .filter((x): x is ApiItem => Boolean(x));
+export const FEATURED_API_ITEMS: ApiItem[] = FEATURED_API_HREFS.map((href) =>
+  API_ITEMS.find((it) => it.href === href)
+).filter((x): x is ApiItem => Boolean(x));

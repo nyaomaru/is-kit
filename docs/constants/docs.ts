@@ -8,7 +8,8 @@ export const INSTALL_COMMANDS: Record<InstallTab, string> = {
 };
 
 export const USAGE_TABS = [
-  'basic',
+  'define',
+  'struct',
   'logic',
   'parse',
   'combinators',
@@ -17,37 +18,67 @@ export const USAGE_TABS = [
 ] as const;
 export type UsageTab = (typeof USAGE_TABS)[number];
 export const USAGE_SNIPPETS: Record<UsageTab, string> = {
-  basic: `import { define } from 'is-kit';
+  define: `import { define } from 'is-kit';
 
 const isString = define<string>((x) => typeof x === 'string');
 
 if (isString('hello')) {
   // narrowed to string
 }`,
+  struct: `import { struct, isNumber, isString } from 'is-kit';
+
+const isUser = struct({
+  id: isNumber,
+  name: isString,
+});
+
+const isExactUser = struct(
+  {
+    id: isNumber,
+    name: isString,
+  },
+  { exact: true }
+);
+
+isUser({ id: 1, name: 'neo' }); // true
+isUser({ id: 1, name: 'neo', role: 'admin' }); // true
+isExactUser({ id: 1, name: 'neo', role: 'admin' }); // false
+isUser({ id: '1', name: 'neo' }); // false`,
   logic: `import { and, or, not, predicateToRefine, isString, isNumber } from 'is-kit';
 
 const isShort = predicateToRefine<string>((s) => s.length <= 3);
-const isShortString = and(isString, isShort);
+const isShortString = and(isString, isShort); // isShortString: (value: unknown) => value is string
 
-['ok', 'toolong', 123].map(v => isShortString(v));
+const evaluations = ['ok', 'toolong', 123].map((value) => isShortString(value));
+// evaluations: [true, false, false]
 or(isString, isNumber)('x'); // true
 not(isString)(42); // true`,
-  parse: `import { safeParse, arrayOf, isNumber } from 'is-kit';
+  parse: `import { safeParse, struct, isNumber, isString } from 'is-kit';
 
-const numbers = arrayOf(isNumber);
-const result = safeParse(numbers, JSON.parse('[1,2,3]'));
-// => { valid: true, value: [1,2,3] }`,
-  combinators: `import { arrayOf, tupleOf, recordOf, struct, isString, isNumber } from 'is-kit';
+const isUser = struct({
+  id: isNumber,
+  name: isString,
+});
+
+const jsonInput = JSON.parse('{"id":1,"name":"neo"}');
+const result = safeParse(isUser, jsonInput);
+// result: ParseResult<{ id: number; name: string }>
+
+if (result.valid) {
+  const user = result.value; // { id: number; name: string }
+  user.name.toUpperCase(); // 'NEO'
+} else {
+  console.error(result.error.message);
+}`,
+  combinators: `import { arrayOf, tupleOf, recordOf, isString, isNumber } from 'is-kit';
 
 const stringArray = arrayOf(isString);
 const pair = tupleOf(isString, isNumber);
 const stringRecord = recordOf(isString, isString);
-const user = struct({ id: isNumber, name: isString } as const);
 
 stringArray(['a', 'b']); // true
 pair(['id', 1]); // true
-stringRecord({ a: 'x' }); // true
-user({ id: 1, name: 'neo' }); // true`,
+stringRecord({ a: 'x' }); // true`,
   nullability: `import { optional, required, nullable, nonNull, isString } from 'is-kit';
 
 const maybeString = optional(isString); // x?: string
