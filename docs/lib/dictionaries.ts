@@ -69,48 +69,6 @@ const en: Dict = {
   },
 };
 
-const ja: Dict = {
-  top: {
-    title: 'is-kit',
-    description:
-      'TypeScript で isXXX ガードを安全に作るためのユーティリティ。軽量・依存ゼロ。',
-    button: { playground: 'プレイグラウンドを開く' },
-    installation: { title: 'インストール' },
-    usage: { title: '使い方' },
-    features: {
-      title: '特徴',
-      stringDivision: {
-        title: '型安全な述語',
-        description: '型を正確に絞り込む述語を作成・合成できます。',
-      },
-      arrayProcessing: {
-        title: '合成可能なロジック',
-        description: 'and/or/not を組み合わせても推論が崩れません。',
-      },
-      nestedArray: {
-        title: 'コレクション向け',
-        description: '配列/タプル/レコードを快適に検証できます。',
-      },
-      flexibleOutput: {
-        title: '厳密な null 取り扱い',
-        description: 'optional/nullable を明確に扱うヘルパーを提供。',
-      },
-      flatteningOption: {
-        title: 'パース補助',
-        description: '未知のデータを安全にパースし、型付きで返します。',
-      },
-      mixedDelimiters: {
-        title: '小さく焦点化',
-        description: '依存ゼロ、tree-shakeable、可読性重視。',
-      },
-    },
-    api: {
-      title: 'API リファレンス',
-      fullReferenceLinkText: 'TypeDoc 全文を読む',
-    },
-  },
-};
-
 const nl: Dict = {
   top: {
     title: 'is-kit',
@@ -158,7 +116,6 @@ const nl: Dict = {
  */
 export const DICTIONARIES: Record<Locale, Dict> = {
   en,
-  ja,
   nl,
 };
 
