@@ -21,9 +21,7 @@ export function SiteNav({
       ? 'flex items-center gap-4 text-sm text-muted-foreground'
       : 'flex flex-col items-start gap-3 text-sm text-muted-foreground';
   return (
-    <nav
-      className={cn(baseClasses, className)}
-    >
+    <nav className={cn(baseClasses, className)}>
       <Link href='/' className='group'>
         <span className='link-underline'>Home</span>
       </Link>
@@ -43,9 +41,6 @@ export function SiteNav({
       ) : null}
       <Link href='/en' className='group'>
         <span className='link-underline'>EN</span>
-      </Link>
-      <Link href='/ja' className='group'>
-        <span className='link-underline'>JA</span>
       </Link>
       <Link href='/nl' className='group'>
         <span className='link-underline'>NL</span>
