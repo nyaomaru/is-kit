@@ -34,26 +34,31 @@ isShortTitle('Axel'); // true
 isShortTitle('Bob'); // false (does not start with A)
 isShortTitle('ABC'); // false (length < 4)`;
 
-const sampleGuardIn = `import { and, guardIn } from 'is-kit';
+const sampleGuardIn = `import { and, equals, guardIn, isNumber, predicateToRefine, struct } from 'is-kit';
 
 // Adapt a guard to a broader domain, then compose extra rules
-type Shape = { kind: 'rect' | 'circle' };
 type Circle = { kind: 'circle'; radius: number };
+type Shape =
+  | { kind: 'rect'; width: number; height: number }
+  | Circle;
 
-const isCircle = (input: unknown): input is Circle =>
-  typeof input === 'object' && input !== null && (input as any).kind === 'circle';
+const isCircle = struct({
+  kind: equals('circle' as const),
+  radius: isNumber,
+});
+// isCircle: Guard<Circle>
 
 // Make it work as a refinement within Shape
 const circleInShape = guardIn<Shape>()(isCircle); // Refine<Shape, Circle>
 
 // Add a runtime-only rule (type stays Circle)
-const positiveRadius = (circle: Circle): circle is Circle => circle.radius > 0;
+const positiveRadius = predicateToRefine<Circle>((circle) => circle.radius > 0);
 
 const validCircle = and(circleInShape, positiveRadius);
 
 const shapeCircleValid: Shape = { kind: 'circle', radius: 10 };
 const shapeCircleNegativeRadius: Shape = { kind: 'circle', radius: -1 };
-const shapeRect: Shape = { kind: 'rect' } as any;
+const shapeRect: Shape = { kind: 'rect', width: 8, height: 5 };
 
 validCircle(shapeCircleValid); // true
 validCircle(shapeCircleNegativeRadius); // false (radius not positive)
@@ -75,7 +80,9 @@ export default function LogicPage() {
       <Stack variant='section' gap='md'>
         <Stack gap='xs'>
           <Heading variant='h2'>andAll</Heading>
-          <Paragraph>Chain multiple refinements after a precondition.</Paragraph>
+          <Paragraph>
+            Chain multiple refinements after a precondition.
+          </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleAndAll} />
       </Stack>

@@ -6,8 +6,25 @@ import { Stack } from '@/components/ui/stack';
 
 const sample = `import { equals } from 'is-kit';
 
-equals(1, 1); // true
-equals(NaN, NaN); // true (Object.is semantics)`;
+// Object.is semantics are preserved
+equals(NaN)(NaN); // true
+
+// Literal guards narrow discriminated unions
+const isDone = equals('done' as const);
+// isDone: (value: unknown) => value is 'done'
+
+type Status = 'draft' | 'in-progress' | 'done';
+
+function isFinished(status: Status) {
+  if (isDone(status)) {
+    // Narrowed to the literal type 'done' inside this branch
+    return true;
+  }
+  return false;
+}
+
+isFinished('draft'); // false
+isFinished('done'); // true`;
 
 const sampleEqualsByAndKey = `import { equalsBy, equalsKey, isString } from 'is-kit';
 
