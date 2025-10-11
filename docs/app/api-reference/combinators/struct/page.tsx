@@ -4,13 +4,46 @@ import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
 
-const sample = `import { struct, isString, isNumber } from 'is-kit';
+const sample = `import { arrayOf, optional, struct, isString, isNumber } from 'is-kit';
 
-const isUser = struct({ id: isNumber, name: isString });
-isUser({ id: 1, name: 'A' }); // true
+const isUser = struct({
+  id: isNumber,
+  name: isString,
+  nickname: optional(isString),
+});
+// isUser: Guard<{ id: number; name: string; nickname?: string | undefined }>
 
-const isExactUser = struct({ id: isNumber, name: isString }, { exact: true });
-isExactUser({ id: 1, name: 'A', extra: 1 }); // false`;
+const input: unknown = {
+  id: 42,
+  name: 'Neko',
+  nickname: 'nya',
+};
+
+if (isUser(input)) {
+  input.nickname?.toUpperCase(); // input narrowed to User shape
+}
+
+const isExactUser = struct(
+  { id: isNumber, name: isString },
+  { exact: true }
+);
+isExactUser({ id: 1, name: 'A' }); // true
+isExactUser({ id: 1, name: 'A', extra: 1 }); // false (extra keys rejected)
+
+const isTeam = struct({
+  name: isString,
+  members: arrayOf(isUser),
+});
+// Nested structs compose cleanly; members inherits the User guard.
+
+isTeam({
+  name: 'core',
+  members: [{ id: 1, name: 'Neko' }],
+}); // true
+isTeam({
+  name: 'core',
+  members: [{ id: 1, name: 'Neko', nickname: 123 }],
+}); // false (nickname is not a string)`;
 
 export default function StructPage() {
   return (
