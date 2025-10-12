@@ -15,30 +15,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup mise
+        uses: jdx/mise-action@v2
         with:
-          version: 10.12.4
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+          install: true
+      - name: Resolve pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - name: Cache pnpm store
+        uses: actions/cache@v4
         with:
-          node-version: "22"
-          cache: "pnpm"
-
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
       - name: Install dependencies
-        run: pnpm install
-
+        run: mise run setup
       - name: Lint
-        run: pnpm lint
-
+        run: mise run lint
       - name: Test
-        run: pnpm test
-
+        run: mise run test
       - name: Build package
-        run: pnpm build
+        run: mise run build
 
       - name: Publish to npm
         run: pnpm publish --access public --no-git-checks
