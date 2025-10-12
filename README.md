@@ -16,7 +16,7 @@
 Lightweight, zero-dependency toolkit for building `isFoo` style type guards in TypeScript.
 Runtime-safe 🛡️, composable 🧩, and ergonomic ✨.
 
-[👉 See full document](https://is-kit-docs.vercel.app/)
+[📚 full documentation](https://is-kit-docs.vercel.app/)
 
 ## Why?
 
@@ -60,32 +60,55 @@ Build `is` functions from tiny, composable pieces:
 ```ts
 import {
   define,
-  predicateToRefine,
   and,
   or,
   not,
-  isString,
+  struct,
+  oneOfValues,
+  optional,
   isNumber,
+  isString,
+  predicateToRefine,
 } from 'is-kit';
 
-// 1. define small pieces
-const isShortString = define<string>(
-  (value) => isString(value) && value.length <= 3
+// Define small guards
+const isShortString = define<string>((v) => isString(v) && v.length <= 3);
+const isPositive = and(
+  isNumber,
+  predicateToRefine<number>((v) => v > 0)
 );
-const isPositive = predicateToRefine<number>((num) => num > 0);
 
-// 2. compose them
-const isPositiveNumber = and(isNumber, isPositive);
-const shortOrPositive = or(isShortString, isPositiveNumber);
-const isOther = not(shortOrPositive);
+// Combine them (or / not)
+const isShortOrPositive = or(isShortString, isPositive);
+const isOther = not(isShortOrPositive);
 
-// 3. use them
-shortOrPositive('foo'); // true
-shortOrPositive(42); // true
-isOther(false); // true
+// Define object shapes
+const isRole = oneOfValues(['admin', 'member'] as const);
+const isUser = struct({
+  id: isPositive, // number > 0
+  name: isString, // string
+  role: isRole, // 'admin' | 'member'
+  nickname: optional(isShortString), // string <= 3 | undefined
+});
+
+// Use them
+isPositive(3); // true
+isShortOrPositive('foo'); // true
+isShortOrPositive(false); // false
+isOther('x'); // true
+
+const maybeUser: unknown = { id: 7, name: 'Rin', role: 'admin' };
+if (isUser(maybeUser)) {
+  // The type is narrowed inside this block
+  maybeUser.role; // 'admin' | 'member'
+  maybeUser.nickname?.toUpperCase();
+}
 ```
 
-These primitives plug into higher-level combinators like `struct` when you need to shape objects.
+Composed guards stay reusable:
+`isPositive` can be used standalone or as part of a `struct` definition.
+
+When validating complex shapes, reach for `struct` — and friends like `arrayOf`, `recordOf`, or `oneOf`.
 
 ## Core Ideas
 
@@ -96,9 +119,9 @@ These primitives plug into higher-level combinators like `struct` when you need 
 
 ## API Reference
 
-[👉 See full document](https://is-kit-docs.vercel.app/)
+For full API details and runnable examples, visit
 
-👉 See the docs app under `docs/` (API Reference section). Each helper is documented with runnable examples.
+[📚 See full document](https://is-kit-docs.vercel.app/)
 
 ## Development
 
