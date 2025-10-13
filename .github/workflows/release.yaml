@@ -15,13 +15,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Setup Node (for npm auth)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+          always-auth: true
+
       - name: Setup mise
         uses: jdx/mise-action@v2
         with:
           install: true
+
       - name: Resolve pnpm store path
         id: pnpm-store
         run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
       - name: Cache pnpm store
         uses: actions/cache@v4
         with:
@@ -29,19 +39,33 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
+
       - name: Install dependencies
         run: mise run setup
+
       - name: Lint
         run: mise run lint
+
       - name: Test
         run: mise run test
+
       - name: Build package
         run: mise run build
 
+      - name: Verify tag matches package.json version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "$PKG_VERSION" ]; then
+            echo "Tag v$TAG does not match package.json version $PKG_VERSION"
+            exit 1
+          fi
+
       - name: Publish to npm
-        run: pnpm publish --access public --no-git-checks
+        run: pnpm publish --access public --no-git-checks --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
 
       - name: Publish to JSR
         run: npx jsr publish --allow-slow-types --allow-dirty
