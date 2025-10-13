@@ -30,7 +30,7 @@ export const isObject = define<Record<PropertyKey, unknown>>(
 export const isPlainObject = define<Record<string, unknown>>((value) => {
   if (!isObject(value)) return false;
   const proto = Object.getPrototypeOf(value);
-  return proto === Object.prototype || proto === null;
+  return proto === null || Object.getPrototypeOf(proto) === null;
 });
 
 /**
