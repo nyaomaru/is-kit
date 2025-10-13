@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { SiteNav } from '@/components/site-nav';
+import { SiteNav } from '@/components/navigation/site-nav';
 
 type SidebarItem = {
   /** Destination path for the sidebar entry. */

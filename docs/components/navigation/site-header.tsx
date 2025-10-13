@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Heading } from '@/components/ui/heading';
 import { DOCS_TOGGLE_SIDEBAR_EVENT } from '@/lib/events';
-import { SiteNav } from '@/components/site-nav';
+import { SiteNav } from '@/components/navigation/site-nav';
 
 export function SiteHeader() {
   const handleToggle = () => {

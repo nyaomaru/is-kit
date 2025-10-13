@@ -1,5 +1,5 @@
-import { ApiReferencePager } from '@/components/api-reference-pager';
-import { CodeBlock } from '@/components/code-block';
+import { ApiReferencePager } from '@/components/api-reference/pager';
+import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';

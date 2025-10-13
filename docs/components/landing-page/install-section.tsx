@@ -1,6 +1,6 @@
 'use client';
 
-import { CodeTabs } from '@/components/code-tabs';
+import { CodeTabs } from '@/components/code/code-tabs';
 import { installTabs, installCode } from '@/lib/docs';
 
 export type InstallSectionProps = {
