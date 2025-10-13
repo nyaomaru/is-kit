@@ -1,8 +1,8 @@
-import { HeroSection } from '@/components/sections/hero-section';
-import { FeaturesSection } from '@/components/sections/features-section';
-import { APIReferencePreview } from '@/components/sections/api-reference-preview';
-import { InstallSection } from '@/components/sections/install-section';
-import { UsageSection } from '@/components/sections/usage-section';
+import { HeroSection } from '@/components/landing-page/hero-section';
+import { FeaturesSection } from '@/components/landing-page/features-section';
+import { APIReferencePreview } from '@/components/api-reference/preview';
+import { InstallSection } from '@/components/landing-page/install-section';
+import { UsageSection } from '@/components/landing-page/usage-section';
 import { Heading } from '@/components/ui/heading';
 import { getDictionary } from '@/lib/dictionaries';
 import {

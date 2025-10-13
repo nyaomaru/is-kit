@@ -1,9 +1,9 @@
 'use client';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
-import { FeatureCard } from '@/components/feature-card';
-import { Tabs } from '@/components/tabs';
-import { Typewriter } from '@/components/typewriter';
+import { FeatureCard } from '@/components/landing-page/feature-card';
+import { Tabs } from '@/components/ui/tabs';
+import { Typewriter } from '@/components/landing-page/typewriter';
 import {
   FEATURES_DEFAULT_AUTO_ADVANCE_MS,
   FEATURES_TAB_CONTENT_MIN_H_CLASS,

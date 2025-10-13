@@ -1,8 +1,8 @@
 'use client';
 
-import { Tabs } from '@/components/tabs';
-import { CodeBlock } from '@/components/code-block';
-import { CopyButton } from '@/components/copy-button';
+import { Tabs } from '@/components/ui/tabs';
+import { CodeBlock } from '@/components/code/code-block';
+import { CopyButton } from '@/components/code/copy-button';
 import { cn } from '@/lib/utils';
 
 type CopyButtonOptions = {

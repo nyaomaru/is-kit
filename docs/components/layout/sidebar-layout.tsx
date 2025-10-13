@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { Sidebar, type SidebarSection } from '@/components/sidebar';
+import { Sidebar, type SidebarSection } from '@/components/navigation/sidebar';
 import {
   DOCS_TOGGLE_SIDEBAR_EVENT,
   type ToggleSidebarEvent,

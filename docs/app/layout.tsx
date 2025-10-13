@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Source_Sans_3 } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
-import { SiteHeader } from '@/components/site-header';
+import { SiteHeader } from '@/components/navigation/site-header';
 import { SidebarLayout } from '@/components/layout/sidebar-layout';
 import { apiSections } from '@/constants/api-sections';
 

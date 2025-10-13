@@ -1,4 +1,4 @@
-import type { SidebarSection } from '@/components/sidebar';
+import type { SidebarSection } from '@/components/navigation/sidebar';
 
 export const apiSections: SidebarSection[] = [
   {
