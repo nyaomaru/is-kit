@@ -49,6 +49,9 @@ jobs:
         run: |
           NEW_VERSION=$(pnpm version ${{ inputs.release_type }} --no-git-tag-version | awk '{print $NF}')
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+          tmp_file=$(mktemp)
+          jq --arg version "$NEW_VERSION" '.version = $version' jsr.json > "$tmp_file"
+          mv "$tmp_file" jsr.json
 
       - name: Create new branch
         run: git checkout -b "release/${{ env.new_version }}"
@@ -65,7 +68,7 @@ jobs:
 
       - name: Commit & Push changes
         run: |
-          git add package.json pnpm-lock.yaml || true
+          git add package.json pnpm-lock.yaml jsr.json || true
           if ! git diff --cached --quiet; then
             git commit -m "chore(release): bump version to ${{ env.new_version }}"
           else
