@@ -83,35 +83,35 @@ export const isSet = define<Set<unknown>>(
  *
  * @returns Predicate narrowing to `PromiseLike<unknown>`.
  */
-export const isPromiseLike = define<PromiseLike<unknown>>(
-  (value) =>
-    !!value && typeof (value as Record<string, unknown>).then === 'function'
-);
+export const isPromiseLike = define<PromiseLike<unknown>>((value) => {
+  if (!isObject(value) && !isFunction(value)) return false;
+  return typeof (value as Record<string, unknown>).then === 'function';
+});
 
 /**
  * Checks whether a value implements the `Iterable` protocol.
  *
  * @returns Predicate narrowing to `Iterable<unknown>`.
  */
-export const isIterable = define<Iterable<unknown>>(
-  (value) =>
-    !!value &&
-    typeof value === 'object' &&
+export const isIterable = define<Iterable<unknown>>((value) => {
+  if (!isObject(value) && !isFunction(value)) return false;
+  return (
     typeof (value as Record<symbol, unknown>)[Symbol.iterator] === 'function'
-);
+  );
+});
 
 /**
  * Checks whether a value implements the `AsyncIterable` protocol.
  *
  * @returns Predicate narrowing to `AsyncIterable<unknown>`.
  */
-export const isAsyncIterable = define<AsyncIterable<unknown>>(
-  (value) =>
-    !!value &&
-    typeof value === 'object' &&
+export const isAsyncIterable = define<AsyncIterable<unknown>>((value) => {
+  if (!isObject(value) && !isFunction(value)) return false;
+  return (
     typeof (value as Record<symbol, unknown>)[Symbol.asyncIterator] ===
-      'function'
-);
+    'function'
+  );
+});
 
 /**
  * Checks whether a value is an `ArrayBuffer`.
