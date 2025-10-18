@@ -48,9 +48,10 @@ jobs:
         id: version
         run: |
           NEW_VERSION=$(pnpm version ${{ inputs.release_type }} --no-git-tag-version | awk '{print $NF}')
-          echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+          version_no_v=${NEW_VERSION#v}
+          echo "new_version=$version_no_v" >> $GITHUB_ENV
           tmp_file=$(mktemp)
-          jq --arg version "$NEW_VERSION" '.version = $version' jsr.json > "$tmp_file"
+          jq --arg version "$version_no_v" '.version = $version' jsr.json > "$tmp_file"
           mv "$tmp_file" jsr.json
 
       - name: Create new branch
