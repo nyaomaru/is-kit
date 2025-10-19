@@ -1,3 +1,5 @@
+import { define, isString, struct } from 'is-kit';
+
 export type ApiItem = { href: string; title: string; description: string };
 
 export const API_ITEMS: ApiItem[] = [
@@ -73,6 +75,14 @@ export const API_ITEMS: ApiItem[] = [
   },
 ];
 
+const isApiItemStruct = struct({
+  href: isString,
+  title: isString,
+  description: isString,
+});
+
+const isApiItem = define<ApiItem>(isApiItemStruct);
+
 export const FEATURED_API_HREFS: readonly string[] = [
   '/api-reference/define',
   '/api-reference/combinators/struct',
@@ -84,4 +94,4 @@ export const FEATURED_API_HREFS: readonly string[] = [
 
 export const FEATURED_API_ITEMS: ApiItem[] = FEATURED_API_HREFS.map((href) =>
   API_ITEMS.find((it) => it.href === href)
-).filter((x): x is ApiItem => Boolean(x));
+).filter(isApiItem);
