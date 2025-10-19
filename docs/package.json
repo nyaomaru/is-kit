@@ -5,7 +5,7 @@
   "description": "Documentation site for is-kit (Next.js + shadcn)",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm --workspace-root run build && next build",
     "start": "next start",
     "lint": "eslint .",
     "shadcn:init": "pnpm dlx shadcn@latest init",

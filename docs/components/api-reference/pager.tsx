@@ -17,8 +17,9 @@ type Item = {
 
 function flatten(sections = apiSections): Item[] {
   const out: Item[] = [];
-  for (const s of sections) {
-    for (const it of s.items) out.push({ href: it.href, label: it.label });
+  for (const section of sections) {
+    for (const item of section.items)
+      out.push({ href: item.href, label: item.label });
   }
   return out;
 }
@@ -38,10 +39,7 @@ export function ApiReferencePager({
   const next = idx >= 0 ? list[idx + 1] : undefined;
 
   return (
-    <nav
-      aria-label='API pager'
-      className={cn('mt-1', className)}
-    >
+    <nav aria-label='API pager' className={cn('mt-1', className)}>
       <div className='grid grid-cols-1 gap-4 md:grid-cols-3 items-stretch w-full'>
         <Link
           href='/api-reference'
