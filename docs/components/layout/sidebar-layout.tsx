@@ -33,25 +33,18 @@ export function SidebarLayout({
   const [open, setOpen] = useState(() =>
     isMobileViewport() ? false : computedDefaultOpen
   );
-  const [showDivider, setShowDivider] = useState(() =>
-    isMobileViewport() ? false : computedDefaultOpen
-  );
-
   useEffect(() => {
     if (isMobileViewport()) {
       setOpen(false);
-      setShowDivider(false);
       return;
     }
 
     setOpen(computedDefaultOpen);
-    setShowDivider(computedDefaultOpen);
   }, [computedDefaultOpen]);
 
   useEffect(() => {
     if (!isMobileViewport()) return;
     setOpen(false);
-    setShowDivider(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -60,10 +53,6 @@ export function SidebarLayout({
     window.addEventListener(DOCS_TOGGLE_SIDEBAR_EVENT, handler);
     return () => window.removeEventListener(DOCS_TOGGLE_SIDEBAR_EVENT, handler);
   }, []);
-
-  useEffect(() => {
-    setShowDivider(open);
-  }, [open]);
 
   useEffect(() => {
     if (!isMobileViewport() || !open) return;
@@ -101,7 +90,7 @@ export function SidebarLayout({
       <div
         className={cn(
           "relative flex-1 min-w-0 overflow-x-hidden md:before:pointer-events-none md:before:absolute md:before:inset-y-0 md:before:left-0 md:before:w-px md:before:bg-border md:before:opacity-0 md:before:transition-opacity md:before:duration-300 md:before:content-['']",
-          showDivider && 'md:ml-40'
+          open && 'md:ml-40'
         )}
       >
         {children}
