@@ -6,6 +6,72 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [1.0.4] - 2025-10-25
+
+### Changed
+
+- JSR version bump (#31)
+- combinator: moved key check to front of guard declaration (#36)
+
+### Docs
+
+- Removed unnecessary useEffect (#32)
+- Removed unused next-themes (#37)
+
+### Chore
+
+- Updated logo image (#35)
+- Updated dependency typescript to v5.9.3 (#34)
+- Updated dependency typedoc to v0.28.14 (#33)
+
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.4
+
+---
+
+## [1.0.3] - 2025-10-18
+
+### Fixed
+
+- Fixed npm registry error (#28)
+
+### Changed
+
+- Reused `isObject` and `isFunction` (#29)
+
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.3
+
+---
+
+## [1.0.2] - 2025-10-13
+
+### Changed
+
+- Support cross-realm plain objects by @nyaomaru in (#26)
+
+### Docs
+
+- Page layout issue (#16)
+- API description (#17)
+- Components directory (#25)
+- Removed Japanese translation page (#20)
+- Updated is-kit sample (#19)
+
+### Chore
+
+- Fixed release workflow for pnpm version (#14)
+- Updated CHANGELOG (#15)
+- Updated README (#21)
+- Used mise in CI (#22)
+- Updated dependency ts-jest to v29.4.5 (#24)
+- Updated dependency @types/react to v18.3.26 (#23)
+
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.2
+
+---
+
 ## [1.0.1] - 2025-10-07
 
 ### Docs
