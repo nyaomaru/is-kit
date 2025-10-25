@@ -18,8 +18,9 @@ export function struct<S extends Schema>(
     const obj = input as Record<string, unknown>;
 
     for (const key of Object.keys(schema)) {
-      const guard = schema[key]!;
       if (!(key in obj)) return false;
+
+      const guard = schema[key]!;
       if (!guard(obj[key])) return false;
     }
 
