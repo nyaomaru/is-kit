@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Source_Sans_3 } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from 'next-themes';
 import { SiteHeader } from '@/components/navigation/site-header';
 import { SidebarLayout } from '@/components/layout/sidebar-layout';
 import { apiSections } from '@/constants/api-sections';
@@ -49,14 +48,12 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning className={sourceSans3.variable}>
       <body className='antialiased'>
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <SiteHeader />
-          <SidebarLayout sections={apiSections}>
-            <main className='w-full max-w-full overflow-x-hidden pt-14'>
-              {children}
-            </main>
-          </SidebarLayout>
-        </ThemeProvider>
+        <SiteHeader />
+        <SidebarLayout sections={apiSections}>
+          <main className='w-full max-w-full overflow-x-hidden pt-14'>
+            {children}
+          </main>
+        </SidebarLayout>
       </body>
     </html>
   );
