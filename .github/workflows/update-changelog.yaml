@@ -1,0 +1,21 @@
+name: Auto Changelog
+
+on:
+    workflow_dispatch:
+    push:
+        tags:
+            - "v*"
+
+jobs:
+    changelog:
+        uses: nyaomaru/changelog-bot/.github/workflows/changelog.yaml@main
+        with:
+            changelog_path: CHANGELOG.md
+            provider: openai
+            release_tag: ${{ github.ref_name }}
+            release_name: ${{ github.ref_name }}
+            dry_run: "false"
+        secrets:
+            REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
