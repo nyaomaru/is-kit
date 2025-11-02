@@ -6,6 +6,31 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.0.5] - 2025-11-02
+
+### Fixed
+
+- remove anthropic api key setting (#42)
+
+### Changed
+
+- args type definition (#43)
+
+### Chore
+
+- Merge pull request #43 from nyaomaru/refactor/args-type (#43)
+- Merge pull request #41 from nyaomaru/renovate/lucide-monorepo (#41)
+- Update dependency lucide-react to ^0.552.0 (#41)
+- Merge pull request #40 from nyaomaru/renovate/jest-monorepo (#40)
+- Merge pull request #42 from nyaomaru/chore/update-changelog-workflow (#42)
+- update CHANGELOG workflow (#42)
+- Update dependency jest to v30.2.0 (#40)
+- Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
+- update CHANGELOG (#39)
+
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.5...HEAD
+[v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
+
 ## [1.0.4] - 2025-10-25
 
 ### Changed
