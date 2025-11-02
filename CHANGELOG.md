@@ -7,13 +7,17 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 ---
 
 ## [v1.0.5] - 2025-11-02
+
 ### Fixed
+
 - remove anthropic api key setting (#42)
 
 ### Changed
+
 - args type definition (#43)
 
 ### Chore
+
 - Merge pull request #43 from nyaomaru/refactor/args-type (#43)
 - Merge pull request #41 from nyaomaru/renovate/lucide-monorepo (#41)
 - Update dependency lucide-react to ^0.552.0 (#41)
@@ -24,6 +28,7 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.5...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
@@ -44,7 +49,7 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 - Updated dependency typescript to v5.9.3 (#34)
 - Updated dependency typedoc to v0.28.14 (#33)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.5...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...HEAD
 [1.0.4]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.4
 
 ---
