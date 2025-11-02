@@ -25,9 +25,7 @@ export function equalsBy<F extends (value: unknown) => value is unknown>(
   guard: F
 ): <K>(
   selector: (value: GuardedOf<F>) => K
-) => <const T extends K>(
-  target: T
-) => Predicate<GuardedOf<F>>;
+) => <const T extends K>(target: T) => Predicate<GuardedOf<F>>;
 export function equalsBy<F extends (value: unknown) => value is unknown, K>(
   guard: F,
   selector: (value: GuardedOf<F>) => K
