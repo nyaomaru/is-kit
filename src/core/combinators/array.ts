@@ -6,7 +6,7 @@ import type { GuardedOf, Predicate } from '@/types';
  * @param elementGuard Guard applied to each array element.
  * @returns Predicate narrowing to a readonly array of the guarded element type.
  */
-export function arrayOf<F extends (value: unknown) => value is unknown>(
+export function arrayOf<F extends Predicate<unknown>>(
   elementGuard: F
 ): Predicate<readonly GuardedOf<F>[]> {
   return function (input: unknown): input is readonly GuardedOf<F>[] {

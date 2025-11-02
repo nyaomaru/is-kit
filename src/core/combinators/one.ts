@@ -6,10 +6,10 @@ import type { GuardedOf, GuardedWithin, Predicate } from '@/types';
  * @param guards One or more type guards/refinements to try.
  * @returns Predicate that narrows to the union of guarded types.
  */
-export function oneOf<
-  Fs extends readonly ((value: unknown) => value is unknown)[],
->(...guards: Fs): Predicate<GuardedOf<Fs[number]>>;
-export function oneOf<A, Fs extends readonly ((value: A) => value is A)[]>(
+export function oneOf<Fs extends readonly Predicate<unknown>[]>(
+  ...guards: Fs
+): Predicate<GuardedOf<Fs[number]>>;
+export function oneOf<A, Fs extends readonly Predicate<A>[]>(
   ...guards: Fs
 ): (input: A) => input is GuardedWithin<Fs, A>;
 export function oneOf(

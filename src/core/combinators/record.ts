@@ -9,8 +9,8 @@ import { isPlainObject } from '../object';
  * @returns Predicate narrowing to a readonly record with guarded key/value types.
  */
 export function recordOf<
-  KF extends (value: unknown) => value is string,
-  VF extends (value: unknown) => value is unknown,
+  KF extends Predicate<string>,
+  VF extends Predicate<unknown>,
 >(
   keyFunction: KF,
   valueFunction: VF
