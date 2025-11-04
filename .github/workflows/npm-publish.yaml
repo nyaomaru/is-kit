@@ -2,7 +2,7 @@ name: Publish to npm
 
 on:
   push:
-    tags: ["v*.*.*"]
+    tags: ['v*.*.*']
 
 permissions:
   id-token: write
@@ -19,8 +19,8 @@ jobs:
       - name: Setup Node (for npm auth)
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          registry-url: "https://registry.npmjs.org"
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
           always-auth: true
 
       - name: Setup mise
@@ -66,6 +66,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-
-      - name: Publish to JSR
-        run: npx jsr publish --allow-slow-types --allow-dirty
