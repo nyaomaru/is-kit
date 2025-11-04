@@ -31,7 +31,7 @@ if (isGuestOrTrial(input)) {
 export default function KeyPage() {
   return (
     <Stack variant="main" className="container mx-auto px-4 py-10" gap="xl">
-      <Stack variant="section" gap="sm">
+      <Stack variant="section" gap="md">
         <Stack gap="xs">
           <Heading variant="h1">key</Heading>
           <Paragraph>
