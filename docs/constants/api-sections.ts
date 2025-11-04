@@ -9,6 +9,7 @@ export const apiSections: SidebarSection[] = [
       { href: '/api-reference/logic', label: 'logic' },
       { href: '/api-reference/parse', label: 'parse' },
       { href: '/api-reference/nullish', label: 'nullish' },
+      { href: '/api-reference/key', label: 'key' },
       { href: '/api-reference/primitive', label: 'primitive' },
       { href: '/api-reference/object', label: 'object' },
       { href: '/api-reference/predicate', label: 'predicate' },
