@@ -7,7 +7,8 @@
     "noEmit": true,
     "baseUrl": "..",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "is-kit": ["src/index.ts"]
     }
   },
   "include": ["./**/*.ts"],

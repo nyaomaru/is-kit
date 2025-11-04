@@ -72,3 +72,18 @@ export function equalsKey<K extends PropertyKey, const T>(
     );
   };
 }
+
+/**
+ * Composes a base guard with a key-equality check and returns a guard that
+ * narrows the key to the provided literal type.
+ *
+ * WHY: `equalsBy` preserves the base type and does not narrow selected fields
+ * to literals. For common cases like narrowing an object's property to a
+ * specific literal, `equalsKeyOf` provides a convenient helper.
+ *
+ * @param guard Base guard for the object type including the key.
+ * @param key Property key to compare.
+ * @returns Builder that accepts a target and returns a guard of the base type
+ * intersected with `{ [key]: target }`.
+ */
+// equalsKeyOf moved to '@/core/key' as `narrowKeyTo` and re-exported there as a deprecated alias.
