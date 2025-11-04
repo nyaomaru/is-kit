@@ -7,3 +7,4 @@ export * from './parse';
 export * from './primitive';
 export * from './combinators';
 export * from './object';
+export * from './key';

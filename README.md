@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    <a href="(https://www.npmjs.com/package/is-kit">
+    <a href="https://www.npmjs.com/package/is-kit">
         <img src="https://img.shields.io/npm/v/is-kit.svg" alt="npm version">
     </a>
     <a href="https://jsr.io/@nyaomaru/is-kit">
@@ -115,7 +115,34 @@ When validating complex shapes, reach for `struct` — and friends like `arrayOf
 - **Define once**: `define<T>(fn)` turns a plain function into a type guard.
 - **Upgrade predicates**: `predicateToRefine(fn)` adds narrowing.
 - **Compose freely**: `and`, `or`, `not`, `oneOf`, `arrayOf`, `struct` …
-- **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`.
+- **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`, `narrowKeyTo`.
+
+### Key Narrowing
+
+`equalsBy` preserves the base type and does not narrow selected fields to literals.
+When you need to narrow a property to a specific literal value, use `narrowKeyTo`.
+
+```ts
+import { narrowKeyTo, or, struct } from 'is-kit';
+
+// Base guard (e.g., via struct)
+type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
+const isUser = struct({
+  id: isString,
+  age: isNumber,
+  role: oneOfValues('admin', 'guest', 'trial'),
+});
+
+const byRole = narrowKeyTo(isUser, 'role');
+const isGuest = byRole('guest'); // Readonly<User> & { role: 'guest' }
+const isTrial = byRole('trial'); // Readonly<User> & { role: 'trial' }
+const isGuestOrTrial = or(isGuest, isTrial);
+
+declare const value: unknown;
+if (isGuestOrTrial(value)) {
+  // value.role is 'guest' | 'trial'
+}
+```
 
 ## API Reference
 
