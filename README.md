@@ -123,10 +123,15 @@ When validating complex shapes, reach for `struct` — and friends like `arrayOf
 When you need to narrow a property to a specific literal value, use `narrowKeyTo`.
 
 ```ts
-import { narrowKeyTo, or } from 'is-kit';
+import { narrowKeyTo, or, struct } from 'is-kit';
 
 // Base guard (e.g., via struct)
 type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
+const isUser = struct({
+  id: isString,
+  age: isNumber,
+  role: oneOfValues('admin', 'guest', 'trial'),
+});
 
 const byRole = narrowKeyTo(isUser, 'role');
 const isGuest = byRole('guest'); // Readonly<User> & { role: 'guest' }
