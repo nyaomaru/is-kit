@@ -29,6 +29,11 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Nullability helpers: nullable, optional, required, nonNull.',
   },
   {
+    href: '/api-reference/key',
+    title: 'key',
+    description: 'Key helpers for literal narrowing (narrowKeyTo).',
+  },
+  {
     href: '/api-reference/primitive',
     title: 'primitive',
     description: 'Primitive guards: string, number, boolean, etc.',
