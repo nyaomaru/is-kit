@@ -10,7 +10,7 @@ NODE_ENV = "development"
 # Tool versions to match local dev and CI
 [tools]
 node = "22"
-pnpm = "10.12.4"
+pnpm = "10.22.0"
 
 [tasks.dev]
 description = "Run dev server"
