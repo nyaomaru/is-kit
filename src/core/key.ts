@@ -29,7 +29,7 @@ export function narrowKeyTo<
   // - When base type A and key K are known, enforce T extends A[K] for precise literal narrowing.
   // - For generic guards, accept F extends Predicate<Record<K, unknown>> and return GuardedOf<F> & Record<K, T>.
   //   This keeps the API usable with inferred/anonymous guards.
-  // Use equalsKey for Object.is semantics and own-property presence; wrap with define to produce a typed Predicate.
+  // Use equalsKey for Object.is semantics and own-property presence; wrap with define to coerce the result to boolean for consistent guard behavior (as documented in define), not just to produce a typed Predicate.
   return function <const T>(target: T) {
     const keyEquals = equalsKey(key, target);
     return define<GuardedOf<F> & Record<K, T>>(function (input: unknown) {
