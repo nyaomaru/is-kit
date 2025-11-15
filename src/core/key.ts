@@ -1,5 +1,6 @@
 import type { Guard, GuardedOf, Predicate } from '@/types';
 import { equalsKey } from './equals';
+import { define } from './define';
 
 /**
  * Builds a guard that narrows a specific key to the provided literal value.
@@ -24,10 +25,15 @@ export function narrowKeyTo<
   guard: F,
   key: K
 ): <const T>(target: T) => Predicate<GuardedOf<F> & Record<K, T>> {
+  // WHY: Provide two overloads to balance type safety and flexibility.
+  // - When base type A and key K are known, enforce T extends A[K] for precise literal narrowing.
+  // - For generic guards, accept F extends Predicate<Record<K, unknown>> and return GuardedOf<F> & Record<K, T>.
+  //   This keeps the API usable with inferred/anonymous guards.
+  // Use equalsKey for Object.is semantics and own-property presence; wrap with define to produce a typed Predicate.
   return function <const T>(target: T) {
     const keyEquals = equalsKey(key, target);
-    return function (input: unknown): input is GuardedOf<F> & Record<K, T> {
+    return define<GuardedOf<F> & Record<K, T>>(function (input: unknown) {
       return guard(input) && keyEquals(input as Record<K, unknown>);
-    };
+    });
   };
 }
