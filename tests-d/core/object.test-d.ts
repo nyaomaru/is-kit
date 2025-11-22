@@ -9,6 +9,8 @@ import {
   isRegExp,
   isMap,
   isSet,
+  isWeakMap,
+  isWeakSet,
   isPromiseLike,
   isIterable,
   isAsyncIterable,
@@ -31,6 +33,8 @@ expectType<Predicate<Date>>(isDate);
 expectType<Predicate<RegExp>>(isRegExp);
 expectType<Predicate<Map<unknown, unknown>>>(isMap);
 expectType<Predicate<Set<unknown>>>(isSet);
+expectType<Predicate<WeakMap<object, unknown>>>(isWeakMap);
+expectType<Predicate<WeakSet<object>>>(isWeakSet);
 expectType<Predicate<PromiseLike<unknown>>>(isPromiseLike);
 expectType<Predicate<Iterable<unknown>>>(isIterable);
 expectType<Predicate<AsyncIterable<unknown>>>(isAsyncIterable);
@@ -40,4 +44,3 @@ expectType<Predicate<ArrayBufferView>>(isTypedArray);
 expectType<Predicate<Error>>(isError);
 expectType<Predicate<URL>>(isURL);
 expectType<Predicate<Blob>>(isBlob);
-

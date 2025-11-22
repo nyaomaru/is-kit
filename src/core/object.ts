@@ -79,6 +79,24 @@ export const isSet = define<Set<unknown>>(
 );
 
 /**
+ * Checks whether a value is a `WeakMap`.
+ *
+ * @returns Predicate narrowing to `WeakMap<object, unknown>`.
+ */
+export const isWeakMap = define<WeakMap<object, unknown>>(
+  (value) => getTag(value) === '[object WeakMap]'
+);
+
+/**
+ * Checks whether a value is a `WeakSet`.
+ *
+ * @returns Predicate narrowing to `WeakSet<object>`.
+ */
+export const isWeakSet = define<WeakSet<object>>(
+  (value) => getTag(value) === '[object WeakSet]'
+);
+
+/**
  * Checks whether a value is promise-like (has a `then` function).
  *
  * @returns Predicate narrowing to `PromiseLike<unknown>`.
