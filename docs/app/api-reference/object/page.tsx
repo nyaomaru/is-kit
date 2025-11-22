@@ -13,6 +13,8 @@ const sample = `import {
   isRegExp,
   isMap,
   isSet,
+  isWeakMap,
+  isWeakSet,
   isPromiseLike,
   isIterable,
   isAsyncIterable,
@@ -35,6 +37,8 @@ isPlainObject(Object.create(null)); // true
 isArray([]); // true
 isMap(new Map()); // true
 isSet(new Set()); // true
+isWeakMap(new WeakMap()); // true
+isWeakSet(new WeakSet()); // true
 
 // Date / RegExp
 isDate(new Date()); // true

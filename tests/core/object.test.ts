@@ -7,6 +7,8 @@ import {
   isRegExp,
   isMap,
   isSet,
+  isWeakMap,
+  isWeakSet,
   isPromiseLike,
   isIterable,
   isAsyncIterable,
@@ -44,6 +46,8 @@ describe('core/object guards', () => {
     expect(isRegExp(/a/)).toBe(true);
     expect(isMap(new Map())).toBe(true);
     expect(isSet(new Set())).toBe(true);
+    expect(isWeakMap(new WeakMap())).toBe(true);
+    expect(isWeakSet(new WeakSet())).toBe(true);
 
     const pLike = { then: () => {} };
     expect(isPromiseLike(pLike)).toBe(true);
@@ -77,4 +81,3 @@ describe('core/object guards', () => {
     expect(isBlob(b)).toBe(true);
   });
 });
-
