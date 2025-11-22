@@ -6,6 +6,36 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [vv1.1.2] - 2025-11-22
+
+### Added
+
+- isWeakMap and isWeakSet by @nyaomaru in [#61](https://github.com/nyaomaru/is-kit/pull/61)
+
+### Fixed
+
+- changelog workflow permission error by @nyaomaru in [#58](https://github.com/nyaomaru/is-kit/pull/58)
+
+### Chore
+
+- Release: 1.1.1 by [bot] by @github-actions in [#57](https://github.com/nyaomaru/is-kit/pull/57)
+- Update dependency autoprefixer to v10.4.22 by [bot] by @renovate in [#59](https://github.com/nyaomaru/is-kit/pull/59)
+- Update dependency tsup to v8.5.1 by [bot] by @renovate in [#60](https://github.com/nyaomaru/is-kit/pull/60)
+- Release: 1.1.2 by [bot] by @github-actions in [#62](https://github.com/nyaomaru/is-kit/pull/62)
+
+### What's New 🚀
+
+Add `isWeakMap` and `isWeakSet`!
+
+```ts
+isWeakMap(new WeakMap()); // true
+isWeakSet(new WeakSet()); // true
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.1...v1.1.2
+
+[vv1.1.2]: https://github.com/nyaomaru/is-kit/compare/v1.1.1...v1.1.2
+
 ## [v1.0.5] - 2025-11-02
 
 ### Fixed
@@ -28,7 +58,7 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.5...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
