@@ -6,6 +6,110 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.2] - 2025-11-22
+
+### Added
+
+- isWeakMap and isWeakSet by @nyaomaru in [#61](https://github.com/nyaomaru/is-kit/pull/61)
+
+### Fixed
+
+- changelog workflow permission error by @nyaomaru in [#58](https://github.com/nyaomaru/is-kit/pull/58)
+
+### Chore
+
+- Release: 1.1.1 by [bot] by @github-actions in [#57](https://github.com/nyaomaru/is-kit/pull/57)
+- Update dependency autoprefixer to v10.4.22 by [bot] by @renovate in [#59](https://github.com/nyaomaru/is-kit/pull/59)
+- Update dependency tsup to v8.5.1 by [bot] by @renovate in [#60](https://github.com/nyaomaru/is-kit/pull/60)
+- Release: 1.1.2 by [bot] by @github-actions in [#62](https://github.com/nyaomaru/is-kit/pull/62)
+
+### What's New 🚀
+
+Add `isWeakMap` and `isWeakSet`!
+
+```ts
+isWeakMap(new WeakMap()); // true
+isWeakSet(new WeakSet()); // true
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.1...v1.1.2
+
+[v1.1.2]: https://github.com/nyaomaru/is-kit/compare/v1.1.1...v1.1.2
+
+## [v1.1.1] - 2025-11-15
+
+### Changed
+
+- use define and add comment by @nyaomaru in [#55](https://github.com/nyaomaru/is-kit/pull/55)
+
+### Chore
+
+- Update dependency /react-label to v2.1.8 by @renovate[bot] by @radix-ui in [#53](https://github.com/nyaomaru/is-kit/pull/53)
+- Update dependency lucide-react to ^0.553.0 by [bot] by @renovate in [#54](https://github.com/nyaomaru/is-kit/pull/54)
+- Update pnpm to v10.22.0 by [bot] by @renovate in [#48](https://github.com/nyaomaru/is-kit/pull/48)
+- Update eslint monorepo to v9.39.1 by [bot] by @renovate in [#47](https://github.com/nyaomaru/is-kit/pull/47)
+- update README badge by @nyaomaru in [#56](https://github.com/nyaomaru/is-kit/pull/56)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.0...v1.1.1
+
+[v1.1.1]: https://github.com/nyaomaru/is-kit/compare/v1.1.0...v1.1.1
+
+## [v1.1.0] - 2025-11-04
+
+### Added
+
+- add narrowKeyTo for key literal narrowing by @nyaomaru in [#49](https://github.com/nyaomaru/is-kit/pull/49)
+- narrow key description by @nyaomaru in [#50](https://github.com/nyaomaru/is-kit/pull/50)
+
+### Fixed
+
+- update changelog workflow by @nyaomaru in [#45](https://github.com/nyaomaru/is-kit/pull/45)
+- release workflow by @nyaomaru in [#52](https://github.com/nyaomaru/is-kit/pull/52)
+
+### Chore
+
+- Release: 1.0.5 by [bot] by @github-actions in [#44](https://github.com/nyaomaru/is-kit/pull/44)
+- changelog v1.0.5 by @nyaomaru in [#46](https://github.com/nyaomaru/is-kit/pull/46)
+- Release: 1.1.0 by [bot] by @github-actions in [#51](https://github.com/nyaomaru/is-kit/pull/51)
+
+### What's new 🚀
+
+- Add `narrowKeyTo` for key literal narrowing ✨ in [#49](https://github.com/nyaomaru/is-kit/pull/49)
+  - `equalsBy` preserves the base type and doesn’t narrow selected fields to literals, leading to confusion and
+    boilerplate type predicates.
+  - `narrowKeyTo` provides a small, composable helper aligned with is-kit’s ergonomics for property-based
+    literal narrowing.
+
+### Example
+
+```ts
+type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
+
+const isUser = struct({
+  id: isString,
+  age: isNumber,
+  role: oneOfValues('admin', 'guest', 'trial'),
+});
+
+// Build role-specific guards that also narrow the 'role' field to literals
+const byRole = narrowKeyTo(isUser, 'role');
+const isAdmin = byRole('admin'); // Readonly<User> & { role: 'admin' }
+const isGuest = byRole('guest'); // Readonly<User> & { role: 'guest' }
+const isTrial = byRole('trial'); // Readonly<User> & { role: 'trial' }
+
+// Compose as usual
+const isGuestOrTrial = or(isGuest, isTrial);
+
+declare const input: unknown;
+if (isGuestOrTrial(input)) {
+  // input.role is narrowed to 'guest' | 'trial'
+}
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.0.5...v1.1.0
+
+[v1.1.0]: https://github.com/nyaomaru/is-kit/compare/v1.0.5...v1.1.0
+
 ## [v1.0.5] - 2025-11-02
 
 ### Fixed
