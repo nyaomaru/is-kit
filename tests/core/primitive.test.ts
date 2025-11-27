@@ -69,7 +69,6 @@ describe('primitive guards', () => {
     // symbol
     // undefined
     // null
-    // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
     const values = [
       'a',
       1,
