@@ -1,4 +1,4 @@
-import { and } from './logic';
+import { and, or } from './logic';
 import { predicateToRefine } from './predicate';
 import { define } from './define';
 
@@ -62,3 +62,21 @@ export const isUndefined = define<undefined>((value) => value === undefined);
  * @returns Predicate narrowing to `null`.
  */
 export const isNull = define<null>((value) => value === null);
+
+/**
+ * Checks whether a value is a JavaScript primitive.
+ *
+ * Primitives: string, number, boolean, bigint, symbol, undefined, null.
+ * Note: `number` here includes NaN and ±Infinity (use `isNumber` for finite only).
+ *
+ * @returns Predicate narrowing to `Primitive`.
+ */
+export const isPrimitive = or(
+  isString,
+  isNumberPrimitive,
+  isBoolean,
+  isBigInt,
+  isSymbol,
+  isUndefined,
+  isNull
+);

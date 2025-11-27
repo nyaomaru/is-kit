@@ -8,6 +8,7 @@ import {
   isSymbol,
   isUndefined,
   isNull,
+  isPrimitive,
 } from '../../src/core/primitive';
 
 describe('primitive guards', () => {
@@ -57,5 +58,44 @@ describe('primitive guards', () => {
   it('isNull', () => {
     expect(isNull(null)).toBe(true);
     expect(isNull(undefined as unknown)).toBe(false);
+  });
+
+  it('isPrimitive', () => {
+    // true cases
+    // string
+    // number (including NaN / Infinity)
+    // boolean
+    // bigint
+    // symbol
+    // undefined
+    // null
+    const values = [
+      'a',
+      1,
+      NaN,
+      Infinity,
+      true,
+      1n,
+      Symbol('s'),
+      undefined,
+      null,
+    ];
+    for (const v of values) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      expect((isPrimitive as any)(v)).toBe(true);
+    }
+
+    // false cases (objects / functions)
+    expect(isPrimitive({} as unknown)).toBe(false);
+    expect(isPrimitive([] as unknown)).toBe(false);
+    expect(isPrimitive(new Date() as unknown)).toBe(false);
+    expect(isPrimitive(function () {} as unknown)).toBe(false);
+    // wrapper objects should be false
+    // eslint-disable-next-line no-new-wrappers
+    expect(isPrimitive(new Number(1) as unknown)).toBe(false);
+    // eslint-disable-next-line no-new-wrappers
+    expect(isPrimitive(new String('a') as unknown)).toBe(false);
+    // eslint-disable-next-line no-new-wrappers
+    expect(isPrimitive(new Boolean(true) as unknown)).toBe(false);
   });
 });

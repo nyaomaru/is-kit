@@ -116,6 +116,19 @@ Composed guards stay reusable:
 
 When validating complex shapes, reach for `struct` — and friends like `arrayOf`, `recordOf`, or `oneOf`.
 
+### Primitive guards
+
+Built-in primitives: `isString`, `isNumber` (finite), `isBoolean`, `isBigInt`, `isSymbol`, `isUndefined`, `isNull` — and a preset `isPrimitive` for any primitive.
+
+```ts
+import { isPrimitive, isNumber } from 'is-kit';
+
+isPrimitive('x'); // true
+isPrimitive(123); // true
+isPrimitive(NaN); // true (use isNumber for finite only)
+isPrimitive({}); // false
+```
+
 ## Core Ideas
 
 - **Define once**: `define<T>(fn)` turns a plain function into a type guard.
