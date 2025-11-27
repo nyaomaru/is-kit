@@ -9,8 +9,9 @@ import {
   isSymbol,
   isUndefined,
   isNull,
+  isPrimitive,
 } from '../../src/core/primitive';
-import type { Predicate, Refine } from '../../src/types';
+import type { Predicate, Refine, Primitive } from '../../src/types';
 
 // =============================================
 // describe: primitive guards
@@ -33,3 +34,6 @@ expectType<Predicate<bigint>>(isBigInt);
 expectType<Predicate<symbol>>(isSymbol);
 expectType<Predicate<undefined>>(isUndefined);
 expectType<Predicate<null>>(isNull);
+
+// it: isPrimitive is a Predicate<Primitive>
+expectType<Predicate<Primitive>>(isPrimitive);
