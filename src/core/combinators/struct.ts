@@ -13,19 +13,23 @@ export function struct<S extends Schema>(
   schema: S,
   options?: { exact?: boolean }
 ): Predicate<InferSchema<S>> {
+  // WHY: Precompute schema keys and the allowed set (when exact) once per
+  // builder to avoid repeated Object.keys/Set allocations on every call.
+  const schemaKeys = Object.keys(schema);
+  const allowed = options?.exact ? new Set(schemaKeys) : null;
+
   return (input: unknown): input is InferSchema<S> => {
     if (!isPlainObject(input)) return false;
     const obj = input as Record<string, unknown>;
 
-    for (const key of Object.keys(schema)) {
+    for (const key of schemaKeys) {
       if (!(key in obj)) return false;
 
       const guard = schema[key]!;
       if (!guard(obj[key])) return false;
     }
 
-    if (options?.exact) {
-      const allowed = new Set(Object.keys(schema));
+    if (allowed) {
       for (const key of Object.keys(obj)) {
         if (!allowed.has(key)) return false;
       }
