@@ -6,6 +6,45 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.3] - 2025-11-29
+
+### Added
+
+- add isPrimitive guard preset by @nyaomaru in [#66](https://github.com/nyaomaru/is-kit/pull/66)
+
+### Fixed
+
+- remove release name by @nyaomaru in [#67](https://github.com/nyaomaru/is-kit/pull/67)
+
+### Changed
+
+- precompute schema keys and allowed set by @nyaomaru in [#68](https://github.com/nyaomaru/is-kit/pull/68)
+
+### Chore
+
+- v1.1.2 by [bot] by @github-actions in [#63](https://github.com/nyaomaru/is-kit/pull/63)
+- Update dependency /react to v18.3.27 by @renovate[bot] by @types in [#64](https://github.com/nyaomaru/is-kit/pull/64)
+- Update dependency lucide-react to ^0.554.0 - autoclosed by [bot] by @renovate in [#65](https://github.com/nyaomaru/is-kit/pull/65)
+- Release: 1.1.3 by [bot] by @github-actions in [#69](https://github.com/nyaomaru/is-kit/pull/69)
+
+### What's New 🚀
+
+Add `isPrimitive` to check whether primitive type or not!
+
+```ts
+import { isPrimitive } from 'is-kit';
+
+// Check any JavaScript primitive in one go
+isPrimitive('x'); // true
+isPrimitive(123); // true
+isPrimitive(NaN); // true (use isNumber for finite only)
+isPrimitive({}); // false`;
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.2...v1.1.3
+
+[v1.1.3]: https://github.com/nyaomaru/is-kit/compare/v1.1.2...v1.1.3
+
 ## [v1.1.2] - 2025-11-22
 
 ### Added
@@ -132,7 +171,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.5...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.3...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
