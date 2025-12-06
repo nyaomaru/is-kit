@@ -1,1 +1,1 @@
-export * from './util';
+export * from './to-boolean-predicates';
