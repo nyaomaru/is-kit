@@ -6,6 +6,27 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.4] - 2025-12-07
+
+### Changed
+
+- file name by @nyaomaru in [#73](https://github.com/nyaomaru/is-kit/pull/73)
+- simplify equalsBy generics and constraints by @nyaomaru in [#74](https://github.com/nyaomaru/is-kit/pull/74)
+- remove unsafe assertion by @nyaomaru in [#75](https://github.com/nyaomaru/is-kit/pull/75)
+
+### Docs
+
+- 1.1.3 by [bot] by @github-actions in [#70](https://github.com/nyaomaru/is-kit/pull/70)
+
+### Chore
+
+- Update dependency typedoc to v0.28.15 by [bot] by @renovate in [#71](https://github.com/nyaomaru/is-kit/pull/71)
+- Update dependency lucide-react to ^0.555.0 by [bot] by @renovate in [#72](https://github.com/nyaomaru/is-kit/pull/72)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.3...v1.1.4
+
+[v1.1.4]: https://github.com/nyaomaru/is-kit/compare/v1.1.3...v1.1.4
+
 ## [v1.1.3] - 2025-11-29
 
 ### Added
@@ -171,7 +192,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.3...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.4...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
