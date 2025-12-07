@@ -78,7 +78,7 @@ export function guardIn<A>(): <T extends A>(guard: Guard<T>) => Refine<A, T>;
 export function guardIn<A>(): <T extends A>(guard: Guard<T>) => Refine<A, T> {
   return function <T extends A>(guard: Guard<T>): Refine<A, T> {
     return function (input: A): input is T {
-      return guard(input as T);
+      return guard(input);
     };
   };
 }
