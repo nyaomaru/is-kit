@@ -21,17 +21,17 @@ export function equals<const T>(target: T): Predicate<T> {
  * @param selector Optional selector to project the comparable key; if omitted, returns a function to supply it later.
  * @returns Function that accepts a target and returns a predicate over the original value.
  */
-export function equalsBy<F extends (value: unknown) => value is unknown>(
+export function equalsBy<F extends Predicate<unknown>>(
   guard: F
 ): <K>(
   selector: (value: GuardedOf<F>) => K
 ) => <const T extends K>(target: T) => Predicate<GuardedOf<F>>;
-export function equalsBy<F extends (value: unknown) => value is unknown, K>(
+export function equalsBy<F extends Predicate<unknown>, K>(
   guard: F,
   selector: (value: GuardedOf<F>) => K
 ): <const T extends K>(target: T) => Predicate<GuardedOf<F>>;
 export function equalsBy(
-  guard: (value: unknown) => value is unknown,
+  guard: Predicate<unknown>,
   selector?: (value: unknown) => unknown
 ) {
   type Guarded = GuardedOf<typeof guard>;
