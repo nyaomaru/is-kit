@@ -16,10 +16,33 @@ describe('oneOfValues', () => {
     expect(isNaNOnly('NaN' as unknown)).toBe(false);
   });
 
-  it('distinguishes +0 and -0 consistently (large set)', () => {
-    const isIn = oneOfValues(0, 1, 2, 3, 4, 5, 6, 7, 8);
+  it('distinguishes +0 and -0 consistently (small set)', () => {
+    const isPosZeroOnly = oneOfValues(0);
+    const isNegZeroOnly = oneOfValues(-0);
 
-    expect(isIn(0)).toBe(true);
-    expect(isIn(9 as unknown)).toBe(false);
+    expect(isPosZeroOnly(0)).toBe(true);
+    expect(isPosZeroOnly(-0 as unknown)).toBe(false);
+
+    expect(isNegZeroOnly(-0)).toBe(true);
+    expect(isNegZeroOnly(0 as unknown)).toBe(false);
+  });
+
+  it('distinguishes +0 and -0 consistently (large set)', () => {
+    const isLargePosZeroOnly = oneOfValues(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+    const isLargeNegZeroOnly = oneOfValues(-0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+    expect(isLargePosZeroOnly(0)).toBe(true);
+    expect(isLargePosZeroOnly(-0 as unknown)).toBe(false);
+
+    expect(isLargeNegZeroOnly(-0)).toBe(true);
+    expect(isLargeNegZeroOnly(0 as unknown)).toBe(false);
+  });
+
+  it('accepts a single readonly tuple array input', () => {
+    const isRole = oneOfValues(['admin', 'member'] as const);
+
+    expect(isRole('admin')).toBe(true);
+    expect(isRole('member')).toBe(true);
+    expect(isRole('guest' as unknown)).toBe(false);
   });
 });
