@@ -6,6 +6,25 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.5] - 2025-12-13
+
+### Fixed
+
+- support tuple-array and varargs in oneOfValues by @nyaomaru in [#80](https://github.com/nyaomaru/is-kit/pull/80)
+
+### Docs
+
+- 1.1.4 by [bot] by @github-actions in [#77](https://github.com/nyaomaru/is-kit/pull/77)
+
+### Chore
+
+- Update dependency ts-jest to v29.4.6 by [bot] by @renovate in [#78](https://github.com/nyaomaru/is-kit/pull/78)
+- Update dependency lucide-react to ^0.561.0 by [bot] by @renovate in [#79](https://github.com/nyaomaru/is-kit/pull/79)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.4...v1.1.5
+
+[v1.1.5]: https://github.com/nyaomaru/is-kit/compare/v1.1.4...v1.1.5
+
 ## [v1.1.4] - 2025-12-07
 
 ### Changed
@@ -192,7 +211,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.4...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.5...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
