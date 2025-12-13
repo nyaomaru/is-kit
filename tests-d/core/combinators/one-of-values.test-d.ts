@@ -17,3 +17,8 @@ if (isLiteralAB(unionCandidate)) {
 // it: narrows to union of provided numeric values
 const is012 = oneOfValues(0, 1, 2);
 expectType<Predicate<0 | 1 | 2>>(is012);
+
+// it: supports a single readonly tuple array argument
+const roles = ['admin', 'member'] as const;
+const isRole = oneOfValues(roles);
+expectType<Predicate<'admin' | 'member'>>(isRole);
