@@ -117,3 +117,4 @@ describe('recordOf (key/value guards)', () => {
     expect(guard(u)).toBe(true);
   });
 });
+
