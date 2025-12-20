@@ -6,6 +6,37 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.6] - 2025-12-20
+
+### Changed
+
+- use toBooleanPredicates in oneOf to align with or by @nyaomaru in [#91](https://github.com/nyaomaru/is-kit/pull/91)
+
+### Docs
+
+- 1.1.5 by [bot] by @github-actions in [#82](https://github.com/nyaomaru/is-kit/pull/82)
+
+### Test
+
+- rename test files by @nyaomaru in [#86](https://github.com/nyaomaru/is-kit/pull/86)
+
+### Chore
+
+- Update dependency next to v14.2.35 by [bot] by @renovate in [#84](https://github.com/nyaomaru/is-kit/pull/84)
+- Update dependency autoprefixer to v10.4.23 by [bot] by @renovate in [#83](https://github.com/nyaomaru/is-kit/pull/83)
+- Update dependency tailwindcss to v3.4.19 by [bot] by @renovate in [#85](https://github.com/nyaomaru/is-kit/pull/85)
+- Update eslint monorepo to v9.39.2 by [bot] by @renovate in [#87](https://github.com/nyaomaru/is-kit/pull/87)
+- Update dependency lucide-react to ^0.562.0 by [bot] by @renovate in [#88](https://github.com/nyaomaru/is-kit/pull/88)
+- Update dependency prettier to v3.7.4 by [bot] by @renovate in [#89](https://github.com/nyaomaru/is-kit/pull/89)
+- Update pnpm to v10.26.1 by [bot] by @renovate in [#90](https://github.com/nyaomaru/is-kit/pull/90)
+- Update actions/cache action to v5 by [bot] by @renovate in [#92](https://github.com/nyaomaru/is-kit/pull/92)
+- Update actions/checkout action to v6 by [bot] by @renovate in [#93](https://github.com/nyaomaru/is-kit/pull/93)
+- Update actions/setup-node action to v6 by [bot] by @renovate in [#94](https://github.com/nyaomaru/is-kit/pull/94)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.5...v1.1.6
+
+[v1.1.6]: https://github.com/nyaomaru/is-kit/compare/v1.1.5...v1.1.6
+
 ## [v1.1.5] - 2025-12-13
 
 ### Fixed
@@ -211,7 +242,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.5...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.6...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
