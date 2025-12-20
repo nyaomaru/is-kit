@@ -29,3 +29,4 @@ describe('tupleOf', () => {
     expect(isEmptyTuple([1])).toBe(false);
   });
 });
+
