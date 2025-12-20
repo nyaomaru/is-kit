@@ -10,7 +10,7 @@ NODE_ENV = "development"
 # Tool versions to match local dev and CI
 [tools]
 node = "22"        # CI uses Node 22
-pnpm = "10.22.0"   # From packageManager field
+pnpm = "10.26.1"   # From packageManager field
 
 # Developer tasks (run with: `mise run <task>`)
 [tasks.setup]
