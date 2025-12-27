@@ -6,6 +6,33 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.7] - 2025-12-27
+
+### Added
+
+- add isInteger, isSafeInteger, isPositive, isNegative by @nyaomaru in [#98](https://github.com/nyaomaru/is-kit/pull/98)
+
+### Docs
+
+- 1.1.6 by [bot] by @github-actions in [#96](https://github.com/nyaomaru/is-kit/pull/96)
+
+### Chore
+
+- Update pnpm to v10.26.2 by [bot] by @renovate in [#97](https://github.com/nyaomaru/is-kit/pull/97)
+
+### What’s New 🚀
+
+- Add numeric guards in primitive: `isInteger`, `isSafeInteger`, `isPositive`, `isNegative`.
+- Semantics:
+    - `isInteger` uses Number.isInteger narrowing to `number` type.
+    - `isSafeInteger` uses Number.isSafeInteger narrowing to `number` type..
+    - `isPositive` accepts finite numbers strictly greater than 0 (excludes NaN/±Infinity; -0 is not positive).
+    - `isNegative` accepts finite numbers strictly less than 0 (excludes NaN/±Infinity; -0 is not negative).
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.6...v1.1.7
+
+[v1.1.7]: https://github.com/nyaomaru/is-kit/compare/v1.1.6...v1.1.7
+
 ## [v1.1.6] - 2025-12-20
 
 ### Changed
@@ -242,7 +269,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.6...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.7...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
