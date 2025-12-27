@@ -120,13 +120,30 @@ When validating complex shapes, reach for `struct` — and friends like `arrayOf
 
 Built-in primitives: `isString`, `isNumber` (finite), `isBoolean`, `isBigInt`, `isSymbol`, `isUndefined`, `isNull` — and a preset `isPrimitive` for any primitive.
 
-```ts
-import { isPrimitive, isNumber } from 'is-kit';
+Numeric helpers are included for common cases: `isInteger`, `isSafeInteger`, `isPositive`, `isNegative`.
 
+```ts
+import {
+  isPrimitive,
+  isNumber,
+  isInteger,
+  isSafeInteger,
+  isPositive,
+  isNegative,
+} from 'is-kit';
+
+// Any primitive
 isPrimitive('x'); // true
 isPrimitive(123); // true
 isPrimitive(NaN); // true (use isNumber for finite only)
 isPrimitive({}); // false
+
+// Numeric helpers
+isNumber(10); // true
+isInteger(42); // true
+isSafeInteger(2 ** 53); // false
+isPositive(0); // false
+isNegative(-0); // false
 ```
 
 ## Core Ideas

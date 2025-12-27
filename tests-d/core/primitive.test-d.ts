@@ -4,6 +4,10 @@ import {
   isNumberPrimitive,
   isFiniteNumber,
   isNumber,
+  isInteger,
+  isSafeInteger,
+  isPositive,
+  isNegative,
   isBoolean,
   isBigInt,
   isSymbol,
@@ -27,6 +31,14 @@ expectType<Refine<number, number>>(isFiniteNumber);
 
 // it: isNumber (finite) is a Predicate<number>
 expectType<Predicate<number>>(isNumber);
+
+// it: integer and safe-integer are Predicate<number>
+expectType<Predicate<number>>(isInteger);
+expectType<Predicate<number>>(isSafeInteger);
+
+// it: positive/negative are Predicate<number>
+expectType<Predicate<number>>(isPositive);
+expectType<Predicate<number>>(isNegative);
 
 // it: other primitives
 expectType<Predicate<boolean>>(isBoolean);

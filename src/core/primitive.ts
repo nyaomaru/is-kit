@@ -29,6 +29,45 @@ export const isFiniteNumber = predicateToRefine<number>(Number.isFinite);
 export const isNumber = and(isNumberPrimitive, isFiniteNumber);
 
 /**
+ * Checks whether a value is an integer number.
+ *
+ * Equivalent to `Number.isInteger(value)`.
+ * @returns Predicate narrowing to integer `number`.
+ */
+export const isInteger = define<number>(Number.isInteger);
+
+/**
+ * Checks whether a value is a safe integer.
+ *
+ * Equivalent to `Number.isSafeInteger(value)`.
+ * @returns Predicate narrowing to safe-integer `number`.
+ */
+export const isSafeInteger = define<number>(Number.isSafeInteger);
+
+/**
+ * Checks whether a value is a positive finite number (> 0).
+ *
+ * Uses `isNumber` internally to exclude NaN and ±Infinity.
+ * @returns Predicate narrowing to positive `number`.
+ */
+export const isPositive = and(
+  isNumber,
+  predicateToRefine<number>((n) => n > 0)
+);
+
+/**
+ * Checks whether a value is a negative finite number (< 0).
+ *
+ * Uses `isNumber` internally to exclude NaN and ±Infinity.
+ * Note: `-0` is not considered negative (consistent with `< 0`).
+ * @returns Predicate narrowing to negative `number`.
+ */
+export const isNegative = and(
+  isNumber,
+  predicateToRefine<number>((n) => n < 0)
+);
+
+/**
  * Checks whether a value is a boolean.
  *
  * @returns Predicate narrowing to `boolean`.
