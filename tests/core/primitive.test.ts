@@ -3,6 +3,10 @@ import {
   isNumberPrimitive,
   isFiniteNumber,
   isNumber,
+  isInteger,
+  isSafeInteger,
+  isPositive,
+  isNegative,
   isBoolean,
   isBigInt,
   isSymbol,
@@ -32,6 +36,56 @@ describe('primitive guards', () => {
     expect(isFiniteFromNumber(10)).toBe(true);
     expect(isFiniteFromNumber(Infinity)).toBe(false);
     expect(isFiniteFromNumber(NaN)).toBe(false);
+  });
+
+  it('isInteger', () => {
+    expect(isInteger(0)).toBe(true);
+    expect(isInteger(1)).toBe(true);
+    expect(isInteger(-1)).toBe(true);
+    expect(isInteger(1000000)).toBe(true);
+
+    expect(isInteger(0.5)).toBe(false);
+    expect(isInteger(NaN)).toBe(false);
+    expect(isInteger(Infinity)).toBe(false);
+    expect(isInteger('1' as unknown)).toBe(false);
+  });
+
+  it('isSafeInteger', () => {
+    expect(isSafeInteger(0)).toBe(true);
+    expect(isSafeInteger(Number.MAX_SAFE_INTEGER)).toBe(true);
+    expect(isSafeInteger(-Number.MAX_SAFE_INTEGER)).toBe(true);
+
+    expect(isSafeInteger(Number.MAX_SAFE_INTEGER + 1)).toBe(false);
+    expect(isSafeInteger(2 ** 53)).toBe(false);
+    expect(isSafeInteger(NaN)).toBe(false);
+    expect(isSafeInteger(Infinity)).toBe(false);
+  });
+
+  it('isPositive', () => {
+    expect(isPositive(0.0001)).toBe(true);
+    expect(isPositive(1)).toBe(true);
+    expect(isPositive(42)).toBe(true);
+
+    expect(isPositive(0)).toBe(false);
+    // -0 is considered 0, not positive
+    // eslint-disable-next-line no-extra-parens
+    expect(isPositive(-0)).toBe(false);
+    expect(isPositive(-1)).toBe(false);
+    expect(isPositive(NaN)).toBe(false);
+    expect(isPositive(Infinity)).toBe(false);
+  });
+
+  it('isNegative', () => {
+    expect(isNegative(-0.0001)).toBe(true);
+    expect(isNegative(-1)).toBe(true);
+
+    expect(isNegative(0)).toBe(false);
+    // -0 is not considered negative by `< 0`
+    // eslint-disable-next-line no-extra-parens
+    expect(isNegative(-0)).toBe(false);
+    expect(isNegative(1)).toBe(false);
+    expect(isNegative(NaN)).toBe(false);
+    expect(isNegative(-Infinity)).toBe(false);
   });
 
   it('isBoolean', () => {
