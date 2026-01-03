@@ -86,9 +86,8 @@ export const isNegative = and(
 );
 
 /**
- * Checks whether a value is exactly zero (including `-0`).
+ * Checks whether a value is a finite number that equals zero (including `-0`).
  *
- * Uses `isNumber` internally to exclude NaN and ±Infinity.
  * @returns Predicate narrowing to zero `number`.
  */
 export const isZero = and(
