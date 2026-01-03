@@ -2,12 +2,15 @@ import { expectType } from 'tsd';
 import {
   isString,
   isNumberPrimitive,
+  isNaN,
+  isInfiniteNumber,
   isFiniteNumber,
   isNumber,
   isInteger,
   isSafeInteger,
   isPositive,
   isNegative,
+  isZero,
   isBoolean,
   isBigInt,
   isSymbol,
@@ -26,6 +29,12 @@ expectType<Predicate<string>>(isString);
 // it: isNumberPrimitive is a Predicate<number>
 expectType<Predicate<number>>(isNumberPrimitive);
 
+// it: isNaN is a Predicate<number>
+expectType<Predicate<number>>(isNaN);
+
+// it: isInfiniteNumber is a Predicate<number>
+expectType<Predicate<number>>(isInfiniteNumber);
+
 // it: isFiniteNumber refines number -> number (finite subset)
 expectType<Refine<number, number>>(isFiniteNumber);
 
@@ -39,6 +48,7 @@ expectType<Predicate<number>>(isSafeInteger);
 // it: positive/negative are Predicate<number>
 expectType<Predicate<number>>(isPositive);
 expectType<Predicate<number>>(isNegative);
+expectType<Predicate<number>>(isZero);
 
 // it: other primitives
 expectType<Predicate<boolean>>(isBoolean);

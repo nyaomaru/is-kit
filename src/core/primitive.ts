@@ -17,6 +17,24 @@ export const isString = define<string>((value) => typeof value === 'string');
 export const isNumberPrimitive = define<number>(
   (value) => typeof value === 'number'
 );
+
+/**
+ * Checks whether a value is `NaN`.
+ *
+ * Equivalent to `Number.isNaN(value)` without coercion.
+ * @returns Predicate narrowing to `number` (`NaN` only).
+ */
+export const isNaN = define<number>(Number.isNaN);
+
+/**
+ * Checks whether a value is an infinite number (±Infinity).
+ *
+ * @returns Predicate narrowing to `number` (Infinity or -Infinity).
+ */
+export const isInfiniteNumber = and(
+  isNumberPrimitive,
+  predicateToRefine<number>((n) => n === Infinity || n === -Infinity)
+);
 /**
  * Checks whether a number is finite.
  * @returns Refinement that accepts only finite numbers.
@@ -65,6 +83,16 @@ export const isPositive = and(
 export const isNegative = and(
   isNumber,
   predicateToRefine<number>((n) => n < 0)
+);
+
+/**
+ * Checks whether a value is a finite number that equals zero (including `-0`).
+ *
+ * @returns Predicate narrowing to zero `number`.
+ */
+export const isZero = and(
+  isNumber,
+  predicateToRefine<number>((n) => n === 0)
 );
 
 /**

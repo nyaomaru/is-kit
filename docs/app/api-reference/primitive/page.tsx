@@ -11,6 +11,9 @@ const sample = `import {
   isSafeInteger,
   isPositive,
   isNegative,
+  isZero,
+  isNaN,
+  isInfiniteNumber,
   isBoolean,
   isUndefined,
   isNull,
@@ -37,7 +40,10 @@ isPrimitive({}); // false
 isInteger(42); // true
 isSafeInteger(2 ** 53); // false
 isPositive(0); // false
-isNegative(-0); // false`;
+isNegative(-0); // false
+isZero(-0); // true
+isNaN(NaN); // true
+isInfiniteNumber(Infinity); // true`;
 
 export default function PrimitivePage() {
   return (
@@ -53,7 +59,10 @@ export default function PrimitivePage() {
             Numeric helpers are available: <code className='mx-1'>isInteger</code>,
             <code className='mx-1'>isSafeInteger</code>,
             <code className='mx-1'>isPositive</code>,
-            <code className='mx-1'>isNegative</code>.
+            <code className='mx-1'>isNegative</code>,
+            <code className='mx-1'>isZero</code>,
+            <code className='mx-1'>isNaN</code>,
+            <code className='mx-1'>isInfiniteNumber</code>.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />
