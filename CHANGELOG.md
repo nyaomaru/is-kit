@@ -6,6 +6,44 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.8] - 2026-01-03
+
+### Added
+
+- add numeric primitive guards by @nyaomaru in [#102](https://github.com/nyaomaru/is-kit/pull/102)
+
+### Docs
+
+- 1.1.7 by [bot] by @github-actions in [#100](https://github.com/nyaomaru/is-kit/pull/100)
+
+### Chore
+
+- Update pnpm to v10.27.0 by [bot] by @renovate in [#101](https://github.com/nyaomaru/is-kit/pull/101)
+- Update jdx/mise-action action to v3 by [bot] by @renovate in [#103](https://github.com/nyaomaru/is-kit/pull/103)
+
+### What’s new 🚀
+
+- Added numeric guards `isNaN`, `isInfiniteNumber`, and `isZero` for handling NaN, ±Infinity, and zero edge cases.
+- Updated tests and documentation to cover the new helpers and examples.
+
+```ts
+import { isNaN, isInfiniteNumber, isZero } from 'is-kit';
+
+isNaN(NaN); // true
+isNaN(0); // false
+
+isInfiniteNumber(Infinity); // true
+isInfiniteNumber(1); // false
+
+isZero(0); // true
+isZero(-0); // true
+isZero(1); // false
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.7...v1.1.8
+
+[v1.1.8]: https://github.com/nyaomaru/is-kit/compare/v1.1.7...v1.1.8
+
 ## [v1.1.7] - 2025-12-27
 
 ### Added
@@ -269,7 +307,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.7...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.8...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
