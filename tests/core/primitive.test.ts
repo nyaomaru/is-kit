@@ -1,12 +1,15 @@
 import {
   isString,
   isNumberPrimitive,
+  isNaN,
+  isInfiniteNumber,
   isFiniteNumber,
   isNumber,
   isInteger,
   isSafeInteger,
   isPositive,
   isNegative,
+  isZero,
   isBoolean,
   isBigInt,
   isSymbol,
@@ -29,6 +32,19 @@ describe('primitive guards', () => {
     expect(isNumber(NaN)).toBe(false);
     expect(isNumber(Infinity)).toBe(false);
     expect(isNumber('42' as unknown)).toBe(false);
+  });
+
+  it('isNaN', () => {
+    expect(isNaN(NaN)).toBe(true);
+    expect(isNaN(0)).toBe(false);
+    expect(isNaN('NaN' as unknown)).toBe(false);
+  });
+
+  it('isInfiniteNumber', () => {
+    expect(isInfiniteNumber(Infinity)).toBe(true);
+    expect(isInfiniteNumber(-Infinity)).toBe(true);
+    expect(isInfiniteNumber(0)).toBe(false);
+    expect(isInfiniteNumber(NaN)).toBe(false);
   });
 
   it('isFiniteNumber only accepts finite numbers', () => {
@@ -86,6 +102,15 @@ describe('primitive guards', () => {
     expect(isNegative(1)).toBe(false);
     expect(isNegative(NaN)).toBe(false);
     expect(isNegative(-Infinity)).toBe(false);
+  });
+
+  it('isZero', () => {
+    expect(isZero(0)).toBe(true);
+    // -0 is considered zero
+    // eslint-disable-next-line no-extra-parens
+    expect(isZero(-0)).toBe(true);
+    expect(isZero(1)).toBe(false);
+    expect(isZero(NaN)).toBe(false);
   });
 
   it('isBoolean', () => {
