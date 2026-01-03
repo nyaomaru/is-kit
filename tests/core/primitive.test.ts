@@ -45,6 +45,7 @@ describe('primitive guards', () => {
     expect(isInfiniteNumber(-Infinity)).toBe(true);
     expect(isInfiniteNumber(0)).toBe(false);
     expect(isInfiniteNumber(NaN)).toBe(false);
+    expect(isInfiniteNumber('Infinity' as unknown)).toBe(false);
   });
 
   it('isFiniteNumber only accepts finite numbers', () => {
@@ -111,6 +112,7 @@ describe('primitive guards', () => {
     expect(isZero(-0)).toBe(true);
     expect(isZero(1)).toBe(false);
     expect(isZero(NaN)).toBe(false);
+    expect(isZero('0' as unknown)).toBe(false);
   });
 
   it('isBoolean', () => {
