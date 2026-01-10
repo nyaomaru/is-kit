@@ -5,7 +5,7 @@ import {
   optional,
   required,
 } from '../../src/core/nullish';
-import { isString, isNumber } from '@/core/primitive';
+import { isString } from '@/core/primitive';
 import { predicateToRefine } from '@/core';
 
 describe('nullable', () => {
@@ -26,7 +26,7 @@ describe('nullable', () => {
     expect(isAOrNull('abc')).toBe(true);
     expect(isAOrNull('xbc')).toBe(false);
     // Call through a widened signature to satisfy TS while checking runtime
-    expect(((isAOrNull as unknown) as (x: unknown) => boolean)(undefined)).toBe(
+    expect((isAOrNull as unknown as (x: unknown) => boolean)(undefined)).toBe(
       false
     );
   });
@@ -45,7 +45,7 @@ describe('nonNull', () => {
     const positive = predicateToRefine<number>((n) => n > 0);
     const isPositiveNonNull = nonNull(positive);
     expect(
-      ((isPositiveNonNull as unknown) as (x: unknown) => boolean)(null)
+      (isPositiveNonNull as unknown as (x: unknown) => boolean)(null)
     ).toBe(false);
     expect(isPositiveNonNull(1)).toBe(true);
     expect(isPositiveNonNull(0)).toBe(false);
@@ -91,7 +91,7 @@ describe('optional', () => {
     expect(isEvenOrUndefined(2)).toBe(true);
     expect(isEvenOrUndefined(3)).toBe(false);
     expect(
-      ((isEvenOrUndefined as unknown) as (x: unknown) => boolean)(null)
+      (isEvenOrUndefined as unknown as (x: unknown) => boolean)(null)
     ).toBe(false);
   });
 });

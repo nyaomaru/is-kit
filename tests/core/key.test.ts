@@ -3,12 +3,6 @@ import { struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { oneOfValues } from '@/core/combinators/one-of-values';
 
-type User = {
-  id: string;
-  age: number;
-  role: 'admin' | 'guest' | 'trial';
-};
-
 const isUser = struct({
   id: isString,
   age: isNumber,
@@ -36,4 +30,3 @@ describe('key: narrowKeyTo', () => {
     expect(isTrial(admin)).toBe(false);
   });
 });
-

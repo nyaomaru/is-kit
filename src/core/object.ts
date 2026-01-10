@@ -175,7 +175,7 @@ export const isError = define<Error>(
 export const isURL =
   typeof URL !== 'undefined'
     ? define<URL>((value) => value instanceof URL)
-    : define<URL>((_value) => false);
+    : define<URL>(() => false);
 
 /**
  * Checks whether a value is a `Blob` (in environments with Blob available).
@@ -185,4 +185,4 @@ export const isURL =
 export const isBlob =
   typeof Blob !== 'undefined'
     ? define<Blob>((value) => value instanceof Blob)
-    : define<Blob>((_value) => false);
+    : define<Blob>(() => false);

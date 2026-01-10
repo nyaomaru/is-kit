@@ -85,7 +85,6 @@ describe('primitive guards', () => {
 
     expect(isPositive(0)).toBe(false);
     // -0 is considered 0, not positive
-    // eslint-disable-next-line no-extra-parens
     expect(isPositive(-0)).toBe(false);
     expect(isPositive(-1)).toBe(false);
     expect(isPositive(NaN)).toBe(false);
@@ -98,7 +97,6 @@ describe('primitive guards', () => {
 
     expect(isNegative(0)).toBe(false);
     // -0 is not considered negative by `< 0`
-    // eslint-disable-next-line no-extra-parens
     expect(isNegative(-0)).toBe(false);
     expect(isNegative(1)).toBe(false);
     expect(isNegative(NaN)).toBe(false);
@@ -108,7 +106,6 @@ describe('primitive guards', () => {
   it('isZero', () => {
     expect(isZero(0)).toBe(true);
     // -0 is considered zero
-    // eslint-disable-next-line no-extra-parens
     expect(isZero(-0)).toBe(true);
     expect(isZero(1)).toBe(false);
     expect(isZero(NaN)).toBe(false);
@@ -162,7 +159,6 @@ describe('primitive guards', () => {
       null,
     ];
     for (const v of values) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect((isPrimitive as any)(v)).toBe(true);
     }
 
@@ -172,11 +168,8 @@ describe('primitive guards', () => {
     expect(isPrimitive(new Date() as unknown)).toBe(false);
     expect(isPrimitive(function () {} as unknown)).toBe(false);
     // wrapper objects should be false
-    // eslint-disable-next-line no-new-wrappers
     expect(isPrimitive(new Number(1) as unknown)).toBe(false);
-    // eslint-disable-next-line no-new-wrappers
     expect(isPrimitive(new String('a') as unknown)).toBe(false);
-    // eslint-disable-next-line no-new-wrappers
     expect(isPrimitive(new Boolean(true) as unknown)).toBe(false);
   });
 });
