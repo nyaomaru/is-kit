@@ -9,3 +9,4 @@ pre-commit:
       stage_fixed: true
     - run: mise hook-eslint {staged_files}
       glob: '*.{js,jsx,ts,tsx}'
+      stage_fixed: true

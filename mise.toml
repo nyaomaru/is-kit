@@ -43,4 +43,4 @@ run = "pnpm prettier --write"
 
 [tasks.hook-eslint]
 description = "Run eslint for lefthook"
-run = "pnpm eslint"
+run = "pnpm eslint --fix"
