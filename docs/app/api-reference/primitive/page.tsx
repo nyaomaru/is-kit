@@ -54,9 +54,10 @@ export default function PrimitivePage() {
           <Paragraph>
             Primitive value guards such as string/number/boolean and more.
             Finite numbers use <code className='mx-1'>isNumber</code> (excludes
-            NaN/±Infinity). Use <code className='mx-1'>isPrimitive</code> to accept any
-            primitive (string, number, boolean, bigint, symbol, undefined, null).
-            Numeric helpers are available: <code className='mx-1'>isInteger</code>,
+            NaN/±Infinity). Use <code className='mx-1'>isPrimitive</code> to
+            accept any primitive (string, number, boolean, bigint, symbol,
+            undefined, null). Numeric helpers are available:{' '}
+            <code className='mx-1'>isInteger</code>,
             <code className='mx-1'>isSafeInteger</code>,
             <code className='mx-1'>isPositive</code>,
             <code className='mx-1'>isNegative</code>,

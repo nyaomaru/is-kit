@@ -37,7 +37,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Heading.displayName = 'Heading';
 

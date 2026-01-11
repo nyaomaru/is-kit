@@ -23,7 +23,10 @@ export function HeroSection({ description }: HeroSectionProps) {
           className='h-[150px] w-auto max-w-full sm:h-[180px] md:h-[300px]'
         />
       </Link>
-      <Paragraph variant='lead' className='mt-4 mb-8 w-full max-w-2xl px-4 sm:px-0'>
+      <Paragraph
+        variant='lead'
+        className='mt-4 mb-8 w-full max-w-2xl px-4 sm:px-0'
+      >
         {description}
       </Paragraph>
     </section>

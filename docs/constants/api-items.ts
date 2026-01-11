@@ -98,5 +98,5 @@ export const FEATURED_API_HREFS: readonly string[] = [
 ] as const;
 
 export const FEATURED_API_ITEMS: ApiItem[] = FEATURED_API_HREFS.map((href) =>
-  API_ITEMS.find((it) => it.href === href)
+  API_ITEMS.find((it) => it.href === href),
 ).filter(isApiItem);
