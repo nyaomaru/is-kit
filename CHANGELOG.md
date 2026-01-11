@@ -6,6 +6,26 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.9] - 2026-01-11
+
+### Fixed
+
+- fix eslint by @nyaomaru in [#107](https://github.com/nyaomaru/is-kit/pull/107)
+- fix eslint tsx by @nyaomaru in [#108](https://github.com/nyaomaru/is-kit/pull/108)
+
+### Docs
+
+- 1.1.8 by [bot] by @github-actions in [#105](https://github.com/nyaomaru/is-kit/pull/105)
+
+### Chore
+
+- Update pnpm to v10.28.0 by [bot] by @renovate in [#106](https://github.com/nyaomaru/is-kit/pull/106)
+- add lefthook by @nyaomaru in [#109](https://github.com/nyaomaru/is-kit/pull/109)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.8...v1.1.9
+
+[v1.1.9]: https://github.com/nyaomaru/is-kit/compare/v1.1.8...v1.1.9
+
 ## [v1.1.8] - 2026-01-03
 
 ### Added
@@ -307,7 +327,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.8...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.9...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
