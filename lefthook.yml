@@ -4,8 +4,8 @@
 pre-commit:
   parallel: false
   jobs:
-    - run: pnpm prettier --write {staged_files}
+    - run: mise hook-prettier {staged_files}
       glob: '*.{js,jsx,ts,tsx,json,md,yml,yaml}'
       stage_fixed: true
-    - run: pnpm eslint {staged_files}
+    - run: mise hook-eslint {staged_files}
       glob: '*.{js,jsx,ts,tsx}'

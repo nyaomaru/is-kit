@@ -37,3 +37,10 @@ run = "pnpm test:types"
 description = "Run lint, build, runtime and type tests"
 depends = ["lint", "build", "test", "test-types"]
 
+[tasks.hook-prettier]
+description = "Run prettier for lefthook"
+run = "pnpm prettier --write"
+
+[tasks.hook-eslint]
+description = "Run eslint for lefthook"
+run = "pnpm eslint"
