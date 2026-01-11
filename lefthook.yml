@@ -1,0 +1,12 @@
+# Refer for explanation to following link:
+# https://lefthook.dev/configuration/
+
+pre-commit:
+  parallel: false
+  jobs:
+    - run: mise hook-prettier {staged_files}
+      glob: '*.{js,jsx,ts,tsx,json,md,yml,yaml}'
+      stage_fixed: true
+    - run: mise hook-eslint {staged_files}
+      glob: '*.{js,jsx,ts,tsx}'
+      stage_fixed: true
