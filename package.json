@@ -53,6 +53,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "jest": "^30.0.5",
+    "lefthook": "^2.0.13",
     "prettier": "^3.6.2",
     "ts-jest": "^29.4.1",
     "tsd": "^0.33.0",
