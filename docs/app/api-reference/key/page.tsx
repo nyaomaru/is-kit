@@ -30,19 +30,19 @@ if (isGuestOrTrial(input)) {
 
 export default function KeyPage() {
   return (
-    <Stack variant="main" className="container mx-auto px-4 py-10" gap="xl">
-      <Stack variant="section" gap="md">
-        <Stack gap="xs">
-          <Heading variant="h1">key</Heading>
+    <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
+      <Stack variant='section' gap='md'>
+        <Stack gap='xs'>
+          <Heading variant='h1'>key</Heading>
           <Paragraph>
             Helpers for key-based guards and literal narrowing. Use{' '}
             <code>narrowKeyTo</code> to build reusable guards that constrain a
             specific property to a literal value.
           </Paragraph>
         </Stack>
-        <CodeBlock language="ts" code={sampleNarrowKeyTo} />
+        <CodeBlock language='ts' code={sampleNarrowKeyTo} />
       </Stack>
-      <ApiReferencePager currentHref="/api-reference/key" />
+      <ApiReferencePager currentHref='/api-reference/key' />
     </Stack>
   );
 }

@@ -24,7 +24,7 @@ export function InstallSection({
         language: 'bash',
         copy: { ariaLabel: 'Copy command' },
       }))}
-      className="mb-8"
+      className='mb-8'
       ariaLabel={tablistLabel}
       ariaLabelledBy={tablistLabelledBy}
     />

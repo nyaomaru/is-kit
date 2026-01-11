@@ -82,18 +82,22 @@ export function CodeTabs({
         const showCopyButton = !!copy;
 
         return (
-          <div className="relative w-full overflow-x-auto text-sm">
+          <div className='relative w-full overflow-x-auto text-sm'>
             <CodeBlock
               code={code}
               language={language}
-              className={cn('w-full max-w-full', codeClassName, showCopyButton && 'pr-16')}
+              className={cn(
+                'w-full max-w-full',
+                codeClassName,
+                showCopyButton && 'pr-16',
+              )}
             />
             {showCopyButton ? (
               <CopyButton
                 text={code}
                 className={cn(
                   'absolute right-2 top-1/2 -translate-y-1/2',
-                  copy?.className
+                  copy?.className,
                 )}
                 aria-label={
                   copy?.ariaLabel ??

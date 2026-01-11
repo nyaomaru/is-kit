@@ -54,7 +54,7 @@ export function Tabs({
 
   function getFallbackTabValue(
     values: string[],
-    defaultValue: string
+    defaultValue: string,
   ): string | undefined {
     if (values.length === 0) return undefined;
     if (defaultValue && values.includes(defaultValue)) return defaultValue;
@@ -63,7 +63,7 @@ export function Tabs({
 
   const fallbackValue = useMemo(
     () => getFallbackTabValue(values, defaultValue),
-    [defaultValue, values]
+    [defaultValue, values],
   );
   const [active, setActive] = useState<string | undefined>(fallbackValue);
   const gridClasses = useMemo(() => {
@@ -88,7 +88,7 @@ export function Tabs({
         tabId: `${baseId}-tab-${index}`,
         panelId: `${baseId}-panel-${index}`,
       })),
-    [items, baseId]
+    [items, baseId],
   );
 
   const focusTab = useCallback(
@@ -101,7 +101,7 @@ export function Tabs({
         node.focus();
       }
     },
-    [descriptors]
+    [descriptors],
   );
 
   const activate = useCallback(
@@ -112,7 +112,7 @@ export function Tabs({
         return value;
       });
     },
-    [onChange]
+    [onChange],
   );
 
   useEffect(() => {
@@ -178,7 +178,7 @@ export function Tabs({
         }
       }
     },
-    [values, active, activate, loop, focusTab]
+    [values, active, activate, loop, focusTab],
   );
 
   const activeDescriptor = useMemo(() => {
@@ -203,7 +203,7 @@ export function Tabs({
         <div
           className={cn(
             'flex w-full min-w-max divide-x divide-primary/30 border-b border-primary/40 md:grid md:min-w-0',
-            gridClasses
+            gridClasses,
           )}
           role='tablist'
           aria-label={ariaLabel}
@@ -219,7 +219,7 @@ export function Tabs({
                 'flex-none whitespace-nowrap px-3 py-2 text-sm text-center transition-colors md:flex-1 md:whitespace-normal',
                 active === item.value
                   ? 'bg-primary/20 text-primary font-medium border-primary'
-                  : 'hover:bg-primary/10'
+                  : 'hover:bg-primary/10',
               )}
               id={tabId}
               role='tab'

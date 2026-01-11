@@ -32,7 +32,7 @@ type ParagraphProps = React.HTMLAttributes<HTMLParagraphElement> &
 export const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
   (
     { className, spacing = 'default', style, variant = 'default', ...props },
-    ref
+    ref,
   ) => {
     const composedStyle =
       spacing === 'flat' ? { marginTop: 0, ...style } : style;
@@ -45,7 +45,7 @@ export const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Paragraph.displayName = 'Paragraph';
 

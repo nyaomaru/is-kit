@@ -34,13 +34,13 @@ type StackProps<Tag extends StackTag = 'div'> = VariantProps<
 type ElementFromTag<Tag extends StackTag> =
   JSX.IntrinsicElements[Tag] extends React.DetailedHTMLProps<
     React.HTMLAttributes<infer Element>,
-    any
+    unknown
   >
     ? Element
     : never;
 
 type StackComponent = <Tag extends StackTag = 'div'>(
-  props: StackProps<Tag> & { ref?: React.Ref<ElementFromTag<Tag>> }
+  props: StackProps<Tag> & { ref?: React.Ref<ElementFromTag<Tag>> },
 ) => React.ReactElement | null;
 
 /**
@@ -51,7 +51,7 @@ type StackComponent = <Tag extends StackTag = 'div'>(
  */
 const StackBase = <Tag extends StackTag = 'div'>(
   { className, gap, variant, ...props }: StackProps<Tag>,
-  ref: React.ForwardedRef<ElementFromTag<Tag>>
+  ref: React.ForwardedRef<ElementFromTag<Tag>>,
 ) => {
   const Component = (variant ?? 'div') as StackTag;
   return React.createElement(Component, {
