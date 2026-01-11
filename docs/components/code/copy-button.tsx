@@ -24,7 +24,9 @@ export function CopyButton({
       await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), resetAfterMs);
-    } catch {}
+    } catch {
+      // Ignore copy errors
+    }
   }
 
   return (
