@@ -2,7 +2,7 @@
 # https://lefthook.dev/configuration/
 
 pre-commit:
-  parallel: false
+  parallel: true
   jobs:
     - run: mise hook-prettier {staged_files}
       glob: '*.{js,jsx,ts,tsx,json,md,yml,yaml}'
