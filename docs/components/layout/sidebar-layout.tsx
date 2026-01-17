@@ -2,10 +2,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Sidebar, type SidebarSection } from '@/components/navigation/sidebar';
-import {
-  DOCS_TOGGLE_SIDEBAR_EVENT,
-  type ToggleSidebarEvent,
-} from '@/lib/events';
+import { DOCS_TOGGLE_SIDEBAR_EVENT } from '@/lib/events';
 import { cn } from '@/lib/utils';
 
 export type SidebarLayoutProps = {
@@ -48,8 +45,7 @@ export function SidebarLayout({
   }, [pathname]);
 
   useEffect(() => {
-    const handler = (_toggleSidebarEvent: ToggleSidebarEvent) =>
-      setOpen((toggleValue) => !toggleValue);
+    const handler = () => setOpen((toggleValue) => !toggleValue);
     window.addEventListener(DOCS_TOGGLE_SIDEBAR_EVENT, handler);
     return () => window.removeEventListener(DOCS_TOGGLE_SIDEBAR_EVENT, handler);
   }, []);
