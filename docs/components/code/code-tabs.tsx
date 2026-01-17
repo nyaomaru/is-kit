@@ -47,6 +47,55 @@ export type CodeTabsProps = {
   ariaLabelledBy?: string;
 };
 
+type CodeTabPanelProps = {
+  /** Active tab item to render. */
+  item: CodeTabItem;
+};
+
+/**
+ * Resolves the active tab item, defaulting to the first item when missing.
+ * @param items List of tab items to search.
+ * @param active Active tab value.
+ * @returns The matching tab item or the first item as fallback.
+ */
+const getActiveItem = (items: readonly CodeTabItem[], active?: string) =>
+  items.find((item) => item.value === active) ?? items[0];
+
+const CodeTabPanel = ({ item }: CodeTabPanelProps) => {
+  const { code, language, codeClassName, copy, label, value } = item;
+
+  if (!copy) {
+    return (
+      <div className='relative w-full overflow-x-auto text-sm'>
+        <CodeBlock
+          code={code}
+          language={language}
+          className={cn('w-full max-w-full', codeClassName)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className='relative w-full overflow-x-auto text-sm'>
+      <CodeBlock
+        code={code}
+        language={language}
+        className={cn('w-full max-w-full pr-16', codeClassName)}
+      />
+      <CopyButton
+        text={code}
+        className={cn(
+          'absolute right-2 top-1/2 -translate-y-1/2',
+          copy.className,
+        )}
+        aria-label={copy.ariaLabel ?? `Copy ${label ?? value} code`}
+        resetAfterMs={copy.resetAfterMs}
+      />
+    </div>
+  );
+};
+
 /**
  * Renders syntax highlighted code snippets within a tab interface, optionally including copy buttons per tab.
  * @param items Code samples to display.
@@ -76,38 +125,9 @@ export function CodeTabs({
       ariaLabelledBy={ariaLabelledBy}
     >
       {(active) => {
-        const current = items.find((item) => item.value === active) ?? items[0];
+        const current = getActiveItem(items, active);
 
-        const { code, language, codeClassName, copy } = current;
-        const showCopyButton = !!copy;
-
-        return (
-          <div className='relative w-full overflow-x-auto text-sm'>
-            <CodeBlock
-              code={code}
-              language={language}
-              className={cn(
-                'w-full max-w-full',
-                codeClassName,
-                showCopyButton && 'pr-16',
-              )}
-            />
-            {showCopyButton ? (
-              <CopyButton
-                text={code}
-                className={cn(
-                  'absolute right-2 top-1/2 -translate-y-1/2',
-                  copy?.className,
-                )}
-                aria-label={
-                  copy?.ariaLabel ??
-                  `Copy ${current.label ?? current.value} code`
-                }
-                resetAfterMs={copy?.resetAfterMs}
-              />
-            ) : null}
-          </div>
-        );
+        return <CodeTabPanel item={current} />;
       }}
     </Tabs>
   );
