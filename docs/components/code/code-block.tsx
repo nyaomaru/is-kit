@@ -10,7 +10,7 @@ export type CodeBlockProps = {
   className?: string;
 };
 
-export function CodeBlock({ code, language, className }: CodeBlockProps) {
+export function CodeBlock({ code, language }: CodeBlockProps) {
   const lang = language ?? 'ts';
 
   return (
