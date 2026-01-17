@@ -2,8 +2,8 @@ model_reasoning_effort = "high"
 hide_agent_reasoning = true
 network_access = true
 
-[tools]
-web_search = true
+[features]
+web_search_request = true
 
 [mcp_servers.serena]
 command = "uvx"
