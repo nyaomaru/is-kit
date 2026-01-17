@@ -6,6 +6,26 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.10] - 2026-01-17
+
+### Fixed
+
+- fix parallel setting by @nyaomaru in [#112](https://github.com/nyaomaru/is-kit/pull/112)
+- fix web_search config by @nyaomaru in [#114](https://github.com/nyaomaru/is-kit/pull/114)
+- eslint warnings by @nyaomaru in [#115](https://github.com/nyaomaru/is-kit/pull/115)
+
+### Changed
+
+- Update dependency prettier to v3.8.0 by [bot] by @renovate in [#113](https://github.com/nyaomaru/is-kit/pull/113)
+
+### Docs
+
+- 1.1.9 by [bot] by @github-actions in [#111](https://github.com/nyaomaru/is-kit/pull/111)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.9...v1.1.10
+
+[v1.1.10]: https://github.com/nyaomaru/is-kit/compare/v1.1.9...v1.1.10
+
 ## [v1.1.9] - 2026-01-11
 
 ### Fixed
@@ -327,7 +347,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.9...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.10...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
