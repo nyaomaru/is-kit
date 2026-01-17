@@ -6,8 +6,6 @@ export type CodeBlockProps = {
   code: string;
   /** Language token used for Prism syntax highlighting. */
   language?: string;
-  /** Additional classes merged into the wrapping <pre>. */
-  className?: string;
 };
 
 export function CodeBlock({ code, language }: CodeBlockProps) {

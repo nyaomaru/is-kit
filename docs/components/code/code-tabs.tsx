@@ -52,37 +52,23 @@ type CodeTabPanelProps = {
   item: CodeTabItem;
 };
 
-/**
- * Resolves the active tab item, defaulting to the first item when missing.
- * @param items List of tab items to search.
- * @param active Active tab value.
- * @returns The matching tab item or the first item as fallback.
- */
 const getActiveItem = (items: readonly CodeTabItem[], active?: string) =>
   items.find((item) => item.value === active) ?? items[0];
 
 const CodeTabPanel = ({ item }: CodeTabPanelProps) => {
-  const { code, language, codeClassName, copy, label, value } = item;
+  const { code, language, copy, label, value } = item;
 
   if (!copy) {
     return (
       <div className='relative w-full overflow-x-auto text-sm'>
-        <CodeBlock
-          code={code}
-          language={language}
-          className={cn('w-full max-w-full', codeClassName)}
-        />
+        <CodeBlock code={code} language={language} />
       </div>
     );
   }
 
   return (
     <div className='relative w-full overflow-x-auto text-sm'>
-      <CodeBlock
-        code={code}
-        language={language}
-        className={cn('w-full max-w-full pr-16', codeClassName)}
-      />
+      <CodeBlock code={code} language={language} />
       <CopyButton
         text={code}
         className={cn(
