@@ -1,9 +1,60 @@
 import type { Primitive, Predicate } from '@/types';
 import { define } from '@/core/define';
+import { and } from '@/core/logic';
+import { isNumber } from '@/core/primitive';
+import { predicateToRefine } from '@/core/predicate';
 
 // WHY: For small literal sets, a linear scan with Object.is preserves
 // equality semantics (NaN, +0/-0) without Set overhead; use Set when larger.
 const ONE_OF_VALUES_LINEAR_SCAN_MAX = 8;
+
+const isSingleArrayArg = define<readonly [readonly Primitive[]]>(
+  (value): value is readonly [readonly Primitive[]] =>
+    Array.isArray(value) && value.length === 1 && Array.isArray(value[0]),
+);
+
+const isZeroNumber = and(
+  isNumber,
+  predicateToRefine<number>((value) => value === 0),
+);
+
+const normalizeValues = (
+  args: readonly Primitive[] | [readonly Primitive[]],
+): readonly Primitive[] => (isSingleArrayArg(args) ? args[0] : args);
+
+const createLinearPredicate = (
+  items: readonly Primitive[],
+): Predicate<Primitive> => {
+  return function (input: unknown): input is Primitive {
+    return items.some((value) => Object.is(value, input));
+  };
+};
+
+const createSetPredicate = (
+  items: readonly Primitive[],
+): Predicate<Primitive> => {
+  // WHY: Set uses SameValueZero (treats +0 and -0 as equal). To preserve
+  // Object.is semantics for zeros while keeping O(1) lookups, track -0/+0
+  // explicitly and use Set for all other values.
+  let hasPositiveZero = false;
+  let hasNegativeZero = false;
+  const valueSet = new Set<unknown>();
+  for (const literalValue of items) {
+    if (isZeroNumber(literalValue)) {
+      if (Object.is(literalValue, -0)) hasNegativeZero = true;
+      else hasPositiveZero = true;
+    } else {
+      valueSet.add(literalValue);
+    }
+  }
+
+  return function (input: unknown): input is Primitive {
+    if (isZeroNumber(input)) {
+      return Object.is(input, -0) ? hasNegativeZero : hasPositiveZero;
+    }
+    return valueSet.has(input);
+  };
+};
 
 /**
  * Creates a guard that matches when the input is one of the provided literal values.
@@ -17,7 +68,7 @@ export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
   ...values: T
 ): Predicate<T[number]>;
 export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
-  values: T
+  values: T,
 ): Predicate<T[number]>;
 export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
   ...valuesOrArray: T | [T]
@@ -25,46 +76,9 @@ export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
 export function oneOfValues(
   ...args: readonly Primitive[] | [readonly Primitive[]]
 ): Predicate<Primitive> {
-  // Detects the overload form with a single readonly array argument.
-  const isSingleArrayArg = define<readonly [readonly Primitive[]]>((value) => {
-    if (!Array.isArray(value)) return false;
-    return value.length === 1 && Array.isArray(value[0]);
-  });
+  const items = normalizeValues(args);
 
-  // Accept either varargs or a single readonly tuple array argument.
-  const items: readonly Primitive[] = isSingleArrayArg(args) ? args[0] : args;
-
-  if (items.length <= ONE_OF_VALUES_LINEAR_SCAN_MAX) {
-    return function (input: unknown): input is Primitive {
-      return items.some((value) => Object.is(value, input));
-    };
-  }
-
-  // WHY: Set uses SameValueZero (treats +0 and -0 as equal). To preserve
-  // Object.is semantics for zeros while keeping O(1) lookups, track -0/+0
-  // explicitly and use Set for all other values.
-  let hasPositiveZero = false;
-  let hasNegativeZero = false;
-  const valueSet = new Set<unknown>();
-  for (const literalValue of items) {
-    if (
-      typeof literalValue === 'number' &&
-      (Object.is(literalValue, 0) || Object.is(literalValue, -0))
-    ) {
-      if (Object.is(literalValue, -0)) hasNegativeZero = true;
-      else hasPositiveZero = true;
-    } else {
-      valueSet.add(literalValue);
-    }
-  }
-
-  return function (input: unknown): input is Primitive {
-    if (
-      typeof input === 'number' &&
-      (Object.is(input, 0) || Object.is(input, -0))
-    ) {
-      return Object.is(input, -0) ? hasNegativeZero : hasPositiveZero;
-    }
-    return valueSet.has(input);
-  };
+  return items.length <= ONE_OF_VALUES_LINEAR_SCAN_MAX
+    ? createLinearPredicate(items)
+    : createSetPredicate(items);
 }
