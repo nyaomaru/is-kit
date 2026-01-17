@@ -1,6 +1,17 @@
 import type { Schema, InferSchema, Predicate } from '@/types';
 import { isPlainObject } from '../object';
 
+const hasRequiredKeys = (
+  obj: Record<string, unknown>,
+  schema: Schema,
+  keys: readonly string[],
+): boolean => keys.every((key) => key in obj && schema[key]!(obj[key]));
+
+const hasOnlyAllowedKeys = (
+  obj: Record<string, unknown>,
+  allowed: ReadonlySet<string>,
+): boolean => Object.keys(obj).every((key) => allowed.has(key));
+
 /**
  * Validates an object against a field-to-guard schema.
  * Keys in the schema are required; optionally rejects extra keys when `exact: true`.
@@ -11,7 +22,7 @@ import { isPlainObject } from '../object';
  */
 export function struct<S extends Schema>(
   schema: S,
-  options?: { exact?: boolean }
+  options?: { exact?: boolean },
 ): Predicate<InferSchema<S>> {
   // WHY: Precompute schema keys and the allowed set (when exact) once per
   // builder to avoid repeated Object.keys/Set allocations on every call.
@@ -22,18 +33,8 @@ export function struct<S extends Schema>(
     if (!isPlainObject(input)) return false;
     const obj = input as Record<string, unknown>;
 
-    for (const key of schemaKeys) {
-      if (!(key in obj)) return false;
-
-      const guard = schema[key]!;
-      if (!guard(obj[key])) return false;
-    }
-
-    if (allowed) {
-      for (const key of Object.keys(obj)) {
-        if (!allowed.has(key)) return false;
-      }
-    }
-    return true;
+    if (!hasRequiredKeys(obj, schema, schemaKeys)) return false;
+    if (!allowed) return true;
+    return hasOnlyAllowedKeys(obj, allowed);
   };
 }

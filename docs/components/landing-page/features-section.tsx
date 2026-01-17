@@ -34,6 +34,100 @@ export type FeaturesSectionProps = {
   autoAdvanceMs?: number;
 };
 
+type FeatureGridProps = {
+  /** Feature entries rendered in the grid. */
+  items: FeatureItem[];
+};
+
+type FeatureTabsProps = {
+  /** Feature entries rendered in the tabbed layout. */
+  items: FeatureItem[];
+  /** Auto-advance interval for the tabbed layout. */
+  autoAdvanceMs?: number;
+  /** Id of a visible label describing the tablist. */
+  ariaLabelledBy: string;
+};
+
+type FeatureTabPanelProps = {
+  /** Active feature item to render. */
+  item: FeatureItem;
+};
+
+/**
+ * Resolves the active feature item, defaulting to the first item when missing.
+ * @param items List of feature items to search.
+ * @param active Active feature id.
+ * @returns The matching feature or the first item as fallback.
+ */
+const getActiveFeature = (items: readonly FeatureItem[], active?: string) =>
+  items.find((feature) => feature.id === active) ?? items[0];
+
+const FeatureGrid = ({ items }: FeatureGridProps) => (
+  <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+    {items.map((feature) => (
+      <FeatureCard
+        key={feature.id}
+        id={feature.id}
+        title={feature.title}
+        description={feature.description}
+      />
+    ))}
+  </div>
+);
+
+const FeatureTabPanel = ({ item }: FeatureTabPanelProps) => (
+  <div className='max-w-full'>
+    <div className='max-w-full overflow-x-auto'>
+      <div className='min-w-max space-y-3 md:min-w-0 md:max-w-prose'>
+        <Heading variant='h3' className='text-lg'>
+          <Typewriter
+            key={item.id + '-title'}
+            text={item.title}
+            speedMs={TYPEWRITER_TITLE_SPEED_MS}
+            startDelayMs={TYPEWRITER_TITLE_START_DELAY_MS}
+            cursor={false}
+            className='inline'
+          />
+        </Heading>
+        <Paragraph className='text-muted-foreground' spacing='flat'>
+          <Typewriter
+            key={item.id + '-desc'}
+            text={item.description}
+            startDelayMs={TYPEWRITER_DESC_START_DELAY_MS}
+          />
+        </Paragraph>
+      </div>
+    </div>
+  </div>
+);
+
+const FeatureTabs = ({
+  items,
+  autoAdvanceMs,
+  ariaLabelledBy,
+}: FeatureTabsProps) => {
+  if (items.length === 0) return null;
+
+  return (
+    <Tabs
+      items={items.map((feature) => ({
+        value: feature.id,
+        label: feature.title,
+      }))}
+      defaultValue={items[0]?.id ?? 'feature'}
+      autoAdvanceMs={autoAdvanceMs || undefined}
+      contentClassName={FEATURES_TAB_CONTENT_MIN_H_CLASS}
+      ariaLabelledBy={ariaLabelledBy}
+    >
+      {(active) => {
+        const current = getActiveFeature(items, active);
+        if (!current) return null;
+        return <FeatureTabPanel item={current} />;
+      }}
+    </Tabs>
+  );
+};
+
 export function FeaturesSection({
   id = 'features',
   title,
@@ -48,58 +142,13 @@ export function FeaturesSection({
         {title}
       </Heading>
       {variant === 'grid' ? (
-        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {items.map((feature) => (
-            <FeatureCard
-              key={feature.id}
-              id={feature.id}
-              title={feature.title}
-              description={feature.description}
-            />
-          ))}
-        </div>
+        <FeatureGrid items={items} />
       ) : (
-        <Tabs
-          items={items.map((feature) => ({
-            value: feature.id,
-            label: feature.title,
-          }))}
-          defaultValue={items[0]?.id ?? 'feature'}
-          autoAdvanceMs={autoAdvanceMs || undefined}
-          contentClassName={FEATURES_TAB_CONTENT_MIN_H_CLASS}
+        <FeatureTabs
+          items={items}
+          autoAdvanceMs={autoAdvanceMs}
           ariaLabelledBy={titleId}
-        >
-          {(active) => {
-            const current =
-              items.find((feature) => feature.id === active) ?? items[0];
-            if (!current) return null;
-            return (
-              <div className='max-w-full'>
-                <div className='max-w-full overflow-x-auto'>
-                  <div className='min-w-max space-y-3 md:min-w-0 md:max-w-prose'>
-                    <Heading variant='h3' className='text-lg'>
-                      <Typewriter
-                        key={current.id + '-title'}
-                        text={current.title}
-                        speedMs={TYPEWRITER_TITLE_SPEED_MS}
-                        startDelayMs={TYPEWRITER_TITLE_START_DELAY_MS}
-                        cursor={false}
-                        className='inline'
-                      />
-                    </Heading>
-                    <Paragraph className='text-muted-foreground' spacing='flat'>
-                      <Typewriter
-                        key={current.id + '-desc'}
-                        text={current.description}
-                        startDelayMs={TYPEWRITER_DESC_START_DELAY_MS}
-                      />
-                    </Paragraph>
-                  </div>
-                </div>
-              </div>
-            );
-          }}
-        </Tabs>
+        />
       )}
     </section>
   );
