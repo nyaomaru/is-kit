@@ -14,7 +14,7 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 - fix web_search config by @nyaomaru in [#114](https://github.com/nyaomaru/is-kit/pull/114)
 - eslint warnings by @nyaomaru in [#115](https://github.com/nyaomaru/is-kit/pull/115)
 
-### Changed
+### Chore
 
 - Update dependency prettier to v3.8.0 by [bot] by @renovate in [#113](https://github.com/nyaomaru/is-kit/pull/113)
 
@@ -102,10 +102,10 @@ isZero(1); // false
 
 - Add numeric guards in primitive: `isInteger`, `isSafeInteger`, `isPositive`, `isNegative`.
 - Semantics:
-    - `isInteger` uses Number.isInteger narrowing to `number` type.
-    - `isSafeInteger` uses Number.isSafeInteger narrowing to `number` type..
-    - `isPositive` accepts finite numbers strictly greater than 0 (excludes NaN/±Infinity; -0 is not positive).
-    - `isNegative` accepts finite numbers strictly less than 0 (excludes NaN/±Infinity; -0 is not negative).
+  - `isInteger` uses Number.isInteger narrowing to `number` type.
+  - `isSafeInteger` uses Number.isSafeInteger narrowing to `number` type..
+  - `isPositive` accepts finite numbers strictly greater than 0 (excludes NaN/±Infinity; -0 is not positive).
+  - `isNegative` accepts finite numbers strictly less than 0 (excludes NaN/±Infinity; -0 is not negative).
 
 **Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.6...v1.1.7
 
