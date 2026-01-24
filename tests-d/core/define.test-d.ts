@@ -7,5 +7,6 @@ import type { Predicate } from '../../src/types';
 // =============================================
 // it: returns a Predicate<T> regardless of input predicate flavor
 expectType<Predicate<string>>(define<string>(() => true));
-expectType<Predicate<number>>(define<number>((x): x is number => typeof x === 'number'));
-
+expectType<Predicate<number>>(
+  define<number>((x): x is number => typeof x === 'number')
+);

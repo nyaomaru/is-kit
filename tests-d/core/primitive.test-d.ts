@@ -16,7 +16,7 @@ import {
   isSymbol,
   isUndefined,
   isNull,
-  isPrimitive,
+  isPrimitive
 } from '../../src/core/primitive';
 import type { Predicate, Refine, Primitive } from '../../src/types';
 

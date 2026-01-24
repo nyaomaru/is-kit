@@ -74,7 +74,7 @@ import {
   optional,
   isNumber,
   isString,
-  predicateToRefine,
+  predicateToRefine
 } from 'is-kit';
 
 // Define small guards
@@ -94,7 +94,7 @@ const isUser = struct({
   id: isPositive, // number > 0
   name: isString, // string
   role: isRole, // 'admin' | 'member'
-  nickname: optional(isShortString), // string <= 3 | undefined
+  nickname: optional(isShortString) // string <= 3 | undefined
 });
 
 // Use them
@@ -132,7 +132,7 @@ import {
   isNegative,
   isZero,
   isNaN,
-  isInfiniteNumber,
+  isInfiniteNumber
 } from 'is-kit';
 
 // Any primitive
@@ -177,7 +177,7 @@ type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
 const isUser = struct({
   id: isString,
   age: isNumber,
-  role: oneOfValues('admin', 'guest', 'trial'),
+  role: oneOfValues('admin', 'guest', 'trial')
 });
 
 const byRole = narrowKeyTo(isUser, 'role');

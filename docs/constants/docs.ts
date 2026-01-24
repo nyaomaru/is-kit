@@ -4,7 +4,7 @@ export const INSTALL_COMMANDS: Record<InstallTab, string> = {
   pnpm: 'pnpm add is-kit',
   npm: 'npm i is-kit',
   yarn: 'yarn add is-kit',
-  bun: 'bun add is-kit',
+  bun: 'bun add is-kit'
 };
 
 export const USAGE_TABS = [
@@ -14,7 +14,7 @@ export const USAGE_TABS = [
   'parse',
   'combinators',
   'nullability',
-  'equality',
+  'equality'
 ] as const;
 export type UsageTab = (typeof USAGE_TABS)[number];
 export const USAGE_SNIPPETS: Record<UsageTab, string> = {
@@ -102,5 +102,5 @@ const lengthIs3 = equalsBy(isString, (s) => s.length)(3 as const);
 lengthIs3('foo'); // true
 
 const hasNameA = equalsKey('name', 'a' as const);
-hasNameA({ id: 1, name: 'a' }); // true`,
+hasNameA({ id: 1, name: 'a' }); // true`
 };

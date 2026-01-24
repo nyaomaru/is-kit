@@ -23,7 +23,8 @@ if (stringKeyNumberRecordGuard(stringKeyNumberCandidate)) {
 
 // it: literal keys 'a' | 'b'
 const isLiteralABKey = define<'a' | 'b'>(
-  (key): key is 'a' | 'b' => typeof key === 'string' && (key === 'a' || key === 'b')
+  (key): key is 'a' | 'b' =>
+    typeof key === 'string' && (key === 'a' || key === 'b')
 );
 
 const literalKeyNumberRecordGuard = recordOf(isLiteralABKey, isNumber);
@@ -35,7 +36,9 @@ declare const literalKeyRecordCandidate: unknown;
 if (literalKeyNumberRecordGuard(literalKeyRecordCandidate)) {
   expectType<Readonly<Record<'a' | 'b', number>>>(literalKeyRecordCandidate);
 
-  const literalKeys = Object.keys(literalKeyRecordCandidate) as Array<'a' | 'b'>;
+  const literalKeys = Object.keys(literalKeyRecordCandidate) as Array<
+    'a' | 'b'
+  >;
   expectType<Array<'a' | 'b'>>(literalKeys);
 }
 
@@ -52,6 +55,8 @@ declare const numericKeyRecordCandidate: unknown;
 
 if (numericKeyNumberRecordGuard(numericKeyRecordCandidate)) {
   expectType<Readonly<Record<`${number}`, number>>>(numericKeyRecordCandidate);
-  const numericKeys = Object.keys(numericKeyRecordCandidate) as Array<`${number}`>;
+  const numericKeys = Object.keys(
+    numericKeyRecordCandidate
+  ) as Array<`${number}`>;
   expectType<Array<`${number}`>>(numericKeys);
 }

@@ -9,7 +9,7 @@ import {
   FEATURES_TAB_CONTENT_MIN_H_CLASS,
   TYPEWRITER_DESC_START_DELAY_MS,
   TYPEWRITER_TITLE_SPEED_MS,
-  TYPEWRITER_TITLE_START_DELAY_MS,
+  TYPEWRITER_TITLE_START_DELAY_MS
 } from '@/constants/features';
 
 type FeatureItem = {
@@ -104,7 +104,7 @@ const FeatureTabPanel = ({ item }: FeatureTabPanelProps) => (
 const FeatureTabs = ({
   items,
   autoAdvanceMs,
-  ariaLabelledBy,
+  ariaLabelledBy
 }: FeatureTabsProps) => {
   if (items.length === 0) return null;
 
@@ -112,7 +112,7 @@ const FeatureTabs = ({
     <Tabs
       items={items.map((feature) => ({
         value: feature.id,
-        label: feature.title,
+        label: feature.title
       }))}
       defaultValue={items[0]?.id ?? 'feature'}
       autoAdvanceMs={autoAdvanceMs || undefined}
@@ -133,7 +133,7 @@ export function FeaturesSection({
   title,
   items,
   variant = 'grid',
-  autoAdvanceMs = FEATURES_DEFAULT_AUTO_ADVANCE_MS,
+  autoAdvanceMs = FEATURES_DEFAULT_AUTO_ADVANCE_MS
 }: FeaturesSectionProps) {
   const titleId = `${id}-title`;
   return (

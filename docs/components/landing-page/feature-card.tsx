@@ -2,7 +2,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
+  CardDescription
 } from '@/components/ui/card';
 
 export type FeatureCardProps = {

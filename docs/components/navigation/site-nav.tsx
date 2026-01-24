@@ -14,7 +14,7 @@ type SiteNavProps = {
 export function SiteNav({
   className,
   showSeparators = true,
-  orientation = 'horizontal',
+  orientation = 'horizontal'
 }: SiteNavProps) {
   const baseClasses =
     orientation === 'horizontal'

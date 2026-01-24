@@ -73,7 +73,7 @@ const CodeTabPanel = ({ item }: CodeTabPanelProps) => {
         text={code}
         className={cn(
           'absolute right-2 top-1/2 -translate-y-1/2',
-          copy.className,
+          copy.className
         )}
         aria-label={copy.ariaLabel ?? `Copy ${label ?? value} code`}
         resetAfterMs={copy.resetAfterMs}
@@ -95,7 +95,7 @@ export function CodeTabs({
   className,
   contentClassName,
   ariaLabel,
-  ariaLabelledBy,
+  ariaLabelledBy
 }: CodeTabsProps) {
   if (items.length === 0) return null;
 

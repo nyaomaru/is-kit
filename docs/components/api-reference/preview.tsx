@@ -5,7 +5,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
+  CardDescription
 } from '@/components/ui/card';
 import { FEATURED_API_ITEMS } from '@/constants/api-items';
 
@@ -21,7 +21,7 @@ export type ApiReferencePreviewProps = {
 export function APIReferencePreview({
   id = 'api-reference',
   title,
-  fullReferenceLinkText,
+  fullReferenceLinkText
 }: ApiReferencePreviewProps) {
   const titleId = `${id}-title`;
   const items = FEATURED_API_ITEMS;

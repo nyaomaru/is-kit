@@ -35,7 +35,9 @@ expectNotAssignable<(input: unknown) => input is readonly number[]>(
 );
 
 // it: unions are preserved element-wise
-const isLiteralAB = define<'a' | 'b'>((value): value is 'a' | 'b' => value === 'a' || value === 'b');
+const isLiteralAB = define<'a' | 'b'>(
+  (value): value is 'a' | 'b' => value === 'a' || value === 'b'
+);
 const literalABArrayGuard = arrayOf(isLiteralAB);
 expectType<Predicate<readonly ('a' | 'b')[]>>(literalABArrayGuard);
 

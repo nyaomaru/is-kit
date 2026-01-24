@@ -16,8 +16,6 @@ export function oneOf<A, Fs extends readonly Predicate<A>[]>(
 export function oneOf(
   ...guards: readonly ((input: unknown) => input is unknown)[]
 ) {
-  const predicates = toBooleanPredicates(
-    guards as readonly Guard<unknown>[]
-  );
+  const predicates = toBooleanPredicates(guards as readonly Guard<unknown>[]);
   return (input: unknown) => predicates.some((guard) => guard(input));
 }

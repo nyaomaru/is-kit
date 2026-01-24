@@ -8,7 +8,7 @@ import { getDictionary } from '@/lib/dictionaries';
 import {
   SUPPORTED_LOCALES,
   type Locale,
-  DEFAULT_LOCALE,
+  DEFAULT_LOCALE
 } from '@/constants/i18n';
 
 export async function generateStaticParams() {
@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 }
 
 export default async function DocsPage({
-  params,
+  params
 }: {
   params: { lang: Locale };
 }) {
@@ -52,33 +52,33 @@ export default async function DocsPage({
           {
             id: 'feature-type-safe',
             title: dict.top.features.stringDivision.title,
-            description: dict.top.features.stringDivision.description,
+            description: dict.top.features.stringDivision.description
           },
           {
             id: 'feature-logic',
             title: dict.top.features.arrayProcessing.title,
-            description: dict.top.features.arrayProcessing.description,
+            description: dict.top.features.arrayProcessing.description
           },
           {
             id: 'feature-collections',
             title: dict.top.features.nestedArray.title,
-            description: dict.top.features.nestedArray.description,
+            description: dict.top.features.nestedArray.description
           },
           {
             id: 'feature-nullable',
             title: dict.top.features.flexibleOutput.title,
-            description: dict.top.features.flexibleOutput.description,
+            description: dict.top.features.flexibleOutput.description
           },
           {
             id: 'feature-parse',
             title: dict.top.features.flatteningOption.title,
-            description: dict.top.features.flatteningOption.description,
+            description: dict.top.features.flatteningOption.description
           },
           {
             id: 'feature-tiny',
             title: dict.top.features.mixedDelimiters.title,
-            description: dict.top.features.mixedDelimiters.description,
-          },
+            description: dict.top.features.mixedDelimiters.description
+          }
         ]}
         variant='tabs'
       />

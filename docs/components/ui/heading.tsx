@@ -11,12 +11,12 @@ const headingVariants = cva('', {
       h3: 'font-semibold',
       h4: 'font-medium',
       h5: 'font-medium',
-      h6: 'font-medium',
-    },
+      h6: 'font-medium'
+    }
   },
   defaultVariants: {
-    variant: 'h2',
-  },
+    variant: 'h2'
+  }
 });
 
 type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -37,7 +37,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Heading.displayName = 'Heading';
 

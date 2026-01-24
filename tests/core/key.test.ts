@@ -6,7 +6,7 @@ import { oneOfValues } from '@/core/combinators/one-of-values';
 const isUser = struct({
   id: isString,
   age: isNumber,
-  role: oneOfValues('admin', 'guest', 'trial'),
+  role: oneOfValues('admin', 'guest', 'trial')
 });
 
 describe('key: narrowKeyTo', () => {

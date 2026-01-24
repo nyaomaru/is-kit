@@ -12,7 +12,7 @@ const GRID_CLASSES_BY_COUNT: Record<number, string[]> = {
   1: ['md:grid-cols-1'],
   2: ['md:grid-cols-2'],
   3: ['md:grid-cols-3'],
-  4: ['md:grid-cols-4'],
+  4: ['md:grid-cols-4']
 };
 const GRID_CLASSES_DEFAULT = ['md:auto-cols-fr', 'md:grid-flow-col'];
 
@@ -74,7 +74,7 @@ const getNextIndexForArrowKey = (
   key: string,
   currentIndex: number,
   length: number,
-  loop: boolean,
+  loop: boolean
 ): number | null => {
   if (key !== KEY_ARROW_RIGHT && key !== KEY_ARROW_LEFT) return null;
 
@@ -112,7 +112,7 @@ const resolveNextValue = (
   key: string,
   active: string | undefined,
   values: readonly string[],
-  loop: boolean,
+  loop: boolean
 ): string | null => {
   const currentIndex = getCurrentIndex(active, values);
   if (currentIndex === null) return null;
@@ -121,7 +121,7 @@ const resolveNextValue = (
     key,
     currentIndex,
     values.length,
-    loop,
+    loop
   );
   if (arrowIndex !== null) return values[arrowIndex] ?? null;
 
@@ -137,7 +137,7 @@ const resolveNextValue = (
  */
 const getCurrentIndex = (
   active: string | undefined,
-  values: readonly string[],
+  values: readonly string[]
 ): number | null => {
   if (!active) return null;
   if (values.length === 0) return null;
@@ -154,7 +154,7 @@ const getCurrentIndex = (
  */
 const getFallbackTabValue = (
   values: readonly string[],
-  defaultValue: string,
+  defaultValue: string
 ): string | undefined => {
   if (values.length === 0) return undefined;
   if (defaultValue && values.includes(defaultValue)) return defaultValue;
@@ -177,12 +177,12 @@ const getGridClasses = (length: number): string[] =>
  */
 const createTabDescriptors = (
   items: readonly TabItem[],
-  baseId: string,
+  baseId: string
 ): TabDescriptor[] =>
   items.map((item, index) => ({
     item,
     tabId: `${baseId}-tab-${index}`,
-    panelId: `${baseId}-panel-${index}`,
+    panelId: `${baseId}-panel-${index}`
   }));
 
 /**
@@ -193,7 +193,7 @@ const createTabDescriptors = (
  */
 const getActiveDescriptor = (
   descriptors: readonly TabDescriptor[],
-  active?: string,
+  active?: string
 ): TabDescriptor | undefined => {
   if (descriptors.length === 0) return undefined;
   if (!active) return descriptors[0];
@@ -221,7 +221,7 @@ const shouldAutoAdvance = (autoAdvanceMs: number, itemCount: number) =>
 const getNextAutoAdvanceIndex = (
   active: string | undefined,
   values: readonly string[],
-  loop: boolean,
+  loop: boolean
 ): number | null => {
   if (values.length === 0) return null;
 
@@ -242,7 +242,7 @@ const getNextAutoAdvanceIndex = (
  */
 const useTabActivation = (
   initialValue: string | undefined,
-  onChange?: (value: string) => void,
+  onChange?: (value: string) => void
 ) => {
   const [active, setActive] = useState<string | undefined>(initialValue);
   const activate = useCallback(
@@ -253,7 +253,7 @@ const useTabActivation = (
         return value;
       });
     },
-    [onChange],
+    [onChange]
   );
 
   return { active, activate };
@@ -275,7 +275,7 @@ const useTabFocus = (descriptors: readonly TabDescriptor[]) =>
         node.focus();
       }
     },
-    [descriptors],
+    [descriptors]
   );
 
 /**
@@ -289,7 +289,7 @@ const useEnsureActiveTab = (
   values: readonly string[],
   fallbackValue: string | undefined,
   active: string | undefined,
-  activate: (value: string) => void,
+  activate: (value: string) => void
 ) => {
   useEffect(() => {
     if (values.length === 0) return;
@@ -324,7 +324,7 @@ const useAutoAdvanceTabs = ({
   active,
   loop,
   itemCount,
-  activate,
+  activate
 }: AutoAdvanceConfig) => {
   useEffect(() => {
     const intervalMs = autoAdvanceMs ?? 0;
@@ -363,7 +363,7 @@ const useTabKeyDownHandler = ({
   values,
   loop,
   activate,
-  focusTab,
+  focusTab
 }: KeyDownConfig) =>
   useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
@@ -376,7 +376,7 @@ const useTabKeyDownHandler = ({
       activate(nextValue);
       focusTab(nextValue);
     },
-    [values, active, activate, loop, focusTab],
+    [values, active, activate, loop, focusTab]
   );
 
 const TabList = ({
@@ -386,13 +386,13 @@ const TabList = ({
   ariaLabel,
   ariaLabelledBy,
   onKeyDown,
-  onActivate,
+  onActivate
 }: TabListProps) => (
   <div className='overflow-x-auto md:overflow-x-visible'>
     <div
       className={cn(
         'flex w-full min-w-max divide-x divide-primary/30 border-b border-primary/40 md:grid md:min-w-0',
-        gridClasses,
+        gridClasses
       )}
       role='tablist'
       aria-label={ariaLabel}
@@ -410,7 +410,7 @@ const TabList = ({
               'flex-none whitespace-nowrap px-3 py-2 text-sm text-center transition-colors md:flex-1 md:whitespace-normal',
               isActive
                 ? 'bg-primary/20 text-primary font-medium border-primary'
-                : 'hover:bg-primary/10',
+                : 'hover:bg-primary/10'
             )}
             id={tabId}
             role='tab'
@@ -432,7 +432,7 @@ const TabPanel = ({
   ariaLabelledBy,
   className,
   activeValue,
-  children,
+  children
 }: TabPanelProps) => (
   <div
     id={id}
@@ -481,22 +481,22 @@ export function Tabs({
   onChange,
   ariaLabel,
   ariaLabelledBy,
-  children,
+  children
 }: TabsProps) {
   const baseId = useId();
   const values = useMemo(() => items.map((item) => item.value), [items]);
   const fallbackValue = useMemo(
     () => getFallbackTabValue(values, defaultValue),
-    [defaultValue, values],
+    [defaultValue, values]
   );
   const { active, activate } = useTabActivation(fallbackValue, onChange);
   const gridClasses = useMemo(
     () => getGridClasses(items.length),
-    [items.length],
+    [items.length]
   );
   const descriptors = useMemo(
     () => createTabDescriptors(items, baseId),
-    [items, baseId],
+    [items, baseId]
   );
   const focusTab = useTabFocus(descriptors);
 
@@ -507,7 +507,7 @@ export function Tabs({
     active,
     loop,
     itemCount: items.length,
-    activate,
+    activate
   });
 
   const handleKeyDown = useTabKeyDownHandler({
@@ -515,12 +515,12 @@ export function Tabs({
     values,
     loop,
     activate,
-    focusTab,
+    focusTab
   });
 
   const activeDescriptor = useMemo(
     () => getActiveDescriptor(descriptors, active),
-    [descriptors, active],
+    [descriptors, active]
   );
 
   if (!activeDescriptor) {

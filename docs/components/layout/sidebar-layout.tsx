@@ -17,7 +17,7 @@ export type SidebarLayoutProps = {
 export function SidebarLayout({
   defaultSidebarOpen,
   sections,
-  children,
+  children
 }: SidebarLayoutProps) {
   const pathname = usePathname();
   const computedDefaultOpen =
@@ -28,7 +28,7 @@ export function SidebarLayout({
     window.matchMedia('(max-width: 767px)').matches;
 
   const [open, setOpen] = useState(() =>
-    isMobileViewport() ? false : computedDefaultOpen,
+    isMobileViewport() ? false : computedDefaultOpen
   );
   useEffect(() => {
     if (isMobileViewport()) {
@@ -86,7 +86,7 @@ export function SidebarLayout({
       <div
         className={cn(
           "relative flex-1 min-w-0 overflow-x-hidden md:before:pointer-events-none md:before:absolute md:before:inset-y-0 md:before:left-0 md:before:w-px md:before:bg-border md:before:opacity-0 md:before:transition-opacity md:before:duration-300 md:before:content-['']",
-          open && 'md:ml-40',
+          open && 'md:ml-40'
         )}
       >
         {children}

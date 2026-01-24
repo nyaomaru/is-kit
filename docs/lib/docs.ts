@@ -2,7 +2,7 @@ import {
   INSTALL_TABS,
   INSTALL_COMMANDS,
   USAGE_TABS,
-  USAGE_SNIPPETS,
+  USAGE_SNIPPETS
 } from '@/constants/docs';
 
 /**

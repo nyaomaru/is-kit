@@ -18,13 +18,13 @@ export const TextLink = React.forwardRef<HTMLAnchorElement, TextLinkProps>(
         ref={ref}
         className={cn(
           'group inline-flex items-center text-primary transition-colors focus-visible:outline-none focus-visible:underline link-underline',
-          className,
+          className
         )}
         {...props}
       >
         {children}
       </Link>
     );
-  },
+  }
 );
 TextLink.displayName = 'TextLink';

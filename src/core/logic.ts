@@ -4,7 +4,7 @@ import type {
   RefineChain,
   ChainResult,
   OutOfGuards,
-  Predicate,
+  Predicate
 } from '@/types';
 import { toBooleanPredicates } from '@/utils';
 

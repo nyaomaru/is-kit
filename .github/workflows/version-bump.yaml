@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: "Select version bump type"
+        description: 'Select version bump type'
         required: true
-        default: "patch"
+        default: 'patch'
         type: choice
         options: [patch, minor, major]
 
