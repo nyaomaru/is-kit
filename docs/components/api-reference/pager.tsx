@@ -4,7 +4,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
+  CardDescription
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -32,7 +32,7 @@ export type ApiReferencePagerProps = {
 };
 export function ApiReferencePager({
   currentHref,
-  className,
+  className
 }: ApiReferencePagerProps) {
   const list = flatten();
   const idx = list.findIndex((x) => x.href === currentHref);

@@ -11,12 +11,12 @@ const stackVariants = cva('flex flex-col', {
       sm: 'gap-4',
       md: 'gap-6',
       lg: 'gap-8',
-      xl: 'gap-10',
-    },
+      xl: 'gap-10'
+    }
   },
   defaultVariants: {
-    gap: 'md',
-  },
+    gap: 'md'
+  }
 });
 
 type StackTag = 'div' | 'section' | 'article' | 'main' | 'aside' | 'nav';
@@ -40,7 +40,7 @@ type ElementFromTag<Tag extends StackTag> =
     : never;
 
 type StackComponent = <Tag extends StackTag = 'div'>(
-  props: StackProps<Tag> & { ref?: React.Ref<ElementFromTag<Tag>> },
+  props: StackProps<Tag> & { ref?: React.Ref<ElementFromTag<Tag>> }
 ) => React.ReactElement | null;
 
 /**
@@ -51,13 +51,13 @@ type StackComponent = <Tag extends StackTag = 'div'>(
  */
 const StackBase = <Tag extends StackTag = 'div'>(
   { className, gap, variant, ...props }: StackProps<Tag>,
-  ref: React.ForwardedRef<ElementFromTag<Tag>>,
+  ref: React.ForwardedRef<ElementFromTag<Tag>>
 ) => {
   const Component = (variant ?? 'div') as StackTag;
   return React.createElement(Component, {
     ...(props as Record<string, unknown>),
     ref,
-    className: cn(stackVariants({ gap }), className),
+    className: cn(stackVariants({ gap }), className)
   } as React.Attributes & JSX.IntrinsicElements[Tag]);
 };
 

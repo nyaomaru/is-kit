@@ -8,7 +8,7 @@ import { apiSections } from '@/constants/api-sections';
 const sourceSans3 = Source_Sans_3({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-sans',
+  variable: '--font-sans'
 });
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/iskit_favicon.png',
     shortcut: '/iskit_favicon.png',
-    apple: '/iskit_favicon.png',
+    apple: '/iskit_favicon.png'
   },
   openGraph: {
     title: 'is-kit • Docs',
@@ -25,23 +25,23 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/iskit_logo1.svg',
-        alt: 'is-kit logo',
-      },
-    ],
+        alt: 'is-kit logo'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['/iskit_logo1.svg'],
-  },
+    images: ['/iskit_logo1.svg']
+  }
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
-  initialScale: 1,
+  initialScale: 1
 };
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {

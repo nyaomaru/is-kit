@@ -22,7 +22,8 @@ const activeUserParseResult = safeParse(isActive, user);
 expectType<ParseResult<ActiveUser>>(activeUserParseResult);
 
 // it: with plain predicate returns ParseResult<boolean>
-const isBooleanPredicate = (candidate: unknown) => typeof candidate === 'boolean';
+const isBooleanPredicate = (candidate: unknown) =>
+  typeof candidate === 'boolean';
 const booleanParseResult = safeParse(isBooleanPredicate, unknownInput);
 expectType<ParseResult<boolean>>(booleanParseResult);
 

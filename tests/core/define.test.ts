@@ -8,4 +8,3 @@ describe('core/define', () => {
     expect(isEven('2' as unknown)).toBe(false);
   });
 });
-

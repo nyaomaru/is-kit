@@ -7,10 +7,10 @@ const nextConfig = {
       {
         source: '/',
         destination: '/en',
-        permanent: true,
-      },
+        permanent: true
+      }
     ];
-  },
+  }
 };
 
 export default nextConfig;

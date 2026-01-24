@@ -15,7 +15,7 @@ import {
   isSymbol,
   isUndefined,
   isNull,
-  isPrimitive,
+  isPrimitive
 } from '../../src/core/primitive';
 
 describe('primitive guards', () => {
@@ -156,7 +156,7 @@ describe('primitive guards', () => {
       1n,
       Symbol('s'),
       undefined,
-      null,
+      null
     ];
     for (const v of values) {
       expect((isPrimitive as any)(v)).toBe(true);

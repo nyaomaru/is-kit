@@ -37,36 +37,36 @@ const en: Dict = {
       stringDivision: {
         title: 'Type-safe predicates',
         description:
-          'Author and compose predicates that refine types precisely.',
+          'Author and compose predicates that refine types precisely.'
       },
       arrayProcessing: {
         title: 'Composable logic',
         description:
-          'Combine guards with and/or/not while preserving inference.',
+          'Combine guards with and/or/not while preserving inference.'
       },
       nestedArray: {
         title: 'Collection helpers',
         description:
-          'Validate arrays, tuples, records with ergonomic combinators.',
+          'Validate arrays, tuples, records with ergonomic combinators.'
       },
       flexibleOutput: {
         title: 'Strict nullability',
-        description: 'Handle optional/nullable data with clear, typed helpers.',
+        description: 'Handle optional/nullable data with clear, typed helpers.'
       },
       flatteningOption: {
         title: 'Parsing helpers',
-        description: 'Safely parse unknown data with typed results.',
+        description: 'Safely parse unknown data with typed results.'
       },
       mixedDelimiters: {
         title: 'Tiny, focused',
-        description: 'Zero deps, tree-shakeable, designed for readability.',
-      },
+        description: 'Zero deps, tree-shakeable, designed for readability.'
+      }
     },
     api: {
       title: 'API Reference',
-      fullReferenceLinkText: 'Read full TypeDoc reference',
-    },
-  },
+      fullReferenceLinkText: 'Read full TypeDoc reference'
+    }
+  }
 };
 
 const nl: Dict = {
@@ -81,34 +81,34 @@ const nl: Dict = {
       title: 'Functies',
       stringDivision: {
         title: 'Type-veilige predicaten',
-        description: 'Stel predicaten samen die types precies verfijnen.',
+        description: 'Stel predicaten samen die types precies verfijnen.'
       },
       arrayProcessing: {
         title: 'Composteerbare logica',
-        description: 'Combineer guards met and/or/not en behoud inferentie.',
+        description: 'Combineer guards met and/or/not en behoud inferentie.'
       },
       nestedArray: {
         title: 'Collectiehulpen',
-        description: 'Valideer arrays, tuples en records met combinators.',
+        description: 'Valideer arrays, tuples en records met combinators.'
       },
       flexibleOutput: {
         title: 'Strikte nullability',
-        description: 'Behandel optional/nullable met duidelijke helpers.',
+        description: 'Behandel optional/nullable met duidelijke helpers.'
       },
       flatteningOption: {
         title: 'Parseerhulpen',
-        description: 'Parseer onbekende data veilig met getypte resultaten.',
+        description: 'Parseer onbekende data veilig met getypte resultaten.'
       },
       mixedDelimiters: {
         title: 'Klein en gericht',
-        description: 'Geen deps, tree-shakeable, leesbaar.',
-      },
+        description: 'Geen deps, tree-shakeable, leesbaar.'
+      }
     },
     api: {
       title: 'API Referentie',
-      fullReferenceLinkText: 'Lees de volledige TypeDoc',
-    },
-  },
+      fullReferenceLinkText: 'Lees de volledige TypeDoc'
+    }
+  }
 };
 
 /**
@@ -116,7 +116,7 @@ const nl: Dict = {
  */
 export const DICTIONARIES: Record<Locale, Dict> = {
   en,
-  nl,
+  nl
 };
 
 /**

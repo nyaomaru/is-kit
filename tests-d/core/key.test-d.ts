@@ -14,7 +14,7 @@ type User = {
 const isUser = struct({
   id: isString,
   age: isNumber,
-  role: oneOfValues('admin', 'guest', 'trial'),
+  role: oneOfValues('admin', 'guest', 'trial')
 });
 
 const byRole = narrowKeyTo(isUser, 'role');
@@ -28,4 +28,3 @@ declare let candidate: unknown;
 if (isGuest(candidate)) {
   expectType<'guest'>(candidate.role);
 }
-

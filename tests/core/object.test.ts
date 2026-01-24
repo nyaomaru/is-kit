@@ -17,7 +17,7 @@ import {
   isTypedArray,
   isError,
   isURL,
-  isBlob,
+  isBlob
 } from '@/core/object';
 
 describe('core/object guards', () => {
@@ -77,7 +77,7 @@ describe('core/object guards', () => {
     expect(isURL(new URL('https://example.com'))).toBe(true);
 
     // Blob and URL are available in Node 18+
-    const b = new Blob(["abc"], { type: 'text/plain' });
+    const b = new Blob(['abc'], { type: 'text/plain' });
     expect(isBlob(b)).toBe(true);
   });
 });

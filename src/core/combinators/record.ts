@@ -10,13 +10,13 @@ import { isPlainObject } from '../object';
  */
 export function recordOf<
   KF extends Predicate<string>,
-  VF extends Predicate<unknown>,
+  VF extends Predicate<unknown>
 >(
   keyFunction: KF,
-  valueFunction: VF,
+  valueFunction: VF
 ): Predicate<Readonly<Record<GuardedOf<KF>, GuardedOf<VF>>>> {
   return (
-    input: unknown,
+    input: unknown
   ): input is Readonly<Record<GuardedOf<KF>, GuardedOf<VF>>> => {
     if (!isPlainObject(input)) return false;
 

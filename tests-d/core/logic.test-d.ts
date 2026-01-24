@@ -6,7 +6,7 @@ import {
   not,
   isString,
   isNumber,
-  define,
+  define
 } from '../../src/core';
 import type { Predicate, Refine } from '../../src/types';
 
@@ -14,7 +14,9 @@ import type { Predicate, Refine } from '../../src/types';
 // describe: and
 // =============================================
 // it: narrows to a literal
-const isLiteralA = define<'a'>((candidate): candidate is 'a' => candidate === 'a');
+const isLiteralA = define<'a'>(
+  (candidate): candidate is 'a' => candidate === 'a'
+);
 const stringAndLiteralAGuard = and(isString, isLiteralA);
 expectType<Predicate<'a'>>(stringAndLiteralAGuard);
 

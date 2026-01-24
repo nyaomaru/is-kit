@@ -10,8 +10,8 @@ export default defineConfig([
     rules: {
       'no-unused-vars': 'warn',
       'no-undef': 'warn',
-      complexity: ['warn', { max: 7 }],
-    },
+      complexity: ['warn', { max: 7 }]
+    }
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
@@ -19,11 +19,11 @@ export default defineConfig([
       parser: tsParser,
       parserOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
+        sourceType: 'module'
+      }
     },
     plugins: {
-      '@typescript-eslint': tsPlugin,
+      '@typescript-eslint': tsPlugin
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
@@ -31,19 +31,19 @@ export default defineConfig([
       'no-unused-vars': 'off',
       'no-redeclare': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
-    },
+      '@typescript-eslint/no-unused-vars': 'warn'
+    }
   },
   {
     files: ['tests/**/*.ts', 'tests-d/**/*.ts'],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
   },
   {
     files: ['tests-d/**/*.ts'],
     rules: {
-      '@typescript-eslint/no-unused-vars': 'off',
-    },
-  },
+      '@typescript-eslint/no-unused-vars': 'off'
+    }
+  }
 ]);

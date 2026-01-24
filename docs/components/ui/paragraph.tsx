@@ -8,17 +8,17 @@ const paragraphVariants = cva('', {
     variant: {
       default: 'text-foreground',
       muted: 'text-primary/80',
-      lead: 'text-xl text-primary',
+      lead: 'text-xl text-primary'
     },
     spacing: {
       default: '',
-      flat: '',
-    },
+      flat: ''
+    }
   },
   defaultVariants: {
     variant: 'default',
-    spacing: 'default',
-  },
+    spacing: 'default'
+  }
 });
 
 type ParagraphProps = React.HTMLAttributes<HTMLParagraphElement> &
@@ -32,7 +32,7 @@ type ParagraphProps = React.HTMLAttributes<HTMLParagraphElement> &
 export const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
   (
     { className, spacing = 'default', style, variant = 'default', ...props },
-    ref,
+    ref
   ) => {
     const composedStyle =
       spacing === 'flat' ? { marginTop: 0, ...style } : style;
@@ -45,7 +45,7 @@ export const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Paragraph.displayName = 'Paragraph';
 

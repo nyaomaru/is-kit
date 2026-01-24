@@ -19,7 +19,7 @@ import {
   isTypedArray,
   isError,
   isURL,
-  isBlob,
+  isBlob
 } from '../../src/core/object';
 
 // =============================================

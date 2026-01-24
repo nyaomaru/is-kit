@@ -8,4 +8,3 @@ describe('core/predicate', () => {
     expect(refine(0)).toBe(false);
   });
 });
-

@@ -4,7 +4,7 @@ import {
   nonNull,
   nullish,
   optional,
-  required,
+  required
 } from '../../src/core/nullish';
 import { isString } from '@/core/primitive';
 import type { Predicate, Refine } from '@/types';
@@ -17,7 +17,8 @@ const nullableString = nullable(isString);
 expectType<Predicate<string | null>>(nullableString);
 
 // it: refine overload preserves refinement and adds null
-const refineLiteralA: Refine<string, 'a'> = (value): value is 'a' => value === 'a';
+const refineLiteralA: Refine<string, 'a'> = (value): value is 'a' =>
+  value === 'a';
 const nullableLiteralA = nullable(refineLiteralA);
 expectType<Refine<string | null, 'a' | null>>(nullableLiteralA);
 
@@ -41,7 +42,9 @@ expectType<Predicate<string | null | undefined>>(nullishString);
 
 // it: refine overload preserves refinement and adds null | undefined
 const nullishLiteralA = nullish(refineLiteralA);
-expectType<Refine<string | null | undefined, 'a' | null | undefined>>(nullishLiteralA);
+expectType<Refine<string | null | undefined, 'a' | null | undefined>>(
+  nullishLiteralA
+);
 
 // =============================================
 // describe: optional

@@ -4,12 +4,12 @@ import { isPlainObject } from '../object';
 const hasRequiredKeys = (
   obj: Record<string, unknown>,
   schema: Schema,
-  keys: readonly string[],
+  keys: readonly string[]
 ): boolean => keys.every((key) => key in obj && schema[key]!(obj[key]));
 
 const hasOnlyAllowedKeys = (
   obj: Record<string, unknown>,
-  allowed: ReadonlySet<string>,
+  allowed: ReadonlySet<string>
 ): boolean => Object.keys(obj).every((key) => allowed.has(key));
 
 /**
@@ -22,7 +22,7 @@ const hasOnlyAllowedKeys = (
  */
 export function struct<S extends Schema>(
   schema: S,
-  options?: { exact?: boolean },
+  options?: { exact?: boolean }
 ): Predicate<InferSchema<S>> {
   // WHY: Precompute schema keys and the allowed set (when exact) once per
   // builder to avoid repeated Object.keys/Set allocations on every call.

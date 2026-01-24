@@ -17,7 +17,7 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
         <pre
           className={cn(
             'w-full max-w-full overflow-x-auto rounded-md border bg-zinc-50 p-4 text-sm dark:bg-zinc-900',
-            className,
+            className
           )}
           style={{ ...style, background: 'transparent' }}
         >
@@ -29,7 +29,7 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
                 {...lineProps}
                 className={cn(
                   'px-2 -mx-2 rounded-sm whitespace-pre',
-                  lineProps.className,
+                  lineProps.className
                 )}
               >
                 {line.map((token, key) => {

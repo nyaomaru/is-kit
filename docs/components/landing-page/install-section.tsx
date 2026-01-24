@@ -14,7 +14,7 @@ export type InstallSectionProps = {
 
 export function InstallSection({
   tablistLabel,
-  tablistLabelledBy,
+  tablistLabelledBy
 }: InstallSectionProps = {}) {
   return (
     <CodeTabs
@@ -22,7 +22,7 @@ export function InstallSection({
         value: tab,
         code: installCode(tab),
         language: 'bash',
-        copy: { ariaLabel: 'Copy command' },
+        copy: { ariaLabel: 'Copy command' }
       }))}
       className='mb-8'
       ariaLabel={tablistLabel}

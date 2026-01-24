@@ -3,7 +3,7 @@ import {
   nonNull,
   nullish,
   optional,
-  required,
+  required
 } from '../../src/core/nullish';
 import { isString } from '@/core/primitive';
 import { predicateToRefine } from '@/core';

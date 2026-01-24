@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   outDir: 'dist',
-  target: 'esnext',
+  target: 'esnext'
 });

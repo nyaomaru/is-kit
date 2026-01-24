@@ -38,7 +38,7 @@ describe('struct', () => {
     const guard = struct(schema);
     const mixed: Array<[string, string] | [string, number]> = [
       ['id', 'abc'],
-      ['age', 20],
+      ['age', 20]
     ];
     const entries = mixed.map(([k, v]) => [k, v] as [string, string | number]);
 
@@ -65,7 +65,7 @@ describe('struct', () => {
       user({
         id: 'x',
         age: 10,
-        address: { city: 'Tokyo', zip: '100-0001' },
+        address: { city: 'Tokyo', zip: '100-0001' }
       })
     ).toBe(true);
 
@@ -73,7 +73,7 @@ describe('struct', () => {
       user({
         id: 'x',
         age: 10,
-        address: { city: 'Tokyo', zip: 1000001 },
+        address: { city: 'Tokyo', zip: 1000001 }
       })
     ).toBe(false);
   });

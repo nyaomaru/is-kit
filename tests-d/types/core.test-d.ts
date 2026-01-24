@@ -4,7 +4,7 @@ import type {
   Refine,
   ParseResult,
   Schema,
-  InferSchema,
+  InferSchema
 } from '../../src/types';
 
 // =============================================
@@ -26,7 +26,7 @@ void invalidParseResult;
 
 // it: Schema and InferSchema
 const schema = {
-  name: (x: unknown): x is string => typeof x === 'string',
+  name: (x: unknown): x is string => typeof x === 'string'
 } satisfies Schema;
 type Inferred = InferSchema<typeof schema>;
 const inferredValue: Inferred = { name: 'alice' };

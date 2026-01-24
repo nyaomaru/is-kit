@@ -11,7 +11,7 @@ export type UsageSectionProps = {
 };
 export function UsageSection({
   tablistLabel,
-  tablistLabelledBy,
+  tablistLabelledBy
 }: UsageSectionProps) {
   return (
     <CodeTabs
@@ -19,7 +19,7 @@ export function UsageSection({
         value: tab,
         label: `${tab}`,
         code: usageCode(tab),
-        language: 'ts',
+        language: 'ts'
       }))}
       className='mb-8'
       ariaLabel={tablistLabel}

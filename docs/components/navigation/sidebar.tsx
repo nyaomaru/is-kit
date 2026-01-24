@@ -35,7 +35,7 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
         open
           ? 'translate-x-0 opacity-100 pointer-events-auto w-full md:translate-x-0'
           : '-translate-x-full opacity-0 pointer-events-none w-full md:-translate-x-full',
-        className,
+        className
       )}
       aria-hidden={!open}
     >
@@ -60,7 +60,7 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
                         'group block px-3 py-1 rounded pl-4',
                         active
                           ? 'bg-primary/20 border-l-2 border-primary pl-3 font-medium text-primary'
-                          : 'text-primary/80',
+                          : 'text-primary/80'
                       )}
                     >
                       <span className='link-underline'>{item.label}</span>

@@ -68,7 +68,7 @@ describe('recordOf (key/value guards)', () => {
     const obj = { a: 1 };
     Object.defineProperty(obj, 'hidden', {
       value: 'nope',
-      enumerable: false,
+      enumerable: false
     });
 
     const guard = recordOf(isString, isNumber);
@@ -117,4 +117,3 @@ describe('recordOf (key/value guards)', () => {
     expect(guard(u)).toBe(true);
   });
 });
-

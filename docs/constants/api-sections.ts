@@ -12,8 +12,8 @@ export const apiSections: SidebarSection[] = [
       { href: '/api-reference/key', label: 'key' },
       { href: '/api-reference/primitive', label: 'primitive' },
       { href: '/api-reference/object', label: 'object' },
-      { href: '/api-reference/predicate', label: 'predicate' },
-    ],
+      { href: '/api-reference/predicate', label: 'predicate' }
+    ]
   },
   {
     title: 'Combinators',
@@ -25,8 +25,8 @@ export const apiSections: SidebarSection[] = [
       { href: '/api-reference/combinators/struct', label: 'struct' },
       {
         href: '/api-reference/combinators/one-of-values',
-        label: 'oneOfValues',
-      },
-    ],
-  },
+        label: 'oneOfValues'
+      }
+    ]
+  }
 ];

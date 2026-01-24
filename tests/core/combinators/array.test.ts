@@ -41,4 +41,3 @@ describe('arrayOf (runtime)', () => {
     expect(is2DStringArray('nope' as unknown)).toBe(false);
   });
 });
-

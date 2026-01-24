@@ -10,20 +10,20 @@ const ONE_OF_VALUES_LINEAR_SCAN_MAX = 8;
 
 const isSingleArrayArg = define<readonly [readonly Primitive[]]>(
   (value): value is readonly [readonly Primitive[]] =>
-    Array.isArray(value) && value.length === 1 && Array.isArray(value[0]),
+    Array.isArray(value) && value.length === 1 && Array.isArray(value[0])
 );
 
 const isZeroNumber = and(
   isNumber,
-  predicateToRefine<number>((value) => value === 0),
+  predicateToRefine<number>((value) => value === 0)
 );
 
 const normalizeValues = (
-  args: readonly Primitive[] | [readonly Primitive[]],
+  args: readonly Primitive[] | [readonly Primitive[]]
 ): readonly Primitive[] => (isSingleArrayArg(args) ? args[0] : args);
 
 const createLinearPredicate = (
-  items: readonly Primitive[],
+  items: readonly Primitive[]
 ): Predicate<Primitive> => {
   return function (input: unknown): input is Primitive {
     return items.some((value) => Object.is(value, input));
@@ -31,7 +31,7 @@ const createLinearPredicate = (
 };
 
 const createSetPredicate = (
-  items: readonly Primitive[],
+  items: readonly Primitive[]
 ): Predicate<Primitive> => {
   // WHY: Set uses SameValueZero (treats +0 and -0 as equal). To preserve
   // Object.is semantics for zeros while keeping O(1) lookups, track -0/+0
@@ -68,7 +68,7 @@ export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
   ...values: T
 ): Predicate<T[number]>;
 export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
-  values: T,
+  values: T
 ): Predicate<T[number]>;
 export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
   ...valuesOrArray: T | [T]
