@@ -6,6 +6,26 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.11] - 2026-01-24
+
+### Changed
+
+- remove redundant casts after object guards by @nyaomaru in [#120](https://github.com/nyaomaru/is-kit/pull/120)
+- prettier format by @nyaomaru in [#121](https://github.com/nyaomaru/is-kit/pull/121)
+
+### Docs
+
+- 1.1.10 by [bot] by @github-actions in [#117](https://github.com/nyaomaru/is-kit/pull/117)
+
+### Chore
+
+- Update pnpm to v10.28.1 by [bot] by @renovate in [#118](https://github.com/nyaomaru/is-kit/pull/118)
+- Update dependency prettier to v3.8.1 by [bot] by @renovate in [#119](https://github.com/nyaomaru/is-kit/pull/119)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.10...v1.1.11
+
+[v1.1.11]: https://github.com/nyaomaru/is-kit/compare/v1.1.10...v1.1.11
+
 ## [v1.1.10] - 2026-01-17
 
 ### Fixed
@@ -347,7 +367,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.10...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.11...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
