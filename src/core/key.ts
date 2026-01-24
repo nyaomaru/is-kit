@@ -16,14 +16,14 @@ import { define } from './define';
  */
 export function narrowKeyTo<A, K extends keyof A>(
   guard: Guard<A>,
-  key: K
+  key: K,
 ): <const T extends A[K]>(target: T) => Predicate<A & Record<K, T>>;
 export function narrowKeyTo<
   K extends PropertyKey,
   F extends Predicate<Record<K, unknown>>,
 >(
   guard: F,
-  key: K
+  key: K,
 ): <const T>(target: T) => Predicate<GuardedOf<F> & Record<K, T>> {
   // WHY: Provide two overloads to balance type safety and flexibility.
   // - When base type A and key K are known, enforce T extends A[K] for precise literal narrowing.
@@ -33,7 +33,7 @@ export function narrowKeyTo<
   return function <const T>(target: T) {
     const keyEquals = equalsKey(key, target);
     return define<GuardedOf<F> & Record<K, T>>(function (input: unknown) {
-      return guard(input) && keyEquals(input as Record<K, unknown>);
+      return guard(input) && keyEquals(input);
     });
   };
 }
