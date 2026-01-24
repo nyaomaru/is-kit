@@ -1,6 +1,6 @@
 {
   "name": "is-kit",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "Make 'isXXX' easier. Let's make your code type safe and more readable!",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
