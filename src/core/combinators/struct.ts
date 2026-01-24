@@ -31,7 +31,7 @@ export function struct<S extends Schema>(
 
   return (input: unknown): input is InferSchema<S> => {
     if (!isPlainObject(input)) return false;
-    const obj = input as Record<string, unknown>;
+    const obj = input;
 
     if (!hasRequiredKeys(obj, schema, schemaKeys)) return false;
     if (!allowed) return true;

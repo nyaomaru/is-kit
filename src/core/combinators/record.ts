@@ -13,14 +13,14 @@ export function recordOf<
   VF extends Predicate<unknown>,
 >(
   keyFunction: KF,
-  valueFunction: VF
+  valueFunction: VF,
 ): Predicate<Readonly<Record<GuardedOf<KF>, GuardedOf<VF>>>> {
   return (
-    input: unknown
+    input: unknown,
   ): input is Readonly<Record<GuardedOf<KF>, GuardedOf<VF>>> => {
     if (!isPlainObject(input)) return false;
 
-    const obj = input as Record<string, unknown>;
+    const obj = input;
 
     for (const key of Object.keys(obj)) {
       if (!keyFunction(key)) return false;

@@ -22,17 +22,17 @@ export function equals<const T>(target: T): Predicate<T> {
  * @returns Function that accepts a target and returns a predicate over the original value.
  */
 export function equalsBy<F extends Predicate<unknown>>(
-  guard: F
+  guard: F,
 ): <K>(
-  selector: (value: GuardedOf<F>) => K
+  selector: (value: GuardedOf<F>) => K,
 ) => <const T extends K>(target: T) => Predicate<GuardedOf<F>>;
 export function equalsBy<F extends Predicate<unknown>, K>(
   guard: F,
-  selector: (value: GuardedOf<F>) => K
+  selector: (value: GuardedOf<F>) => K,
 ): <const T extends K>(target: T) => Predicate<GuardedOf<F>>;
 export function equalsBy(
   guard: Predicate<unknown>,
-  selector?: (value: unknown) => unknown
+  selector?: (value: unknown) => unknown,
 ) {
   type Guarded = GuardedOf<typeof guard>;
 
@@ -60,15 +60,15 @@ export function equalsBy(
  */
 export function equalsKey<K extends PropertyKey, const T>(
   key: K,
-  target: T
+  target: T,
 ): <A extends Record<K, unknown>>(input: unknown) => input is A & Record<K, T> {
   return function <A extends Record<K, unknown>>(
-    input: unknown
+    input: unknown,
   ): input is A & Record<K, T> {
     return (
       isObject(input) &&
       Object.prototype.hasOwnProperty.call(input, key) &&
-      Object.is((input as Record<K, unknown>)[key], target)
+      Object.is(input[key], target)
     );
   };
 }
