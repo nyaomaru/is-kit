@@ -1,13 +1,9 @@
 /**
- * Converts guards/refinements to plain boolean predicates for iteration helpers.
+ * Converts predicates to plain boolean predicates for iteration helpers.
  *
- * @param predicates Guards/refinements to be treated as simple predicates.
+ * @param predicates Predicates to be treated as simple boolean functions.
  * @returns Readonly array of boolean-returning functions.
  */
-type BooleanPredicate = {
-  bivarianceHack(value: unknown): boolean;
-}['bivarianceHack'];
-
-export const toBooleanPredicates = (
-  predicates: readonly BooleanPredicate[]
-): ReadonlyArray<BooleanPredicate> => predicates;
+export const toBooleanPredicates = <A>(
+  predicates: readonly ((value: A) => boolean)[]
+): ReadonlyArray<(value: A) => boolean> => predicates;

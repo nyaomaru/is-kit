@@ -6,26 +6,33 @@ import type { Refine } from '../../src/types';
 // =============================================
 // describe: toBooleanPredicates
 // =============================================
-// it: accepts guards and refinements with narrower input types
-const isLiteralA = define<'a'>(
-  (candidate): candidate is 'a' => candidate === 'a'
+// it: accepts guards and refinements sharing the same input type
+const isStringOrNumber = define<string | number>(
+  (value): value is string | number =>
+    typeof value === 'string' || typeof value === 'number'
 );
 const refineToString: Refine<string | number, string> = (
   value
 ): value is string => typeof value === 'string';
+const refineToNumber: Refine<string | number, number> = (
+  value
+): value is number => typeof value === 'number';
 
-const predicatesFromGuards = toBooleanPredicates([isLiteralA, refineToString]);
-expectType<ReadonlyArray<(value: unknown) => boolean>>(predicatesFromGuards);
-
-// it: accepts plain boolean predicates with narrower inputs
-const isNonEmptyString = (value: string) => value.length > 0;
-const predicatesFromBooleans = toBooleanPredicates([isNonEmptyString]);
-expectType<ReadonlyArray<(value: unknown) => boolean>>(predicatesFromBooleans);
+const predicatesFromGuards = toBooleanPredicates([
+  isStringOrNumber,
+  refineToString,
+  refineToNumber
+]);
+expectType<ReadonlyArray<(value: string | number) => boolean>>(
+  predicatesFromGuards
+);
 
 // it: preserves readonly inputs
-const literalGuards = [isLiteralA] as const;
+const literalGuards = [refineToString, refineToNumber] as const;
 const readonlyPredicates = toBooleanPredicates(literalGuards);
-expectType<ReadonlyArray<(value: unknown) => boolean>>(readonlyPredicates);
+expectType<ReadonlyArray<(value: string | number) => boolean>>(
+  readonlyPredicates
+);
 
 // it: results are usable as boolean-returning predicates
 expectType<boolean>(readonlyPredicates[0]('a'));
