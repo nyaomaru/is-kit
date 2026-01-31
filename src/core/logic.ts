@@ -48,9 +48,9 @@ export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
   precondition: Guard<A>,
   ...steps: Chain & RefineChain<A, Chain>
 ): Guard<ChainResult<A, Chain>> {
-  const boolSteps = steps as ReadonlyArray<(value: unknown) => boolean>;
+  const predicates = toBooleanPredicates(steps);
   return function (input: unknown): input is ChainResult<A, Chain> {
-    return precondition(input) && boolSteps.every((step) => step(input));
+    return precondition(input) && predicates.every((step) => step(input));
   };
 }
 
