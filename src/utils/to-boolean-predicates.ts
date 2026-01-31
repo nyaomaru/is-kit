@@ -1,10 +1,9 @@
-import type { Guard } from '@/types';
-
 /**
- * Converts an array of guards to plain boolean predicates for iteration helpers.
+ * Converts predicates to plain boolean predicates for iteration helpers.
  *
- * @param guards Guards to be treated as simple predicates.
+ * @param predicates Predicates to be treated as simple boolean functions.
  * @returns Readonly array of boolean-returning functions.
  */
-export const toBooleanPredicates = (guards: readonly Guard<unknown>[]) =>
-  guards as ReadonlyArray<(value: unknown) => boolean>;
+export const toBooleanPredicates = <A>(
+  predicates: readonly ((value: A) => boolean)[]
+): ReadonlyArray<(value: A) => boolean> => predicates;

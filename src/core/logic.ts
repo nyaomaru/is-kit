@@ -48,9 +48,9 @@ export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
   precondition: Guard<A>,
   ...steps: Chain & RefineChain<A, Chain>
 ): Guard<ChainResult<A, Chain>> {
-  const boolSteps = steps as ReadonlyArray<(value: unknown) => boolean>;
   return function (input: unknown): input is ChainResult<A, Chain> {
-    return precondition(input) && boolSteps.every((step) => step(input));
+    if (!precondition(input)) return false;
+    return applyRefinements(input, steps);
   };
 }
 
@@ -97,4 +97,25 @@ export function not<A, B extends A>(
 ): Refine<A, Exclude<A, B>>;
 export function not(fn: (input: unknown) => boolean) {
   return (input: unknown) => !fn(input);
+}
+
+// WHY: Overloads model refinement chains without casting; the runtime simply
+// applies each refinement in order while preserving short-circuit behavior.
+function applyRefinements<In>(value: In): value is In;
+function applyRefinements<
+  In,
+  Steps extends readonly Refine<unknown, unknown>[]
+>(
+  value: In,
+  steps: Steps & RefineChain<In, Steps>
+): value is ChainResult<In, Steps>;
+function applyRefinements(
+  value: unknown,
+  steps?: readonly ((value: unknown) => boolean)[]
+): boolean {
+  if (!steps || steps.length === 0) return true;
+  for (const step of steps) {
+    if (!step(value)) return false;
+  }
+  return true;
 }
