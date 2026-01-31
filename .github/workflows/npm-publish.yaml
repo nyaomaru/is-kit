@@ -21,7 +21,6 @@ jobs:
         with:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
-          always-auth: true
 
       - name: Setup mise
         uses: jdx/mise-action@v3
