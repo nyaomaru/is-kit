@@ -6,6 +6,28 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.12] - 2026-01-31
+
+### Fixed
+
+- fix npm publish workflow by @nyaomaru in [#125](https://github.com/nyaomaru/is-kit/pull/125)
+
+### Changed
+
+- remove andAll assertion via predicate helper by @nyaomaru in [#126](https://github.com/nyaomaru/is-kit/pull/126)
+
+### Docs
+
+- 1.1.11 by [bot] by @github-actions in [#123](https://github.com/nyaomaru/is-kit/pull/123)
+
+### Chore
+
+- Update pnpm to v10.28.2 by [bot] by @renovate in [#124](https://github.com/nyaomaru/is-kit/pull/124)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.11...v1.1.12
+
+[v1.1.12]: https://github.com/nyaomaru/is-kit/compare/v1.1.11...v1.1.12
+
 ## [v1.1.11] - 2026-01-24
 
 ### Changed
@@ -367,7 +389,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.11...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.12...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
