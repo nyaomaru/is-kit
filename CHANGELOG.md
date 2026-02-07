@@ -6,6 +6,39 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.1.13] - 2026-02-07
+
+### Added
+
+- add hasKey helper by @nyaomaru in [#129](https://github.com/nyaomaru/is-kit/pull/129)
+
+### Docs
+
+- 1.1.12 by [bot] by @github-actions in [#128](https://github.com/nyaomaru/is-kit/pull/128)
+
+### Chore
+
+- Release: 1.1.13 by [bot] by @github-actions in [#130](https://github.com/nyaomaru/is-kit/pull/130)
+
+### What's new 🚀
+
+Added `hasKey` for reliable own‑key checks, even when `hasOwnProperty` is overridden.
+
+```ts
+import { hasKey } from 'is-kit';
+
+const hasRole = hasKey('role');
+
+declare const value: unknown;
+if (hasRole(value)) {
+  value.role;
+}
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.12...v1.1.13
+
+[v1.1.13]: https://github.com/nyaomaru/is-kit/compare/v1.1.12...v1.1.13
+
 ## [v1.1.12] - 2026-01-31
 
 ### Fixed
@@ -389,7 +422,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.12...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.13...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
