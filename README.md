@@ -170,7 +170,7 @@ Use `hasKey` to check for a required own property before refining, and
 `narrowKeyTo` when you need to narrow a property to a specific literal value.
 
 ```ts
-import { hasKey, narrowKeyTo, or, struct } from 'is-kit';
+import { hasKey, isString, isNumber, narrowKeyTo, or, struct } from 'is-kit';
 
 // Base guard (e.g., via struct)
 type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
