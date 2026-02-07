@@ -1,6 +1,19 @@
 import type { Guard, GuardedOf, Predicate } from '@/types';
 import { equalsKey } from './equals';
 import { define } from './define';
+import { isObject } from './object';
+
+/**
+ * Checks whether a value has the specified own key.
+ *
+ * @param key Property key to check.
+ * @returns Predicate narrowing to an object with the key present.
+ */
+export const hasKey = <K extends PropertyKey>(key: K) =>
+  define<Record<K, unknown>>(
+    (input) =>
+      isObject(input) && Object.prototype.hasOwnProperty.call(input, key)
+  );
 
 /**
  * Builds a guard that narrows a specific key to the provided literal value.

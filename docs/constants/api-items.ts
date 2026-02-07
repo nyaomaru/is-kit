@@ -31,7 +31,7 @@ export const API_ITEMS: ApiItem[] = [
   {
     href: '/api-reference/key',
     title: 'key',
-    description: 'Key helpers for literal narrowing (narrowKeyTo).'
+    description: 'Key helpers for presence checks and literal narrowing.'
   },
   {
     href: '/api-reference/primitive',
