@@ -4,6 +4,16 @@ import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
 
+const sampleHasKey = `import { hasKey } from 'is-kit';
+
+const hasKind = hasKey('kind');
+
+declare const input: unknown;
+if (hasKind(input)) {
+  // input: Record<'kind', unknown>
+  input.kind;
+}`;
+
 const sampleNarrowKeyTo = `import { narrowKeyTo, or, struct, isString, isNumber, oneOfValues } from 'is-kit';
 
 type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
@@ -31,13 +41,32 @@ if (isGuestOrTrial(input)) {
 export default function KeyPage() {
   return (
     <Stack variant='main' className='container mx-auto px-4 py-10' gap='xl'>
-      <Stack variant='section' gap='md'>
+      <Stack variant='section' gap='sm'>
         <Stack gap='xs'>
           <Heading variant='h1'>key</Heading>
           <Paragraph>
             Helpers for key-based guards and literal narrowing. Use{' '}
-            <code>narrowKeyTo</code> to build reusable guards that constrain a
-            specific property to a literal value.
+            <code>hasKey</code> to check for a required own property and{' '}
+            <code>narrowKeyTo</code> to constrain a property to a literal value.
+          </Paragraph>
+        </Stack>
+      </Stack>
+      <Stack variant='section' gap='sm'>
+        <Stack gap='xs'>
+          <Heading variant='h2'>hasKey</Heading>
+          <Paragraph>
+            Narrow an unknown value to an object that owns a specific key. Handy
+            before custom refinements or discriminated-union checks.
+          </Paragraph>
+        </Stack>
+        <CodeBlock language='ts' code={sampleHasKey} />
+      </Stack>
+      <Stack variant='section' gap='sm'>
+        <Stack gap='xs'>
+          <Heading variant='h2'>narrowKeyTo</Heading>
+          <Paragraph>
+            Build reusable guards that narrow a property to specific literal
+            values.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleNarrowKeyTo} />

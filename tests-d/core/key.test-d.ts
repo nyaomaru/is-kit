@@ -1,5 +1,12 @@
 import { expectType } from 'tsd';
-import { narrowKeyTo, struct, isString, isNumber, oneOfValues } from 'is-kit';
+import {
+  hasKey,
+  narrowKeyTo,
+  struct,
+  isString,
+  isNumber,
+  oneOfValues
+} from 'is-kit';
 import type { Predicate } from 'is-kit';
 
 // =============================================
@@ -27,4 +34,14 @@ expectType<Predicate<Readonly<User> & { role: 'trial' }>>(isTrial);
 declare let candidate: unknown;
 if (isGuest(candidate)) {
   expectType<'guest'>(candidate.role);
+}
+
+// =============================================
+// describe: hasKey
+// =============================================
+const hasKind = hasKey('kind');
+
+if (hasKind(candidate)) {
+  expectType<Record<'kind', unknown>>(candidate);
+  expectType<unknown>(candidate.kind);
 }

@@ -162,15 +162,15 @@ isInfiniteNumber(1); // false
 - **Define once**: `define<T>(fn)` turns a plain function into a type guard.
 - **Upgrade predicates**: `predicateToRefine(fn)` adds narrowing.
 - **Compose freely**: `and`, `or`, `not`, `oneOf`, `arrayOf`, `struct` …
-- **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`, `narrowKeyTo`.
+- **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`, `hasKey`, `narrowKeyTo`.
 
-### Key Narrowing
+### Key Helpers
 
-`equalsBy` preserves the base type and does not narrow selected fields to literals.
-When you need to narrow a property to a specific literal value, use `narrowKeyTo`.
+Use `hasKey` to check for a required own property before refining, and
+`narrowKeyTo` when you need to narrow a property to a specific literal value.
 
 ```ts
-import { narrowKeyTo, or, struct } from 'is-kit';
+import { hasKey, isString, isNumber, narrowKeyTo, or, struct } from 'is-kit';
 
 // Base guard (e.g., via struct)
 type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
@@ -180,12 +180,17 @@ const isUser = struct({
   role: oneOfValues('admin', 'guest', 'trial')
 });
 
+const hasRole = hasKey('role');
 const byRole = narrowKeyTo(isUser, 'role');
 const isGuest = byRole('guest'); // Readonly<User> & { role: 'guest' }
 const isTrial = byRole('trial'); // Readonly<User> & { role: 'trial' }
 const isGuestOrTrial = or(isGuest, isTrial);
 
 declare const value: unknown;
+if (hasRole(value)) {
+  value.role;
+}
+
 if (isGuestOrTrial(value)) {
   // value.role is 'guest' | 'trial'
 }
