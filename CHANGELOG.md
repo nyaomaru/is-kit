@@ -8,6 +8,44 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ## [v1.2.0] - 2026-02-14
 
+### What’s New 🚀
+
+- Added assert to `is-kit` as a minimal fail-fast helper for guard-first workflows.
+- `assert` throws an Error when validation fails and preserves narrowing when it passes.
+- Supports both guards and refinements, so it works naturally with existing `is-kit` composition patterns.
+- Added API reference docs and examples for `guard/refine` usage.
+
+```ts
+import { assert, isString } from 'is-kit';
+
+declare const input: unknown;
+assert(isString, input, 'input must be a string');
+// input is now narrowed to string
+input.toUpperCase();
+```
+
+```ts
+import { assert, define, isBoolean, isString, struct } from 'is-kit';
+
+type User = { id: string; active: boolean };
+type ActiveUser = User & { active: true };
+
+const isUser = struct({
+  id: isString,
+  active: isBoolean,
+});
+
+const isActiveUser = define<ActiveUser>(
+  (value) => isUser(value) && value.active === true
+);
+
+declare const input: unknown;
+assert(isActiveUser, input);
+// input is narrowed to ActiveUser here
+input.active; // true
+```
+
+
 ### Added
 
 - assert by @nyaomaru in [#134](https://github.com/nyaomaru/is-kit/pull/134)
