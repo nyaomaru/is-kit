@@ -1,5 +1,6 @@
 export * from './define';
 export * from './predicate';
+export * from './assert';
 export * from './logic';
 export * from './nullish';
 export * from './equals';

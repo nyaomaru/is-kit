@@ -24,6 +24,11 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Safe parsing with tagged results.'
   },
   {
+    href: '/api-reference/assert',
+    title: 'assert',
+    description: 'Fail-fast assertion helper with type narrowing.'
+  },
+  {
     href: '/api-reference/nullish',
     title: 'nullish',
     description: 'Nullability helpers: nullable, optional, required, nonNull.'
