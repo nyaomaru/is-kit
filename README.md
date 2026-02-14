@@ -162,7 +162,7 @@ isInfiniteNumber(1); // false
 - **Define once**: `define<T>(fn)` turns a plain function into a type guard.
 - **Upgrade predicates**: `predicateToRefine(fn)` adds narrowing.
 - **Compose freely**: `and`, `or`, `not`, `oneOf`, `arrayOf`, `struct` …
-- **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`, `hasKey`, `narrowKeyTo`.
+- **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`, `assert`, `hasKey`, `narrowKeyTo`.
 
 ### Key Helpers
 
