@@ -12,19 +12,24 @@ assert(isString, input, 'input must be a string');
 // input is narrowed to string here
 input.toUpperCase();`;
 
-const sampleRefineAssert = `import { assert } from 'is-kit';
-import type { Refine } from 'is-kit';
+const sampleRefineAssert = `import { assert, define, isBoolean, isString, struct } from 'is-kit';
 
 type User = { id: string; active: boolean };
 type ActiveUser = User & { active: true };
 
-const isActive: Refine<User, ActiveUser> = (user): user is ActiveUser =>
-  user.active === true;
+const isUser = struct({
+  id: isString,
+  active: isBoolean,
+});
 
-declare const user: User;
-assert(isActive, user);
-// user is narrowed to ActiveUser here
-user.active; // true`;
+const isActiveUser = define<ActiveUser>(
+  (value) => isUser(value) && value.active === true
+);
+
+declare const input: unknown;
+assert(isActiveUser, input);
+// input is narrowed to ActiveUser here
+input.active; // true`;
 
 export default function AssertPage() {
   return (
@@ -50,9 +55,10 @@ export default function AssertPage() {
       </Stack>
       <Stack variant='section' gap='sm'>
         <Stack gap='xs'>
-          <Heading variant='h2'>Assert with Refine</Heading>
+          <Heading variant='h2'>Assert with define</Heading>
           <Paragraph>
-            Works with refinements and preserves subtype narrowing.
+            Build a reusable guard with <code>define</code>, then assert once to
+            fail fast and continue with a narrowed type.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleRefineAssert} />
