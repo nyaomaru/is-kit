@@ -6,6 +6,25 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.2.0] - 2026-02-14
+
+### Added
+
+- assert by @nyaomaru in [#134](https://github.com/nyaomaru/is-kit/pull/134)
+
+### Docs
+
+- 1.1.13 by [bot] by @github-actions in [#131](https://github.com/nyaomaru/is-kit/pull/131)
+
+### Chore
+
+- Update pnpm to v10.29.1 by [bot] by @renovate in [#132](https://github.com/nyaomaru/is-kit/pull/132)
+- Update pnpm to v10.29.3 by [bot] by @renovate in [#133](https://github.com/nyaomaru/is-kit/pull/133)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.13...v1.2.0
+
+[v1.2.0]: https://github.com/nyaomaru/is-kit/compare/v1.1.13...v1.2.0
+
 ## [v1.1.13] - 2026-02-07
 
 ### Added
@@ -422,7 +441,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.1.13...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.2.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
