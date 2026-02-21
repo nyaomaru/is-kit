@@ -17,7 +17,8 @@ import {
   isTypedArray,
   isError,
   isURL,
-  isBlob
+  isBlob,
+  isInstanceOf
 } from '@/core/object';
 
 describe('core/object guards', () => {
@@ -79,5 +80,15 @@ describe('core/object guards', () => {
     // Blob and URL are available in Node 18+
     const b = new Blob(['abc'], { type: 'text/plain' });
     expect(isBlob(b)).toBe(true);
+  });
+
+  it('creates a guard from a constructor with isInstanceOf', () => {
+    class Animal {}
+    class Dog extends Animal {}
+
+    const isAnimal = isInstanceOf(Animal);
+    expect(isAnimal(new Animal())).toBe(true);
+    expect(isAnimal(new Dog())).toBe(true);
+    expect(isAnimal({})).toBe(false);
   });
 });

@@ -157,6 +157,25 @@ isInfiniteNumber(Infinity); // true
 isInfiniteNumber(1); // false
 ```
 
+### Object guards
+
+Object/built-in guards cover arrays, dates, maps/sets, and more. Use
+`isInstanceOf` when you want a reusable guard from a class constructor.
+
+```ts
+import { isArray, isDate, isInstanceOf } from 'is-kit';
+
+class Animal {}
+class Dog extends Animal {}
+
+const isAnimal = isInstanceOf(Animal);
+
+isArray([]); // true
+isDate(new Date()); // true
+isAnimal(new Dog()); // true
+isAnimal({}); // false
+```
+
 ## Core Ideas
 
 - **Define once**: `define<T>(fn)` turns a plain function into a type guard.

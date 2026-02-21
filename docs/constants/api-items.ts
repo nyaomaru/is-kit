@@ -46,7 +46,8 @@ export const API_ITEMS: ApiItem[] = [
   {
     href: '/api-reference/object',
     title: 'object',
-    description: 'Object and built-in guards: array, date, map, set, …'
+    description:
+      'Object and built-in guards: array, date, map, set, isInstanceOf, …'
   },
   {
     href: '/api-reference/predicate',

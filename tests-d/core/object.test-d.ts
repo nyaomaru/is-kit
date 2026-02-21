@@ -19,7 +19,8 @@ import {
   isTypedArray,
   isError,
   isURL,
-  isBlob
+  isBlob,
+  isInstanceOf
 } from '../../src/core/object';
 
 // =============================================
@@ -44,3 +45,24 @@ expectType<Predicate<ArrayBufferView>>(isTypedArray);
 expectType<Predicate<Error>>(isError);
 expectType<Predicate<URL>>(isURL);
 expectType<Predicate<Blob>>(isBlob);
+
+// =============================================
+// describe: isInstanceOf (types)
+// =============================================
+abstract class Animal {
+  abstract speak(): string;
+}
+
+class Dog extends Animal {
+  speak(): string {
+    return 'woof';
+  }
+}
+
+const isAnimal = isInstanceOf(Animal);
+expectType<Predicate<Animal>>(isAnimal);
+
+const candidate: unknown = new Dog();
+if (isAnimal(candidate)) {
+  expectType<Animal>(candidate);
+}
