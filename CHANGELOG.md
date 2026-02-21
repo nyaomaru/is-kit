@@ -6,6 +6,45 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.3.0] - 2026-02-21
+
+### Added
+
+- add isInstanceOf guard factory and update docs by @nyaomaru in [#138](https://github.com/nyaomaru/is-kit/pull/138)
+
+### Docs
+
+- 1.2.0 by [bot] by @github-actions in [#136](https://github.com/nyaomaru/is-kit/pull/136)
+
+### Chore
+
+- Update pnpm to v10.30.1 by [bot] by @renovate in [#137](https://github.com/nyaomaru/is-kit/pull/137)
+
+### What's New 🚀
+
+- Added `isInstanceOf`, a new constructor-based guard factory for object guards.
+- `isInstanceOf` improves guard composition and preserves type narrowing (`InstanceType<C>`).
+- Documentation now includes object-guard usage examples with `isInstanceOf`.
+- No breaking changes.
+
+```ts
+import { isArray, isDate, isInstanceOf } from 'is-kit';
+
+class Animal {}
+class Dog extends Animal {}
+
+const isAnimal = isInstanceOf(Animal);
+
+isArray([]); // true
+isDate(new Date()); // true
+isAnimal(new Dog()); // true
+isAnimal({}); // false
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.2.0...v1.3.0
+
+[v1.3.0]: https://github.com/nyaomaru/is-kit/compare/v1.2.0...v1.3.0
+
 ## [v1.2.0] - 2026-02-14
 
 ### What’s New 🚀
@@ -479,7 +518,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.3.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
