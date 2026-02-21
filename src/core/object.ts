@@ -1,4 +1,5 @@
 import { define } from './define';
+import type { Guard } from '@/types';
 
 // WHY: Using Object.prototype.toString provides stable internal tags across realms
 // and avoids false positives from overridden Symbol.toStringTag.
@@ -186,3 +187,16 @@ export const isBlob =
   typeof Blob !== 'undefined'
     ? define<Blob>((value) => value instanceof Blob)
     : define<Blob>(() => false);
+
+/**
+ * Creates a guard that checks whether a value is an instance of `constructor`.
+ *
+ * @param constructor Constructor used as the right-hand side of `instanceof`.
+ * @returns Predicate narrowing to `InstanceType<C>`.
+ */
+export const isInstanceOf = <
+  C extends abstract new (...args: unknown[]) => unknown
+>(
+  constructor: C
+): Guard<InstanceType<C>> =>
+  define<InstanceType<C>>((value) => value instanceof constructor);
