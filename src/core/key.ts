@@ -16,6 +16,30 @@ export const hasKey = <K extends PropertyKey>(key: K) =>
   );
 
 /**
+ * Checks whether a value has all specified own keys.
+ *
+ * @param keys Property keys to check.
+ * @returns Predicate narrowing to an object with all keys present.
+ */
+export const hasKeys = <
+  const KS extends readonly [PropertyKey, ...PropertyKey[]]
+>(
+  ...keys: KS
+) => {
+  // WHY: Type-level non-empty constraints can be bypassed from JavaScript or `any`.
+  // Return a predicate that always fails so misuse does not crash applications.
+  if (keys.length === 0) {
+    return define<Record<KS[number], unknown>>(() => false);
+  }
+
+  return define<Record<KS[number], unknown>>(
+    (input) =>
+      isObject(input) &&
+      keys.every((key) => Object.prototype.hasOwnProperty.call(input, key))
+  );
+};
+
+/**
  * Builds a guard that narrows a specific key to the provided literal value.
  *
  * Given a base guard and a property key, returns a function that accepts a

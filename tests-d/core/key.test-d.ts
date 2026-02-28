@@ -1,6 +1,7 @@
-import { expectType } from 'tsd';
+import { expectError, expectType } from 'tsd';
 import {
   hasKey,
+  hasKeys,
   narrowKeyTo,
   struct,
   isString,
@@ -45,3 +46,17 @@ if (hasKind(candidate)) {
   expectType<Record<'kind', unknown>>(candidate);
   expectType<unknown>(candidate.kind);
 }
+
+// =============================================
+// describe: hasKeys
+// =============================================
+const hasKindAndId = hasKeys('kind', 'id');
+
+if (hasKindAndId(candidate)) {
+  expectType<Record<'kind' | 'id', unknown>>(candidate);
+  expectType<unknown>(candidate.kind);
+  expectType<unknown>(candidate.id);
+}
+
+// it: rejects empty keys at compile time
+expectError(hasKeys());

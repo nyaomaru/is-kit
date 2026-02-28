@@ -14,6 +14,17 @@ if (hasKind(input)) {
   input.kind;
 }`;
 
+const sampleHasKeys = `import { hasKeys } from 'is-kit';
+
+const hasKindAndId = hasKeys('kind', 'id');
+
+declare const input: unknown;
+if (hasKindAndId(input)) {
+  // input: Record<'kind' | 'id', unknown>
+  input.kind;
+  input.id;
+}`;
+
 const sampleNarrowKeyTo = `import { narrowKeyTo, or, struct, isString, isNumber, oneOfValues } from 'is-kit';
 
 type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
@@ -46,8 +57,9 @@ export default function KeyPage() {
           <Heading variant='h1'>key</Heading>
           <Paragraph>
             Helpers for key-based guards and literal narrowing. Use{' '}
-            <code>hasKey</code> to check for a required own property and{' '}
-            <code>narrowKeyTo</code> to constrain a property to a literal value.
+            <code>hasKey</code>/<code>hasKeys</code> to check required own
+            properties and <code>narrowKeyTo</code> to constrain a property to a
+            literal value.
           </Paragraph>
         </Stack>
       </Stack>
@@ -60,6 +72,17 @@ export default function KeyPage() {
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleHasKey} />
+      </Stack>
+      <Stack variant='section' gap='sm'>
+        <Stack gap='xs'>
+          <Heading variant='h2'>hasKeys</Heading>
+          <Paragraph>
+            Narrow an unknown value to an object that owns all specified keys.
+            Useful as a compact pre-check before discriminated-union
+            refinements.
+          </Paragraph>
+        </Stack>
+        <CodeBlock language='ts' code={sampleHasKeys} />
       </Stack>
       <Stack variant='section' gap='sm'>
         <Stack gap='xs'>

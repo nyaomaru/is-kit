@@ -1,4 +1,4 @@
-import { hasKey, narrowKeyTo } from '@/core/key';
+import { hasKey, hasKeys, narrowKeyTo } from '@/core/key';
 import { struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { oneOfValues } from '@/core/combinators/one-of-values';
@@ -54,5 +54,42 @@ describe('key: hasKey', () => {
     const value = Object.create(null) as Record<'kind', unknown>;
     value.kind = 'guest';
     expect(hasKind(value)).toBe(true);
+  });
+});
+
+describe('key: hasKeys', () => {
+  const hasKindAndId = hasKeys('kind', 'id');
+
+  it('accepts objects with all own keys present', () => {
+    const ok: unknown = { kind: 'user', id: 1 };
+    expect(hasKindAndId(ok)).toBe(true);
+  });
+
+  it('rejects when at least one key is missing', () => {
+    const bad: unknown = { kind: 'user' };
+    expect(hasKindAndId(bad)).toBe(false);
+  });
+
+  it('rejects inherited keys', () => {
+    const proto = { kind: 'user', id: 1 };
+    const value = Object.create(proto) as unknown;
+    expect(hasKindAndId(value)).toBe(false);
+  });
+
+  it('accepts all keys on null-prototype objects', () => {
+    const value = Object.create(null) as Record<'kind' | 'id', unknown>;
+    value.kind = 'guest';
+    value.id = 1;
+    expect(hasKindAndId(value)).toBe(true);
+  });
+
+  it('returns a predicate that always false when called with no keys at runtime', () => {
+    const unsafeHasKeys = hasKeys as unknown as (
+      ...keys: PropertyKey[]
+    ) => (input: unknown) => boolean;
+    const guard = unsafeHasKeys();
+    expect(guard({ kind: 'user', id: 1 })).toBe(false);
+    expect(guard({})).toBe(false);
+    expect(guard(null)).toBe(false);
   });
 });
