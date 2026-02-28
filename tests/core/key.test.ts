@@ -82,4 +82,14 @@ describe('key: hasKeys', () => {
     value.id = 1;
     expect(hasKindAndId(value)).toBe(true);
   });
+
+  it('returns a predicate that always false when called with no keys at runtime', () => {
+    const unsafeHasKeys = hasKeys as unknown as (
+      ...keys: PropertyKey[]
+    ) => (input: unknown) => boolean;
+    const guard = unsafeHasKeys();
+    expect(guard({ kind: 'user', id: 1 })).toBe(false);
+    expect(guard({})).toBe(false);
+    expect(guard(null)).toBe(false);
+  });
 });
