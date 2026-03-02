@@ -6,6 +6,58 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.4.0] - 2026-02-28
+
+### Added
+
+- add hasKeys guard with non-empty key constraint by @nyaomaru in [#142](https://github.com/nyaomaru/is-kit/pull/142)
+
+### Docs
+
+- 1.3.0 by [bot] by @github-actions in [#140](https://github.com/nyaomaru/is-kit/pull/140)
+
+### Chore
+
+- Update pnpm to v10.30.3 by [bot] by @renovate in [#141](https://github.com/nyaomaru/is-kit/pull/141)
+
+### What's New 🚀
+
+- Added `hasKeys(...keys)`, a multi-key presence guard and natural extension of `hasKey`.
+- Enforced non-empty keys at the type level (`hasKeys()` is rejected in TypeScript).
+- Added runtime-safe behavior for JS/`any` misuse: `hasKeys()` with no keys returns an always-`false` predicate instead of throwing.
+- Updated docs and API reference for key helpers with `hasKeys` examples.
+
+```ts
+import { hasKeys, isNumber, isString, narrowKeyTo, oneOfValues, struct } from 'is-kit';
+
+type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
+
+const isUser = struct({
+  id: isString,
+  age: isNumber,
+  role: oneOfValues('admin', 'guest', 'trial')
+});
+
+const hasRoleAndId = hasKeys('role', 'id');
+const byRole = narrowKeyTo(isUser, 'role');
+const isGuest = byRole('guest');
+
+declare const input: unknown;
+
+if (hasRoleAndId(input)) {
+  input.role; // unknown
+  input.id; // unknown
+}
+
+if (isGuest(input)) {
+  input.role; // 'guest'
+}
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.3.0...v1.4.0
+
+[v1.4.0]: https://github.com/nyaomaru/is-kit/compare/v1.3.0...v1.4.0
+
 ## [v1.3.0] - 2026-02-21
 
 ### Added
@@ -518,7 +570,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.4.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
