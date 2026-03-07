@@ -6,6 +6,24 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.4.1] - 2026-03-07
+
+### Changed
+
+- remove oneOf cast and unify returned callbacks to arrow functions by @nyaomaru in [#145](https://github.com/nyaomaru/is-kit/pull/145)
+
+### Docs
+
+- 1.4.0 by [bot] by @github-actions in [#144](https://github.com/nyaomaru/is-kit/pull/144)
+
+### Chore
+
+- Release: 1.4.1 by [bot] by @github-actions in [#146](https://github.com/nyaomaru/is-kit/pull/146)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.4.0...v1.4.1
+
+[v1.4.1]: https://github.com/nyaomaru/is-kit/compare/v1.4.0...v1.4.1
+
 ## [v1.4.0] - 2026-02-28
 
 ### Added
@@ -570,7 +588,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.4.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
