@@ -9,7 +9,7 @@ import type { GuardedOf, Predicate } from '@/types';
 export function arrayOf<F extends Predicate<unknown>>(
   elementGuard: F
 ): Predicate<readonly GuardedOf<F>[]> {
-  return function (input: unknown): input is readonly GuardedOf<F>[] {
+  return (input: unknown): input is readonly GuardedOf<F>[] => {
     if (!Array.isArray(input)) return false;
     for (const element of input as readonly unknown[]) {
       if (!elementGuard(element)) return false;

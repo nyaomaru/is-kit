@@ -19,7 +19,7 @@ export function and<A, B extends A>(
   precondition: Guard<A>,
   condition: Refine<A, B>
 ): Predicate<B> {
-  return function (input: unknown): input is B {
+  return (input: unknown): input is B => {
     if (precondition(input)) {
       return condition(input);
     }
@@ -48,7 +48,7 @@ export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
   precondition: Guard<A>,
   ...steps: Chain & RefineChain<A, Chain>
 ): Guard<ChainResult<A, Chain>> {
-  return function (input: unknown): input is ChainResult<A, Chain> {
+  return (input: unknown): input is ChainResult<A, Chain> => {
     if (!precondition(input)) return false;
     return applyRefinements(input, steps);
   };
@@ -64,7 +64,7 @@ export function or<P extends readonly Guard<unknown>[]>(
   ...guards: P
 ): Guard<OutOfGuards<P>> {
   const predicates = toBooleanPredicates(guards);
-  return function (input: unknown): input is OutOfGuards<P> {
+  return (input: unknown): input is OutOfGuards<P> => {
     return predicates.some((guard) => guard(input));
   };
 }
@@ -76,11 +76,9 @@ export function or<P extends readonly Guard<unknown>[]>(
  */
 export function guardIn<A>(): <T extends A>(guard: Guard<T>) => Refine<A, T>;
 export function guardIn<A>(): <T extends A>(guard: Guard<T>) => Refine<A, T> {
-  return function <T extends A>(guard: Guard<T>): Refine<A, T> {
-    return function (input: A): input is T {
-      return guard(input);
-    };
-  };
+  return <T extends A>(guard: Guard<T>): Refine<A, T> =>
+    (input: A): input is T =>
+      guard(input);
 }
 
 /**
