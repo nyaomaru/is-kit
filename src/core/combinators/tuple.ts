@@ -9,9 +9,9 @@ import type { Predicate, GuardedOf } from '@/types';
 export function tupleOf<const Fs extends readonly Predicate<unknown>[]>(
   ...guards: Fs
 ): Predicate<{ readonly [K in keyof Fs]: GuardedOf<Fs[K]> }> {
-  return function (
+  return (
     input: unknown
-  ): input is { readonly [K in keyof Fs]: GuardedOf<Fs[K]> } {
+  ): input is { readonly [K in keyof Fs]: GuardedOf<Fs[K]> } => {
     return (
       Array.isArray(input) &&
       input.length === guards.length &&

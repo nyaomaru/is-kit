@@ -25,7 +25,7 @@ const normalizeValues = (
 const createLinearPredicate = (
   items: readonly Primitive[]
 ): Predicate<Primitive> => {
-  return function (input: unknown): input is Primitive {
+  return (input: unknown): input is Primitive => {
     return items.some((value) => Object.is(value, input));
   };
 };
@@ -48,7 +48,7 @@ const createSetPredicate = (
     }
   }
 
-  return function (input: unknown): input is Primitive {
+  return (input: unknown): input is Primitive => {
     if (isZeroNumber(input)) {
       return Object.is(input, -0) ? hasNegativeZero : hasPositiveZero;
     }

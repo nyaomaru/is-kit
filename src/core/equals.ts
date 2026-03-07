@@ -8,7 +8,7 @@ import { isObject } from './object';
  * @returns Predicate narrowing to the exact literal type of `target`.
  */
 export function equals<const T>(target: T): Predicate<T> {
-  return function (input: unknown): input is T {
+  return (input: unknown): input is T => {
     return Object.is(input, target);
   };
 }
@@ -62,9 +62,9 @@ export function equalsKey<K extends PropertyKey, const T>(
   key: K,
   target: T
 ): <A extends Record<K, unknown>>(input: unknown) => input is A & Record<K, T> {
-  return function <A extends Record<K, unknown>>(
+  return <A extends Record<K, unknown>>(
     input: unknown
-  ): input is A & Record<K, T> {
+  ): input is A & Record<K, T> => {
     return (
       isObject(input) &&
       Object.prototype.hasOwnProperty.call(input, key) &&
