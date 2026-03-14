@@ -1,5 +1,13 @@
 import type { GuardedOf, Predicate } from '@/types';
+import { define } from './define';
 import { isObject } from './object';
+
+// WHY: Control-flow analysis does not preserve the narrowed target of a generic
+// predicate like `F extends Predicate<unknown>` at the call site. Re-expressing
+// the guard through this helper gives TypeScript a concrete `GuardedOf<F>`
+// predicate it can apply to `input`.
+const guardedBy = <F extends Predicate<unknown>>(guard: F) =>
+  define<GuardedOf<F>>((input) => guard(input));
 
 /**
  * Creates a guard that matches values equal to the provided target using `Object.is` semantics.
@@ -8,9 +16,7 @@ import { isObject } from './object';
  * @returns Predicate narrowing to the exact literal type of `target`.
  */
 export function equals<const T>(target: T): Predicate<T> {
-  return (input: unknown): input is T => {
-    return Object.is(input, target);
-  };
+  return define<T>((input) => Object.is(input, target));
 }
 
 /**
@@ -30,25 +36,25 @@ export function equalsBy<F extends Predicate<unknown>, K>(
   guard: F,
   selector: (value: GuardedOf<F>) => K
 ): <const T extends K>(target: T) => Predicate<GuardedOf<F>>;
-export function equalsBy(
-  guard: Predicate<unknown>,
-  selector?: (value: unknown) => unknown
+export function equalsBy<F extends Predicate<unknown>, K>(
+  guard: F,
+  selector?: (value: GuardedOf<F>) => K
 ) {
-  type Guarded = GuardedOf<typeof guard>;
-
+  const matchesGuard = guardedBy(guard);
   const createComparator =
-    (selectorFn: (value: Guarded) => unknown) =>
-    <T>(target: T) =>
-    (input: unknown): input is Guarded => {
-      if (!guard(input)) return false;
-      return Object.is(selectorFn(input as Guarded), target);
-    };
+    <Selected>(selectorFn: (value: GuardedOf<F>) => Selected) =>
+    <const T extends Selected>(target: T) =>
+      define<GuardedOf<F>>((input) => {
+        if (!matchesGuard(input)) return false;
+        return Object.is(selectorFn(input), target);
+      });
 
   if (selector) {
-    return createComparator(selector as (value: Guarded) => unknown);
+    return createComparator(selector);
   }
 
-  return (selector: (value: Guarded) => unknown) => createComparator(selector);
+  return <Selected>(selectorFn: (value: GuardedOf<F>) => Selected) =>
+    createComparator(selectorFn);
 }
 
 /**
@@ -62,13 +68,15 @@ export function equalsKey<K extends PropertyKey, const T>(
   key: K,
   target: T
 ): <A extends Record<K, unknown>>(input: unknown) => input is A & Record<K, T> {
-  return <A extends Record<K, unknown>>(
-    input: unknown
-  ): input is A & Record<K, T> => {
+  const hasMatchingKey = define<Record<K, T>>((input) => {
     return (
       isObject(input) &&
       Object.prototype.hasOwnProperty.call(input, key) &&
       Object.is(input[key], target)
     );
-  };
+  });
+
+  return <A extends Record<K, unknown>>(
+    input: unknown
+  ): input is A & Record<K, T> => hasMatchingKey(input);
 }
