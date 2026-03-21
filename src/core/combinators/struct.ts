@@ -74,8 +74,11 @@ export function struct<S extends Schema>(
   // invocation only performs property lookups and guard calls.
   const requiredEntries: SchemaEntry[] = [];
   const optionalEntries: SchemaEntry[] = [];
+  const schemaKeys: string[] = [];
 
   for (const [key, field] of Object.entries(schema)) {
+    schemaKeys.push(key);
+
     if (isOptionalSchemaField(field)) {
       optionalEntries.push([key, field.guard]);
       continue;
@@ -84,7 +87,6 @@ export function struct<S extends Schema>(
     requiredEntries.push([key, field]);
   }
 
-  const schemaKeys = Object.keys(schema);
   const allowed = options?.exact ? new Set(schemaKeys) : null;
 
   return (input: unknown): input is InferSchema<S> => {
