@@ -6,6 +6,24 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.4.2] - 2026-03-14
+
+### Fixed
+
+- preserve GuardedOf narrowing in equals by @nyaomaru in [#149](https://github.com/nyaomaru/is-kit/pull/149)
+
+### Docs
+
+- 1.4.1 by [bot] by @github-actions in [#147](https://github.com/nyaomaru/is-kit/pull/147)
+
+### Chore
+
+- Update pnpm to v10.32.1 by [bot] by @renovate in [#148](https://github.com/nyaomaru/is-kit/pull/148)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.4.1...v1.4.2
+
+[v1.4.2]: https://github.com/nyaomaru/is-kit/compare/v1.4.1...v1.4.2
+
 ## [v1.4.1] - 2026-03-07
 
 ### Changed
@@ -588,7 +606,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.4.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.4.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
