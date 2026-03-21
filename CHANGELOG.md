@@ -6,6 +6,46 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.5.0] - 2026-03-21
+
+### Added
+
+- add `optionalKey` for struct schemas by @nyaomaru in [#152](https://github.com/nyaomaru/is-kit/pull/152)
+
+### Docs
+
+- 1.4.2 by [bot] by @github-actions in [#151](https://github.com/nyaomaru/is-kit/pull/151)
+
+### Chore
+
+- Release: 1.5.0 by [bot] by @github-actions in [#153](https://github.com/nyaomaru/is-kit/pull/153)
+
+### What's New 🚀
+
+- Added `optionalKey(...)` for `struct(...)` schemas.
+- Use `optionalKey(...)` when a property itself may be absent. This is different from `optional(...)`, which means the key exists but the value may be undefined.
+
+```ts
+import { isString, optional, optionalKey, struct } from 'is-kit';
+
+const isUser = struct({
+  id: isString,
+  nickname: optionalKey(isString),
+  displayName: optionalKey(optional(isString))
+});
+
+isUser({ id: '1' }); // true
+isUser({ id: '1', nickname: 'neo' }); // true
+isUser({ id: '1', nickname: undefined }); // false
+isUser({ id: '1', displayName: undefined }); // true
+```
+
+`struct(...)` now infers `optionalKey(...)` fields as optional object properties, while existing `optional(...)` behavior remains unchanged.
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.4.2...v1.5.0
+
+[v1.5.0]: https://github.com/nyaomaru/is-kit/compare/v1.4.2...v1.5.0
+
 ## [v1.4.2] - 2026-03-14
 
 ### Fixed
@@ -606,7 +646,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.4.2...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.5.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
