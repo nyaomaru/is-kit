@@ -72,7 +72,6 @@ import {
   optionalKey,
   struct,
   oneOfValues,
-  optional,
   isNumber,
   isString,
   predicateToRefine
