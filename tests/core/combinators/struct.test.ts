@@ -1,5 +1,6 @@
-import { struct } from '@/core/combinators';
+import { optionalKey, struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
+import { optional } from '@/core/nullish';
 
 describe('struct', () => {
   const schema = { id: isString, age: isNumber } as const;
@@ -76,5 +77,50 @@ describe('struct', () => {
         address: { city: 'Tokyo', zip: 1000001 }
       })
     ).toBe(false);
+  });
+
+  it('allows optional keys to be absent', () => {
+    const guard = struct({
+      id: isString,
+      nickname: optionalKey(isString)
+    } as const);
+
+    expect(guard({ id: 'abc' })).toBe(true);
+  });
+
+  it('validates optional keys when they are present', () => {
+    const guard = struct({
+      id: isString,
+      nickname: optionalKey(isString)
+    } as const);
+
+    expect(guard({ id: 'abc', nickname: 'neo' })).toBe(true);
+    expect(guard({ id: 'abc', nickname: 123 })).toBe(false);
+  });
+
+  it('treats optional keys as part of the exact schema', () => {
+    const guard = struct(
+      {
+        id: isString,
+        nickname: optionalKey(isString)
+      } as const,
+      { exact: true }
+    );
+
+    expect(guard({ id: 'abc' })).toBe(true);
+    expect(guard({ id: 'abc', nickname: 'neo' })).toBe(true);
+    expect(guard({ id: 'abc', extra: true })).toBe(false);
+  });
+
+  it('composes with value-level optional guards when undefined is allowed', () => {
+    const guard = struct({
+      id: isString,
+      nickname: optionalKey(optional(isString))
+    } as const);
+
+    expect(guard({ id: 'abc' })).toBe(true);
+    expect(guard({ id: 'abc', nickname: 'neo' })).toBe(true);
+    expect(guard({ id: 'abc', nickname: undefined })).toBe(true);
+    expect(guard({ id: 'abc', nickname: 123 })).toBe(false);
   });
 });

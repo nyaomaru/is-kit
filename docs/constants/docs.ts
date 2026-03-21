@@ -25,11 +25,12 @@ const isString = define<string>((x) => typeof x === 'string');
 if (isString('hello')) {
   // narrowed to string
 }`,
-  struct: `import { struct, isNumber, isString } from 'is-kit';
+  struct: `import { optionalKey, struct, isNumber, isString } from 'is-kit';
 
 const isUser = struct({
   id: isNumber,
   name: isString,
+  nickname: optionalKey(isString),
 });
 
 const isExactUser = struct(
@@ -41,6 +42,7 @@ const isExactUser = struct(
 );
 
 isUser({ id: 1, name: 'neo' }); // true
+isUser({ id: 1, name: 'neo', nickname: 'n' }); // true
 isUser({ id: 1, name: 'neo', role: 'admin' }); // true
 isExactUser({ id: 1, name: 'neo', role: 'admin' }); // false
 isUser({ id: '1', name: 'neo' }); // false`,
@@ -81,7 +83,7 @@ pair(['id', 1]); // true
 stringRecord({ a: 'x' }); // true`,
   nullability: `import { optional, required, nullable, nonNull, isString } from 'is-kit';
 
-const maybeString = optional(isString); // x?: string
+const maybeString = optional(isString); // string | undefined
 maybeString(undefined); // true
 maybeString('ok'); // true
 
@@ -92,7 +94,9 @@ const nullableString = nullable(isString); // string | null
 nullableString(null); // true
 
 const nonNullString = nonNull(isString); // excludes null
-nonNullString(null); // false`,
+nonNullString(null); // false
+
+// For struct key-level optional fields, use optionalKey(...).`,
   equality: `import { equals, equalsBy, equalsKey, isString } from 'is-kit';
 
 equals(1, 1); // true

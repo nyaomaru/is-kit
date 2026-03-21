@@ -4,14 +4,27 @@ import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
 
-const sample = `import { arrayOf, optional, struct, isString, isNumber } from 'is-kit';
+const sample = `import {
+  arrayOf,
+  optional,
+  optionalKey,
+  struct,
+  isString,
+  isNumber,
+} from 'is-kit';
 
 const isUser = struct({
   id: isNumber,
   name: isString,
-  nickname: optional(isString),
+  nickname: optionalKey(isString),
+  displayName: optionalKey(optional(isString)),
 });
-// isUser: Guard<{ id: number; name: string; nickname?: string | undefined }>
+// isUser: Guard<{
+//   id: number;
+//   name: string;
+//   nickname?: string;
+//   displayName?: string | undefined;
+// }>
 
 const input: unknown = {
   id: 42,
@@ -43,7 +56,10 @@ isTeam({
 isTeam({
   name: 'core',
   members: [{ id: 1, name: 'Neko', nickname: 123 }],
-}); // false (nickname is not a string)`;
+}); // false (nickname is not a string)
+
+// Use optionalKey(...) when the property may be omitted.
+// Use optional(...) when the property exists but its value may be undefined.`;
 
 export default function StructPage() {
   return (
@@ -52,7 +68,8 @@ export default function StructPage() {
         <Stack gap='xs'>
           <Heading variant='h1'>struct</Heading>
           <Paragraph>
-            Shape guard for objects; supports exact key checking via options.
+            Shape guard for objects; supports exact key checking and key-level
+            optional fields via <code>optionalKey(...)</code>.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

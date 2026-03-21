@@ -19,7 +19,10 @@ const maybeUndef = optional(isString);
 maybeUndef(undefined); // true
 
 const needValue = required(optional(isString));
-needValue('ok'); // true`;
+needValue('ok'); // true
+
+// optional(...) is value-level.
+// For struct key-level optional properties, use optionalKey(...).`;
 
 export default function NullishPage() {
   return (
@@ -28,7 +31,9 @@ export default function NullishPage() {
         <Stack gap='xs'>
           <Heading variant='h1'>nullish</Heading>
           <Paragraph>
-            Nullability helpers to widen or narrow optionality.
+            Nullability helpers to widen or narrow values such as{' '}
+            <code>undefined</code> and <code>null</code>. For key-level optional
+            fields inside <code>struct</code>, use <code>optionalKey(...)</code>.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

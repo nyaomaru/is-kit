@@ -31,9 +31,3 @@ export type GuardedWithin<Fs, A> = Extract<
   Fs extends readonly unknown[] ? GuardedOf<Fs[number]> : never,
   A
 >;
-
-export type Schema = Readonly<Record<string, Predicate<unknown>>>;
-
-export type InferSchema<S extends Schema> = {
-  readonly [K in keyof S]: GuardedOf<S[K]>;
-};

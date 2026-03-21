@@ -69,9 +69,9 @@ import {
   and,
   or,
   not,
+  optionalKey,
   struct,
   oneOfValues,
-  optional,
   isNumber,
   isString,
   predicateToRefine
@@ -94,7 +94,7 @@ const isUser = struct({
   id: isPositive, // number > 0
   name: isString, // string
   role: isRole, // 'admin' | 'member'
-  nickname: optional(isShortString) // string <= 3 | undefined
+  nickname: optionalKey(isShortString) // key may be absent; when present, string <= 3
 });
 
 // Use them
@@ -110,6 +110,10 @@ if (isUser(maybeUser)) {
   maybeUser.nickname?.toUpperCase();
 }
 ```
+
+Use `optionalKey(...)` for key-level optional properties in `struct`.
+Use `optional(...)` when the key exists but the value itself may be `undefined`.
+Combine them as `optionalKey(optional(guard))` when both are allowed.
 
 Composed guards stay reusable:
 `isPositive` can be used standalone or as part of a `struct` definition.
