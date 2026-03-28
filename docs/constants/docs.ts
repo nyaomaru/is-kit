@@ -72,13 +72,25 @@ if (result.valid) {
 } else {
   console.error(result.error.message);
 }`,
-  combinators: `import { arrayOf, tupleOf, recordOf, isString, isNumber } from 'is-kit';
+  combinators: `import {
+  arrayOf,
+  mapOf,
+  recordOf,
+  setOf,
+  tupleOf,
+  isString,
+  isNumber
+} from 'is-kit';
 
 const stringArray = arrayOf(isString);
+const stringSet = setOf(isString);
+const scoreMap = mapOf(isString, isNumber);
 const pair = tupleOf(isString, isNumber);
 const stringRecord = recordOf(isString, isString);
 
 stringArray(['a', 'b']); // true
+stringSet(new Set(['a', 'b'])); // true
+scoreMap(new Map([['math', 98]])); // true
 pair(['id', 1]); // true
 stringRecord({ a: 'x' }); // true`,
   nullability: `import { optional, required, nullable, nonNull, isString } from 'is-kit';

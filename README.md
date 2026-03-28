@@ -69,7 +69,9 @@ import {
   and,
   or,
   not,
+  mapOf,
   optionalKey,
+  setOf,
   struct,
   oneOfValues,
   isNumber,
@@ -90,6 +92,8 @@ const isOther = not(isShortOrPositive);
 
 // Define object shapes
 const isRole = oneOfValues(['admin', 'member'] as const);
+const isTags = setOf(isString);
+const isScores = mapOf(isString, isNumber);
 const isUser = struct({
   id: isPositive, // number > 0
   name: isString, // string
@@ -102,6 +106,8 @@ isPositive(3); // true
 isShortOrPositive('foo'); // true
 isShortOrPositive(false); // false
 isOther('x'); // true
+isTags(new Set(['new', 'vip'])); // true
+isScores(new Map([['math', 98]])); // true
 
 const maybeUser: unknown = { id: 7, name: 'Rin', role: 'admin' };
 if (isUser(maybeUser)) {
@@ -118,7 +124,34 @@ Combine them as `optionalKey(optional(guard))` when both are allowed.
 Composed guards stay reusable:
 `isPositive` can be used standalone or as part of a `struct` definition.
 
-When validating complex shapes, reach for `struct` — and friends like `arrayOf`, `recordOf`, or `oneOf`.
+When validating complex shapes, reach for `struct` and collection
+combinators like `arrayOf`, `setOf`, `mapOf`, `recordOf`, or `oneOf`.
+
+### Collection combinators
+
+Use `arrayOf`, `setOf`, `mapOf`, and `recordOf` to validate homogeneous
+collections while preserving precise readonly types.
+
+```ts
+import {
+  arrayOf,
+  mapOf,
+  recordOf,
+  setOf,
+  isNumber,
+  isString
+} from 'is-kit';
+
+const isStringArray = arrayOf(isString);
+const isStringSet = setOf(isString);
+const isScoreMap = mapOf(isString, isNumber);
+const isStringRecord = recordOf(isString, isString);
+
+isStringArray(['a', 'b']); // true
+isStringSet(new Set(['a', 'b'])); // true
+isScoreMap(new Map([['math', 98]])); // true
+isStringRecord({ a: 'x', b: 'y' }); // true
+```
 
 ### Primitive guards
 
@@ -165,6 +198,8 @@ isInfiniteNumber(1); // false
 
 Object/built-in guards cover arrays, dates, maps/sets, and more. Use
 `isInstanceOf` when you want a reusable guard from a class constructor.
+For content-aware map/set validation, pair `isMap` / `isSet` with `mapOf`
+and `setOf`.
 
 ```ts
 import { isArray, isDate, isInstanceOf } from 'is-kit';
@@ -184,7 +219,7 @@ isAnimal({}); // false
 
 - **Define once**: `define<T>(fn)` turns a plain function into a type guard.
 - **Upgrade predicates**: `predicateToRefine(fn)` adds narrowing.
-- **Compose freely**: `and`, `or`, `not`, `oneOf`, `arrayOf`, `struct` …
+- **Compose freely**: `and`, `or`, `not`, `oneOf`, `arrayOf`, `setOf`, `mapOf`, `struct` …
 - **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`, `assert`, `hasKey`, `hasKeys`, `narrowKeyTo`.
 
 ### Key Helpers
