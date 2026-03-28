@@ -66,6 +66,16 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Guard fixed-length tuples by position.'
   },
   {
+    href: '/api-reference/combinators/set-of',
+    title: 'setOf',
+    description: 'Guard sets with a value guard.'
+  },
+  {
+    href: '/api-reference/combinators/map-of',
+    title: 'mapOf',
+    description: 'Guard maps with key and value guards.'
+  },
+  {
     href: '/api-reference/combinators/one-of',
     title: 'oneOf',
     description: 'Passes when any guard passes (union).'
