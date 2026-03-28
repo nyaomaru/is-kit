@@ -6,6 +6,61 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.6.0] - 2026-03-28
+
+### Added
+
+- add mapof setof by @nyaomaru in [#156](https://github.com/nyaomaru/is-kit/pull/156)
+
+### Docs
+
+- 1.5.0 by [bot] by @github-actions in [#154](https://github.com/nyaomaru/is-kit/pull/154)
+
+### Chore
+
+- Update pnpm to v10.33.0 by [bot] by @renovate in [#155](https://github.com/nyaomaru/is-kit/pull/155)
+
+### What's New 🚀
+
+Add `setOf` and `mapOf` collection combinators
+
+This release adds two new collection guards: `setOf` and `mapOf`.
+
+- `setOf(valueGuard)` validates that a value is a Set and that every item matches the given guard.
+- `mapOf(keyGuard, valueGuard)` validates that a value is a Map and that every key/value pair matches the given guards.
+
+These new combinators work with existing is-kit guards, support nested composition, and preserve precise readonly types after narrowing, such as `ReadonlySet<T>` and `ReadonlyMap<K, V>`.
+
+```ts
+import { mapOf, setOf, struct, isNumber, isString } from 'is-kit';
+
+const isTags = setOf(isString);
+const isScores = mapOf(isString, isNumber);
+
+const isUserStats = struct({
+  name: isString,
+  tags: isTags,
+  scores: isScores
+});
+
+declare const input: unknown;
+
+if (isUserStats(input)) {
+  input.tags;   // ReadonlySet<string>
+  input.scores; // ReadonlyMap<string, number>
+}
+
+isTags(new Set(['new', 'vip'])); // true
+isTags(new Set(['new', 1])); // false
+
+isScores(new Map([['math', 98], ['english', 91]])); // true
+isScores(new Map([['math', '98']])); // false
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.5.0...v1.6.0
+
+[v1.6.0]: https://github.com/nyaomaru/is-kit/compare/v1.5.0...v1.6.0
+
 ## [v1.5.0] - 2026-03-21
 
 ### Added
@@ -646,7 +701,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
