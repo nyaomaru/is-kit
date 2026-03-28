@@ -39,7 +39,9 @@ expectType<Predicate<ReadonlySet<'a' | 'b'>>>(literalABSetGuard);
 
 // it: nested setOf keeps nested readonly arrays
 const isNestedStringCollection = setOf(arrayOf(isString));
-expectType<Predicate<ReadonlySet<readonly string[]>>>(isNestedStringCollection);
+expectType<Predicate<ReadonlySet<readonly string[]>>>(
+  isNestedStringCollection
+);
 
 // it: assignability to ReadonlySet<string>
 const acceptReadonlyStrings = (_: ReadonlySet<string>) => {};
