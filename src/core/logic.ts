@@ -6,6 +6,7 @@ import type {
   OutOfGuards,
   Predicate
 } from '@/types';
+import { define } from './define';
 import { toBooleanPredicates } from '@/utils';
 
 /**
@@ -19,12 +20,12 @@ export function and<A, B extends A>(
   precondition: Guard<A>,
   condition: Refine<A, B>
 ): Predicate<B> {
-  return (input: unknown): input is B => {
+  return define<B>((input) => {
     if (precondition(input)) {
       return condition(input);
     }
     return false;
-  };
+  });
 }
 
 /**
@@ -48,10 +49,10 @@ export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
   precondition: Guard<A>,
   ...steps: Chain & RefineChain<A, Chain>
 ): Guard<ChainResult<A, Chain>> {
-  return (input: unknown): input is ChainResult<A, Chain> => {
+  return define<ChainResult<A, Chain>>((input) => {
     if (!precondition(input)) return false;
     return applyRefinements(input, steps);
-  };
+  });
 }
 
 /**
@@ -64,9 +65,9 @@ export function or<P extends readonly Guard<unknown>[]>(
   ...guards: P
 ): Guard<OutOfGuards<P>> {
   const predicates = toBooleanPredicates(guards);
-  return (input: unknown): input is OutOfGuards<P> => {
-    return predicates.some((guard) => guard(input));
-  };
+  return define<OutOfGuards<P>>((input) =>
+    predicates.some((guard) => guard(input))
+  );
 }
 
 /**

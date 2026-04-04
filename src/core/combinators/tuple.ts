@@ -1,3 +1,4 @@
+import { define } from '../define';
 import type { Predicate, GuardedOf } from '@/types';
 
 /**
@@ -9,9 +10,7 @@ import type { Predicate, GuardedOf } from '@/types';
 export function tupleOf<const Fs extends readonly Predicate<unknown>[]>(
   ...guards: Fs
 ): Predicate<{ readonly [K in keyof Fs]: GuardedOf<Fs[K]> }> {
-  return (
-    input: unknown
-  ): input is { readonly [K in keyof Fs]: GuardedOf<Fs[K]> } => {
+  return define<{ readonly [K in keyof Fs]: GuardedOf<Fs[K]> }>((input) => {
     return (
       Array.isArray(input) &&
       input.length === guards.length &&
@@ -19,5 +18,5 @@ export function tupleOf<const Fs extends readonly Predicate<unknown>[]>(
         guard((input as readonly unknown[])[index])
       )
     );
-  };
+  });
 }

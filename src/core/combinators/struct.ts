@@ -89,7 +89,7 @@ export function struct<S extends Schema>(
 
   const allowed = options?.exact ? new Set(schemaKeys) : null;
 
-  return (input: unknown): input is InferSchema<S> => {
+  return define<InferSchema<S>>((input) => {
     if (!isPlainObject(input)) return false;
     const obj = input;
 
@@ -97,5 +97,5 @@ export function struct<S extends Schema>(
     if (!hasValidOptionalKeys(obj, optionalEntries)) return false;
     if (!allowed) return true;
     return hasOnlyAllowedKeys(obj, allowed);
-  };
+  });
 }
