@@ -1,4 +1,3 @@
-import { define } from '../define';
 import type { GuardedOf, GuardedWithin, Predicate } from '@/types';
 import { toBooleanPredicates } from '@/utils';
 
@@ -18,7 +17,5 @@ export function oneOf(
   ...guards: readonly ((input: unknown) => input is unknown)[]
 ) {
   const predicates = toBooleanPredicates(guards);
-  return define<GuardedOf<(typeof guards)[number]>>((input) =>
-    predicates.some((guard) => guard(input))
-  );
+  return (input: unknown) => predicates.some((guard) => guard(input));
 }
