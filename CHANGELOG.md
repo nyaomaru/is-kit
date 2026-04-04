@@ -6,6 +6,24 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.6.1] - 2026-04-04
+
+### Changed
+
+- wrap guard builders with define by @nyaomaru in [#159](https://github.com/nyaomaru/is-kit/pull/159)
+
+### Docs
+
+- 1.6.0 by [bot] by @github-actions in [#158](https://github.com/nyaomaru/is-kit/pull/158)
+
+### Chore
+
+- enforce 48-hour minimum package age by @nyaomaru in [#160](https://github.com/nyaomaru/is-kit/pull/160)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.0...v1.6.1
+
+[v1.6.1]: https://github.com/nyaomaru/is-kit/compare/v1.6.0...v1.6.1
+
 ## [v1.6.0] - 2026-03-28
 
 ### Added
@@ -701,7 +719,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
