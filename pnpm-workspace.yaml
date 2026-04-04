@@ -2,6 +2,10 @@ packages:
   - .
   - docs
 
+# WHY: Delay installs of newly published packages for 48 hours to reduce
+# exposure to compromised releases before the ecosystem has time to react.
+minimumReleaseAge: 2880
+
 ignoredBuiltDependencies:
   - esbuild
   - lefthook

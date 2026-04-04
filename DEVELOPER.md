@@ -28,6 +28,11 @@ Using mise tasks:
 - Type tests: `mise run test-types`
 - CI all: `mise run ci` (lint + build + test + type tests)
 
+Security note:
+
+- Root `pnpm-workspace.yaml` sets `minimumReleaseAge: 2880` (minutes = 48 hours), so `pnpm install` blocks packages published within the last 48 hours by default.
+- If a legitimate new dependency is blocked, add an explicit exception in the root `pnpm-workspace.yaml` allowlist/exception configuration for `minimumReleaseAge` rather than bypassing the check locally, and include a brief justification in the PR.
+
 ## Project Map
 
 - src/ TypeScript sources (ESM, strict)
