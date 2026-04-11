@@ -34,7 +34,7 @@ It helps you write small `isFoo` functions, compose them into **richer runtime c
 - **Validate object** shapes and collections
 - **Parse or assert** `unknown` values without a large schema framework
 
-[📚 Document Site](https://is-kit-docs.vercel.app/)
+[📚 Documentation Site](https://is-kit-docs.vercel.app/)
 
 > Best for **app-internal narrowing, filtering, and reusable guards**.
 
