@@ -36,6 +36,8 @@ It helps you write small `isFoo` functions, compose them into **richer runtime c
 
 [📚 Document Site](https://is-kit-docs.vercel.app/)
 
+> Best for **app-internal narrowing, filtering, and reusable guards**.
+
 ## 🤔 Why use `is-kit`?
 
 Tired of rewriting the same `isFoo` checks again and again?
@@ -81,33 +83,16 @@ import { and, define, or } from 'jsr:@nyaomaru/is-kit';
 
 ## ✨ Quick Start
 
-Start with tiny guards, then compose them into something useful.
+Start with a plain object guard and parse an `unknown` value.
 
 ```ts
-import {
-  and,
-  isInteger,
-  isString,
-  oneOfValues,
-  optionalKey,
-  predicateToRefine,
-  safeParse,
-  struct
-} from 'is-kit';
+import { isNumber, isString, optionalKey, safeParse, struct } from 'is-kit';
 
 declare const input: unknown;
 
-const isPositiveInt = and(
-  isInteger,
-  predicateToRefine<number>((value) => value > 0)
-);
-
-const isRole = oneOfValues('admin', 'member');
-
 const isUser = struct({
-  id: isPositiveInt,
+  id: isNumber,
   name: isString,
-  role: isRole,
   nickname: optionalKey(isString)
 });
 
@@ -115,7 +100,7 @@ const result = safeParse(isUser, input);
 
 if (result.valid) {
   result.value.id;
-  result.value.role;
+  result.value.name;
   result.value.nickname?.toUpperCase();
 }
 ```
@@ -304,95 +289,63 @@ const byRole = narrowKeyTo(isUser, 'role');
 const isAdmin = byRole('admin');
 ```
 
+## 🌍 Real-world use cases
+
+Here are the kinds of problems `is-kit` is especially good at solving:
+
+### API response checks
+
+```ts
+import { isNumber, isString, safeParse, struct } from 'is-kit';
+
+const isPost = struct({
+  id: isNumber,
+  title: isString
+});
+
+const parsed = safeParse(isPost, payload);
+if (parsed.valid) {
+  renderPost(parsed.value);
+}
+```
+
+### Safe array filtering
+
+```ts
+import { isNumber } from 'is-kit';
+
+const values: unknown[] = [1, 'two', 3];
+const numbers = values.filter(isNumber);
+```
+
+### Narrowing by discriminant
+
+```ts
+import { isNumber, isString, narrowKeyTo, oneOfValues, struct } from 'is-kit';
+
+const isEvent = struct({
+  type: oneOfValues('click', 'submit'),
+  label: isString,
+  timestamp: isNumber
+});
+
+const byType = narrowKeyTo(isEvent, 'type');
+const isSubmitEvent = byType('submit');
+```
+
 ## 🎯 API Overview
 
-Here is the public API grouped by intent.
+The library is organized around a few small building blocks:
 
-### Primitive guards
+- **Primitives**: `isString`, `isNumber`, `isBoolean`, `isInteger`, ...
+- **Composition**: `define`, `and`, `andAll`, `or`, `not`, `oneOf`
+- **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`
+- **Collections**: `arrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
+- **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
+- **Nullish handling**: `nullable`, `nonNull`, `nullish`, `optional`, `required`
+- **Result helpers**: `safeParse`, `safeParseWith`, `assert`
 
-- `isString`
-- `isNumber`
-- `isNumberPrimitive`
-- `isInteger`
-- `isSafeInteger`
-- `isPositive`
-- `isNegative`
-- `isZero`
-- `isNaN`
-- `isInfiniteNumber`
-- `isBoolean`
-- `isBigInt`
-- `isSymbol`
-- `isUndefined`
-- `isNull`
-- `isPrimitive`
-
-### Object and built-in guards
-
-- `isObject`
-- `isPlainObject`
-- `isArray`
-- `isDate`
-- `isRegExp`
-- `isMap`
-- `isSet`
-- `isWeakMap`
-- `isWeakSet`
-- `isPromiseLike`
-- `isIterable`
-- `isAsyncIterable`
-- `isArrayBuffer`
-- `isDataView`
-- `isTypedArray`
-- `isError`
-- `isURL`
-- `isBlob`
-- `isInstanceOf`
-
-### Composition helpers
-
-- `define`
-- `predicateToRefine`
-- `and`
-- `andAll`
-- `or`
-- `not`
-- `oneOf`
-- `guardIn`
-
-### Object and collection combinators
-
-- `struct`
-- `optionalKey`
-- `arrayOf`
-- `tupleOf`
-- `setOf`
-- `mapOf`
-- `recordOf`
-- `oneOfValues`
-
-### Nullish helpers
-
-- `nullable`
-- `nonNull`
-- `nullish`
-- `optional`
-- `required`
-
-### Parse, assert, and equality helpers
-
-- `safeParse`
-- `safeParseWith`
-- `assert`
-- `equals`
-- `equalsBy`
-- `equalsKey`
-
-### Key helpers
-
-- `hasKey`
-- `hasKeys`
-- `narrowKeyTo`
+For the full API list and dedicated pages, use the docs site below.
 
 ## 📚 Full Documentation
 
