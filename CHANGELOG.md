@@ -6,6 +6,25 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.6.2] - 2026-04-11
+
+### Changed
+
+- refine README by @nyaomaru in [#164](https://github.com/nyaomaru/is-kit/pull/164)
+- reuse isZero in oneOfValues by @nyaomaru in [#165](https://github.com/nyaomaru/is-kit/pull/165)
+
+### Docs
+
+- 1.6.1 by [bot] by @github-actions in [#162](https://github.com/nyaomaru/is-kit/pull/162)
+
+### Chore
+
+- update codex config by @nyaomaru in [#163](https://github.com/nyaomaru/is-kit/pull/163)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.1...v1.6.2
+
+[v1.6.2]: https://github.com/nyaomaru/is-kit/compare/v1.6.1...v1.6.2
+
 ## [v1.6.1] - 2026-04-04
 
 ### Changed
@@ -719,7 +738,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
