@@ -23,29 +23,29 @@
   </a>
 </p>
 
-`is-kit` is a lightweight, zero-dependency toolkit for building reusable TypeScript type guards.
+`is-kit` is a lightweight, zero-dependency toolkit for building reusable TypeScript **type guards**.
 
-It helps you write small `isFoo` functions, compose them into richer runtime checks, and keep TypeScript narrowing natural inside regular control flow.
+It helps you write small `isFoo` functions, compose them into **richer runtime checks**, and keep **TypeScript narrowing** natural inside regular control flow.
 
-Runtime-safe 🛡️, composable 🧩, and ergonomic ✨ without asking you to adopt a heavy schema workflow.
+**Runtime-safe** 🛡️, **composable** 🧩, and **ergonomic** ✨ without asking you to adopt a heavy schema workflow.
 
-- Build and reuse typed guards
-- Compose guards with `and`, `or`, `not`, `oneOf`
-- Validate object shapes and collections
-- Parse or assert `unknown` values without a large schema framework
+- Build and reuse **typed guards**
+- **Compose guards** with `and`, `or`, `not`, `oneOf`
+- **Validate object** shapes and collections
+- **Parse or assert** `unknown` values without a large schema framework
 
-[📚 Document site](https://is-kit-docs.vercel.app/)
+[📚 Document Site](https://is-kit-docs.vercel.app/)
 
-## Why use is-kit?
+## 🤔 Why use `is-kit`?
 
 Tired of rewriting the same `isFoo` checks again and again?
 
 `is-kit` is a good fit when you want to:
 
-- write reusable `isX` functions instead of one-off inline checks
-- keep runtime validation lightweight and dependency-free
-- narrow values directly in `if`, `filter`, and other TypeScript control flow
-- compose validation logic from small guards instead of large schema objects
+- **write reusable `isX`** functions instead of one-off inline checks
+- keep runtime validation **lightweight and dependency-free**
+- **narrow values directly** in `if`, `filter`, and other TypeScript control flow
+- **compose validation logic** from small guards instead of large schema objects
 
 `is-kit` is probably not the best first choice if you mainly want:
 
@@ -53,13 +53,13 @@ Tired of rewriting the same `isFoo` checks again and again?
 - schema-first workflows
 - data transformation pipelines
 
-In those cases, a schema validator such as Zod may be a better fit.
+In those cases, a schema validator such as `Zod` may be a better fit. (Of course, you can combine them 🍲)
 
 `is-kit` is meant to take the boring part out of writing guards, while still feeling like normal TypeScript.
 
 > Grab a coffee ☕ and let `is-kit` handle the repetitive part.
 
-## Install
+## 📥 Install
 
 ```bash
 pnpm add is-kit
@@ -79,7 +79,7 @@ ESM and CJS builds are available for npm consumers, and bundled types are includ
 import { and, define, or } from 'jsr:@nyaomaru/is-kit';
 ```
 
-## Quick Start
+## ✨ Quick Start
 
 Start with tiny guards, then compose them into something useful.
 
@@ -126,7 +126,7 @@ This is the core idea of `is-kit`:
 2. Compose them.
 3. Reuse them anywhere TypeScript narrowing matters.
 
-## A 30-second Mental Model
+## ⌚ A 30-second Mental Model
 
 If you are new to the library, these are the pieces to remember:
 
@@ -136,7 +136,7 @@ If you are new to the library, these are the pieces to remember:
 - `safeParse(guard, value)` gives you a small tagged result object.
 - `assert(guard, value)` throws if the value does not match.
 
-## Common Tasks
+## ⚒️ Common Tasks
 
 ### 1. Create a custom guard
 
@@ -304,7 +304,7 @@ const byRole = narrowKeyTo(isUser, 'role');
 const isAdmin = byRole('admin');
 ```
 
-## API Overview
+## 🎯 API Overview
 
 Here is the public API grouped by intent.
 
@@ -394,33 +394,13 @@ Here is the public API grouped by intent.
 - `hasKeys`
 - `narrowKeyTo`
 
-## When should I reach for is-kit?
-
-Reach for `is-kit` when:
-
-- you already write TypeScript type guards and want less boilerplate
-- you want reusable runtime checks inside application code
-- you prefer small composable predicates over schema objects
-- you care about a lightweight dependency surface
-
-Reach for a schema validator instead when:
-
-- validation errors are a first-class product feature
-- you want schema-driven parsing or transformation
-- your team prefers schema-first APIs everywhere
-
-Many codebases can use both. A practical split is:
-
-- use Zod or another schema library at app boundaries
-- use `is-kit` inside the app for branching, filtering, and reusable guards
-
-## Full Documentation
+## 📚 Full Documentation
 
 For detailed API pages and more examples, see:
 
 https://is-kit-docs.vercel.app/
 
-## Development
+## 👨‍💻 Development
 
 Requires Node 22 and pnpm 10.12.4.
 
