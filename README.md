@@ -1,260 +1,295 @@
 # is-kit
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/nyaomaru/is-kit/main/docs/public/iskit_image.png" width="600px" align="center" alt="is-kit logo" />
+  <img
+    src="https://raw.githubusercontent.com/nyaomaru/is-kit/main/docs/public/iskit_image.png"
+    width="600"
+    alt="is-kit logo"
+  />
 </p>
 
 <p align="center">
-    <a href="https://www.npmjs.com/package/is-kit">
-        <img src="https://img.shields.io/npm/v/is-kit.svg" alt="npm version">
-    </a>
-    <a href="https://jsr.io/@nyaomaru/is-kit">
-        <img src="https://img.shields.io/jsr/v/@nyaomaru/is-kit" alt="JSR">
-    </a>
-    <a href="https://www.npmjs.com/package/is-kit">
-        <img src="https://img.shields.io/npm/dt/is-kit.svg" alt="npm downloads">
-    </a>
-    <a href="https://github.com/nyaomaru/is-kit/blob/main/LICENSE">
-        <img src="https://img.shields.io/npm/l/is-kit.svg?sanitize=true" alt="License">
-    </a>
+  <a href="https://www.npmjs.com/package/is-kit">
+    <img src="https://img.shields.io/npm/v/is-kit.svg" alt="npm version">
+  </a>
+  <a href="https://jsr.io/@nyaomaru/is-kit">
+    <img src="https://img.shields.io/jsr/v/@nyaomaru/is-kit" alt="JSR">
+  </a>
+  <a href="https://www.npmjs.com/package/is-kit">
+    <img src="https://img.shields.io/npm/dt/is-kit.svg" alt="npm downloads">
+  </a>
+  <a href="https://github.com/nyaomaru/is-kit/blob/main/LICENSE">
+    <img src="https://img.shields.io/npm/l/is-kit.svg?sanitize=true" alt="License">
+  </a>
 </p>
 
-Lightweight, zero-dependency toolkit for building `isFoo` style type guards in TypeScript.
-Runtime-safe 🛡️, composable 🧩, and ergonomic ✨.
+`is-kit` is a lightweight, zero-dependency toolkit for building reusable TypeScript **type guards**.
 
-[📚 full documentation](https://is-kit-docs.vercel.app/)
+It helps you write small `isFoo` functions, compose them into **richer runtime checks**, and keep **TypeScript narrowing** natural inside regular control flow.
 
-## Why?
+**Runtime-safe** 🛡️, **composable** 🧩, and **ergonomic** ✨ without asking you to adopt a heavy schema workflow.
 
-Tired of writing the same `isFoo` again and again?
-Let `is-kit` do it for you:
+- Build and reuse **typed guards**
+- **Compose guards** with `and`, `or`, `not`, `oneOf`
+- **Validate object** shapes and collections
+- **Parse or assert** `unknown` values without a large schema framework
 
-- Less boilerplate
-- Type-safe
-- Composable
-- Zero-dependency
+[📚 Documentation Site](https://is-kit-docs.vercel.app/)
 
-> ☕ Grab a coffee, let `is-kit` do the boring work.
+> Best for **app-internal narrowing, filtering, and reusable guards**.
 
-## Install
+## 🤔 Why use `is-kit`?
 
-Node via npm
+Tired of rewriting the same `isFoo` checks again and again?
+
+`is-kit` is a good fit when you want to:
+
+- **write reusable `isX`** functions instead of one-off inline checks
+- keep runtime validation **lightweight and dependency-free**
+- **narrow values directly** in `if`, `filter`, and other TypeScript control flow
+- **compose validation logic** from small guards instead of large schema objects
+
+`is-kit` is probably not the best first choice if you mainly want:
+
+- rich, structured validation errors
+- schema-first workflows
+- data transformation pipelines
+
+In those cases, a schema validator such as `Zod` may be a better fit. (Of course, you can combine them 🍲)
+
+`is-kit` is meant to take the boring part out of writing guards, while still feeling like normal TypeScript.
+
+> Grab a coffee ☕ and let `is-kit` handle the repetitive part.
+
+## 📥 Install
 
 ```bash
 pnpm add is-kit
 # or
 bun add is-kit
 # or
-npm i is-kit
+npm install is-kit
 # or
 yarn add is-kit
 ```
 
-ESM and CJS builds are provided for npm consumers. Types are bundled.
+ESM and CJS builds are available for npm consumers, and bundled types are included.
 
-### JSR (TypeScript source)
+### JSR
 
 ```ts
-// Deno/Bun/JSR-aware tooling
-import { define, and, or } from 'jsr:@nyaomaru/is-kit';
+import { and, define, or } from 'jsr:@nyaomaru/is-kit';
 ```
 
-## Quick start
+## ✨ Quick Start
 
-Build `is` functions from tiny, composable pieces:
+Start with a plain object guard and parse an `unknown` value.
 
 ```ts
-import {
-  define,
-  and,
-  or,
-  not,
-  mapOf,
-  optionalKey,
-  setOf,
-  struct,
-  oneOfValues,
-  isNumber,
-  isString,
-  predicateToRefine
-} from 'is-kit';
+import { isNumber, isString, optionalKey, safeParse, struct } from 'is-kit';
 
-// Define small guards
-const isShortString = define<string>((v) => isString(v) && v.length <= 3);
-const isPositive = and(
-  isNumber,
-  predicateToRefine<number>((v) => v > 0)
-);
+declare const input: unknown;
 
-// Combine them (or / not)
-const isShortOrPositive = or(isShortString, isPositive);
-const isOther = not(isShortOrPositive);
-
-// Define object shapes
-const isRole = oneOfValues(['admin', 'member'] as const);
-const isTags = setOf(isString);
-const isScores = mapOf(isString, isNumber);
 const isUser = struct({
-  id: isPositive, // number > 0
-  name: isString, // string
-  role: isRole, // 'admin' | 'member'
-  nickname: optionalKey(isShortString) // key may be absent; when present, string <= 3
+  id: isNumber,
+  name: isString,
+  nickname: optionalKey(isString)
 });
 
-// Use them
-isPositive(3); // true
-isShortOrPositive('foo'); // true
-isShortOrPositive(false); // false
-isOther('x'); // true
-isTags(new Set(['new', 'vip'])); // true
-isScores(new Map([['math', 98]])); // true
+const result = safeParse(isUser, input);
 
-const maybeUser: unknown = { id: 7, name: 'Rin', role: 'admin' };
-if (isUser(maybeUser)) {
-  // The type is narrowed inside this block
-  maybeUser.role; // 'admin' | 'member'
-  maybeUser.nickname?.toUpperCase();
+if (result.valid) {
+  result.value.id;
+  result.value.name;
+  result.value.nickname?.toUpperCase();
 }
 ```
 
-Use `optionalKey(...)` for key-level optional properties in `struct`.
-Use `optional(...)` when the key exists but the value itself may be `undefined`.
-Combine them as `optionalKey(optional(guard))` when both are allowed.
+This is the core idea of `is-kit`:
 
-Composed guards stay reusable:
-`isPositive` can be used standalone or as part of a `struct` definition.
+1. Build small guards.
+2. Compose them.
+3. Reuse them anywhere TypeScript narrowing matters.
 
-When validating complex shapes, reach for `struct` and collection
-combinators like `arrayOf`, `setOf`, `mapOf`, `recordOf`, or `oneOf`.
+## ⌚ A 30-second Mental Model
 
-### Collection combinators
+If you are new to the library, these are the pieces to remember:
 
-Use `arrayOf`, `setOf`, `mapOf`, and `recordOf` to validate homogeneous
-collections while preserving precise readonly types.
+- `define<T>(fn)` turns a boolean check into a typed guard.
+- `predicateToRefine(fn)` upgrades an existing predicate so it can participate in narrowing chains.
+- `struct({...})` builds an object-shape guard.
+- `safeParse(guard, value)` gives you a small tagged result object.
+- `assert(guard, value)` throws if the value does not match.
+
+## ⚒️ Common Usage
+
+### 1. Create a custom guard
+
+Use `define` when you already know the runtime condition you want.
+
+```ts
+import { define, isString } from 'is-kit';
+
+const isShortString = define<string>(
+  (value) => isString(value) && value.length <= 3
+);
+```
+
+### 2. Add refinements to an existing guard
+
+Use `and` plus `predicateToRefine` when you want a broad guard first and a narrower condition after that.
+
+```ts
+import { and, isNumber, predicateToRefine } from 'is-kit';
+
+const isPositiveNumber = and(
+  isNumber,
+  predicateToRefine<number>((value) => value > 0)
+);
+```
+
+### 3. Compose multiple guards
+
+Use `or` and `oneOf` to combine smaller guards into readable predicates.
+
+```ts
+import { oneOf, or, isBoolean, isNumber, isString } from 'is-kit';
+
+const isStringOrNumber = or(isString, isNumber);
+const isScalar = oneOf(isString, isNumber, isBoolean);
+```
+
+Use `not(...)` when you want the complement of an existing guard or refinement.
+
+### 4. Validate object shapes
+
+Use `struct` for plain-object payloads. Keys are required by default.
+
+```ts
+import { isNumber, isString, optionalKey, struct } from 'is-kit';
+
+const isProfile = struct(
+  {
+    id: isNumber,
+    name: isString,
+    bio: optionalKey(isString)
+  },
+  { exact: true }
+);
+```
+
+`optionalKey(guard)` means the property may be missing.
+
+If the property must exist but the value may be `undefined`, use `optional(guard)` instead.
+
+```ts
+import { isString, optional, optionalKey, struct } from 'is-kit';
+
+const isConfig = struct({
+  label: isString,
+  subtitle: optional(isString),
+  note: optionalKey(optional(isString))
+});
+```
+
+### 5. Validate arrays, tuples, maps, sets, and records
+
+Collection combinators keep your element guards reusable.
 
 ```ts
 import {
   arrayOf,
+  isNumber,
+  isString,
   mapOf,
   recordOf,
   setOf,
-  isNumber,
-  isString
+  tupleOf
 } from 'is-kit';
 
 const isStringArray = arrayOf(isString);
-const isStringSet = setOf(isString);
+const isPoint = tupleOf(isNumber, isNumber);
+const isTagSet = setOf(isString);
 const isScoreMap = mapOf(isString, isNumber);
 const isStringRecord = recordOf(isString, isString);
-
-isStringArray(['a', 'b']); // true
-isStringSet(new Set(['a', 'b'])); // true
-isScoreMap(new Map([['math', 98]])); // true
-isStringRecord({ a: 'x', b: 'y' }); // true
 ```
 
-### Primitive guards
+Use `oneOfValues` for unions of literal primitives.
 
-Built-in primitives: `isString`, `isNumber` (finite), `isBoolean`, `isBigInt`, `isSymbol`, `isUndefined`, `isNull` — and a preset `isPrimitive` for any primitive.
+```ts
+import { oneOfValues } from 'is-kit';
 
-Numeric helpers are included for common cases: `isInteger`, `isSafeInteger`, `isPositive`, `isNegative`, `isZero`, `isNaN`, `isInfiniteNumber`.
+const isStatus = oneOfValues('draft', 'published', 'archived');
+```
+
+### 6. Handle null and undefined explicitly
+
+Use the nullish helpers to say exactly what is allowed.
 
 ```ts
 import {
-  isPrimitive,
-  isNumber,
-  isInteger,
-  isSafeInteger,
-  isPositive,
-  isNegative,
-  isZero,
-  isNaN,
-  isInfiniteNumber
+  isString,
+  nonNull,
+  nullable,
+  nullish,
+  optional,
+  required
 } from 'is-kit';
 
-// Any primitive
-isPrimitive('x'); // true
-isPrimitive(123); // true
-isPrimitive(NaN); // true (use isNumber for finite only)
-isPrimitive({}); // false
-
-// Numeric helpers
-isNumber(10); // true
-isInteger(42); // true
-isSafeInteger(2 ** 53); // false
-isPositive(3); // true
-isPositive(0); // false
-isNegative(-3); // true
-isNegative(-0); // false
-isZero(0); // true
-isZero(1); // false
-isNaN(NaN); // true
-isNaN(0); // false
-isInfiniteNumber(Infinity); // true
-isInfiniteNumber(1); // false
+const isNullableString = nullable(isString);
+const isNullishString = nullish(isString);
+const isOptionalString = optional(isString);
+const isDefinedString = required(optional(isString));
+const isNonNullString = nonNull(nullable(isString));
 ```
 
-### Object guards
+### 7. Parse or assert unknown input
 
-Object/built-in guards cover arrays, dates, maps/sets, and more. Use
-`isInstanceOf` when you want a reusable guard from a class constructor.
-For content-aware map/set validation, pair `isMap` / `isSet` with `mapOf`
-and `setOf`.
+Use `safeParse` when you want a result object, and `assert` when invalid data should stop execution.
 
 ```ts
-import { isArray, isDate, isInstanceOf } from 'is-kit';
+import { assert, isString, safeParse } from 'is-kit';
 
-class Animal {}
-class Dog extends Animal {}
+declare const input: unknown;
 
-const isAnimal = isInstanceOf(Animal);
+const parsed = safeParse(isString, input);
 
-isArray([]); // true
-isDate(new Date()); // true
-isAnimal(new Dog()); // true
-isAnimal({}); // false
+if (parsed.valid) {
+  parsed.value.toUpperCase();
+}
+
+assert(isString, input, 'Expected a string');
+input.toUpperCase();
 ```
 
-## Core Ideas
+### 8. Narrow object keys
 
-- **Define once**: `define<T>(fn)` turns a plain function into a type guard.
-- **Upgrade predicates**: `predicateToRefine(fn)` adds narrowing.
-- **Compose freely**: `and`, `or`, `not`, `oneOf`, `arrayOf`, `setOf`, `mapOf`, `struct` …
-- **Stay ergonomic**: helpers like `nullable`, `optional`, `equals`, `safeParse`, `assert`, `hasKey`, `hasKeys`, `narrowKeyTo`.
-
-### Key Helpers
-
-Use `hasKey`/`hasKeys` to check required own properties before refining, and
-`narrowKeyTo` when you need to narrow a property to a specific literal value.
+Use key helpers when the important part of a value is one property.
 
 ```ts
 import {
   hasKey,
   hasKeys,
-  isString,
   isNumber,
+  isString,
   narrowKeyTo,
   oneOfValues,
-  or,
   struct
 } from 'is-kit';
 
-// Base guard (e.g., via struct)
-type User = { id: string; age: number; role: 'admin' | 'guest' | 'trial' };
 const isUser = struct({
-  id: isString,
-  age: isNumber,
-  role: oneOfValues('admin', 'guest', 'trial')
+  id: isNumber,
+  name: isString,
+  role: oneOfValues('admin', 'member', 'guest')
 });
 
 const hasRole = hasKey('role');
 const hasRoleAndId = hasKeys('role', 'id');
 const byRole = narrowKeyTo(isUser, 'role');
-const isGuest = byRole('guest'); // Readonly<User> & { role: 'guest' }
-const isTrial = byRole('trial'); // Readonly<User> & { role: 'trial' }
-const isGuestOrTrial = or(isGuest, isTrial);
+const isAdmin = byRole('admin');
 
-declare const value: unknown;
+const value: unknown = { id: 1, name: 'nyaomaru', role: 'admin' };
+
 if (hasRole(value)) {
   value.role;
 }
@@ -264,23 +299,85 @@ if (hasRoleAndId(value)) {
   value.id;
 }
 
-if (isGuestOrTrial(value)) {
-  // value.role is 'guest' | 'trial'
+if (isAdmin(value)) {
+  value.role;
+  value.name;
 }
 ```
 
-## API Reference
+## 🌍 Real-world use cases
 
-For full API details and runnable examples, visit
+Here are the kinds of problems `is-kit` is especially good at solving:
 
-[📚 See full document](https://is-kit-docs.vercel.app/)
+### API response checks
 
-## Development
+```ts
+import { isNumber, isString, safeParse, struct } from 'is-kit';
 
-Requires Node 22 and pnpm 10.12.4 (via Corepack or mise).
-Want to hack on `is-kit`?
-See `DEVELOPER.md` for setup, scripts, and contribution workflow.
+const isPost = struct({
+  id: isNumber,
+  title: isString
+});
 
-## Contributing
+const parsed = safeParse(isPost, payload);
+if (parsed.valid) {
+  renderPost(parsed.value);
+}
+```
 
-See `CONTRIBUTE.md` for workflow, commit style, and tool setup. 🚀
+### Safe array filtering
+
+```ts
+import { isNumber } from 'is-kit';
+
+const values: unknown[] = [1, 'two', 3];
+const numbers = values.filter(isNumber);
+```
+
+### Narrowing by discriminant
+
+```ts
+import { isNumber, isString, narrowKeyTo, oneOfValues, struct } from 'is-kit';
+
+const isEvent = struct({
+  type: oneOfValues('click', 'submit'),
+  label: isString,
+  timestamp: isNumber
+});
+
+const byType = narrowKeyTo(isEvent, 'type');
+const isSubmitEvent = byType('submit');
+```
+
+## 🎯 API Overview
+
+The library is organized around a few small building blocks:
+
+- **Primitives**: `isString`, `isNumber`, `isBoolean`, `isInteger`, ...
+- **Composition**: `define`, `and`, `andAll`, `or`, `not`, `oneOf`
+- **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`
+- **Collections**: `arrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
+- **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
+- **Nullish handling**: `nullable`, `nonNull`, `nullish`, `optional`, `required`
+- **Result helpers**: `safeParse`, `safeParseWith`, `assert`
+
+For the full API list and dedicated pages, use the docs site below.
+
+## 📚 Full Documentation
+
+For detailed API pages and more examples, see:
+
+https://is-kit-docs.vercel.app/
+
+## 👨‍💻 Development
+
+Requires Node 22 and pnpm 10.12.4.
+
+- `pnpm lint`
+- `pnpm build`
+- `pnpm test`
+- `pnpm test:types`
+
+See `DEVELOPER.md` for setup details and `CONTRIBUTE.md` for contribution workflow.
+
+Pick a guard, compose it, and ship with confidence 🚀
