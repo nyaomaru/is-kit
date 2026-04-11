@@ -121,7 +121,7 @@ If you are new to the library, these are the pieces to remember:
 - `safeParse(guard, value)` gives you a small tagged result object.
 - `assert(guard, value)` throws if the value does not match.
 
-## ⚒️ Common Tasks
+## ⚒️ Common Usage
 
 ### 1. Create a custom guard
 
@@ -287,6 +287,22 @@ const hasRole = hasKey('role');
 const hasRoleAndId = hasKeys('role', 'id');
 const byRole = narrowKeyTo(isUser, 'role');
 const isAdmin = byRole('admin');
+
+const value: unknown = { id: 1, name: 'nyaomaru', role: 'admin' };
+
+if (hasRole(value)) {
+  value.role;
+}
+
+if (hasRoleAndId(value)) {
+  value.role;
+  value.id;
+}
+
+if (isAdmin(value)) {
+  value.role;
+  value.name;
+}
 ```
 
 ## 🌍 Real-world use cases
