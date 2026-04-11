@@ -1,8 +1,6 @@
 import type { Primitive, Predicate } from '@/types';
 import { define } from '@/core/define';
-import { and } from '@/core/logic';
-import { isNumber } from '@/core/primitive';
-import { predicateToRefine } from '@/core/predicate';
+import { isZero } from '@/core/primitive';
 
 // WHY: For small literal sets, a linear scan with Object.is preserves
 // equality semantics (NaN, +0/-0) without Set overhead; use Set when larger.
@@ -11,11 +9,6 @@ const ONE_OF_VALUES_LINEAR_SCAN_MAX = 8;
 const isSingleArrayArg = define<readonly [readonly Primitive[]]>(
   (value): value is readonly [readonly Primitive[]] =>
     Array.isArray(value) && value.length === 1 && Array.isArray(value[0])
-);
-
-const isZeroNumber = and(
-  isNumber,
-  predicateToRefine<number>((value) => value === 0)
 );
 
 const normalizeValues = (
@@ -40,7 +33,7 @@ const createSetPredicate = (
   let hasNegativeZero = false;
   const valueSet = new Set<unknown>();
   for (const literalValue of items) {
-    if (isZeroNumber(literalValue)) {
+    if (isZero(literalValue)) {
       if (Object.is(literalValue, -0)) hasNegativeZero = true;
       else hasPositiveZero = true;
     } else {
@@ -49,7 +42,7 @@ const createSetPredicate = (
   }
 
   return define<Primitive>((input) => {
-    if (isZeroNumber(input)) {
+    if (isZero(input)) {
       return Object.is(input, -0) ? hasNegativeZero : hasPositiveZero;
     }
     return valueSet.has(input);
