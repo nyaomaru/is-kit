@@ -1,9 +1,17 @@
 import { define } from './define';
 import type { Guard } from '@/types';
-
-// WHY: Using Object.prototype.toString provides stable internal tags across realms
-// and avoids false positives from overridden Symbol.toStringTag.
-const getTag = (value: unknown) => Object.prototype.toString.call(value);
+import {
+  getTag,
+  OBJECT_TAG_ARRAY_BUFFER,
+  OBJECT_TAG_DATA_VIEW,
+  OBJECT_TAG_DATE,
+  OBJECT_TAG_ERROR,
+  OBJECT_TAG_MAP,
+  OBJECT_TAG_REGEXP,
+  OBJECT_TAG_SET,
+  OBJECT_TAG_WEAK_MAP,
+  OBJECT_TAG_WEAK_SET
+} from '@/utils/object-tags';
 
 /**
  * Checks whether a value is a function.
@@ -48,8 +56,7 @@ export const isArray = define<readonly unknown[]>(Array.isArray);
  */
 export const isDate = define<Date>(
   (value) =>
-    getTag(value) === '[object Date]' &&
-    !Number.isNaN((value as Date).getTime())
+    getTag(value) === OBJECT_TAG_DATE && !Number.isNaN((value as Date).getTime())
 );
 
 /**
@@ -58,7 +65,7 @@ export const isDate = define<Date>(
  * @returns Predicate narrowing to `RegExp`.
  */
 export const isRegExp = define<RegExp>(
-  (value) => getTag(value) === '[object RegExp]'
+  (value) => getTag(value) === OBJECT_TAG_REGEXP
 );
 
 /**
@@ -67,7 +74,7 @@ export const isRegExp = define<RegExp>(
  * @returns Predicate narrowing to `Map<unknown, unknown>`.
  */
 export const isMap = define<Map<unknown, unknown>>(
-  (value) => getTag(value) === '[object Map]'
+  (value) => getTag(value) === OBJECT_TAG_MAP
 );
 
 /**
@@ -76,7 +83,7 @@ export const isMap = define<Map<unknown, unknown>>(
  * @returns Predicate narrowing to `Set<unknown>`.
  */
 export const isSet = define<Set<unknown>>(
-  (value) => getTag(value) === '[object Set]'
+  (value) => getTag(value) === OBJECT_TAG_SET
 );
 
 /**
@@ -85,7 +92,7 @@ export const isSet = define<Set<unknown>>(
  * @returns Predicate narrowing to `WeakMap<object, unknown>`.
  */
 export const isWeakMap = define<WeakMap<object, unknown>>(
-  (value) => getTag(value) === '[object WeakMap]'
+  (value) => getTag(value) === OBJECT_TAG_WEAK_MAP
 );
 
 /**
@@ -94,7 +101,7 @@ export const isWeakMap = define<WeakMap<object, unknown>>(
  * @returns Predicate narrowing to `WeakSet<object>`.
  */
 export const isWeakSet = define<WeakSet<object>>(
-  (value) => getTag(value) === '[object WeakSet]'
+  (value) => getTag(value) === OBJECT_TAG_WEAK_SET
 );
 
 /**
@@ -104,7 +111,7 @@ export const isWeakSet = define<WeakSet<object>>(
  */
 export const isPromiseLike = define<PromiseLike<unknown>>((value) => {
   if (!isObject(value) && !isFunction(value)) return false;
-  return typeof (value as Record<string, unknown>).then === 'function';
+  return isFunction((value as Record<string, unknown>).then);
 });
 
 /**
@@ -114,9 +121,7 @@ export const isPromiseLike = define<PromiseLike<unknown>>((value) => {
  */
 export const isIterable = define<Iterable<unknown>>((value) => {
   if (!isObject(value) && !isFunction(value)) return false;
-  return (
-    typeof (value as Record<symbol, unknown>)[Symbol.iterator] === 'function'
-  );
+  return isFunction((value as Record<symbol, unknown>)[Symbol.iterator]);
 });
 
 /**
@@ -126,10 +131,7 @@ export const isIterable = define<Iterable<unknown>>((value) => {
  */
 export const isAsyncIterable = define<AsyncIterable<unknown>>((value) => {
   if (!isObject(value) && !isFunction(value)) return false;
-  return (
-    typeof (value as Record<symbol, unknown>)[Symbol.asyncIterator] ===
-    'function'
-  );
+  return isFunction((value as Record<symbol, unknown>)[Symbol.asyncIterator]);
 });
 
 /**
@@ -138,7 +140,7 @@ export const isAsyncIterable = define<AsyncIterable<unknown>>((value) => {
  * @returns Predicate narrowing to `ArrayBuffer`.
  */
 export const isArrayBuffer = define<ArrayBuffer>(
-  (value) => getTag(value) === '[object ArrayBuffer]'
+  (value) => getTag(value) === OBJECT_TAG_ARRAY_BUFFER
 );
 
 /**
@@ -147,7 +149,7 @@ export const isArrayBuffer = define<ArrayBuffer>(
  * @returns Predicate narrowing to `DataView`.
  */
 export const isDataView = define<DataView>(
-  (value) => getTag(value) === '[object DataView]'
+  (value) => getTag(value) === OBJECT_TAG_DATA_VIEW
 );
 
 /**
@@ -156,7 +158,7 @@ export const isDataView = define<DataView>(
  * @returns Predicate narrowing to `ArrayBufferView`.
  */
 export const isTypedArray = define<ArrayBufferView>(
-  (value) => ArrayBuffer.isView(value) && getTag(value) !== '[object DataView]'
+  (value) => ArrayBuffer.isView(value) && getTag(value) !== OBJECT_TAG_DATA_VIEW
 );
 
 /**
@@ -165,7 +167,7 @@ export const isTypedArray = define<ArrayBufferView>(
  * @returns Predicate narrowing to `Error`.
  */
 export const isError = define<Error>(
-  (value) => value instanceof Error || getTag(value) === '[object Error]'
+  (value) => value instanceof Error || getTag(value) === OBJECT_TAG_ERROR
 );
 
 /**
