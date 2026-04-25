@@ -6,6 +6,25 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.6.4] - 2026-04-25
+
+### Changed
+
+- use Object.hasOwn for own-property checks by @nyaomaru in [#174](https://github.com/nyaomaru/is-kit/pull/174)
+- extract reusable guard collection helpers by @nyaomaru in [#175](https://github.com/nyaomaru/is-kit/pull/175)
+
+### Docs
+
+- 1.6.3 by [bot] by @github-actions in [#172](https://github.com/nyaomaru/is-kit/pull/172)
+
+### Chore
+
+- Update pnpm to v10.33.2 by [bot] by @renovate in [#173](https://github.com/nyaomaru/is-kit/pull/173)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.3...v1.6.4
+
+[v1.6.4]: https://github.com/nyaomaru/is-kit/compare/v1.6.3...v1.6.4
+
 ## [v1.6.3] - 2026-04-18
 
 ### Changed
@@ -757,7 +776,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.3...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.4...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
