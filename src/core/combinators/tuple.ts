@@ -1,5 +1,6 @@
 import { define } from '../define';
 import type { Predicate, GuardedOf } from '@/types';
+import { everyTupleValue } from '@/utils';
 
 /**
  * Validates a fixed-length tuple by applying element-wise guards.
@@ -10,13 +11,7 @@ import type { Predicate, GuardedOf } from '@/types';
 export function tupleOf<const Fs extends readonly Predicate<unknown>[]>(
   ...guards: Fs
 ): Predicate<{ readonly [K in keyof Fs]: GuardedOf<Fs[K]> }> {
-  return define<{ readonly [K in keyof Fs]: GuardedOf<Fs[K]> }>((input) => {
-    return (
-      Array.isArray(input) &&
-      input.length === guards.length &&
-      guards.every((guard, index) =>
-        guard((input as readonly unknown[])[index])
-      )
-    );
-  });
+  return define<{ readonly [K in keyof Fs]: GuardedOf<Fs[K]> }>(
+    (input) => Array.isArray(input) && everyTupleValue(input, guards)
+  );
 }

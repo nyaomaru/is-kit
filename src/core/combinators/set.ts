@@ -1,5 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { define } from '../define';
+import { everySetValue } from '@/utils';
 import { isSet } from '../object';
 
 /**
@@ -11,13 +12,7 @@ import { isSet } from '../object';
 export function setOf<VF extends Predicate<unknown>>(
   valueGuard: VF
 ): Predicate<ReadonlySet<GuardedOf<VF>>> {
-  return define<ReadonlySet<GuardedOf<VF>>>((input) => {
-    if (!isSet(input)) return false;
-
-    for (const value of input.values()) {
-      if (!valueGuard(value)) return false;
-    }
-
-    return true;
-  });
+  return define<ReadonlySet<GuardedOf<VF>>>(
+    (input) => isSet(input) && everySetValue(input, valueGuard)
+  );
 }

@@ -1,5 +1,5 @@
 import type { GuardedOf, GuardedWithin, Predicate } from '@/types';
-import { toBooleanPredicates } from '@/utils';
+import { or } from '../logic';
 
 /**
  * Combines multiple guards; passes when any one guard matches.
@@ -16,6 +16,5 @@ export function oneOf<A, Fs extends readonly Predicate<A>[]>(
 export function oneOf(
   ...guards: readonly ((input: unknown) => input is unknown)[]
 ) {
-  const predicates = toBooleanPredicates(guards);
-  return (input: unknown) => predicates.some((guard) => guard(input));
+  return or(...guards);
 }
