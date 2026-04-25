@@ -62,7 +62,7 @@ export const everySetValue = (
  */
 export const everyMapEntry = (
   values: ReadonlyMap<unknown, unknown>,
-  keyPredicate: (value: unknown) => boolean,
+  keyPredicate: (key: unknown) => boolean,
   valuePredicate: (value: unknown) => boolean
 ): boolean => {
   for (const [key, value] of values) {
