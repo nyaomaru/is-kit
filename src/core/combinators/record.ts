@@ -1,4 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
+import { define } from '../define';
+import { everyOwnEnumerableEntry } from '@/utils';
 import { isPlainObject } from '../object';
 
 /**
@@ -15,18 +17,9 @@ export function recordOf<
   keyFunction: KF,
   valueFunction: VF
 ): Predicate<Readonly<Record<GuardedOf<KF>, GuardedOf<VF>>>> {
-  return (
-    input: unknown
-  ): input is Readonly<Record<GuardedOf<KF>, GuardedOf<VF>>> => {
-    if (!isPlainObject(input)) return false;
-
-    const obj = input;
-
-    for (const key of Object.keys(obj)) {
-      if (!keyFunction(key)) return false;
-      const value = obj[key];
-      if (!valueFunction(value)) return false;
-    }
-    return true;
-  };
+  return define<Readonly<Record<GuardedOf<KF>, GuardedOf<VF>>>>(
+    (input) =>
+      isPlainObject(input) &&
+      everyOwnEnumerableEntry(input, keyFunction, valueFunction)
+  );
 }
