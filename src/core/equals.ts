@@ -71,7 +71,7 @@ export function equalsKey<K extends PropertyKey, const T>(
   const hasMatchingKey = define<Record<K, T>>((input) => {
     return (
       isObject(input) &&
-      Object.prototype.hasOwnProperty.call(input, key) &&
+      Object.hasOwn(input, key) &&
       Object.is(input[key], target)
     );
   });

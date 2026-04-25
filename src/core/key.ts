@@ -11,8 +11,7 @@ import { isObject } from './object';
  */
 export const hasKey = <K extends PropertyKey>(key: K) =>
   define<Record<K, unknown>>(
-    (input) =>
-      isObject(input) && Object.prototype.hasOwnProperty.call(input, key)
+    (input) => isObject(input) && Object.hasOwn(input, key)
   );
 
 /**
@@ -33,9 +32,7 @@ export const hasKeys = <
   }
 
   return define<Record<KS[number], unknown>>(
-    (input) =>
-      isObject(input) &&
-      keys.every((key) => Object.prototype.hasOwnProperty.call(input, key))
+    (input) => isObject(input) && keys.every((key) => Object.hasOwn(input, key))
   );
 };
 

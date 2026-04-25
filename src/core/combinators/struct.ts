@@ -9,9 +9,6 @@ import { isObject, isPlainObject } from '../object';
 
 type SchemaEntry = readonly [key: string, guard: Predicate<unknown>];
 
-const hasOwnKey = (obj: Record<string, unknown>, key: string): boolean =>
-  Object.prototype.hasOwnProperty.call(obj, key);
-
 const isOptionalSchemaField = define<OptionalSchemaField<Predicate<unknown>>>(
   // WHY: Optional fields are represented as a small tagged object so `struct`
   // can distinguish schema metadata from plain predicate functions up front.
@@ -27,7 +24,7 @@ const hasRequiredKeys = (
 ): boolean =>
   // WHY: Required fields must be own properties; inherited values should not
   // satisfy a schema because `struct` models object payload shape, not prototype chains.
-  entries.every(([key, guard]) => hasOwnKey(obj, key) && guard(obj[key]));
+  entries.every(([key, guard]) => Object.hasOwn(obj, key) && guard(obj[key]));
 
 const hasValidOptionalKeys = (
   obj: Record<string, unknown>,
@@ -35,7 +32,7 @@ const hasValidOptionalKeys = (
 ): boolean =>
   // WHY: Optional keys are validated only when present. Missing keys stay valid
   // without forcing callers to encode `undefined` into the value guard.
-  entries.every(([key, guard]) => !hasOwnKey(obj, key) || guard(obj[key]));
+  entries.every(([key, guard]) => !Object.hasOwn(obj, key) || guard(obj[key]));
 
 const hasOnlyAllowedKeys = (
   obj: Record<string, unknown>,
