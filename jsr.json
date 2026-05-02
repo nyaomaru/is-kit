@@ -1,6 +1,6 @@
 {
   "name": "@nyaomaru/is-kit",
-  "version": "1.6.4",
+  "version": "1.7.0",
   "exports": "./src/index.ts",
   "imports": {
     "@/": "./src/"
