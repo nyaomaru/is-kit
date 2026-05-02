@@ -166,7 +166,7 @@ Use `not(...)` when you want the complement of an existing guard or refinement.
 Use `struct` for plain-object payloads. Keys are required by default.
 
 ```ts
-import { isNumber, isString, optionalKey, struct } from 'is-kit';
+import { isNumber, isString, optional, optionalKey, struct } from 'is-kit';
 
 const isProfile = struct(
   {
@@ -176,14 +176,6 @@ const isProfile = struct(
   },
   { exact: true }
 );
-```
-
-`optionalKey(guard)` means the property may be missing.
-
-If the property must exist but the value may be `undefined`, use `optional(guard)` instead.
-
-```ts
-import { isString, optional, optionalKey, struct } from 'is-kit';
 
 const isConfig = struct({
   label: isString,
@@ -191,6 +183,12 @@ const isConfig = struct({
   note: optionalKey(optional(isString))
 });
 ```
+
+`optionalKey(guard)` means the property may be missing.
+
+Use `struct(schema, { exact: true })` when extra keys should be rejected.
+
+If the property must exist but the value may be `undefined`, use `optional(guard)` instead.
 
 ### 5. Validate arrays, tuples, maps, sets, and records
 
@@ -202,12 +200,14 @@ import {
   isNumber,
   isString,
   mapOf,
+  nonEmptyArrayOf,
   recordOf,
   setOf,
   tupleOf
 } from 'is-kit';
 
 const isStringArray = arrayOf(isString);
+const isNonEmptyTagList = nonEmptyArrayOf(isString);
 const isPoint = tupleOf(isNumber, isNumber);
 const isTagSet = setOf(isString);
 const isScoreMap = mapOf(isString, isNumber);
@@ -356,7 +356,7 @@ The library is organized around a few small building blocks:
 - **Primitives**: `isString`, `isNumber`, `isBoolean`, `isInteger`, ...
 - **Composition**: `define`, `and`, `andAll`, `or`, `not`, `oneOf`
 - **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`
-- **Collections**: `arrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
+- **Collections**: `arrayOf`, `nonEmptyArrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
 - **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
 - **Nullish handling**: `nullable`, `nonNull`, `nullish`, `optional`, `required`
 - **Result helpers**: `safeParse`, `safeParseWith`, `assert`

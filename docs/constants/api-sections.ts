@@ -20,6 +20,10 @@ export const apiSections: SidebarSection[] = [
     title: 'Combinators',
     items: [
       { href: '/api-reference/combinators/array-of', label: 'arrayOf' },
+      {
+        href: '/api-reference/combinators/non-empty-array-of',
+        label: 'nonEmptyArrayOf'
+      },
       { href: '/api-reference/combinators/tuple-of', label: 'tupleOf' },
       { href: '/api-reference/combinators/set-of', label: 'setOf' },
       { href: '/api-reference/combinators/map-of', label: 'mapOf' },

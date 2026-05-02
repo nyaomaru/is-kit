@@ -75,6 +75,7 @@ if (result.valid) {
   combinators: `import {
   arrayOf,
   mapOf,
+  nonEmptyArrayOf,
   recordOf,
   setOf,
   tupleOf,
@@ -83,12 +84,15 @@ if (result.valid) {
 } from 'is-kit';
 
 const stringArray = arrayOf(isString);
+const tags = nonEmptyArrayOf(isString);
 const stringSet = setOf(isString);
 const scoreMap = mapOf(isString, isNumber);
 const pair = tupleOf(isString, isNumber);
 const stringRecord = recordOf(isString, isString);
 
 stringArray(['a', 'b']); // true
+tags([]); // false
+tags(['a']); // true
 stringSet(new Set(['a', 'b'])); // true
 scoreMap(new Map([['math', 98]])); // true
 pair(['id', 1]); // true

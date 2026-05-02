@@ -61,6 +61,11 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Guard arrays with an element guard.'
   },
   {
+    href: '/api-reference/combinators/non-empty-array-of',
+    title: 'nonEmptyArrayOf',
+    description: 'Guard non-empty arrays with an element guard.'
+  },
+  {
     href: '/api-reference/combinators/tuple-of',
     title: 'tupleOf',
     description: 'Guard fixed-length tuples by position.'
