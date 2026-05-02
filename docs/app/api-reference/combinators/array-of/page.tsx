@@ -4,11 +4,15 @@ import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
 
-const sample = `import { arrayOf, isString } from 'is-kit';
+const sample = `import { arrayOf, nonEmptyArrayOf, isString } from 'is-kit';
 
 const isStringArray = arrayOf(isString);
 isStringArray(['a', 'b']); // true
-isStringArray(['a', 1]); // false`;
+isStringArray(['a', 1]); // false
+
+const isNonEmptyStringArray = nonEmptyArrayOf(isString);
+isNonEmptyStringArray([]); // false
+isNonEmptyStringArray(['a']); // true`;
 
 export default function ArrayOfPage() {
   return (
@@ -17,7 +21,8 @@ export default function ArrayOfPage() {
         <Stack gap='xs'>
           <Heading variant='h1'>arrayOf</Heading>
           <Paragraph>
-            Guard for homogeneous arrays with element guard.
+            Guard for homogeneous arrays with an element guard. Use{' '}
+            <code>nonEmptyArrayOf(...)</code> when empty arrays should fail.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

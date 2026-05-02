@@ -1,4 +1,4 @@
-import { arrayOf } from '@/core/combinators';
+import { arrayOf, nonEmptyArrayOf } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 
 describe('arrayOf (runtime)', () => {
@@ -39,5 +39,27 @@ describe('arrayOf (runtime)', () => {
     expect(is2DStringArray([['a'], ['b', 'c']])).toBe(true);
     expect(is2DStringArray([['a'], ['b', 1 as any]])).toBe(false);
     expect(is2DStringArray('nope' as unknown)).toBe(false);
+  });
+});
+
+describe('nonEmptyArrayOf (runtime)', () => {
+  const isNonEmptyStringArray = nonEmptyArrayOf(isString);
+
+  it('rejects an empty array', () => {
+    expect(isNonEmptyStringArray([])).toBe(false);
+  });
+
+  it('accepts when all elements satisfy the element predicate', () => {
+    expect(isNonEmptyStringArray(['a'])).toBe(true);
+    expect(isNonEmptyStringArray(['a', 'b'])).toBe(true);
+  });
+
+  it('rejects when at least one element fails the predicate', () => {
+    expect(isNonEmptyStringArray(['a', 1 as unknown as string])).toBe(false);
+  });
+
+  it('rejects non-array inputs', () => {
+    expect(isNonEmptyStringArray('not array' as unknown)).toBe(false);
+    expect(isNonEmptyStringArray({ 0: 'a', length: 1 } as unknown)).toBe(false);
   });
 });

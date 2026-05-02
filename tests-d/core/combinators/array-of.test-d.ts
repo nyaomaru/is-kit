@@ -1,5 +1,5 @@
 import { expectType, expectAssignable, expectNotAssignable } from 'tsd';
-import { arrayOf } from '@/core/combinators';
+import { arrayOf, nonEmptyArrayOf } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { define } from '@/core';
 import type { Predicate } from '@/types';
@@ -52,4 +52,18 @@ declare const unknownValue: unknown;
 if (isStringArray(unknownValue)) {
   expectAssignable<ReadonlyArray<string>>(unknownValue);
   acceptReadonlyStrings(unknownValue);
+}
+
+// =============================================
+// describe: nonEmptyArrayOf
+// =============================================
+// it: narrows to a readonly non-empty tuple-like array
+const isNonEmptyStringArray = nonEmptyArrayOf(isString);
+expectType<Predicate<readonly [string, ...string[]]>>(isNonEmptyStringArray);
+
+declare const maybeNonEmptyValue: unknown;
+if (isNonEmptyStringArray(maybeNonEmptyValue)) {
+  expectType<readonly [string, ...string[]]>(maybeNonEmptyValue);
+  expectType<string>(maybeNonEmptyValue[0]);
+  expectAssignable<ReadonlyArray<string>>(maybeNonEmptyValue);
 }
