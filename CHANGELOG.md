@@ -6,6 +6,49 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.7.0] - 2026-05-02
+
+### Added
+
+- add nonEmptyArrayOf by @nyaomaru in [#178](https://github.com/nyaomaru/is-kit/pull/178)
+
+### Docs
+
+- 1.6.4 by [bot] by @github-actions in [#177](https://github.com/nyaomaru/is-kit/pull/177)
+
+### Chore
+
+- Release: 1.7.0 by [bot] by @github-actions in [#179](https://github.com/nyaomaru/is-kit/pull/179)
+
+### What's New 🚀
+
+Add `nonEmptyArrayOf` for stronger array narrowing
+
+This release adds `nonEmptyArrayOf(elementGuard)`, a new collection combinator for arrays that must contain at least one element.
+
+Unlike `arrayOf(...)`, which narrows to `readonly T[]`, `nonEmptyArrayOf(...)` narrows successful inputs to `readonly [T, ...T[]]`. 
+
+```ts
+import { nonEmptyArrayOf, isString } from 'is-kit';
+
+const isTagList = nonEmptyArrayOf(isString);
+
+declare const input: unknown;
+
+if (isTagList(input)) {
+  input[0].toUpperCase(); // string
+}
+
+isTagList([]); // false
+isTagList(['news']); // true
+isTagList(['news', 'tech']); // true
+isTagList(['news', 1]); // false
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.4...v1.7.0
+
+[v1.7.0]: https://github.com/nyaomaru/is-kit/compare/v1.6.4...v1.7.0
+
 ## [v1.6.4] - 2026-04-25
 
 ### Changed
@@ -776,7 +819,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.6.4...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
