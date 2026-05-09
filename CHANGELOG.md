@@ -6,6 +6,24 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.7.1] - 2026-05-09
+
+### Fixed
+
+- use explicit relative exports for public entrypoint by @nyaomaru in [#182](https://github.com/nyaomaru/is-kit/pull/182)
+
+### Docs
+
+- 1.7.0 by [bot] by @github-actions in [#180](https://github.com/nyaomaru/is-kit/pull/180)
+
+### Chore
+
+- Release: 1.7.1 by [bot] by @github-actions in [#184](https://github.com/nyaomaru/is-kit/pull/184)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.0...v1.7.1
+
+[v1.7.1]: https://github.com/nyaomaru/is-kit/compare/v1.7.0...v1.7.1
+
 ## [v1.7.0] - 2026-05-02
 
 ### Added
@@ -819,7 +837,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
