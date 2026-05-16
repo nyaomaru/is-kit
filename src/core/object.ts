@@ -13,7 +13,22 @@ import {
   OBJECT_TAG_WEAK_SET
 } from '@/utils/object-tags';
 
+// WHY: DOM constructors such as URL and Blob are declared as constructor
+// objects with a prototype, not as the full Function interface. The helper
+// only needs the prototype for typing; it checks function-ness at runtime
+// before using the value as the right-hand side of `instanceof`.
+type InstanceCheckTarget<T> = { readonly prototype: T };
+
 type AnyFunction = (...args: never[]) => unknown;
+
+const defineOptionalInstanceGuard = <T>(
+  constructor: InstanceCheckTarget<T> | undefined
+): Guard<T> =>
+  constructor === undefined
+    ? define<T>(() => false)
+    : define<T>(
+        (value) => typeof constructor === 'function' && value instanceof constructor
+      );
 
 /**
  * Checks whether a value is a function.
@@ -63,7 +78,8 @@ export const isArray = define<readonly unknown[]>(Array.isArray);
  */
 export const isDate = define<Date>(
   (value) =>
-    getTag(value) === OBJECT_TAG_DATE && !Number.isNaN((value as Date).getTime())
+    getTag(value) === OBJECT_TAG_DATE &&
+    !Number.isNaN((value as Date).getTime())
 );
 
 /**
@@ -179,20 +195,18 @@ export const isError = define<Error>(
  *
  * @returns Predicate narrowing to `URL` when supported; otherwise always false.
  */
-export const isURL =
-  typeof URL !== 'undefined'
-    ? define<URL>((value) => value instanceof URL)
-    : define<URL>(() => false);
+export const isURL = defineOptionalInstanceGuard<URL>(
+  typeof URL === 'undefined' ? undefined : URL
+);
 
 /**
  * Checks whether a value is a `Blob` (in environments with Blob available).
  *
  * @returns Predicate narrowing to `Blob` when supported; otherwise always false.
  */
-export const isBlob =
-  typeof Blob !== 'undefined'
-    ? define<Blob>((value) => value instanceof Blob)
-    : define<Blob>(() => false);
+export const isBlob = defineOptionalInstanceGuard<Blob>(
+  typeof Blob === 'undefined' ? undefined : Blob
+);
 
 /**
  * Creates a guard that checks whether a value is an instance of `constructor`.
