@@ -13,7 +13,7 @@ import {
   OBJECT_TAG_WEAK_SET
 } from '@/utils/object-tags';
 
-type InstanceConstructor<T> = abstract new (...args: never[]) => T;
+type InstanceConstructor<T> = Function & { readonly prototype: T };
 
 type AnyFunction = (...args: never[]) => unknown;
 
