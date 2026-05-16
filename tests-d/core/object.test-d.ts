@@ -26,7 +26,7 @@ import {
 // =============================================
 // describe: object guards (types)
 // =============================================
-expectType<Predicate<Function>>(isFunction);
+expectType<Predicate<(...args: never[]) => unknown>>(isFunction);
 expectType<Predicate<Record<PropertyKey, unknown>>>(isObject);
 expectType<Predicate<Record<string, unknown>>>(isPlainObject);
 expectType<Predicate<readonly unknown[]>>(isArray);

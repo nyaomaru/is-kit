@@ -52,17 +52,29 @@ describe('core/object guards', () => {
 
     const pLike = { then: () => {} };
     expect(isPromiseLike(pLike)).toBe(true);
+    expect(isPromiseLike(Object.assign(() => {}, pLike))).toBe(true);
     expect(isPromiseLike({})).toBe(false);
   });
 
   it('detects iterable and async iterable', () => {
+    const iterableFunction = Object.assign(() => {}, {
+      [Symbol.iterator]: function* () {}
+    });
+
     expect(isIterable([1, 2, 3])).toBe(true);
+    expect(isIterable(iterableFunction)).toBe(true);
     expect(isIterable({})).toBe(false);
 
     async function* gen() {
       yield 1;
     }
+
+    const asyncIterableFunction = Object.assign(() => {}, {
+      [Symbol.asyncIterator]: async function* () {}
+    });
+
     expect(isAsyncIterable(gen())).toBe(true);
+    expect(isAsyncIterable(asyncIterableFunction)).toBe(true);
     expect(isAsyncIterable([])).toBe(false);
   });
 
