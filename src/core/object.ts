@@ -13,16 +13,22 @@ import {
   OBJECT_TAG_WEAK_SET
 } from '@/utils/object-tags';
 
-type InstanceConstructor<T> = Function & { readonly prototype: T };
+// WHY: DOM constructors such as URL and Blob are declared as constructor
+// objects with a prototype, not as the full Function interface. The helper
+// only needs the prototype for typing; it checks function-ness at runtime
+// before using the value as the right-hand side of `instanceof`.
+type InstanceCheckTarget<T> = { readonly prototype: T };
 
 type AnyFunction = (...args: never[]) => unknown;
 
 const defineOptionalInstanceGuard = <T>(
-  constructor: InstanceConstructor<T> | undefined
+  constructor: InstanceCheckTarget<T> | undefined
 ): Guard<T> =>
   constructor === undefined
     ? define<T>(() => false)
-    : define<T>((value) => value instanceof constructor);
+    : define<T>(
+        (value) => typeof constructor === 'function' && value instanceof constructor
+      );
 
 /**
  * Checks whether a value is a function.
