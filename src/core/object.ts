@@ -13,12 +13,14 @@ import {
   OBJECT_TAG_WEAK_SET
 } from '@/utils/object-tags';
 
+type AnyFunction = (...args: never[]) => unknown;
+
 /**
  * Checks whether a value is a function.
  *
- * @returns Predicate narrowing to `Function`.
+ * @returns Predicate narrowing to a callable value.
  */
-export const isFunction = define<Function>(
+export const isFunction = define<AnyFunction>(
   (value) => typeof value === 'function'
 );
 
@@ -30,6 +32,11 @@ export const isFunction = define<Function>(
 export const isObject = define<Record<PropertyKey, unknown>>(
   (value) => typeof value === 'object' && value !== null
 );
+
+const readObjectProperty = (value: unknown, key: PropertyKey): unknown => {
+  if (!isObject(value) && !isFunction(value)) return undefined;
+  return (value as Record<PropertyKey, unknown>)[key];
+};
 
 /**
  * Checks for plain objects created by object literals or `Object.create(null)`.
@@ -109,30 +116,27 @@ export const isWeakSet = define<WeakSet<object>>(
  *
  * @returns Predicate narrowing to `PromiseLike<unknown>`.
  */
-export const isPromiseLike = define<PromiseLike<unknown>>((value) => {
-  if (!isObject(value) && !isFunction(value)) return false;
-  return isFunction((value as Record<string, unknown>).then);
-});
+export const isPromiseLike = define<PromiseLike<unknown>>((value) =>
+  isFunction(readObjectProperty(value, 'then'))
+);
 
 /**
  * Checks whether a value implements the `Iterable` protocol.
  *
  * @returns Predicate narrowing to `Iterable<unknown>`.
  */
-export const isIterable = define<Iterable<unknown>>((value) => {
-  if (!isObject(value) && !isFunction(value)) return false;
-  return isFunction((value as Record<symbol, unknown>)[Symbol.iterator]);
-});
+export const isIterable = define<Iterable<unknown>>((value) =>
+  isFunction(readObjectProperty(value, Symbol.iterator))
+);
 
 /**
  * Checks whether a value implements the `AsyncIterable` protocol.
  *
  * @returns Predicate narrowing to `AsyncIterable<unknown>`.
  */
-export const isAsyncIterable = define<AsyncIterable<unknown>>((value) => {
-  if (!isObject(value) && !isFunction(value)) return false;
-  return isFunction((value as Record<symbol, unknown>)[Symbol.asyncIterator]);
-});
+export const isAsyncIterable = define<AsyncIterable<unknown>>((value) =>
+  isFunction(readObjectProperty(value, Symbol.asyncIterator))
+);
 
 /**
  * Checks whether a value is an `ArrayBuffer`.
