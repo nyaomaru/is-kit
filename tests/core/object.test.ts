@@ -82,6 +82,36 @@ describe('core/object guards', () => {
     expect(isBlob(b)).toBe(true);
   });
 
+  it('returns false for unavailable platform constructors', () => {
+    const originalURL = Object.getOwnPropertyDescriptor(globalThis, 'URL');
+    const originalBlob = Object.getOwnPropertyDescriptor(globalThis, 'Blob');
+
+    try {
+      Object.defineProperty(globalThis, 'URL', {
+        configurable: true,
+        value: undefined
+      });
+      Object.defineProperty(globalThis, 'Blob', {
+        configurable: true,
+        value: undefined
+      });
+
+      jest.isolateModules(() => {
+        const objectGuards =
+          jest.requireActual<typeof import('@/core/object')>('@/core/object');
+
+        expect(objectGuards.isURL({})).toBe(false);
+        expect(objectGuards.isBlob({})).toBe(false);
+      });
+    } finally {
+      if (originalURL) Object.defineProperty(globalThis, 'URL', originalURL);
+      else Reflect.deleteProperty(globalThis, 'URL');
+
+      if (originalBlob) Object.defineProperty(globalThis, 'Blob', originalBlob);
+      else Reflect.deleteProperty(globalThis, 'Blob');
+    }
+  });
+
   it('creates a guard from a constructor with isInstanceOf', () => {
     class Animal {}
     class Dog extends Animal {}

@@ -13,6 +13,15 @@ import {
   OBJECT_TAG_WEAK_SET
 } from '@/utils/object-tags';
 
+type InstanceConstructor<T> = abstract new (...args: never[]) => T;
+
+const defineOptionalInstanceGuard = <T>(
+  constructor: InstanceConstructor<T> | undefined
+): Guard<T> =>
+  constructor === undefined
+    ? define<T>(() => false)
+    : define<T>((value) => value instanceof constructor);
+
 /**
  * Checks whether a value is a function.
  *
@@ -175,20 +184,18 @@ export const isError = define<Error>(
  *
  * @returns Predicate narrowing to `URL` when supported; otherwise always false.
  */
-export const isURL =
-  typeof URL !== 'undefined'
-    ? define<URL>((value) => value instanceof URL)
-    : define<URL>(() => false);
+export const isURL = defineOptionalInstanceGuard<URL>(
+  typeof URL === 'undefined' ? undefined : URL
+);
 
 /**
  * Checks whether a value is a `Blob` (in environments with Blob available).
  *
  * @returns Predicate narrowing to `Blob` when supported; otherwise always false.
  */
-export const isBlob =
-  typeof Blob !== 'undefined'
-    ? define<Blob>((value) => value instanceof Blob)
-    : define<Blob>(() => false);
+export const isBlob = defineOptionalInstanceGuard<Blob>(
+  typeof Blob === 'undefined' ? undefined : Blob
+);
 
 /**
  * Creates a guard that checks whether a value is an instance of `constructor`.
