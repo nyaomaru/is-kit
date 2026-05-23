@@ -5,7 +5,7 @@ import type {
   Predicate
 } from '@/types';
 import { define } from '../define';
-import { isObject, isPlainObject } from '../object';
+import { isFunction, isObject, isPlainObject } from '../object';
 
 type SchemaEntry = readonly [key: string, guard: Predicate<unknown>];
 
@@ -15,7 +15,7 @@ const isOptionalSchemaField = define<OptionalSchemaField<Predicate<unknown>>>(
   (field) =>
     isObject(field) &&
     field.optional === true &&
-    typeof field.guard === 'function'
+    isFunction(field.guard)
 );
 
 const hasRequiredKeys = (
