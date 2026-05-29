@@ -4,12 +4,12 @@ Welcome! This is the developer guide for is-kit. It keeps things practical and a
 
 ## Quick Start
 
-- Requirements: Node 22, pnpm 10.33.4
+- Requirements: Node 22, pnpm 11.2.2
 - Recommended: use mise to pin tools and run tasks
 
 ```sh
 # Setup toolchain + install deps
-mise install                 # installs Node 22 and pnpm 10.33.4
+mise install                 # installs Node 22 and pnpm 11.2.2
 pnpm install
 
 # Build library and run tests
