@@ -6,6 +6,44 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.7.3] - 2026-05-23
+
+### Changed
+
+- use isFunction in struct optional field guard by @nyaomaru in [#190](https://github.com/nyaomaru/is-kit/pull/190)
+
+### Docs
+
+- 1.7.2 by [bot] by @github-actions in [#189](https://github.com/nyaomaru/is-kit/pull/189)
+- update pnpm version references by @nyaomaru in [#191](https://github.com/nyaomaru/is-kit/pull/191)
+
+### Chore
+
+- Release: 1.7.3 by [bot] by @github-actions in [#192](https://github.com/nyaomaru/is-kit/pull/192)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.2...v1.7.3
+
+[v1.7.3]: https://github.com/nyaomaru/is-kit/compare/v1.7.2...v1.7.3
+
+## [v1.7.2] - 2026-05-16
+
+### Changed
+
+- clean up object guard internals by @nyaomaru in [#186](https://github.com/nyaomaru/is-kit/pull/186)
+- centralize platform instance guards by @nyaomaru in [#187](https://github.com/nyaomaru/is-kit/pull/187)
+
+### Docs
+
+- 1.7.1 by [bot] by @github-actions in [#185](https://github.com/nyaomaru/is-kit/pull/185)
+
+### Chore
+
+- Update pnpm to v10.33.4 by [bot] by @renovate in [#183](https://github.com/nyaomaru/is-kit/pull/183)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.1...v1.7.2
+
+[v1.7.2]: https://github.com/nyaomaru/is-kit/compare/v1.7.1...v1.7.2
+
 ## [v1.7.1] - 2026-05-09
 
 ### Fixed
@@ -837,7 +875,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.3...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
