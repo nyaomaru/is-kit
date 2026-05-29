@@ -76,7 +76,7 @@ CI runs lint, build, unit tests, and type tests on PRs against `main`.
 
 ## Tips & Notes
 
-- Node: CI uses Node 22 and `pnpm@10.12.4`.
+- Node: CI uses Node 22 and `pnpm@11.2.2`.
 - Public API: prefer adding exports in `src/index.ts`; keep internal helpers unexported.
 - New combinator example: add `src/core/combinators/<name>.ts`, export it in `src/core/combinators/index.ts`, add `tests/<name>.test.ts` and `tests-d/<name>.test-d.ts`.
 - `struct` supports `{ exact?: boolean }` to disallow extra keys when `exact: true`.

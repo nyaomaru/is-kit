@@ -371,7 +371,7 @@ https://is-kit-docs.vercel.app/
 
 ## 👨‍💻 Development
 
-Requires Node 22 and pnpm 10.33.4.
+Requires Node 22 and pnpm 11.2.2.
 
 - `pnpm lint`
 - `pnpm build`

@@ -6,6 +6,7 @@ packages:
 # exposure to compromised releases before the ecosystem has time to react.
 minimumReleaseAge: 2880
 
-ignoredBuiltDependencies:
-  - esbuild
-  - lefthook
+allowBuilds:
+  esbuild: false
+  lefthook: false
+  unrs-resolver: false
