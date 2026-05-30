@@ -27,19 +27,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
           persist-credentials: true
-      - name: Setup mise
-        uses: jdx/mise-action@v3
+      - name: Setup project
+        uses: ./.github/actions/setup-project
         with:
-          install: true
-      - name: Cache pnpm store
-        uses: actions/cache@v5
-        with:
-          path: ~/.local/share/pnpm/store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          install-command: pnpm install --frozen-lockfile
 
       - name: Generate new version
         id: version
