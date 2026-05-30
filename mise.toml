@@ -9,8 +9,8 @@ NODE_ENV = "development"
 
 # Tool versions to match local dev and CI
 [tools]
-node = "22"        # CI uses Node 22
-"npm:pnpm" = "11.2.2"    # From packageManager field
+node = "22.22.0" # Required by oxfmt/oxlint
+"npm:pnpm" = "11.2.2" # From packageManager field
 
 # Developer tasks (run with: `mise run <task>`)
 [tasks.setup]
@@ -18,7 +18,7 @@ description = "Install dependencies via pnpm"
 run = "pnpm install"
 
 [tasks.lint]
-description = "Run ESLint over the repo"
+description = "Run Oxlint over the repo"
 run = "pnpm lint"
 
 [tasks.build]
@@ -37,10 +37,10 @@ run = "pnpm test:types"
 description = "Run lint, build, runtime and type tests"
 depends = ["lint", "build", "test", "test-types"]
 
-[tasks.hook-prettier]
-description = "Run prettier for lefthook"
-run = "pnpm prettier --write"
+[tasks.hook-oxfmt]
+description = "Run Oxfmt for lefthook"
+run = "pnpm oxfmt"
 
-[tasks.hook-eslint]
-description = "Run eslint for lefthook"
-run = "pnpm eslint --fix"
+[tasks.hook-oxlint]
+description = "Run Oxlint for lefthook"
+run = "pnpm oxlint --fix"

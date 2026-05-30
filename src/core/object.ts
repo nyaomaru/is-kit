@@ -27,7 +27,8 @@ const defineOptionalInstanceGuard = <T>(
   constructor === undefined
     ? define<T>(() => false)
     : define<T>(
-        (value) => typeof constructor === 'function' && value instanceof constructor
+        (value) =>
+          typeof constructor === 'function' && value instanceof constructor
       );
 
 /**

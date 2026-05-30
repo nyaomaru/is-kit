@@ -10,9 +10,8 @@ import { isObject } from './object';
  * @returns Predicate narrowing to an object with the key present.
  */
 export const hasKey = <K extends PropertyKey>(key: K) =>
-  define<Record<K, unknown>>(
-    (input) => isObject(input) && Object.hasOwn(input, key)
-  );
+  define<Record<K, unknown>>((input) =>
+    isObject(input) && Object.hasOwn(input, key));
 
 /**
  * Checks whether a value has all specified own keys.

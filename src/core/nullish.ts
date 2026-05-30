@@ -1,14 +1,20 @@
 import type { Guard, Refine } from '@/types';
 
-const allowWhen = (
-  acceptedValue: (value: unknown) => boolean,
-  predicate: (value: unknown) => boolean
-) => (value: unknown) => acceptedValue(value) || predicate(value);
+const allowWhen =
+  (
+    acceptedValue: (value: unknown) => boolean,
+    predicate: (value: unknown) => boolean
+  ) =>
+  (value: unknown) =>
+    acceptedValue(value) || predicate(value);
 
-const requireWhen = (
-  rejectedValue: (value: unknown) => boolean,
-  predicate: (value: unknown) => boolean
-) => (value: unknown) => !rejectedValue(value) && predicate(value);
+const requireWhen =
+  (
+    rejectedValue: (value: unknown) => boolean,
+    predicate: (value: unknown) => boolean
+  ) =>
+  (value: unknown) =>
+    !rejectedValue(value) && predicate(value);
 
 /**
  * Allows `null` in addition to values accepted by the given guard/refinement.

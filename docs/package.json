@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "pnpm --workspace-root run build && next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "pnpm --workspace-root exec oxlint docs",
     "shadcn:init": "pnpm dlx shadcn@latest init",
     "shadcn:add": "pnpm dlx shadcn@latest add",
     "shadcn:list": "pnpm dlx shadcn@latest list"

@@ -13,9 +13,7 @@ const isOptionalSchemaField = define<OptionalSchemaField<Predicate<unknown>>>(
   // WHY: Optional fields are represented as a small tagged object so `struct`
   // can distinguish schema metadata from plain predicate functions up front.
   (field) =>
-    isObject(field) &&
-    field.optional === true &&
-    isFunction(field.guard)
+    isObject(field) && field.optional === true && isFunction(field.guard)
 );
 
 const hasRequiredKeys = (

@@ -31,13 +31,23 @@ describe('mapOf (runtime)', () => {
 
   it('rejects when a key fails the key guard', () => {
     expect(
-      isStringNumberMap(new Map<unknown, number>([[1, 1], ['b', 2]]))
+      isStringNumberMap(
+        new Map<unknown, number>([
+          [1, 1],
+          ['b', 2]
+        ])
+      )
     ).toBe(false);
   });
 
   it('rejects when a value fails the value guard', () => {
     expect(
-      isStringNumberMap(new Map<string, unknown>([['a', 1], ['b', '2']]))
+      isStringNumberMap(
+        new Map<string, unknown>([
+          ['a', 1],
+          ['b', '2']
+        ])
+      )
     ).toBe(false);
   });
 
