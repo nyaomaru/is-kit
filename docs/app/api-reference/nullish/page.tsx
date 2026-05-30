@@ -33,7 +33,8 @@ export default function NullishPage() {
           <Paragraph>
             Nullability helpers to widen or narrow values such as{' '}
             <code>undefined</code> and <code>null</code>. For key-level optional
-            fields inside <code>struct</code>, use <code>optionalKey(...)</code>.
+            fields inside <code>struct</code>, use <code>optionalKey(...)</code>
+            .
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

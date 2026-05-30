@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "semi": true,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "printWidth": 80,
+  "sortPackageJson": false,
+  "ignorePatterns": [".codex/", ".serena/", "pnpm-lock.yaml", "CHANGELOG.md"]
+}

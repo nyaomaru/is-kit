@@ -39,9 +39,7 @@ const isLiteral12 = define<1 | 2>(
   (value): value is 1 | 2 => value === 1 || value === 2
 );
 const literalMapGuard = mapOf(isLiteralAB, isLiteral12);
-expectType<Predicate<ReadonlyMap<'a' | 'b', 1 | 2>>>(
-  literalMapGuard
-);
+expectType<Predicate<ReadonlyMap<'a' | 'b', 1 | 2>>>(literalMapGuard);
 
 // it: nested mapOf keeps nested readonly sets
 const isNestedMap = mapOf(isString, setOf(isNumber));

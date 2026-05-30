@@ -4,9 +4,9 @@
 pre-commit:
   parallel: true
   jobs:
-    - run: mise hook-prettier {staged_files}
+    - run: mise hook-oxfmt {staged_files}
       glob: '*.{js,jsx,ts,tsx,json,md,yml,yaml}'
       stage_fixed: true
-    - run: mise hook-eslint {staged_files}
+    - run: mise hook-oxlint {staged_files}
       glob: '*.{js,jsx,ts,tsx}'
       stage_fixed: true

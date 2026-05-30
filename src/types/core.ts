@@ -23,7 +23,7 @@ export type OutOfGuards<T extends readonly Guard<unknown>[]> =
 
 export type ParseResult<T> = { valid: true; value: T } | { valid: false };
 
-export type GuardedOf<F> = F extends (value: unknown) => value is infer G
+export type GuardedOf<F> = F extends ((value: unknown) => value is infer G)
   ? G
   : never;
 
