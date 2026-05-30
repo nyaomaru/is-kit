@@ -6,6 +6,3 @@ web_search = "live"
 [mcp_servers.serena]
 command = "uvx"
 args = ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "codex"]
-
-[mcp_servers.serena.tools.write_memory]
-approval_mode = "approve"
