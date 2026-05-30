@@ -6,6 +6,28 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.7.4] - 2026-05-30
+
+### Fixed
+
+- fix mise config by @nyaomaru in [#196](https://github.com/nyaomaru/is-kit/pull/196)
+- fix version bump by @nyaomaru in [#200](https://github.com/nyaomaru/is-kit/pull/200)
+
+### Changed
+
+- update pnpm v11.2.2 by @nyaomaru in [#195](https://github.com/nyaomaru/is-kit/pull/195)
+- migrate linting and formatting to oxc by @nyaomaru in [#197](https://github.com/nyaomaru/is-kit/pull/197)
+- consolidate GitHub Actions setup by @nyaomaru in [#198](https://github.com/nyaomaru/is-kit/pull/198)
+- share object tag guard creation by @nyaomaru in [#199](https://github.com/nyaomaru/is-kit/pull/199)
+
+### Docs
+
+- 1.7.3 by [bot] by @github-actions in [#193](https://github.com/nyaomaru/is-kit/pull/193)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.3...v1.7.4
+
+[v1.7.4]: https://github.com/nyaomaru/is-kit/compare/v1.7.3...v1.7.4
+
 ## [v1.7.3] - 2026-05-23
 
 ### Changed
@@ -875,7 +897,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.3...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.4...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
