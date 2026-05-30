@@ -36,10 +36,10 @@ jobs:
         id: version
         run: |
           pnpm version ${{ inputs.release_type }} --no-git-tag-version
-          version_no_v=$(node -p "require('./package.json').version")
-          printf 'new_version=%s\n' "$version_no_v" >> "$GITHUB_ENV"
+          new_version=$(node -p "require('./package.json').version")
+          printf 'new_version=%s\n' "$new_version" >> "$GITHUB_ENV"
           tmp_file=$(mktemp)
-          jq --arg version "$version_no_v" '.version = $version' jsr.json > "$tmp_file"
+          jq --arg version "$new_version" '.version = $version' jsr.json > "$tmp_file"
           mv "$tmp_file" jsr.json
 
       - name: Create new branch
