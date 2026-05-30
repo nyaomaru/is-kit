@@ -9,7 +9,7 @@ NODE_ENV = "development"
 
 # Tool versions to match local dev and CI
 [tools]
-node = "22" # CI uses Node 22
+node = "22.12.0" # Required by oxfmt/oxlint
 "npm:pnpm" = "11.2.2" # From packageManager field
 
 # Developer tasks (run with: `mise run <task>`)
