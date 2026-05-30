@@ -22,21 +22,8 @@ jobs:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Setup mise
-        uses: jdx/mise-action@v3
-        with:
-          install: true
-
-      - name: Cache pnpm store
-        uses: actions/cache@v5
-        with:
-          path: ~/.local/share/pnpm/store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies
-        run: mise run setup
+      - name: Setup project
+        uses: ./.github/actions/setup-project
 
       - name: Lint
         run: mise run lint
