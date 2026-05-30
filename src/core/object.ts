@@ -21,6 +21,9 @@ type InstanceCheckTarget<T> = { readonly prototype: T };
 
 type AnyFunction = (...args: never[]) => unknown;
 
+const defineTagGuard = <T>(tag: string): Guard<T> =>
+  define<T>((value) => getTag(value) === tag);
+
 const defineOptionalInstanceGuard = <T>(
   constructor: InstanceCheckTarget<T> | undefined
 ): Guard<T> =>
@@ -88,45 +91,36 @@ export const isDate = define<Date>(
  *
  * @returns Predicate narrowing to `RegExp`.
  */
-export const isRegExp = define<RegExp>(
-  (value) => getTag(value) === OBJECT_TAG_REGEXP
-);
+export const isRegExp = defineTagGuard<RegExp>(OBJECT_TAG_REGEXP);
 
 /**
  * Checks whether a value is a `Map`.
  *
  * @returns Predicate narrowing to `Map<unknown, unknown>`.
  */
-export const isMap = define<Map<unknown, unknown>>(
-  (value) => getTag(value) === OBJECT_TAG_MAP
-);
+export const isMap = defineTagGuard<Map<unknown, unknown>>(OBJECT_TAG_MAP);
 
 /**
  * Checks whether a value is a `Set`.
  *
  * @returns Predicate narrowing to `Set<unknown>`.
  */
-export const isSet = define<Set<unknown>>(
-  (value) => getTag(value) === OBJECT_TAG_SET
-);
+export const isSet = defineTagGuard<Set<unknown>>(OBJECT_TAG_SET);
 
 /**
  * Checks whether a value is a `WeakMap`.
  *
  * @returns Predicate narrowing to `WeakMap<object, unknown>`.
  */
-export const isWeakMap = define<WeakMap<object, unknown>>(
-  (value) => getTag(value) === OBJECT_TAG_WEAK_MAP
-);
+export const isWeakMap =
+  defineTagGuard<WeakMap<object, unknown>>(OBJECT_TAG_WEAK_MAP);
 
 /**
  * Checks whether a value is a `WeakSet`.
  *
  * @returns Predicate narrowing to `WeakSet<object>`.
  */
-export const isWeakSet = define<WeakSet<object>>(
-  (value) => getTag(value) === OBJECT_TAG_WEAK_SET
-);
+export const isWeakSet = defineTagGuard<WeakSet<object>>(OBJECT_TAG_WEAK_SET);
 
 /**
  * Checks whether a value is promise-like (has a `then` function).
@@ -160,18 +154,15 @@ export const isAsyncIterable = define<AsyncIterable<unknown>>((value) =>
  *
  * @returns Predicate narrowing to `ArrayBuffer`.
  */
-export const isArrayBuffer = define<ArrayBuffer>(
-  (value) => getTag(value) === OBJECT_TAG_ARRAY_BUFFER
-);
+export const isArrayBuffer =
+  defineTagGuard<ArrayBuffer>(OBJECT_TAG_ARRAY_BUFFER);
 
 /**
  * Checks whether a value is a `DataView`.
  *
  * @returns Predicate narrowing to `DataView`.
  */
-export const isDataView = define<DataView>(
-  (value) => getTag(value) === OBJECT_TAG_DATA_VIEW
-);
+export const isDataView = defineTagGuard<DataView>(OBJECT_TAG_DATA_VIEW);
 
 /**
  * Checks whether a value is a typed array view (any `ArrayBufferView` except DataView).
