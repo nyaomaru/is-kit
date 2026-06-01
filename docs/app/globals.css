@@ -12,8 +12,8 @@
   --popover-foreground: 86 33% 50%;
   --card: 120 4% 9%;
   --card-foreground: 86 33% 50%;
-  /* Primary rgb(134,170,87) exact HSL */
-  --primary: 86 33% 50%;
+  /* Primary rgb(124,170,74) exact HSL */
+  --primary: 88.75 39.3443% 47.8431%;
   /* Hover color for primary (rgb 79,91,57 ≈ hsl(81,23%,29%)) */
   --primary-hover: 81 23% 29%;
   --border: 86 33% 50%;
@@ -41,7 +41,7 @@
   --card-foreground: 86 33% 50%;
   --border: 86 33% 50%;
   --input: 86 33% 50%;
-  --primary: 86 33% 50%;
+  --primary: 88.75 39.3443% 47.8431%;
   --primary-hover: 81 23% 29%;
   --primary-foreground: 0 0% 100%;
   --secondary: 0 0% 100%;
