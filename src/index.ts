@@ -61,6 +61,7 @@ export { oneOfValues } from './core/combinators/one-of-values';
 export { recordOf } from './core/combinators/record';
 export { setOf } from './core/combinators/set';
 export { optionalKey, struct } from './core/combinators/struct';
+export { typedStruct } from './core/combinators/typed-struct';
 export { tupleOf } from './core/combinators/tuple';
 
 // Public types

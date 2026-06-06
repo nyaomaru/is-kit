@@ -61,7 +61,11 @@
   "tsd": {
     "directory": "tests-d",
     "compilerOptions": {
-      "baseUrl": "."
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["src/*"],
+        "is-kit": ["src/index.ts"]
+      }
     }
   }
 }

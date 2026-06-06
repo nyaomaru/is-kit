@@ -91,6 +91,11 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Shape guard for objects; supports exact key checking.'
   },
   {
+    href: '/api-reference/combinators/typed-struct',
+    title: 'typedStruct',
+    description: 'Typed struct wrapper that checks fields against an existing object type.'
+  },
+  {
     href: '/api-reference/combinators/one-of-values',
     title: 'oneOfValues',
     description: 'Guard literal value sets with exact equality.'
