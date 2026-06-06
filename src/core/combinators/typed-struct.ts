@@ -6,7 +6,8 @@ type Simplify<T> = { [K in keyof T]: T[K] };
 type StringKeyOf<T> = Extract<keyof T, string>;
 
 type OptionalKeys<T> = {
-  [K in keyof T]-?: object extends Pick<T, K> ? K : never;
+  // WHY: Optional keys accept an empty object when picked in isolation.
+  [K in keyof T]-?: {} extends Pick<T, K> ? K : never;
 }[keyof T];
 
 type RequiredKeys<T> = Exclude<keyof T, OptionalKeys<T>>;
