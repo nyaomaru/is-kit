@@ -6,6 +6,72 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.8.0] - 2026-06-06
+
+### Added
+
+- add typedStruct combinator by @nyaomaru in [#204](https://github.com/nyaomaru/is-kit/pull/204)
+
+### Fixed
+
+- fix primary color token by @nyaomaru in [#203](https://github.com/nyaomaru/is-kit/pull/203)
+
+### Docs
+
+- 1.7.4 by [bot] by @github-actions in [#202](https://github.com/nyaomaru/is-kit/pull/202)
+
+### What's new 🚀
+
+### Add `typedStruct`
+
+`typedStruct<T>()` is a typed wrapper around `struct` for keeping hand-written object guards aligned with an existing TypeScript object type.
+
+`struct(...)` infers a type from the fields you provide, which is useful for small local guards. But when a type already exists elsewhere, a hand-written guard can drift from that type without TypeScript noticing.
+
+```ts
+import { isNumber, isString, optionalKey, typedStruct } from 'is-kit';
+
+type User = {
+  id: number;
+  name: string;
+  nickname?: string;
+};
+
+const isUser = typedStruct<User>()({
+  id: isNumber,
+  name: isString,
+  nickname: optionalKey(isString)
+});
+
+isUser({ id: 1, name: 'Neko' }); // true
+isUser({ id: 1, name: 'Neko', nickname: 'nya' }); // true
+isUser({ id: 1, name: 'Neko', nickname: 123 }); // false
+```
+
+This catches drift at compile time:
+
+```ts
+typedStruct<User>()({
+  id: isNumber
+  // TypeScript error:
+  // missing name and nickname fields
+});
+
+typedStruct<User>()({
+  id: isNumber,
+  name: isNumber,
+  // TypeScript error:
+  // name must use a string guard
+  nickname: optionalKey(isString)
+});
+```
+
+This is useful when you already have a domain DTO or generated API type and want an explicit runtime guard to stay in sync with it. It does not generate validators from types, and it does not change struct runtime behavior.
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.4...v1.8.0
+
+[v1.8.0]: https://github.com/nyaomaru/is-kit/compare/v1.7.4...v1.8.0
+
 ## [v1.7.4] - 2026-05-30
 
 ### Fixed
@@ -897,7 +963,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.7.4...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.8.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
