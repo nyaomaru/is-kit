@@ -5,4 +5,5 @@ export * from './one-of-values';
 export * from './record';
 export * from './set';
 export * from './struct';
+export * from './typed-struct';
 export * from './tuple';

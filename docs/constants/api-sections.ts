@@ -27,6 +27,10 @@ export const apiSections: SidebarSection[] = [
       { href: '/api-reference/combinators/record-of', label: 'recordOf' },
       { href: '/api-reference/combinators/struct', label: 'struct' },
       {
+        href: '/api-reference/combinators/typed-struct',
+        label: 'typedStruct'
+      },
+      {
         href: '/api-reference/combinators/one-of-values',
         label: 'oneOfValues'
       }

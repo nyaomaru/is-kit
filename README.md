@@ -309,21 +309,32 @@ if (isAdmin(value)) {
 
 Here are the kinds of problems `is-kit` is especially good at solving:
 
-### API response checks
+### Typed object guard checks
 
 ```ts
-import { isNumber, isString, safeParse, struct } from 'is-kit';
+import { isNumber, isString, optionalKey, safeParse, typedStruct } from 'is-kit';
 
-const isPost = struct({
+type PostResponse = ApiResponse<'/posts/{id}', 'get'>;
+
+const isPost = typedStruct<PostResponse>()({
   id: isNumber,
-  title: isString
+  title: isString,
+  summary: optionalKey(isString)
 });
 
+const payload: unknown = await fetchPost();
 const parsed = safeParse(isPost, payload);
+
 if (parsed.valid) {
   renderPost(parsed.value);
 }
 ```
+
+`typedStruct<T>()` is a small helper for keeping hand-written `struct` guards in
+sync with an existing object type. Optional keys in `T` must still be declared
+with `optionalKey(...)`; this makes drift visible when the target type changes.
+OpenAPI-generated response types are one useful case, but the helper is not an
+OpenAPI validator or schema generator.
 
 ### Safe array filtering
 
