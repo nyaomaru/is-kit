@@ -35,8 +35,13 @@ typedStruct<User>()({
   nickname: optionalKey(isString),
 });
 
-// OpenAPI-generated types are one possible target type.
-type PostResponse = ApiResponse<'/posts/{id}', 'get'>;
+// OpenAPI-generated types can be used the same way.
+type PostResponse = {
+  id: number;
+  title: string;
+  summary?: string;
+};
+
 const isPostResponse = typedStruct<PostResponse>()({
   id: isNumber,
   title: isString,
