@@ -1,9 +1,5 @@
-import type { OptionalSchemaField, Predicate, Schema } from '@/types';
+import type { InferSchema, OptionalSchemaField, Predicate } from '@/types';
 import { struct } from './struct';
-
-type Simplify<T> = { [K in keyof T]: T[K] };
-
-type StringKeyOf<T> = Extract<keyof T, string>;
 
 type OptionalKeys<T> = {
   // WHY: Optional keys accept an empty object when picked in isolation.
@@ -24,9 +20,8 @@ type NoExtraKeys<S, Shape> = S & {
   readonly [K in Exclude<keyof S, keyof Shape>]: never;
 };
 
-type TypedStructTarget<T extends object> = Simplify<
-  Readonly<Pick<T, StringKeyOf<T>>>
->;
+type TypedStructFields<T extends object, S extends TypedStructShape<T>> =
+  NoExtraKeys<S, TypedStructShape<T>>;
 
 /**
  * Creates a `struct` builder checked against an existing object type.
@@ -37,10 +32,10 @@ type TypedStructTarget<T extends object> = Simplify<
  */
 export function typedStruct<T extends object>() {
   return <const S extends TypedStructShape<T>>(
-    fields: NoExtraKeys<S, TypedStructShape<T>>,
+    fields: TypedStructFields<T, S>,
     options?: { exact?: boolean }
-  ): Predicate<TypedStructTarget<T>> =>
+  ): Predicate<InferSchema<TypedStructFields<T, S>>> =>
     // WHY: `typedStruct` keeps `struct` runtime behavior while using the target
     // type only to check that hand-written guard fields stay in sync.
-    struct(fields as Schema, options) as Predicate<TypedStructTarget<T>>;
+    struct(fields, options);
 }
