@@ -6,6 +6,24 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.8.1] - 2026-06-13
+
+### Changed
+
+- remove typedStruct schema casts by @nyaomaru in [#207](https://github.com/nyaomaru/is-kit/pull/207)
+
+### Docs
+
+- 1.8.0 by [bot] by @github-actions in [#206](https://github.com/nyaomaru/is-kit/pull/206)
+
+### Chore
+
+- Release: 1.8.1 by [bot] by @github-actions in [#208](https://github.com/nyaomaru/is-kit/pull/208)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.8.0...v1.8.1
+
+[v1.8.1]: https://github.com/nyaomaru/is-kit/compare/v1.8.0...v1.8.1
+
 ## [v1.8.0] - 2026-06-06
 
 ### Added
@@ -963,7 +981,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.8.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.8.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
