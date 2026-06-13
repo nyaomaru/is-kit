@@ -20,6 +20,13 @@ export type SchemaField =
  */
 export type Schema = Readonly<Record<string, SchemaField>>;
 
+/**
+ * Object schema shape preserving concrete keys.
+ */
+export type SchemaShape<S extends object> = Readonly<{
+  [K in keyof S]: SchemaField;
+}>;
+
 type Simplify<T> = { [K in keyof T]: T[K] };
 
 type InferSchemaField<F> =
@@ -29,13 +36,13 @@ type InferSchemaField<F> =
       ? GuardedOf<G>
       : never;
 
-type RequiredSchemaKeys<S extends Schema> = {
+type RequiredSchemaKeys<S extends SchemaShape<S>> = {
   [K in keyof S]-?: S[K] extends OptionalSchemaField<Predicate<unknown>>
     ? never
     : K;
 }[keyof S];
 
-type OptionalSchemaKeys<S extends Schema> = {
+type OptionalSchemaKeys<S extends SchemaShape<S>> = {
   [K in keyof S]-?: S[K] extends OptionalSchemaField<Predicate<unknown>>
     ? K
     : never;
@@ -44,7 +51,7 @@ type OptionalSchemaKeys<S extends Schema> = {
 /**
  * Infers the readonly object type produced by a `struct` schema.
  */
-export type InferSchema<S extends Schema> = Simplify<
+export type InferSchema<S extends SchemaShape<S>> = Simplify<
   {
     readonly [K in RequiredSchemaKeys<S>]: InferSchemaField<S[K]>;
   } & {

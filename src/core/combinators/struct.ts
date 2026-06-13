@@ -1,8 +1,8 @@
 import type {
-  Schema,
   InferSchema,
   OptionalSchemaField,
-  Predicate
+  Predicate,
+  SchemaShape
 } from '@/types';
 import { define } from '../define';
 import { isFunction, isObject, isPlainObject } from '../object';
@@ -61,7 +61,7 @@ export function optionalKey<G extends Predicate<unknown>>(
  * @param options When `{ exact: true }`, disallows properties not in `schema`.
  * @returns Predicate that narrows to the inferred struct type.
  */
-export function struct<S extends Schema>(
+export function struct<const S extends SchemaShape<S>>(
   schema: S,
   options?: { exact?: boolean }
 ): Predicate<InferSchema<S>> {
@@ -71,7 +71,10 @@ export function struct<S extends Schema>(
   const optionalEntries: SchemaEntry[] = [];
   const schemaKeys: string[] = [];
 
-  for (const [key, field] of Object.entries(schema)) {
+  for (const key in schema) {
+    if (!Object.hasOwn(schema, key)) continue;
+
+    const field = schema[key];
     schemaKeys.push(key);
 
     if (isOptionalSchemaField(field)) {
