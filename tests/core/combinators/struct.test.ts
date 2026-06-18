@@ -49,6 +49,19 @@ describe('struct', () => {
     expect(guard(new Map(entries) as unknown)).toBe(false);
   });
 
+  it('rejects class instances', () => {
+    class User {
+      constructor(
+        readonly id: string,
+        readonly age: number
+      ) {}
+    }
+
+    const guard = struct(schema);
+
+    expect(guard(new User('abc', 20))).toBe(false);
+  });
+
   it('accepts null-prototype objects as plain', () => {
     const guard = struct(schema);
     const o = Object.create(null) as Record<string, unknown>;
@@ -56,6 +69,36 @@ describe('struct', () => {
     o.age = 20;
 
     expect(guard(o)).toBe(true);
+  });
+
+  it('does not use inherited properties to satisfy required keys', () => {
+    const base = Object.create(null) as Record<string, unknown>;
+    base.id = 'abc';
+    const input = Object.create(base) as Record<string, unknown>;
+    input.age = 20;
+
+    const guard = struct(schema);
+
+    expect(guard(input)).toBe(false);
+  });
+
+  it('ignores symbol keys in exact mode', () => {
+    const extra = Symbol('extra');
+    const input = { id: 'abc', age: 20, [extra]: true };
+    const guard = struct(schema, { exact: true });
+
+    expect(guard(input)).toBe(true);
+  });
+
+  it('ignores non-enumerable keys in exact mode', () => {
+    const input = { id: 'abc', age: 20 };
+    Object.defineProperty(input, 'extra', {
+      value: true,
+      enumerable: false
+    });
+    const guard = struct(schema, { exact: true });
+
+    expect(guard(input)).toBe(true);
   });
 
   it('works with nested struct', () => {

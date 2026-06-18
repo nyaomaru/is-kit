@@ -58,7 +58,8 @@ export function optionalKey<G extends Predicate<unknown>>(
  * rejects extra keys when `exact: true`.
  *
  * @param schema Record of property guards.
- * @param options When `{ exact: true }`, disallows properties not in `schema`.
+ * @param options When `{ exact: true }`, disallows own enumerable string-key
+ * properties not in `schema`.
  * @returns Predicate that narrows to the inferred struct type.
  */
 export function struct<const S extends SchemaShape<S>>(

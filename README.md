@@ -186,7 +186,9 @@ const isConfig = struct({
 
 `optionalKey(guard)` means the property may be missing.
 
-Use `struct(schema, { exact: true })` when extra keys should be rejected.
+Use `struct(schema, { exact: true })` when extra own enumerable string keys
+should be rejected. Exact mode follows `Object.keys(...)` semantics, so symbol
+keys and non-enumerable properties are outside its key matching.
 
 If the property must exist but the value may be `undefined`, use `optional(guard)` instead.
 
@@ -312,7 +314,13 @@ Here are the kinds of problems `is-kit` is especially good at solving:
 ### Typed object guard checks
 
 ```ts
-import { isNumber, isString, optionalKey, safeParse, typedStruct } from 'is-kit';
+import {
+  isNumber,
+  isString,
+  optionalKey,
+  safeParse,
+  typedStruct
+} from 'is-kit';
 
 type PostResponse = ApiResponse<'/posts/{id}', 'get'>;
 
