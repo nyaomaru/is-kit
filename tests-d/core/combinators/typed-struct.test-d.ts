@@ -1,5 +1,6 @@
 import { expectType } from 'tsd';
-import { optionalKey, typedStruct } from '@/core/combinators';
+import { arrayOf, optionalKey, typedStruct } from '@/core/combinators';
+import { nullable } from '@/core/nullish';
 import { isBoolean, isNumber, isString } from '@/core/primitive';
 import type { Predicate } from '@/types';
 
@@ -12,11 +13,7 @@ type User = {
 type ApiResponse<
   Path extends string,
   Method extends string
-> = Path extends '/users/{id}'
-  ? Method extends 'get'
-    ? User
-    : never
-  : never;
+> = Path extends '/users/{id}' ? (Method extends 'get' ? User : never) : never;
 
 type ApiQueryParam<
   Path extends string,
@@ -69,6 +66,40 @@ const isUserPathParams = typedStruct<ApiPathParam<'/users/{id}', 'get'>>()({
   id: isString
 });
 expectType<Predicate<Readonly<{ id: string }>>>(isUserPathParams);
+
+// it: supports readonly, nullable, and nested generated API response fields
+type GeneratedUserResponse = {
+  readonly id: string;
+  readonly profile: {
+    readonly displayName: string;
+    readonly bio: string | null;
+  } | null;
+  readonly tags: readonly string[];
+  readonly metadata?: {
+    readonly verified: boolean;
+  } | null;
+};
+
+const isGeneratedProfile = typedStruct<
+  NonNullable<GeneratedUserResponse['profile']>
+>()({
+  displayName: isString,
+  bio: nullable(isString)
+});
+
+const isGeneratedMetadata = typedStruct<
+  NonNullable<GeneratedUserResponse['metadata']>
+>()({
+  verified: isBoolean
+});
+
+const isGeneratedUserResponse = typedStruct<GeneratedUserResponse>()({
+  id: isString,
+  profile: nullable(isGeneratedProfile),
+  tags: arrayOf(isString),
+  metadata: optionalKey(nullable(isGeneratedMetadata))
+});
+expectType<Predicate<Readonly<GeneratedUserResponse>>>(isGeneratedUserResponse);
 
 // it: rejects missing required keys
 // @ts-expect-error: typedStruct must reject missing required fields.
