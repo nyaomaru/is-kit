@@ -35,7 +35,7 @@ describe('struct', () => {
     expect(guard({ id: 'abc', age: 20, extra: true })).toBe(false);
   });
 
-  it('rejects non-plain objects (Array/Date/Map) when using isPlainObject', () => {
+  it('rejects non-plain objects (Array/Date/Map/Set) when using isPlainObject', () => {
     const guard = struct(schema);
     const mixed: Array<[string, string] | [string, number]> = [
       ['id', 'abc'],
@@ -47,6 +47,7 @@ describe('struct', () => {
     expect(guard(new Date() as unknown)).toBe(false);
 
     expect(guard(new Map(entries) as unknown)).toBe(false);
+    expect(guard(new Set(['abc', 20]) as unknown)).toBe(false);
   });
 
   it('rejects class instances', () => {
