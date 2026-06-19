@@ -13,6 +13,7 @@
     },
     "esModuleInterop": true,
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "isolatedModules": true
   },
   "include": ["src"],

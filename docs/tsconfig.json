@@ -17,6 +17,7 @@
       "is-kit": ["../dist"]
     },
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "incremental": true,
     "plugins": [
       {
