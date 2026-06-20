@@ -6,6 +6,28 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.8.2] - 2026-06-20
+
+### Changed
+
+- stabilize struct and typedStruct contracts by @nyaomaru in [#210](https://github.com/nyaomaru/is-kit/pull/210)
+
+### Docs
+
+- 1.8.1 by [bot] by @github-actions in [#209](https://github.com/nyaomaru/is-kit/pull/209)
+
+### Test
+
+- cover Set rejection in struct by @nyaomaru in [#211](https://github.com/nyaomaru/is-kit/pull/211)
+
+### Chore
+
+- update development dependencies by @nyaomaru in [#212](https://github.com/nyaomaru/is-kit/pull/212)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.8.1...v1.8.2
+
+[v1.8.2]: https://github.com/nyaomaru/is-kit/compare/v1.8.1...v1.8.2
+
 ## [v1.8.1] - 2026-06-13
 
 ### Changed
@@ -981,7 +1003,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.8.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.8.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
