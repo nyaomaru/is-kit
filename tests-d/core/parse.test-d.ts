@@ -1,5 +1,5 @@
 import { expectType } from 'tsd';
-import { safeParse, safeParseWith } from '@/core/parse';
+import { safeJsonParse, safeParse, safeParseWith } from '@/core/parse';
 import type { ParseResult, Refine } from '@/types';
 import { isString } from '@/core/primitive';
 
@@ -47,3 +47,10 @@ const parseBoolean = safeParseWith(isBooleanPredicate);
 expectType<(x: unknown) => ParseResult<boolean>>(parseBoolean);
 const parsedBoolean = parseBoolean(unknownInput);
 expectType<ParseResult<boolean>>(parsedBoolean);
+
+// =============================================
+// describe: safeJsonParse
+// =============================================
+// it: infers ParseResult<T> from the guard
+const jsonStringParseResult = safeJsonParse('"value"', isString);
+expectType<ParseResult<string>>(jsonStringParseResult);

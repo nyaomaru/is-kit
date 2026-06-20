@@ -21,7 +21,7 @@ export const API_ITEMS: ApiItem[] = [
   {
     href: '/api-reference/parse',
     title: 'parse',
-    description: 'Safe parsing with tagged results.'
+    description: 'Guard values or decode and validate JSON with tagged results.'
   },
   {
     href: '/api-reference/assert',

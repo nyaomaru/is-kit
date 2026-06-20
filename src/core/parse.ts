@@ -1,4 +1,4 @@
-import type { Guard, Refine, ParseResult } from '@/types';
+import type { Guard, Predicate, Refine, ParseResult } from '@/types';
 
 /**
  * Executes a guard or refinement and returns a tagged result with the value when valid.
@@ -38,4 +38,28 @@ export function safeParseWith<A, B extends A>(
 ): (value: A) => ParseResult<B>;
 export function safeParseWith(fn: (value: unknown) => boolean) {
   return (value: unknown) => safeParse(fn, value);
+}
+
+/**
+ * Decodes JSON text and validates the decoded value without coercion.
+ *
+ * @param input JSON text to decode.
+ * @param guard Guard used to validate the decoded `unknown` value.
+ * @returns The decoded value when valid; `{ valid: false }` for invalid JSON or a guard mismatch.
+ */
+export function safeJsonParse<T>(
+  input: string,
+  guard: Predicate<T>
+): ParseResult<T> {
+  let value: unknown;
+
+  try {
+    // WHY: JSON.parse returns `any`; contain it as `unknown` at the decode
+    // boundary so callers only receive values that pass the guard.
+    value = JSON.parse(input);
+  } catch {
+    return { valid: false };
+  }
+
+  return safeParse(guard, value);
 }

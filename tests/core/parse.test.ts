@@ -1,6 +1,7 @@
-import { safeParse, safeParseWith } from '@/core/parse';
+import { safeJsonParse, safeParse, safeParseWith } from '@/core/parse';
 import type { Refine } from '@/types';
 import { isString } from '@/core/primitive';
+import { typedStruct } from '@/core/combinators/typed-struct';
 
 describe('safeParse (with Guard)', () => {
   it('returns valid=true and value when guard passes', () => {
@@ -63,5 +64,46 @@ describe('safeParseWith', () => {
 
     expect(parseActive(u1)).toEqual({ valid: true, value: u1 });
     expect(parseActive(u2)).toEqual({ valid: false });
+  });
+});
+
+describe('safeJsonParse', () => {
+  type User = { id: string; name: string };
+  const isUser = typedStruct<User>()({
+    id: isString,
+    name: isString
+  });
+
+  it('returns the decoded value when the guard passes', () => {
+    const result = safeJsonParse('{"id":"1","name":"Ada"}', isUser);
+
+    expect(result).toEqual({
+      valid: true,
+      value: { id: '1', name: 'Ada' }
+    });
+  });
+
+  it('returns valid=false for invalid JSON syntax', () => {
+    expect(safeJsonParse('{"id":', isUser)).toEqual({ valid: false });
+  });
+
+  it('returns valid=false when the decoded value fails the guard', () => {
+    expect(safeJsonParse('{"id":1,"name":"Ada"}', isUser)).toEqual({
+      valid: false
+    });
+  });
+
+  it('does not coerce decoded values', () => {
+    expect(safeJsonParse('1', isString)).toEqual({ valid: false });
+  });
+
+  it('does not catch errors thrown by the guard', () => {
+    const throwingGuard = (_value: unknown): _value is string => {
+      throw new Error('guard failed');
+    };
+
+    expect(() => safeJsonParse('"value"', throwingGuard)).toThrow(
+      'guard failed'
+    );
   });
 });
