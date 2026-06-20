@@ -48,20 +48,21 @@
   "packageManager": "pnpm@11.2.2",
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "jest": "^30.0.5",
-    "lefthook": "^2.0.13",
-    "oxfmt": "^0.52.0",
-    "oxlint": "^1.67.0",
-    "ts-jest": "^29.4.1",
+    "jest": "^30.4.2",
+    "lefthook": "^2.1.9",
+    "oxfmt": "^0.55.0",
+    "oxlint": "^1.70.0",
+    "ts-jest": "^29.4.11",
     "tsd": "^0.33.0",
     "tsup": "^8.5.0",
-    "typedoc": "^0.28.12",
-    "typescript": "^5.9.2"
+    "typedoc": "^0.28.19",
+    "typescript": "^6.0.3"
   },
   "tsd": {
     "directory": "tests-d",
     "compilerOptions": {
-      "baseUrl": "."
+      "baseUrl": ".",
+      "ignoreDeprecations": "6.0"
     }
   }
 }
