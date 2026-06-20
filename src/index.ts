@@ -5,7 +5,7 @@ export { equals, equalsBy, equalsKey } from './core/equals';
 export { hasKey, hasKeys, narrowKeyTo } from './core/key';
 export { and, andAll, guardIn, not, or } from './core/logic';
 export { nullable, nonNull, nullish, optional, required } from './core/nullish';
-export { safeParse, safeParseWith } from './core/parse';
+export { safeJsonParse, safeParse, safeParseWith } from './core/parse';
 export { predicateToRefine } from './core/predicate';
 
 // Primitive guards

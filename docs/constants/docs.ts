@@ -55,22 +55,22 @@ const evaluations = ['ok', 'toolong', 123].map((value) => isShortString(value));
 // evaluations: [true, false, false]
 or(isString, isNumber)('x'); // true
 not(isString)(42); // true`,
-  parse: `import { safeParse, struct, isNumber, isString } from 'is-kit';
+  parse: `import { safeJsonParse, struct, isNumber, isString } from 'is-kit';
 
 const isUser = struct({
   id: isNumber,
   name: isString,
 });
 
-const jsonInput = JSON.parse('{"id":1,"name":"neo"}');
-const result = safeParse(isUser, jsonInput);
+const jsonInput = '{"id":1,"name":"neo"}';
+const result = safeJsonParse(jsonInput, isUser);
 // result: ParseResult<{ id: number; name: string }>
 
 if (result.valid) {
   const user = result.value; // { id: number; name: string }
   user.name.toUpperCase(); // 'NEO'
 } else {
-  console.error(result.error.message);
+  console.error('Invalid JSON or user data');
 }`,
   combinators: `import {
   arrayOf,

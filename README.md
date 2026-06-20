@@ -264,7 +264,39 @@ assert(isString, input, 'Expected a string');
 input.toUpperCase();
 ```
 
-### 8. Narrow object keys
+### 8. Decode and validate JSON input
+
+Use `safeJsonParse` at a JSON text boundary. It decodes the text, treats the
+result as `unknown`, and only returns the value after the guard accepts it.
+Invalid JSON and guard mismatches both return `{ valid: false }`; values are not
+coerced to satisfy the guard.
+
+```ts
+import { isString, safeJsonParse, typedStruct } from 'is-kit';
+
+type User = {
+  id: string;
+  name: string;
+};
+
+const isUser = typedStruct<User>()({
+  id: isString,
+  name: isString
+});
+
+declare const input: string;
+const result = safeJsonParse(input, isUser);
+
+if (result.valid) {
+  result.value.name.toUpperCase();
+}
+```
+
+`safeJsonParse` is a decode-then-guard helper. It does not perform schema
+coercion and does not depend on a transport or schema format such as HTTP or
+OpenAPI.
+
+### 9. Narrow object keys
 
 Use key helpers when the important part of a value is one property.
 
@@ -378,7 +410,7 @@ The library is organized around a few small building blocks:
 - **Collections**: `arrayOf`, `nonEmptyArrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
 - **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
 - **Nullish handling**: `nullable`, `nonNull`, `nullish`, `optional`, `required`
-- **Result helpers**: `safeParse`, `safeParseWith`, `assert`
+- **Result helpers**: `safeParse`, `safeParseWith`, `safeJsonParse`, `assert`
 
 For the full API list and dedicated pages, use the docs site below.
 
