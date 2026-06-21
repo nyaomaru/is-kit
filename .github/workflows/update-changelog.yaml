@@ -16,6 +16,9 @@ jobs:
       changelog_path: CHANGELOG.md
       provider: openai
       release_tag: ${{ github.ref_name }}
+      why: 'true'
+      why_confidence: medium
+      why_label: Why
       dry_run: 'false'
     secrets:
       REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
