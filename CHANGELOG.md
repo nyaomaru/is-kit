@@ -6,6 +6,73 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.9.0] - 2026-06-21
+
+### Added
+
+- add safeJsonParse by @nyaomaru in [#215](https://github.com/nyaomaru/is-kit/pull/215)
+  - Why: To provide a type-safe decode-then-guard boundary for JSON parsing.
+
+### Fixed
+
+- enable WHY extraction in changelog workflow by @nyaomaru in [#216](https://github.com/nyaomaru/is-kit/pull/216)
+
+### Docs
+
+- 1.8.2 by [bot] by @github-actions in [#214](https://github.com/nyaomaru/is-kit/pull/214)
+
+### Chore
+
+- Release: 1.9.0 by [bot] by @github-actions in [#217](https://github.com/nyaomaru/is-kit/pull/217)
+
+### What's new 🚀
+
+#### Add `safeJsonParse`
+
+`safeJsonParse` provides a type-safe boundary for parsing and validating JSON input.
+
+`JSON.parse` returns `any`, which can allow unvalidated data to enter typed code. `safeJsonParse` instead decodes JSON as `unknown` and returns the value only when it passes the supplied type guard.
+
+```ts
+import { isString, safeJsonParse, typedStruct } from 'is-kit';
+
+type User = {
+  id: string;
+  name: string;
+};
+
+const isUser = typedStruct<User>()({
+  id: isString,
+  name: isString
+});
+
+const result = safeJsonParse(
+  '{"id":"user-1","name":"Neko"}',
+  isUser
+);
+
+if (result.valid) {
+  result.value.id; // string
+  result.value.name; // string
+}
+```
+
+Invalid JSON and values that do not satisfy the guard both return `{ valid: false }`:
+
+```ts
+safeJsonParse('{"id":', isUser);
+// { valid: false }
+
+safeJsonParse('{"id":1,"name":"Neko"}', isUser);
+// { valid: false }
+```
+
+`safeJsonParse` does not coerce values or depend on HTTP, OpenAPI, or another schema format. It is a small decode-then-guard helper built on the existing `ParseResult<T>` contract.
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.8.2...v1.9.0
+
+[v1.9.0]: https://github.com/nyaomaru/is-kit/compare/v1.8.2...v1.9.0
+
 ## [v1.8.2] - 2026-06-20
 
 ### Changed
@@ -1003,7 +1070,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.8.2...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.9.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
