@@ -116,6 +116,7 @@ This is the core idea of `is-kit`:
 If you are new to the library, these are the pieces to remember:
 
 - `define<T>(fn)` turns a boolean check into a typed guard.
+- `lazy(factory)` defers a guard definition so recursive structures can refer to themselves.
 - `predicateToRefine(fn)` upgrades an existing predicate so it can participate in narrowing chains.
 - `struct({...})` builds an object-shape guard.
 - `safeParse(guard, value)` gives you a small tagged result object.
@@ -224,7 +225,31 @@ import { oneOfValues } from 'is-kit';
 const isStatus = oneOfValues('draft', 'published', 'archived');
 ```
 
-### 6. Handle null and undefined explicitly
+### 6. Validate recursive structures
+
+Use `lazy` when a guard needs to refer to itself. The factory runs on first use,
+and the resulting guard is cached.
+
+```ts
+import { arrayOf, isString, lazy, typedStruct } from 'is-kit';
+import type { Predicate } from 'is-kit';
+
+type Tree = {
+  readonly value: string;
+  readonly children: readonly Tree[];
+};
+
+const isTree: Predicate<Tree> = lazy(() =>
+  typedStruct<Tree>()({
+    value: isString,
+    children: arrayOf(isTree)
+  })
+);
+```
+
+`lazy` does not detect circular references in the input value.
+
+### 7. Handle null and undefined explicitly
 
 Use the nullish helpers to say exactly what is allowed.
 
@@ -245,7 +270,7 @@ const isDefinedString = required(optional(isString));
 const isNonNullString = nonNull(nullable(isString));
 ```
 
-### 7. Parse or assert unknown input
+### 8. Parse or assert unknown input
 
 Use `safeParse` when you want a result object, and `assert` when invalid data should stop execution.
 
@@ -264,7 +289,7 @@ assert(isString, input, 'Expected a string');
 input.toUpperCase();
 ```
 
-### 8. Decode and validate JSON input
+### 9. Decode and validate JSON input
 
 Use `safeJsonParse` at a JSON text boundary. It decodes the text, treats the
 result as `unknown`, and only returns the value after the guard accepts it.
@@ -296,7 +321,7 @@ if (result.valid) {
 coercion and does not depend on a transport or schema format such as HTTP or
 OpenAPI.
 
-### 9. Narrow object keys
+### 10. Narrow object keys
 
 Use key helpers when the important part of a value is one property.
 
