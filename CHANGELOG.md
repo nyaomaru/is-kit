@@ -6,6 +6,45 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.10.0] - 2026-06-27
+
+### Added
+
+- add lazy guard for recursive structures by @nyaomaru in [#219](https://github.com/nyaomaru/is-kit/pull/219)
+
+### Docs
+
+- 1.9.0 by [bot] by @github-actions in [#218](https://github.com/nyaomaru/is-kit/pull/218)
+
+### Chore
+
+- Release: 1.10.0 by [bot] by @github-actions in [#220](https://github.com/nyaomaru/is-kit/pull/220)
+
+### What’s new 🚀
+
+Added lazy for defining guards for recursive data structures. The guard is initialized on first use and cached for subsequent validations.
+
+```ts
+import { arrayOf, isString, lazy, typedStruct } from 'is-kit';
+import type { Predicate } from 'is-kit';
+
+type Tree = {
+  readonly value: string;
+  readonly children: readonly Tree[];
+};
+
+const isTree: Predicate<Tree> = lazy(() =>
+  typedStruct<Tree>()({
+    value: isString,
+    children: arrayOf(isTree)
+  })
+);
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.9.0...v1.10.0
+
+[v1.10.0]: https://github.com/nyaomaru/is-kit/compare/v1.9.0...v1.10.0
+
 ## [v1.9.0] - 2026-06-21
 
 ### Added
@@ -1070,7 +1109,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.10.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
