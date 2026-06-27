@@ -18,6 +18,7 @@ import {
   isError,
   isURL,
   isBlob,
+  isFile,
   isInstanceOf
 } from '@/core/object';
 
@@ -85,18 +86,26 @@ describe('core/object guards', () => {
     expect(isTypedArray(new DataView(new ArrayBuffer(8)))).toBe(false);
   });
 
-  it('detects Error, URL, Blob', () => {
+  it('detects Error, URL, Blob, File', () => {
     expect(isError(new Error('x'))).toBe(true);
     expect(isURL(new URL('https://example.com'))).toBe(true);
 
     // Blob and URL are available in Node 18+
     const b = new Blob(['abc'], { type: 'text/plain' });
     expect(isBlob(b)).toBe(true);
+
+    if (typeof File !== 'undefined') {
+      const f = new File(['abc'], 'example.txt', { type: 'text/plain' });
+      expect(isFile(f)).toBe(true);
+      expect(isBlob(f)).toBe(true);
+      expect(isFile(b)).toBe(false);
+    }
   });
 
   it('returns false for unavailable platform constructors', () => {
     const originalURL = Object.getOwnPropertyDescriptor(globalThis, 'URL');
     const originalBlob = Object.getOwnPropertyDescriptor(globalThis, 'Blob');
+    const originalFile = Object.getOwnPropertyDescriptor(globalThis, 'File');
 
     try {
       Object.defineProperty(globalThis, 'URL', {
@@ -107,6 +116,10 @@ describe('core/object guards', () => {
         configurable: true,
         value: undefined
       });
+      Object.defineProperty(globalThis, 'File', {
+        configurable: true,
+        value: undefined
+      });
 
       jest.isolateModules(() => {
         const objectGuards =
@@ -114,6 +127,7 @@ describe('core/object guards', () => {
 
         expect(objectGuards.isURL({})).toBe(false);
         expect(objectGuards.isBlob({})).toBe(false);
+        expect(objectGuards.isFile({})).toBe(false);
       });
     } finally {
       if (originalURL) Object.defineProperty(globalThis, 'URL', originalURL);
@@ -121,6 +135,9 @@ describe('core/object guards', () => {
 
       if (originalBlob) Object.defineProperty(globalThis, 'Blob', originalBlob);
       else Reflect.deleteProperty(globalThis, 'Blob');
+
+      if (originalFile) Object.defineProperty(globalThis, 'File', originalFile);
+      else Reflect.deleteProperty(globalThis, 'File');
     }
   });
 
