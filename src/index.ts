@@ -39,6 +39,7 @@ export {
   isDataView,
   isDate,
   isError,
+  isFile,
   isFunction,
   isInstanceOf,
   isIterable,

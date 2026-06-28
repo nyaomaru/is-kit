@@ -20,6 +20,7 @@ import {
   isError,
   isURL,
   isBlob,
+  isFile,
   isInstanceOf
 } from '../../src/core/object';
 
@@ -45,6 +46,7 @@ expectType<Predicate<ArrayBufferView>>(isTypedArray);
 expectType<Predicate<Error>>(isError);
 expectType<Predicate<URL>>(isURL);
 expectType<Predicate<Blob>>(isBlob);
+expectType<Predicate<File>>(isFile);
 
 // =============================================
 // describe: isInstanceOf (types)

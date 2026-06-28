@@ -201,6 +201,15 @@ export const isBlob = defineOptionalInstanceGuard<Blob>(
 );
 
 /**
+ * Checks whether a value is a `File` (in environments with File available).
+ *
+ * @returns Predicate narrowing to `File` when supported; otherwise always false.
+ */
+export const isFile = defineOptionalInstanceGuard<File>(
+  typeof File === 'undefined' ? undefined : File
+);
+
+/**
  * Creates a guard that checks whether a value is an instance of `constructor`.
  *
  * @param constructor Constructor used as the right-hand side of `instanceof`.
