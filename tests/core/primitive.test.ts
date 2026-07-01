@@ -15,6 +15,7 @@ import {
   isSymbol,
   isUndefined,
   isNull,
+  isNil,
   isPrimitive
 } from '../../src/core/primitive';
 
@@ -136,6 +137,17 @@ describe('primitive guards', () => {
   it('isNull', () => {
     expect(isNull(null)).toBe(true);
     expect(isNull(undefined as unknown)).toBe(false);
+  });
+
+  it('isNil', () => {
+    // true cases: null / undefined
+    expect(isNil(null)).toBe(true);
+    expect(isNil(undefined)).toBe(true);
+    // false cases: falsy but present values
+    expect(isNil(0 as unknown)).toBe(false);
+    expect(isNil('' as unknown)).toBe(false);
+    expect(isNil(false as unknown)).toBe(false);
+    expect(isNil(Number.NaN as unknown)).toBe(false);
   });
 
   it('isPrimitive', () => {

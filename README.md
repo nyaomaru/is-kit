@@ -270,6 +270,17 @@ const isDefinedString = required(optional(isString));
 const isNonNullString = nonNull(nullable(isString));
 ```
 
+For a plain "is it `null` or `undefined`?" check, reach for `isNil` instead of
+hand-rolling `isNull(x) || isUndefined(x)`:
+
+```ts
+import { isNil } from 'is-kit';
+
+isNil(null); // true
+isNil(undefined); // true
+isNil(0); // false
+```
+
 ### 8. Parse or assert unknown input
 
 Use `safeParse` when you want a result object, and `assert` when invalid data should stop execution.
@@ -434,7 +445,7 @@ The library is organized around a few small building blocks:
 - **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`
 - **Collections**: `arrayOf`, `nonEmptyArrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
 - **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
-- **Nullish handling**: `nullable`, `nonNull`, `nullish`, `optional`, `required`
+- **Nullish handling**: `isNil`, `nullable`, `nonNull`, `nullish`, `optional`, `required`
 - **Result helpers**: `safeParse`, `safeParseWith`, `safeJsonParse`, `assert`
 
 For the full API list and dedicated pages, use the docs site below.

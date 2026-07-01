@@ -31,7 +31,8 @@ export const API_ITEMS: ApiItem[] = [
   {
     href: '/api-reference/nullish',
     title: 'nullish',
-    description: 'Nullability helpers: nullable, optional, required, nonNull.'
+    description:
+      'Nullability helpers: isNil, nullable, optional, required, nonNull.'
   },
   {
     href: '/api-reference/key',
@@ -42,7 +43,7 @@ export const API_ITEMS: ApiItem[] = [
   {
     href: '/api-reference/primitive',
     title: 'primitive',
-    description: 'Primitive guards: string, number, boolean, etc.'
+    description: 'Primitive guards: string, number, boolean, nullish, etc.'
   },
   {
     href: '/api-reference/object',
