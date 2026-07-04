@@ -6,6 +6,93 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.0] - 2026-07-04
+
+### Added
+
+- add isFile guard by @nyaomaru in [#222](https://github.com/nyaomaru/is-kit/pull/222)
+  - Why: Add `isFile` as a platform guard for `File` objects to ensure compatibility across different environments.
+- is-nil by @nyaomaru in [#223](https://github.com/nyaomaru/is-kit/pull/223)
+
+### Changed
+
+- utils internals by @nyaomaru in [#224](https://github.com/nyaomaru/is-kit/pull/224)
+
+### Docs
+
+- 1.10.0 by [bot] by @github-actions in [#221](https://github.com/nyaomaru/is-kit/pull/221)
+
+### Chore
+
+- Release: 1.11.0 by [bot] by @github-actions in [#225](https://github.com/nyaomaru/is-kit/pull/225)
+
+### What's new 🚀
+
+#### Add `isFile`
+
+`isFile` checks whether a value is a `File` object and narrows it to `File`.
+
+This is useful when validating values from file inputs, drag-and-drop handlers, or upload boundaries before reading file metadata.
+
+```ts
+import { isFile } from 'is-kit';
+
+const value: unknown = new File(['hello'], 'hello.txt', {
+  type: 'text/plain'
+});
+
+if (isFile(value)) {
+  value.name; // string
+  value.size; // number
+  value.type; // string
+}
+```
+
+`isFile` only accepts actual File instances. A Blob is not treated as a File.
+
+```ts
+import { isFile } from 'is-kit';
+
+isFile(new File(['hello'], 'hello.txt')); // true
+isFile(new Blob(['hello'])); // false
+isFile({ name: 'hello.txt' }); // false
+```
+
+#### Add isNil
+
+`isNil` checks whether a value is null or undefined.
+
+Use it when you want to reject only nullish values while keeping other falsy values such as 0, '', and false.
+
+```ts
+import { isNil } from 'is-kit';
+
+isNil(null); // true
+isNil(undefined); // true
+
+isNil(0); // false
+isNil(''); // false
+isNil(false); // false
+```
+
+It also works as a type guard for narrowing nullable values.
+
+```ts
+import { isNil } from 'is-kit';
+
+function displayName(name: string | null | undefined) {
+  if (isNil(name)) {
+    return 'Guest';
+  }
+
+  return name.toUpperCase(); // name is string
+}
+```
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.10.0...v1.11.0
+
+[v1.11.0]: https://github.com/nyaomaru/is-kit/compare/v1.10.0...v1.11.0
+
 ## [v1.10.0] - 2026-06-27
 
 ### Added
@@ -1109,7 +1196,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.10.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
