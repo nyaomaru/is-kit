@@ -111,6 +111,69 @@ This is the core idea of `is-kit`:
 2. Compose them.
 3. Reuse them anywhere TypeScript narrowing matters.
 
+## 🧭 Guard Composition Guide
+
+When writing reusable guards with `is-kit`, start from the library primitives:
+use `define` for custom runtime checks, and use logic combinators such as
+`and`, `or`, and `not` when combining existing guards. This keeps the result
+reusable as a named guard and preserves the type-level intent in hover,
+completion, and generated declarations.
+
+```ts
+import {
+  and,
+  define,
+  isNil,
+  isNumber,
+  isString,
+  nullish,
+  or,
+  predicateToRefine
+} from 'is-kit';
+
+const isId = or(isString, isNumber);
+const isNullishString = nullish(isString);
+
+const isSlug = define<string>(
+  (value) => isString(value) && /^[a-z0-9-]+$/.test(value)
+);
+
+const isPositiveNumber = and(
+  isNumber,
+  predicateToRefine<number>((value) => value > 0)
+);
+
+isNil(null); // true
+isNil(undefined); // true
+isId('user-1'); // true
+isNullishString(undefined); // true
+isSlug('release-110'); // true
+isPositiveNumber(1); // true
+```
+
+Prefer these forms when generating or reviewing code:
+
+```ts
+declare const value: unknown;
+
+// Prefer
+const isId = or(isString, isNumber);
+const isMaybeName = nullish(isString);
+const isSlug = define<string>(
+  (value) => isString(value) && /^[a-z0-9-]+$/.test(value)
+);
+
+// Avoid
+const isId = (value: unknown) => isString(value) || isNumber(value);
+const isMaybeName = (value: unknown) => value == null || isString(value);
+const isSlug = (value: unknown): value is string =>
+  isString(value) && /^[a-z0-9-]+$/.test(value);
+```
+
+For AI agents or repository-wide conventions, copy
+[docs/agent-rules.md](./docs/agent-rules.md) into the consumer repository's
+agent instructions.
+
 ## ⌚ A 30-second Mental Model
 
 If you are new to the library, these are the pieces to remember:

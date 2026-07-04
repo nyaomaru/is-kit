@@ -6,6 +6,12 @@ import { Stack } from '@/components/ui/stack';
 
 const sample = `import { and, or, not, predicateToRefine, isString, isNumber } from 'is-kit';
 
+// Prefer logic combinators over hand-written guardA(x) || guardB(x)
+// when the result should be reusable as a named guard.
+const isId = or(isString, isNumber);
+isId('user-1'); // true
+isId(123); // true
+
 // Clearer name for the min-length rule
 const isLongLiteral = predicateToRefine<string>((value) => value.length > 3);
 
@@ -19,7 +25,6 @@ declare const maybeString: unknown;
 if (isLongString(maybeString)) {
   maybeString.toUpperCase(); // narrowed to string
 }
-or(isString, isNumber)('foo'); // true
 not(isString)(123); // true`;
 
 const sampleAndAll = `import { andAll, predicateToRefine, isString } from 'is-kit';

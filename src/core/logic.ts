@@ -11,10 +11,18 @@ import { toBooleanPredicates } from '@/utils';
 
 /**
  * Combines a precondition guard with an additional refinement to narrow the type.
+ * Prefer this over hand-written `precondition(x) && condition(x)` when the
+ * composed predicate should be reused as a guard.
  *
  * @param precondition Broad guard evaluated first; short-circuits on failure.
  * @param condition Refinement evaluated only when `precondition` passes.
  * @returns Predicate that narrows the input to a subtype.
+ * @example
+ * const isPositiveNumber = and(
+ *   isNumber,
+ *   predicateToRefine<number>((value) => value > 0)
+ * );
+ * @see andAll
  */
 export function and<A, B extends A>(
   precondition: Guard<A>,
@@ -30,10 +38,15 @@ export function and<A, B extends A>(
 
 /**
  * Chains a sequence of refinements after a precondition, returning the final guard type.
+ * Use this instead of nested `&&` checks when each step should keep narrowing
+ * the next refinement.
  *
  * @param precondition Initial guard applied first.
  * @param steps Subsequent refinements applied in order.
  * @returns Guard reflecting the result of the refinement chain.
+ * @example
+ * const isPublicTitle = andAll(isString, minLength(4), startsWithPublic);
+ * @see and
  */
 export function andAll<A>(precondition: Guard<A>): Guard<A>;
 export function andAll<A, B extends A>(
@@ -57,9 +70,14 @@ export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
 
 /**
  * Logical OR over multiple guards.
+ * Prefer this over hand-written `guardA(x) || guardB(x)` when the composed
+ * predicate should be reused as a guard.
  *
  * @param guards Guards to evaluate; passes if any guard passes.
  * @returns Guard for the union of all guarded types.
+ * @example
+ * const isId = or(isString, isNumber);
+ * @see oneOf
  */
 export function or<P extends readonly Guard<unknown>[]>(
   ...guards: P
@@ -74,6 +92,7 @@ export function or<P extends readonly Guard<unknown>[]>(
  * Adapts a guard so it can be used as a refinement within a known supertype.
  *
  * @returns Function that converts a `Guard<T>` into a `Refine<A, T>` when `T extends A`.
+ * @see and
  */
 export function guardIn<A>(): <T extends A>(guard: Guard<T>) => Refine<A, T>;
 export function guardIn<A>(): <T extends A>(guard: Guard<T>) => Refine<A, T> {
@@ -84,9 +103,12 @@ export function guardIn<A>(): <T extends A>(guard: Guard<T>) => Refine<A, T> {
 
 /**
  * Logical negation of a guard/refinement.
+ * Use this when a negated predicate should be named and reused.
  *
  * @param guard Guard or refinement to negate.
  * @returns Refinement excluding the guarded subtype from the input type.
+ * @example
+ * const isPresent = not(isNil);
  */
 export function not<A, T>(
   guard: Guard<T>

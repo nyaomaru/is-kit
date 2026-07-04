@@ -119,18 +119,22 @@ export const isSymbol = define<symbol>((value) => typeof value === 'symbol');
 /**
  * Checks whether a value is exactly `undefined`.
  *
- * To accept `null` as well, use {@link isNil}.
+ * For reusable nullish checks, use {@link isNil} or compose a named guard with
+ * {@link or} once and reuse it.
  *
  * @returns Predicate narrowing to `undefined`.
+ * @see isNil
  */
 export const isUndefined = define<undefined>((value) => value === undefined);
 
 /**
  * Checks whether a value is exactly `null`.
  *
- * To accept `undefined` as well, use {@link isNil}.
+ * For reusable nullish checks, use {@link isNil} or compose a named guard with
+ * {@link or} once and reuse it.
  *
  * @returns Predicate narrowing to `null`.
+ * @see isNil
  */
 export const isNull = define<null>((value) => value === null);
 
