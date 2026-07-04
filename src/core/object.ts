@@ -11,7 +11,7 @@ import {
   OBJECT_TAG_SET,
   OBJECT_TAG_WEAK_MAP,
   OBJECT_TAG_WEAK_SET
-} from '@/utils/object-tags';
+} from '@/utils';
 
 // WHY: DOM constructors such as URL and Blob are declared as constructor
 // objects with a prototype, not as the full Function interface. The helper
