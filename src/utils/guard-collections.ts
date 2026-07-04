@@ -1,3 +1,25 @@
+type BooleanPredicate<T> = (value: T) => boolean;
+
+const everyIterableValue = <T>(
+  values: Iterable<T>,
+  predicate: BooleanPredicate<T>
+): boolean => {
+  for (const value of values) {
+    if (!predicate(value)) return false;
+  }
+  return true;
+};
+
+const everyKeyValueEntry = <K, V>(
+  entries: Iterable<readonly [K, V]>,
+  predicate: (key: K, value: V) => boolean
+): boolean => {
+  for (const [key, value] of entries) {
+    if (!predicate(key, value)) return false;
+  }
+  return true;
+};
+
 /**
  * Checks whether every array element satisfies the provided predicate.
  *
@@ -7,13 +29,8 @@
  */
 export const everyArrayValue = (
   values: readonly unknown[],
-  predicate: (value: unknown) => boolean
-): boolean => {
-  for (const value of values) {
-    if (!predicate(value)) return false;
-  }
-  return true;
-};
+  predicate: BooleanPredicate<unknown>
+): boolean => everyIterableValue(values, predicate);
 
 /**
  * Checks whether a tuple matches the provided element predicates in order.
@@ -24,11 +41,12 @@ export const everyArrayValue = (
  */
 export const everyTupleValue = (
   values: readonly unknown[],
-  predicates: readonly ((value: unknown) => boolean)[]
+  predicates: readonly BooleanPredicate<unknown>[]
 ): boolean => {
   if (values.length !== predicates.length) return false;
 
-  for (const [index, predicate] of predicates.entries()) {
+  for (let index = 0; index < predicates.length; index += 1) {
+    const predicate = predicates[index];
     if (!predicate(values[index])) return false;
   }
 
@@ -44,13 +62,8 @@ export const everyTupleValue = (
  */
 export const everySetValue = (
   values: ReadonlySet<unknown>,
-  predicate: (value: unknown) => boolean
-): boolean => {
-  for (const value of values) {
-    if (!predicate(value)) return false;
-  }
-  return true;
-};
+  predicate: BooleanPredicate<unknown>
+): boolean => everyIterableValue(values, predicate);
 
 /**
  * Checks whether every map entry satisfies the provided key and value predicates.
@@ -62,14 +75,13 @@ export const everySetValue = (
  */
 export const everyMapEntry = (
   values: ReadonlyMap<unknown, unknown>,
-  keyPredicate: (key: unknown) => boolean,
-  valuePredicate: (value: unknown) => boolean
-): boolean => {
-  for (const [key, value] of values) {
-    if (!keyPredicate(key) || !valuePredicate(value)) return false;
-  }
-  return true;
-};
+  keyPredicate: BooleanPredicate<unknown>,
+  valuePredicate: BooleanPredicate<unknown>
+): boolean =>
+  everyKeyValueEntry(
+    values,
+    (key, value) => keyPredicate(key) && valuePredicate(value)
+  );
 
 /**
  * Checks whether every own enumerable string key/value pair satisfies the provided predicates.
@@ -81,11 +93,10 @@ export const everyMapEntry = (
  */
 export const everyOwnEnumerableEntry = (
   values: Record<string, unknown>,
-  keyPredicate: (key: string) => boolean,
-  valuePredicate: (value: unknown) => boolean
-): boolean => {
-  for (const key of Object.keys(values)) {
-    if (!keyPredicate(key) || !valuePredicate(values[key])) return false;
-  }
-  return true;
-};
+  keyPredicate: BooleanPredicate<string>,
+  valuePredicate: BooleanPredicate<unknown>
+): boolean =>
+  everyIterableValue(
+    Object.keys(values),
+    (key) => keyPredicate(key) && valuePredicate(values[key])
+  );
