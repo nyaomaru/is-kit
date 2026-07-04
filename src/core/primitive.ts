@@ -119,6 +119,8 @@ export const isSymbol = define<symbol>((value) => typeof value === 'symbol');
 /**
  * Checks whether a value is exactly `undefined`.
  *
+ * To accept `null` as well, use {@link isNil}.
+ *
  * @returns Predicate narrowing to `undefined`.
  */
 export const isUndefined = define<undefined>((value) => value === undefined);
@@ -126,9 +128,27 @@ export const isUndefined = define<undefined>((value) => value === undefined);
 /**
  * Checks whether a value is exactly `null`.
  *
+ * To accept `undefined` as well, use {@link isNil}.
+ *
  * @returns Predicate narrowing to `null`.
  */
 export const isNull = define<null>((value) => value === null);
+
+/**
+ * Checks whether a value is `null` or `undefined` (nullish).
+ *
+ * Prefer this over hand-rolling `isNull(x) || isUndefined(x)`: it is the same
+ * check expressed once. To widen an existing guard so it also accepts nullish
+ * values, use {@link nullish} instead.
+ *
+ * @returns Predicate narrowing to `null | undefined`.
+ * @example
+ * isNil(null); // true
+ * isNil(undefined); // true
+ * isNil(0); // false
+ * @see or
+ */
+export const isNil = or(isNull, isUndefined);
 
 /**
  * Checks whether a value is a JavaScript primitive.

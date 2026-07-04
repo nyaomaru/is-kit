@@ -18,6 +18,7 @@ export {
   isInteger,
   isNaN,
   isNegative,
+  isNil,
   isNull,
   isNumber,
   isNumberPrimitive,

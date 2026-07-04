@@ -4,7 +4,11 @@ import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
 
-const sample = `import { isString, nullable, nonNull, nullish, optional, required } from 'is-kit';
+const sample = `import { isNil, isString, nullable, nonNull, nullish, optional, required } from 'is-kit';
+
+isNil(null); // true
+isNil(undefined); // true
+isNil(0); // false
 
 const maybeString = nullable(isString);
 maybeString(null); // true
@@ -21,6 +25,8 @@ maybeUndef(undefined); // true
 const needValue = required(optional(isString));
 needValue('ok'); // true
 
+// isNil checks the value itself.
+// nullish(...) widens another guard to accept null or undefined.
 // optional(...) is value-level.
 // For struct key-level optional properties, use optionalKey(...).`;
 
@@ -34,7 +40,9 @@ export default function NullishPage() {
             Nullability helpers to widen or narrow values such as{' '}
             <code>undefined</code> and <code>null</code>. For key-level optional
             fields inside <code>struct</code>, use <code>optionalKey(...)</code>
-            .
+            instead. Use <code className='mx-1'>isNil</code> when you only need
+            to check whether the value itself is <code>null</code> or{' '}
+            <code>undefined</code>.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

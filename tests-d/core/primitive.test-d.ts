@@ -16,6 +16,7 @@ import {
   isSymbol,
   isUndefined,
   isNull,
+  isNil,
   isPrimitive
 } from '../../src/core/primitive';
 import type { Predicate, Refine, Primitive } from '../../src/types';
@@ -56,6 +57,9 @@ expectType<Predicate<bigint>>(isBigInt);
 expectType<Predicate<symbol>>(isSymbol);
 expectType<Predicate<undefined>>(isUndefined);
 expectType<Predicate<null>>(isNull);
+
+// it: isNil narrows to null | undefined
+expectType<Predicate<null | undefined>>(isNil);
 
 // it: isPrimitive is a Predicate<Primitive>
 expectType<Predicate<Primitive>>(isPrimitive);
