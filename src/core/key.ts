@@ -1,4 +1,5 @@
 import type { Guard, GuardedOf, Predicate } from '@/types';
+import { hasOwnPropertyKey, hasOwnPropertyKeys } from '@/utils/own-properties';
 import { equalsKey } from './equals';
 import { define } from './define';
 import { isObject } from './object';
@@ -11,7 +12,7 @@ import { isObject } from './object';
  */
 export const hasKey = <K extends PropertyKey>(key: K) =>
   define<Record<K, unknown>>((input) =>
-    isObject(input) && Object.hasOwn(input, key));
+    isObject(input) && hasOwnPropertyKey(input, key));
 
 /**
  * Checks whether a value has all specified own keys.
@@ -31,7 +32,7 @@ export const hasKeys = <
   }
 
   return define<Record<KS[number], unknown>>(
-    (input) => isObject(input) && keys.every((key) => Object.hasOwn(input, key))
+    (input) => isObject(input) && hasOwnPropertyKeys(input, keys)
   );
 };
 

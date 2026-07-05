@@ -1,4 +1,5 @@
 import type { GuardedOf, Predicate } from '@/types';
+import { hasOwnPropertyKey } from '@/utils/own-properties';
 import { define } from './define';
 import { isObject } from './object';
 
@@ -71,7 +72,7 @@ export function equalsKey<K extends PropertyKey, const T>(
   const hasMatchingKey = define<Record<K, T>>((input) => {
     return (
       isObject(input) &&
-      Object.hasOwn(input, key) &&
+      hasOwnPropertyKey(input, key) &&
       Object.is(input[key], target)
     );
   });

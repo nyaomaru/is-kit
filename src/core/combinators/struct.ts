@@ -4,6 +4,7 @@ import type {
   Predicate,
   SchemaShape
 } from '@/types';
+import { hasOwnPropertyKey } from '@/utils/own-properties';
 import { define } from '../define';
 import { isFunction, isObject, isPlainObject } from '../object';
 
@@ -22,7 +23,7 @@ const hasRequiredKeys = (
 ): boolean =>
   // WHY: Required fields must be own properties; inherited values should not
   // satisfy a schema because `struct` models object payload shape, not prototype chains.
-  entries.every(([key, guard]) => Object.hasOwn(obj, key) && guard(obj[key]));
+  entries.every(([key, guard]) => hasOwnPropertyKey(obj, key) && guard(obj[key]));
 
 const hasValidOptionalKeys = (
   obj: Record<string, unknown>,
@@ -30,7 +31,9 @@ const hasValidOptionalKeys = (
 ): boolean =>
   // WHY: Optional keys are validated only when present. Missing keys stay valid
   // without forcing callers to encode `undefined` into the value guard.
-  entries.every(([key, guard]) => !Object.hasOwn(obj, key) || guard(obj[key]));
+  entries.every(
+    ([key, guard]) => !hasOwnPropertyKey(obj, key) || guard(obj[key])
+  );
 
 const hasOnlyAllowedKeys = (
   obj: Record<string, unknown>,
@@ -73,7 +76,7 @@ export function struct<const S extends SchemaShape<S>>(
   const schemaKeys: string[] = [];
 
   for (const key in schema) {
-    if (!Object.hasOwn(schema, key)) continue;
+    if (!hasOwnPropertyKey(schema, key)) continue;
 
     const field = schema[key];
     schemaKeys.push(key);
