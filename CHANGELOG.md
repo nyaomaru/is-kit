@@ -6,6 +6,25 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.1] - 2026-07-05
+
+### Changed
+
+- centralize own property checks by @nyaomaru in [#228](https://github.com/nyaomaru/is-kit/pull/228)
+
+### Docs
+
+- 1.11.0 by [bot] by @github-actions in [#226](https://github.com/nyaomaru/is-kit/pull/226)
+- guide AI guard composition by @nyaomaru in [#227](https://github.com/nyaomaru/is-kit/pull/227)
+
+### Chore
+
+- Release: 1.11.1 by [bot] by @github-actions in [#229](https://github.com/nyaomaru/is-kit/pull/229)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.0...v1.11.1
+
+[v1.11.1]: https://github.com/nyaomaru/is-kit/compare/v1.11.0...v1.11.1
+
 ## [v1.11.0] - 2026-07-04
 
 ### Added
@@ -1196,7 +1215,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
