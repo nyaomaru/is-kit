@@ -9,6 +9,7 @@ const sample = `import { isNil, isString, nullable, nonNull, nullish, optional, 
 isNil(null); // true
 isNil(undefined); // true
 isNil(0); // false
+// isNil checks a value directly for null | undefined.
 
 const maybeString = nullable(isString);
 maybeString(null); // true
@@ -18,6 +19,7 @@ notNull('x'); // true
 
 const maybe = nullish(isString);
 maybe(undefined); // true
+// nullish(isString) widens isString to also accept null or undefined.
 
 const maybeUndef = optional(isString);
 maybeUndef(undefined); // true
