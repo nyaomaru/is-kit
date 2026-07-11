@@ -6,6 +6,24 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.2] - 2026-07-11
+
+### Changed
+
+- expose typed struct schema types by @nyaomaru in [#231](https://github.com/nyaomaru/is-kit/pull/231)
+
+### Docs
+
+- 1.11.1 by [bot] by @github-actions in [#230](https://github.com/nyaomaru/is-kit/pull/230)
+
+### Chore
+
+- Release: 1.11.2 by [bot] by @github-actions in [#232](https://github.com/nyaomaru/is-kit/pull/232)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.1...v1.11.2
+
+[v1.11.2]: https://github.com/nyaomaru/is-kit/compare/v1.11.1...v1.11.2
+
 ## [v1.11.1] - 2026-07-05
 
 ### Changed
@@ -1215,7 +1233,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
