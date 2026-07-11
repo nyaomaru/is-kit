@@ -1,8 +1,15 @@
-import { expectType } from 'tsd';
+import { expectAssignable, expectType } from 'tsd';
 import { arrayOf, optionalKey, typedStruct } from '@/core/combinators';
 import { nullable } from '@/core/nullish';
 import { isBoolean, isNumber, isString } from '@/core/primitive';
 import type { Predicate } from '@/types';
+import type {
+  NoExtraKeys,
+  OptionalObjectKeys,
+  RequiredObjectKeys,
+  TypedStructFields,
+  TypedStructShape
+} from 'is-kit';
 
 type User = {
   id: string;
@@ -100,6 +107,31 @@ const isGeneratedUserResponse = typedStruct<GeneratedUserResponse>()({
   metadata: optionalKey(nullable(isGeneratedMetadata))
 });
 expectType<Predicate<Readonly<GeneratedUserResponse>>>(isGeneratedUserResponse);
+
+// =============================================
+// describe: public type exports
+// =============================================
+// it: exposes typedStruct schema helper types from the package entrypoint
+type PublicUserShape = TypedStructShape<User>;
+type PublicUserFields = TypedStructFields<User, PublicUserShape>;
+type PublicUserRequiredKeys = RequiredObjectKeys<User>;
+type PublicUserOptionalKeys = OptionalObjectKeys<User>;
+type PublicUserNoExtraKeys = NoExtraKeys<{ id: string }, { id: unknown }>;
+
+expectAssignable<PublicUserShape>({
+  id: isString,
+  name: isString,
+  age: optionalKey(isNumber)
+});
+expectAssignable<PublicUserFields>({
+  id: isString,
+  name: isString,
+  age: optionalKey(isNumber)
+});
+expectAssignable<PublicUserRequiredKeys>('id');
+expectAssignable<PublicUserRequiredKeys>('name');
+expectType<PublicUserOptionalKeys>('age');
+expectAssignable<PublicUserNoExtraKeys>({ id: 'user-1' });
 
 // it: rejects missing required keys
 // @ts-expect-error: typedStruct must reject missing required fields.
