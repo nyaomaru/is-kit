@@ -83,9 +83,14 @@ export type {
 export type { Primitive } from './types/primitive';
 export type {
   InferSchema,
+  NoExtraKeys,
+  OptionalObjectKeys,
   OptionalSchemaField,
+  RequiredObjectKeys,
   Schema,
-  SchemaField
+  SchemaField,
+  TypedStructFields,
+  TypedStructShape
 } from './types/schema';
 
 // Utility helpers
