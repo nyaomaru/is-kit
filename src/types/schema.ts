@@ -58,3 +58,42 @@ export type InferSchema<S extends SchemaShape<S>> = Simplify<
     readonly [K in OptionalSchemaKeys<S>]?: InferSchemaField<S[K]>;
   }
 >;
+
+/**
+ * Extracts optional keys from an object type.
+ */
+export type OptionalObjectKeys<T> = {
+  // WHY: Optional keys accept an empty object when picked in isolation.
+  [K in keyof T]-?: {} extends Pick<T, K> ? K : never;
+}[keyof T];
+
+/**
+ * Extracts required keys from an object type.
+ */
+export type RequiredObjectKeys<T> = Exclude<keyof T, OptionalObjectKeys<T>>;
+
+/**
+ * Schema shape checked against an existing object type by `typedStruct`.
+ */
+export type TypedStructShape<T extends object> = {
+  readonly [K in Extract<RequiredObjectKeys<T>, string>]-?: Predicate<T[K]>;
+} & {
+  readonly [K in Extract<OptionalObjectKeys<T>, string>]-?: OptionalSchemaField<
+    Predicate<T[K]>
+  >;
+};
+
+/**
+ * Keeps a schema type while rejecting keys outside the expected shape.
+ */
+export type NoExtraKeys<S, Shape> = S & {
+  readonly [K in Exclude<keyof S, keyof Shape>]: never;
+};
+
+/**
+ * Field set accepted by `typedStruct` for a target object type.
+ */
+export type TypedStructFields<
+  T extends object,
+  S extends TypedStructShape<T>
+> = NoExtraKeys<S, TypedStructShape<T>>;

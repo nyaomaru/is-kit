@@ -1,27 +1,10 @@
-import type { InferSchema, OptionalSchemaField, Predicate } from '@/types';
+import type {
+  InferSchema,
+  Predicate,
+  TypedStructFields,
+  TypedStructShape
+} from '@/types';
 import { struct } from './struct';
-
-type OptionalKeys<T> = {
-  // WHY: Optional keys accept an empty object when picked in isolation.
-  [K in keyof T]-?: {} extends Pick<T, K> ? K : never;
-}[keyof T];
-
-type RequiredKeys<T> = Exclude<keyof T, OptionalKeys<T>>;
-
-type TypedStructShape<T extends object> = {
-  readonly [K in Extract<RequiredKeys<T>, string>]-?: Predicate<T[K]>;
-} & {
-  readonly [K in Extract<OptionalKeys<T>, string>]-?: OptionalSchemaField<
-    Predicate<T[K]>
-  >;
-};
-
-type NoExtraKeys<S, Shape> = S & {
-  readonly [K in Exclude<keyof S, keyof Shape>]: never;
-};
-
-type TypedStructFields<T extends object, S extends TypedStructShape<T>> =
-  NoExtraKeys<S, TypedStructShape<T>>;
 
 /**
  * Creates a `struct` builder checked against an existing object type.
