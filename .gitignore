@@ -8,3 +8,4 @@ coverage
 docs/public/api
 docs/.next
 docs/.vercel
+docs/next-env.d.ts
