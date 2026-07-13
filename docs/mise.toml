@@ -3,10 +3,6 @@
 # Used by: https://mise.jdx.dev/              #
 ###############################################
 
-# Environment defaults
-[env]
-NODE_ENV = "development"
-
 # Tool versions to match local dev and CI
 [tools]
 node = "22.22.0"

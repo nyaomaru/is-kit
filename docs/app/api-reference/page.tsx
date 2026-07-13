@@ -28,7 +28,7 @@ export default function ApiIndexPage() {
           <Link
             key={item.href}
             href={item.href}
-            className='group focus:outline-none'
+            className='group focus:outline-hidden'
           >
             <Card className='h-full transition-colors group-hover:border-primary'>
               <CardHeader>

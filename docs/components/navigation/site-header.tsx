@@ -15,23 +15,23 @@ export function SiteHeader() {
     }
   };
   return (
-    <header className='fixed inset-x-0 top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+    <header className='fixed inset-x-0 top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60'>
       <div className='flex h-14 w-full items-center justify-between px-4'>
         <div className='flex items-center gap-3'>
           <button
             type='button'
             aria-label='Toggle sidebar'
             onClick={handleToggle}
-            className='group h-8 w-8 inline-flex items-center justify-center rounded text-foreground hover:bg-primary/10 hover:text-primary transition-colors'
+            className='group h-8 w-8 inline-flex items-center justify-center rounded-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors'
           >
             <span className='sr-only'>Toggle sidebar</span>
             <span
               aria-hidden
               className='flex flex-col items-center justify-center gap-1'
             >
-              <span className='block h-0.5 w-5 bg-primary rounded' />
-              <span className='block h-0.5 w-5 bg-primary rounded' />
-              <span className='block h-0.5 w-5 bg-primary rounded' />
+              <span className='block h-0.5 w-5 bg-primary rounded-sm' />
+              <span className='block h-0.5 w-5 bg-primary rounded-sm' />
+              <span className='block h-0.5 w-5 bg-primary rounded-sm' />
             </span>
           </button>
           <Heading

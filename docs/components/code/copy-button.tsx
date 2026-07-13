@@ -34,7 +34,7 @@ export function CopyButton({
       type='button'
       onClick={onCopy}
       className={
-        'text-xs rounded border border-primary text-primary px-2 py-1 hover:bg-primary/10 transition-colors ' +
+        'text-xs rounded-sm border border-primary text-primary px-2 py-1 hover:bg-primary/10 transition-colors ' +
         (className ?? '')
       }
       aria-live='polite'

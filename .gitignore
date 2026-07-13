@@ -1,6 +1,7 @@
 node_modules
 dist
 coverage
+*.tsbuildinfo
 
 .github/prompts
 # Keep docs app tracked, but ignore generated API assets and build outputs
