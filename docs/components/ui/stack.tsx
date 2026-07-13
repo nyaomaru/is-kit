@@ -24,7 +24,7 @@ type StackTag = 'div' | 'section' | 'article' | 'main' | 'aside' | 'nav';
 type StackProps<Tag extends StackTag = 'div'> = VariantProps<
   typeof stackVariants
 > &
-  Omit<JSX.IntrinsicElements[Tag], 'className' | 'ref'> & {
+  Omit<React.JSX.IntrinsicElements[Tag], 'className' | 'ref'> & {
     /** Tailwind utility classes merged onto the rendered element. */
     className?: string;
     /** Semantic element to render; defaults to `div`. */
@@ -32,7 +32,7 @@ type StackProps<Tag extends StackTag = 'div'> = VariantProps<
   };
 
 type ElementFromTag<Tag extends StackTag> =
-  JSX.IntrinsicElements[Tag] extends React.DetailedHTMLProps<
+  React.JSX.IntrinsicElements[Tag] extends React.DetailedHTMLProps<
     React.HTMLAttributes<infer Element>,
     unknown
   >
@@ -58,7 +58,7 @@ const StackBase = <Tag extends StackTag = 'div'>(
     ...(props as Record<string, unknown>),
     ref,
     className: cn(stackVariants({ gap }), className)
-  } as React.Attributes & JSX.IntrinsicElements[Tag]);
+  } as React.Attributes & React.JSX.IntrinsicElements[Tag]);
 };
 
 StackBase.displayName = 'Stack';

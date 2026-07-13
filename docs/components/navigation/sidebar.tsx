@@ -57,7 +57,7 @@ export function Sidebar({ sections, open, className }: SidebarProps) {
                       href={item.href}
                       aria-current={active ? 'page' : undefined}
                       className={cn(
-                        'group block px-3 py-1 rounded pl-4',
+                        'group block px-3 py-1 rounded-sm pl-4',
                         active
                           ? 'bg-primary/20 border-l-2 border-primary pl-3 font-medium text-primary'
                           : 'text-primary/80'

@@ -43,7 +43,7 @@ export function ApiReferencePager({
       <div className='grid grid-cols-1 gap-4 md:grid-cols-3 items-stretch w-full'>
         <Link
           href='/api-reference'
-          className='group focus:outline-none block h-full w-full justify-self-stretch'
+          className='group focus:outline-hidden block h-full w-full justify-self-stretch'
           aria-label='API Reference home'
         >
           <Card className='h-full w-full transition-colors group-hover:border-primary'>
@@ -65,7 +65,7 @@ export function ApiReferencePager({
         {next ? (
           <Link
             href={next.href}
-            className='group focus:outline-none block h-full w-full justify-self-stretch'
+            className='group focus:outline-hidden block h-full w-full justify-self-stretch'
             aria-label={`Next: ${next.label}`}
           >
             <Card className='h-full w-full transition-colors group-hover:border-primary'>

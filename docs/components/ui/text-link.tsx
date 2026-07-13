@@ -17,7 +17,7 @@ export const TextLink = React.forwardRef<HTMLAnchorElement, TextLinkProps>(
       <Link
         ref={ref}
         className={cn(
-          'group inline-flex items-center text-primary transition-colors focus-visible:outline-none focus-visible:underline link-underline',
+          'group inline-flex items-center text-primary transition-colors focus-visible:outline-hidden focus-visible:underline link-underline',
           className
         )}
         {...props}

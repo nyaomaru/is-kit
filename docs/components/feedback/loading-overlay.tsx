@@ -8,12 +8,12 @@ export type LoadingOverlayProps = {
 export function LoadingOverlay({ label = 'Loading…' }: LoadingOverlayProps) {
   return (
     <div
-      className='fixed inset-0 z-50 grid place-items-center bg-background/80 backdrop-blur-sm'
+      className='fixed inset-0 z-50 grid place-items-center bg-background/80 backdrop-blur-xs'
       role='alert'
       aria-busy
       aria-live='polite'
     >
-      <div className='flex flex-col items-center gap-4 p-6 rounded-lg border bg-background shadow-sm'>
+      <div className='flex flex-col items-center gap-4 p-6 rounded-lg border bg-background shadow-xs'>
         {/* NOTE: Next/Image is avoided for animated SVGs */}
         <img
           src='/iskit_rotate_animated_1s.svg'

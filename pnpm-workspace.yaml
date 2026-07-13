@@ -12,4 +12,5 @@ overrides:
 allowBuilds:
   esbuild: false
   lefthook: false
+  sharp: true
   unrs-resolver: false

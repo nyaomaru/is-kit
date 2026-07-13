@@ -12,6 +12,7 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://is-kit-docs.vercel.app'),
   title: 'is-kit • Docs',
   description: 'Type-safe isXXX combinators and utilities',
   icons: {

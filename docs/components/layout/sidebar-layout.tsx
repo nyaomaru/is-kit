@@ -79,7 +79,7 @@ export function SidebarLayout({
       {open ? (
         <div
           role='presentation'
-          className='fixed inset-x-0 top-14 bottom-0 z-30 bg-background/70 backdrop-blur-sm md:hidden'
+          className='fixed inset-x-0 top-14 bottom-0 z-30 bg-background/70 backdrop-blur-xs md:hidden'
           onClick={() => setOpen(false)}
         />
       ) : null}

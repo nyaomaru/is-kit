@@ -18,9 +18,9 @@ export async function generateStaticParams() {
 export default async function DocsPage({
   params
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const { lang } = params;
+  const { lang } = await params;
   const dict = await getDictionary(lang ?? DEFAULT_LOCALE);
 
   return (
