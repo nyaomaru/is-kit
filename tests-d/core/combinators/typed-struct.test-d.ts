@@ -1,5 +1,10 @@
 import { expectAssignable, expectType } from 'tsd';
-import { arrayOf, optionalKey, typedStruct } from '@/core/combinators';
+import {
+  arrayOf,
+  oneOfValues,
+  optionalKey,
+  typedStruct
+} from '@/core/combinators';
 import { nullable } from '@/core/nullish';
 import { isBoolean, isNumber, isString } from '@/core/primitive';
 import type { Predicate } from '@/types';
@@ -7,13 +12,17 @@ import type {
   NoExtraKeys,
   OptionalObjectKeys,
   RequiredObjectKeys,
+  StructOptions,
   TypedStructFields,
   TypedStructShape
 } from 'is-kit';
 
 type User = {
+  /** Stable identifier returned for the user. */
   id: string;
+  /** Display name shown for the user. */
   name: string;
+  /** Optional age supplied by the user profile. */
   age?: number;
 };
 
@@ -28,6 +37,7 @@ type ApiQueryParam<
 > = Path extends '/users/{id}'
   ? Method extends 'get'
     ? {
+        /** Whether related posts should be included in the response. */
         includePosts?: boolean;
       }
     : never
@@ -39,6 +49,7 @@ type ApiPathParam<
 > = Path extends '/users/{id}'
   ? Method extends 'get'
     ? {
+        /** User identifier extracted from the request path. */
         id: string;
       }
     : never
@@ -76,13 +87,20 @@ expectType<Predicate<Readonly<{ id: string }>>>(isUserPathParams);
 
 // it: supports readonly, nullable, and nested generated API response fields
 type GeneratedUserResponse = {
+  /** Stable identifier returned by the generated API client. */
   readonly id: string;
+  /** Nullable public profile associated with the user. */
   readonly profile: {
+    /** Name rendered in public profile views. */
     readonly displayName: string;
+    /** Optional profile biography represented as a nullable value. */
     readonly bio: string | null;
   } | null;
+  /** Immutable labels attached to the user. */
   readonly tags: readonly string[];
+  /** Optional nullable metadata returned for privileged requests. */
   readonly metadata?: {
+    /** Whether the user passed the verification process. */
     readonly verified: boolean;
   } | null;
 };
@@ -108,6 +126,26 @@ const isGeneratedUserResponse = typedStruct<GeneratedUserResponse>()({
 });
 expectType<Predicate<Readonly<GeneratedUserResponse>>>(isGeneratedUserResponse);
 
+// it: preserves field guards that narrow beyond the target field types
+type Content = {
+  /** Discriminator identifying the content representation. */
+  kind: string;
+  /** Content payload before a guard narrows its representation. */
+  value: string | number;
+  /** Optional label before a guard narrows its representation. */
+  label?: string | number;
+};
+
+const isTextContent = typedStruct<Content>()({
+  kind: oneOfValues('text'),
+  value: isString,
+  label: optionalKey(isString)
+});
+expectType<
+  Predicate<Readonly<{ kind: 'text'; value: string; label?: string }>>
+>(isTextContent);
+expectAssignable<Predicate<Readonly<Content>>>(isTextContent);
+
 // =============================================
 // describe: public type exports
 // =============================================
@@ -117,6 +155,7 @@ type PublicUserFields = TypedStructFields<User, PublicUserShape>;
 type PublicUserRequiredKeys = RequiredObjectKeys<User>;
 type PublicUserOptionalKeys = OptionalObjectKeys<User>;
 type PublicUserNoExtraKeys = NoExtraKeys<{ id: string }, { id: unknown }>;
+const publicStructOptions: StructOptions = { exact: true };
 
 expectAssignable<PublicUserShape>({
   id: isString,
@@ -132,6 +171,16 @@ expectAssignable<PublicUserRequiredKeys>('id');
 expectAssignable<PublicUserRequiredKeys>('name');
 expectType<PublicUserOptionalKeys>('age');
 expectAssignable<PublicUserNoExtraKeys>({ id: 'user-1' });
+expectType<StructOptions>(publicStructOptions);
+
+typedStruct<User>()(
+  {
+    id: isString,
+    name: isString,
+    age: optionalKey(isNumber)
+  },
+  publicStructOptions
+);
 
 // it: rejects missing required keys
 // @ts-expect-error: typedStruct must reject missing required fields.
