@@ -21,6 +21,14 @@ export type SchemaField =
 export type Schema = Readonly<Record<string, SchemaField>>;
 
 /**
+ * Configures object-key validation for `struct` and `typedStruct`.
+ */
+export type StructOptions = Readonly<{
+  /** Rejects extra own enumerable string-key properties when enabled. */
+  exact?: boolean;
+}>;
+
+/**
  * Object schema shape preserving concrete keys.
  */
 export type SchemaShape<S extends object> = Readonly<{

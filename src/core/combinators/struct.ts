@@ -2,7 +2,8 @@ import type {
   InferSchema,
   OptionalSchemaField,
   Predicate,
-  SchemaShape
+  SchemaShape,
+  StructOptions
 } from '@/types';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
 import { define } from '../define';
@@ -23,7 +24,9 @@ const hasRequiredKeys = (
 ): boolean =>
   // WHY: Required fields must be own properties; inherited values should not
   // satisfy a schema because `struct` models object payload shape, not prototype chains.
-  entries.every(([key, guard]) => hasOwnPropertyKey(obj, key) && guard(obj[key]));
+  entries.every(
+    ([key, guard]) => hasOwnPropertyKey(obj, key) && guard(obj[key])
+  );
 
 const hasValidOptionalKeys = (
   obj: Record<string, unknown>,
@@ -67,7 +70,7 @@ export function optionalKey<G extends Predicate<unknown>>(
  */
 export function struct<const S extends SchemaShape<S>>(
   schema: S,
-  options?: { exact?: boolean }
+  options?: StructOptions
 ): Predicate<InferSchema<S>> {
   // WHY: Split required and optional fields once per builder so each
   // invocation only performs property lookups and guard calls.

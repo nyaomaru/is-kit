@@ -89,6 +89,7 @@ export type {
   RequiredObjectKeys,
   Schema,
   SchemaField,
+  StructOptions,
   TypedStructFields,
   TypedStructShape
 } from './types/schema';
