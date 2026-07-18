@@ -6,6 +6,24 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.3] - 2026-07-18
+
+### Added
+
+- export shared struct options type by @nyaomaru in [#235](https://github.com/nyaomaru/is-kit/pull/235)
+
+### Docs
+
+- 1.11.2 by [bot] by @github-actions in [#233](https://github.com/nyaomaru/is-kit/pull/233)
+
+### Chore
+
+- upgrade docs toolcha by @nyaomaru in [#234](https://github.com/nyaomaru/is-kit/pull/234)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.2...v1.11.3
+
+[v1.11.3]: https://github.com/nyaomaru/is-kit/compare/v1.11.2...v1.11.3
+
 ## [v1.11.2] - 2026-07-11
 
 ### Changed
@@ -1233,7 +1251,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.2...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.3...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
