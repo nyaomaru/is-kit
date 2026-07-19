@@ -1,6 +1,6 @@
 {
   "name": "is-kit",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "Zero-dependency TypeScript runtime validation toolkit for composable type guards and natural type narrowing.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
