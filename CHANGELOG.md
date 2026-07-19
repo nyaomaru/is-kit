@@ -6,6 +6,20 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.4] - 2026-07-19
+
+### Added
+
+- add AI agent discovery and setup by @nyaomaru in [#238](https://github.com/nyaomaru/is-kit/pull/238)
+
+### Docs
+
+- 1.11.3 by [bot] by @github-actions in [#237](https://github.com/nyaomaru/is-kit/pull/237)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.3...v1.11.4
+
+[v1.11.4]: https://github.com/nyaomaru/is-kit/compare/v1.11.3...v1.11.4
+
 ## [v1.11.3] - 2026-07-18
 
 ### Added
@@ -1251,7 +1265,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.3...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.4...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
