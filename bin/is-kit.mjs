@@ -15,6 +15,9 @@ const usage = `Usage: is-kit init-agent [--target agents|claude]
 
 Adds or updates the is-kit rules in AGENTS.md (default) or CLAUDE.md.`;
 
+const isHelpRequested = (args) =>
+  args.includes('--help') || args.includes('-h');
+
 const fileExists = async (path) => {
   try {
     await access(path);
@@ -81,6 +84,11 @@ const main = async () => {
   const [command, ...args] = process.argv.slice(2);
 
   if (command === 'init-agent') {
+    if (isHelpRequested(args)) {
+      process.stdout.write(`${usage}\n`);
+      return;
+    }
+
     await initAgent(args);
     return;
   }

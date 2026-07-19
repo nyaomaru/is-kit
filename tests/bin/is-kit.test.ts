@@ -1,5 +1,11 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
@@ -12,12 +18,11 @@ const createTemporaryDirectory = (): string => {
   return directory;
 };
 
-const runCli = (directory: string, ...args: string[]): void => {
+const runCli = (directory: string, ...args: string[]): string =>
   execFileSync(process.execPath, [cliPath, ...args], {
     cwd: directory,
-    stdio: 'pipe'
+    encoding: 'utf8'
   });
-};
 
 afterEach(() => {
   for (const directory of temporaryDirectories.splice(0)) {
@@ -26,6 +31,19 @@ afterEach(() => {
 });
 
 describe('is-kit init-agent', () => {
+  it.each(['--help', '-h'])(
+    'shows usage for %s without writing agent files',
+    (helpFlag) => {
+      const directory = createTemporaryDirectory();
+
+      const output = runCli(directory, 'init-agent', helpFlag);
+
+      expect(output).toContain('Usage: is-kit init-agent');
+      expect(existsSync(join(directory, 'AGENTS.md'))).toBe(false);
+      expect(existsSync(join(directory, 'CLAUDE.md'))).toBe(false);
+    }
+  );
+
   it('creates and idempotently updates the managed AGENTS.md section', () => {
     const directory = createTemporaryDirectory();
     const targetPath = join(directory, 'AGENTS.md');
