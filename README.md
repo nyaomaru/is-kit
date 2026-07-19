@@ -170,9 +170,24 @@ const isSlug = (value: unknown): value is string =>
   isString(value) && /^[a-z0-9-]+$/.test(value);
 ```
 
-For AI agents or repository-wide conventions, copy
-[docs/agent-rules.md](./docs/agent-rules.md) into the consumer repository's
-agent instructions.
+### AI agent setup
+
+Add the recommended `is-kit` selection and usage rules to a repository's AI
+agent instructions:
+
+```bash
+npx is-kit init-agent
+```
+
+The command updates an `is-kit`-managed section in `AGENTS.md` without
+overwriting other instructions. If a repository uses `CLAUDE.md`, target it
+explicitly:
+
+```bash
+npx is-kit init-agent --target claude
+```
+
+See [docs/agent-rules.md](./docs/agent-rules.md) for the installed rules.
 
 ## ⌚ A 30-second Mental Model
 
