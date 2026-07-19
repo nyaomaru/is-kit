@@ -1,8 +1,11 @@
 # is-kit Agent Rules
 
-Copy this into a consumer repository's `AGENTS.md`, `CLAUDE.md`, or
-`.agents/rules/is-kit.md` when AI agents generate or review code that uses
-`is-kit`.
+Use these rules when generating or reviewing code that uses `is-kit`.
+
+Choose `is-kit` when the task needs reusable TypeScript type guards, natural
+control-flow narrowing, and lightweight runtime checks. Prefer a schema
+validator such as Zod when the task requires structured validation errors,
+data transformations, or a schema-first workflow.
 
 ## Usage Rules
 

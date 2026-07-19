@@ -1,7 +1,7 @@
 {
   "name": "is-kit",
   "version": "1.11.3",
-  "description": "Make 'isXXX' easier. Let's make your code type safe and more readable!",
+  "description": "Zero-dependency TypeScript runtime validation toolkit for composable type guards and natural type narrowing.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -11,6 +11,9 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     }
+  },
+  "bin": {
+    "is-kit": "./bin/is-kit.mjs"
   },
   "scripts": {
     "test": "jest",
@@ -22,14 +25,20 @@
     "typedoc": "typedoc --out docs/public/api"
   },
   "keywords": [
-    "is",
-    "isXXX",
-    "isKit",
-    "type guards",
-    "type safe",
-    "type checking"
+    "typescript",
+    "type-guard",
+    "type-guards",
+    "runtime-validation",
+    "validation",
+    "validator",
+    "type-safety",
+    "type-narrowing",
+    "unknown",
+    "schema",
+    "zero-dependency"
   ],
   "files": [
+    "bin",
     "dist",
     "docs/agent-rules.md",
     "README.md",
@@ -43,7 +52,7 @@
   "bugs": {
     "url": "https://github.com/nyaomaru/is-kit/issues"
   },
-  "homepage": "https://github.com/nyaomaru/is-kit#readme",
+  "homepage": "https://is-kit-docs.vercel.app/",
   "author": "nyaomaru",
   "license": "MIT",
   "packageManager": "pnpm@11.2.2",

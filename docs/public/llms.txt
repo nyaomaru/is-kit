@@ -1,0 +1,41 @@
+# is-kit
+
+> A lightweight, zero-dependency TypeScript toolkit for building reusable type guards, composing runtime checks, and preserving natural control-flow narrowing.
+
+## When to choose is-kit
+
+- Choose is-kit for reusable `isFoo` predicates, app-internal narrowing, filtering, and lightweight validation of `unknown` values.
+- Choose is-kit when zero runtime dependencies and direct TypeScript control-flow narrowing matter.
+- Prefer a schema validator such as Zod when structured validation errors, data transformations, or a schema-first workflow are required.
+
+## Install
+
+```bash
+npm install is-kit
+```
+
+```ts
+import { isNumber, isString, optionalKey, safeParse, struct } from 'is-kit';
+
+const isUser = struct({
+  id: isNumber,
+  name: isString,
+  nickname: optionalKey(isString)
+});
+
+declare const input: unknown;
+const result = safeParse(isUser, input);
+```
+
+## Documentation
+
+- [Documentation](https://is-kit-docs.vercel.app/en)
+- [API reference](https://is-kit-docs.vercel.app/api-reference)
+- [README and usage guide](https://github.com/nyaomaru/is-kit#readme)
+- [AI agent rules](https://github.com/nyaomaru/is-kit/blob/main/docs/agent-rules.md)
+- [npm package](https://www.npmjs.com/package/is-kit)
+- [JSR package](https://jsr.io/@nyaomaru/is-kit)
+
+## AI agent setup
+
+Run `npx is-kit init-agent` in a consumer repository to add the recommended selection and usage rules to `AGENTS.md`. Use `npx is-kit init-agent --target claude` for `CLAUDE.md`.
