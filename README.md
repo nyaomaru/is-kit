@@ -176,7 +176,7 @@ Add the recommended `is-kit` selection and usage rules to a repository's AI
 agent instructions:
 
 ```bash
-npx is-kit init-agent
+npx --yes is-kit@latest init-agent
 ```
 
 The command updates an `is-kit`-managed section in `AGENTS.md` without
@@ -184,7 +184,7 @@ overwriting other instructions. If a repository uses `CLAUDE.md`, target it
 explicitly:
 
 ```bash
-npx is-kit init-agent --target claude
+npx --yes is-kit@latest init-agent --target claude
 ```
 
 See [docs/agent-rules.md](./docs/agent-rules.md) for the installed rules.
