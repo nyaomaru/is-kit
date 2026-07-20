@@ -1,5 +1,8 @@
 type BooleanPredicate<T> = (value: T) => boolean;
 
+const mapEntries = Map.prototype.entries;
+const setValues = Set.prototype.values;
+
 const everyIterableValue = <T>(
   values: Iterable<T>,
   predicate: BooleanPredicate<T>
@@ -66,6 +69,15 @@ export const everySetValue = (
 ): boolean => everyIterableValue(values, predicate);
 
 /**
+ * Checks built-in Set data without invoking an instance-provided iterator.
+ * WHY: A branded Set subclass may override its public iterator and throw.
+ */
+export const everyBrandedSetValue = (
+  values: ReadonlySet<unknown>,
+  predicate: BooleanPredicate<unknown>
+): boolean => everyIterableValue(setValues.call(values), predicate);
+
+/**
  * Checks whether every map entry satisfies the provided key and value predicates.
  *
  * @param values Map values to validate.
@@ -80,6 +92,20 @@ export const everyMapEntry = (
 ): boolean =>
   everyKeyValueEntry(
     values,
+    (key, value) => keyPredicate(key) && valuePredicate(value)
+  );
+
+/**
+ * Checks built-in Map data without invoking an instance-provided iterator.
+ * WHY: A branded Map subclass may override its public iterator and throw.
+ */
+export const everyBrandedMapEntry = (
+  values: ReadonlyMap<unknown, unknown>,
+  keyPredicate: BooleanPredicate<unknown>,
+  valuePredicate: BooleanPredicate<unknown>
+): boolean =>
+  everyKeyValueEntry(
+    mapEntries.call(values),
     (key, value) => keyPredicate(key) && valuePredicate(value)
   );
 
