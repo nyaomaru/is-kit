@@ -1,6 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { define } from '../define';
-import { everyMapEntry } from '@/utils';
+import { everyBrandedMapEntry } from '@/utils';
 import { isMap } from '../object';
 
 /**
@@ -18,6 +18,6 @@ export function mapOf<
   valueGuard: VF
 ): Predicate<ReadonlyMap<GuardedOf<KF>, GuardedOf<VF>>> {
   return define<ReadonlyMap<GuardedOf<KF>, GuardedOf<VF>>>(
-    (input) => isMap(input) && everyMapEntry(input, keyGuard, valueGuard)
+    (input) => isMap(input) && everyBrandedMapEntry(input, keyGuard, valueGuard)
   );
 }

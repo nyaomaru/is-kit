@@ -1,17 +1,6 @@
 import { define } from './define';
 import type { Guard } from '@/types';
-import {
-  getTag,
-  OBJECT_TAG_ARRAY_BUFFER,
-  OBJECT_TAG_DATA_VIEW,
-  OBJECT_TAG_DATE,
-  OBJECT_TAG_ERROR,
-  OBJECT_TAG_MAP,
-  OBJECT_TAG_REGEXP,
-  OBJECT_TAG_SET,
-  OBJECT_TAG_WEAK_MAP,
-  OBJECT_TAG_WEAK_SET
-} from '@/utils';
+import { getTag, OBJECT_TAG_ERROR } from '@/utils';
 
 // WHY: DOM constructors such as URL and Blob are declared as constructor
 // objects with a prototype, not as the full Function interface. The helper
@@ -21,8 +10,50 @@ type InstanceCheckTarget<T> = { readonly prototype: T };
 
 type AnyFunction = (...args: never[]) => unknown;
 
-const defineTagGuard = <T>(tag: string): Guard<T> =>
-  define<T>((value) => getTag(value) === tag);
+const BUILTIN_BRAND_SENTINEL = Object.freeze({});
+
+// WHY: Calling captured built-in intrinsics verifies internal slots. Unlike
+// object tags, this rejects Symbol.toStringTag spoofing while still accepting
+// cross-realm instances and subclasses.
+const getIntrinsicGetter = (
+  prototype: object,
+  key: PropertyKey
+): (() => unknown) => {
+  const getter = Object.getOwnPropertyDescriptor(prototype, key)?.get;
+
+  // WHY: Standard built-in accessors should always exist. Keeping the fallback
+  // callable lets the exported guard remain total in a non-conforming runtime.
+  return (
+    getter ??
+    (() => {
+      throw new TypeError(`Missing intrinsic getter: ${String(key)}`);
+    })
+  );
+};
+
+const defineIntrinsicBrandGuard = <T>(
+  checkBrand: (value: unknown) => unknown
+): Guard<T> =>
+  define<T>((value) => {
+    try {
+      checkBrand(value);
+      return true;
+    } catch {
+      return false;
+    }
+  });
+
+const dateGetTime = Date.prototype.getTime;
+const mapHas = Map.prototype.has;
+const setHas = Set.prototype.has;
+const weakMapHas = WeakMap.prototype.has;
+const weakSetHas = WeakSet.prototype.has;
+const regExpSource = getIntrinsicGetter(RegExp.prototype, 'source');
+const arrayBufferByteLength = getIntrinsicGetter(
+  ArrayBuffer.prototype,
+  'byteLength'
+);
+const dataViewByteLength = getIntrinsicGetter(DataView.prototype, 'byteLength');
 
 const defineOptionalInstanceGuard = <T>(
   constructor: InstanceCheckTarget<T> | undefined
@@ -80,47 +111,58 @@ export const isArray = define<readonly unknown[]>(Array.isArray);
  *
  * @returns Predicate narrowing to `Date`.
  */
-export const isDate = define<Date>(
-  (value) =>
-    getTag(value) === OBJECT_TAG_DATE &&
-    !Number.isNaN((value as Date).getTime())
-);
+export const isDate = define<Date>((value) => {
+  try {
+    return !Number.isNaN(dateGetTime.call(value));
+  } catch {
+    return false;
+  }
+});
 
 /**
  * Checks whether a value is a `RegExp`.
  *
  * @returns Predicate narrowing to `RegExp`.
  */
-export const isRegExp = defineTagGuard<RegExp>(OBJECT_TAG_REGEXP);
+export const isRegExp = defineIntrinsicBrandGuard<RegExp>((value) =>
+  regExpSource.call(value)
+);
 
 /**
  * Checks whether a value is a `Map`.
  *
  * @returns Predicate narrowing to `Map<unknown, unknown>`.
  */
-export const isMap = defineTagGuard<Map<unknown, unknown>>(OBJECT_TAG_MAP);
+export const isMap = defineIntrinsicBrandGuard<Map<unknown, unknown>>((value) =>
+  mapHas.call(value, BUILTIN_BRAND_SENTINEL)
+);
 
 /**
  * Checks whether a value is a `Set`.
  *
  * @returns Predicate narrowing to `Set<unknown>`.
  */
-export const isSet = defineTagGuard<Set<unknown>>(OBJECT_TAG_SET);
+export const isSet = defineIntrinsicBrandGuard<Set<unknown>>((value) =>
+  setHas.call(value, BUILTIN_BRAND_SENTINEL)
+);
 
 /**
  * Checks whether a value is a `WeakMap`.
  *
  * @returns Predicate narrowing to `WeakMap<object, unknown>`.
  */
-export const isWeakMap =
-  defineTagGuard<WeakMap<object, unknown>>(OBJECT_TAG_WEAK_MAP);
+export const isWeakMap = defineIntrinsicBrandGuard<WeakMap<object, unknown>>(
+  (value) => weakMapHas.call(value, BUILTIN_BRAND_SENTINEL)
+);
 
 /**
  * Checks whether a value is a `WeakSet`.
  *
  * @returns Predicate narrowing to `WeakSet<object>`.
  */
-export const isWeakSet = defineTagGuard<WeakSet<object>>(OBJECT_TAG_WEAK_SET);
+export const isWeakSet = defineIntrinsicBrandGuard<WeakSet<object>>((value) =>
+  weakSetHas.call(value, BUILTIN_BRAND_SENTINEL)
+);
 
 /**
  * Checks whether a value is promise-like (has a `then` function).
@@ -154,15 +196,18 @@ export const isAsyncIterable = define<AsyncIterable<unknown>>((value) =>
  *
  * @returns Predicate narrowing to `ArrayBuffer`.
  */
-export const isArrayBuffer =
-  defineTagGuard<ArrayBuffer>(OBJECT_TAG_ARRAY_BUFFER);
+export const isArrayBuffer = defineIntrinsicBrandGuard<ArrayBuffer>((value) =>
+  arrayBufferByteLength.call(value)
+);
 
 /**
  * Checks whether a value is a `DataView`.
  *
  * @returns Predicate narrowing to `DataView`.
  */
-export const isDataView = defineTagGuard<DataView>(OBJECT_TAG_DATA_VIEW);
+export const isDataView = defineIntrinsicBrandGuard<DataView>((value) =>
+  dataViewByteLength.call(value)
+);
 
 /**
  * Checks whether a value is a typed array view (any `ArrayBufferView` except DataView).
@@ -170,7 +215,7 @@ export const isDataView = defineTagGuard<DataView>(OBJECT_TAG_DATA_VIEW);
  * @returns Predicate narrowing to `ArrayBufferView`.
  */
 export const isTypedArray = define<ArrayBufferView>(
-  (value) => ArrayBuffer.isView(value) && getTag(value) !== OBJECT_TAG_DATA_VIEW
+  (value) => ArrayBuffer.isView(value) && !isDataView(value)
 );
 
 /**

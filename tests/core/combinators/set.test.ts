@@ -21,6 +21,7 @@ describe('setOf (runtime)', () => {
 
   it('rejects non-set inputs', () => {
     expect(isStringSet(['a', 'b'] as unknown)).toBe(false);
+    expect(isStringSet({ [Symbol.toStringTag]: 'Set' } as unknown)).toBe(false);
     expect(isStringSet(new Map([['a', 'b']]) as unknown)).toBe(false);
     expect(isStringSet(null as unknown)).toBe(false);
     expect(isStringSet(undefined as unknown)).toBe(false);
@@ -32,5 +33,17 @@ describe('setOf (runtime)', () => {
     expect(isNested(new Set([['a'], ['b', 'c']]))).toBe(true);
     expect(isNested(new Set([['a'], ['b', 1 as any]]))).toBe(false);
     expect(isNested('nope' as unknown)).toBe(false);
+  });
+
+  it('uses the intrinsic iterator for branded sets', () => {
+    const set = new Set(['a']);
+    Object.defineProperty(set, Symbol.iterator, {
+      value: () => {
+        throw new Error('custom iterator should not run');
+      }
+    });
+
+    expect(() => isStringSet(set)).not.toThrow();
+    expect(isStringSet(set)).toBe(true);
   });
 });

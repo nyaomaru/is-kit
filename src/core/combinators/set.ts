@@ -1,6 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { define } from '../define';
-import { everySetValue } from '@/utils';
+import { everyBrandedSetValue } from '@/utils';
 import { isSet } from '../object';
 
 /**
@@ -13,6 +13,6 @@ export function setOf<VF extends Predicate<unknown>>(
   valueGuard: VF
 ): Predicate<ReadonlySet<GuardedOf<VF>>> {
   return define<ReadonlySet<GuardedOf<VF>>>(
-    (input) => isSet(input) && everySetValue(input, valueGuard)
+    (input) => isSet(input) && everyBrandedSetValue(input, valueGuard)
   );
 }

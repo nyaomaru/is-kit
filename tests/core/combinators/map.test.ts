@@ -53,6 +53,9 @@ describe('mapOf (runtime)', () => {
 
   it('rejects non-map inputs', () => {
     expect(isStringNumberMap({ a: 1 } as unknown)).toBe(false);
+    expect(isStringNumberMap({ [Symbol.toStringTag]: 'Map' } as unknown)).toBe(
+      false
+    );
     expect(isStringNumberMap(new Set([['a', 1]]) as unknown)).toBe(false);
     expect(isStringNumberMap(null as unknown)).toBe(false);
     expect(isStringNumberMap(undefined as unknown)).toBe(false);
@@ -80,5 +83,17 @@ describe('mapOf (runtime)', () => {
     ).toBe(false);
 
     expect(isNested('nope' as unknown)).toBe(false);
+  });
+
+  it('uses the intrinsic iterator for branded maps', () => {
+    const map = new Map<string, number>([['a', 1]]);
+    Object.defineProperty(map, Symbol.iterator, {
+      value: () => {
+        throw new Error('custom iterator should not run');
+      }
+    });
+
+    expect(() => isStringNumberMap(map)).not.toThrow();
+    expect(isStringNumberMap(map)).toBe(true);
   });
 });
