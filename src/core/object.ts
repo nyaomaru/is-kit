@@ -53,7 +53,7 @@ const arrayBufferByteLength = getIntrinsicGetter(
   ArrayBuffer.prototype,
   'byteLength'
 );
-const dataViewByteLength = getIntrinsicGetter(DataView.prototype, 'byteLength');
+const dataViewBuffer = getIntrinsicGetter(DataView.prototype, 'buffer');
 
 const defineOptionalInstanceGuard = <T>(
   constructor: InstanceCheckTarget<T> | undefined
@@ -206,7 +206,7 @@ export const isArrayBuffer = defineIntrinsicBrandGuard<ArrayBuffer>((value) =>
  * @returns Predicate narrowing to `DataView`.
  */
 export const isDataView = defineIntrinsicBrandGuard<DataView>((value) =>
-  dataViewByteLength.call(value)
+  dataViewBuffer.call(value)
 );
 
 /**

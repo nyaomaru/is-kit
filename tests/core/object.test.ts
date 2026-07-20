@@ -156,6 +156,15 @@ describe('core/object guards', () => {
     });
     expect(isDataView(spoofedDataView)).toBe(true);
     expect(isTypedArray(spoofedDataView)).toBe(false);
+
+    const transferredBuffer = new ArrayBuffer(8);
+    const detachedDataView = new DataView(transferredBuffer);
+    structuredClone(transferredBuffer, { transfer: [transferredBuffer] });
+
+    expect(ArrayBuffer.isView(detachedDataView)).toBe(true);
+    expect(() => detachedDataView.byteLength).toThrow(TypeError);
+    expect(isDataView(detachedDataView)).toBe(true);
+    expect(isTypedArray(detachedDataView)).toBe(false);
   });
 
   it('detects Error, URL, Blob, File', () => {
