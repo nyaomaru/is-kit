@@ -38,4 +38,4 @@ const result = safeParse(isUser, input);
 
 ## AI agent setup
 
-Run `npx is-kit init-agent` in a consumer repository to add the recommended selection and usage rules to `AGENTS.md`. Use `npx is-kit init-agent --target claude` for `CLAUDE.md`.
+Run `npx --yes is-kit@latest init-agent` in a consumer repository to add the recommended selection and usage rules to `AGENTS.md`. Use `npx --yes is-kit@latest init-agent --target claude` for `CLAUDE.md`.
