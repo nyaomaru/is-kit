@@ -6,6 +6,25 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.5] - 2026-07-20
+
+### Fixed
+
+- use latest package for agent setup commands by @nyaomaru in [#241](https://github.com/nyaomaru/is-kit/pull/241)
+- use intrinsic brand checks for built-ins by @nyaomaru in [#242](https://github.com/nyaomaru/is-kit/pull/242)
+
+### Docs
+
+- 1.11.4 by [bot] by @github-actions in [#240](https://github.com/nyaomaru/is-kit/pull/240)
+
+### Chore
+
+- Release: 1.11.5 by [bot] by @github-actions in [#243](https://github.com/nyaomaru/is-kit/pull/243)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.4...v1.11.5
+
+[v1.11.5]: https://github.com/nyaomaru/is-kit/compare/v1.11.4...v1.11.5
+
 ## [v1.11.4] - 2026-07-19
 
 ### Added
@@ -1265,7 +1284,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.4...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.5...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
