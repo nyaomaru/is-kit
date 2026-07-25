@@ -1,6 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { define } from '../define';
-import { everyBrandedMapEntry } from '@/utils';
+import { everyBrandedMapEntry } from '@/utils/guard-collections';
 import { isMap } from '../object';
 
 /**

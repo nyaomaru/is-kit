@@ -1,6 +1,6 @@
 import { define } from '../define';
 import type { GuardedOf, Predicate } from '@/types';
-import { everyArrayValue } from '@/utils';
+import { everyArrayValue } from '@/utils/guard-collections';
 
 /**
  * Validates an array where every element satisfies the provided guard.

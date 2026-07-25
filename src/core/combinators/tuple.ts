@@ -1,6 +1,6 @@
 import { define } from '../define';
 import type { Predicate, GuardedOf } from '@/types';
-import { everyTupleValue } from '@/utils';
+import { everyTupleValue } from '@/utils/guard-collections';
 
 /**
  * Validates a fixed-length tuple by applying element-wise guards.

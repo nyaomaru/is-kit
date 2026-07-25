@@ -6,8 +6,8 @@ import type {
   OutOfGuards,
   Predicate
 } from '@/types';
+import { toBooleanPredicates } from '@/utils/to-boolean-predicates';
 import { define } from './define';
-import { toBooleanPredicates } from '@/utils';
 
 /**
  * Combines a precondition guard with an additional refinement to narrow the type.
