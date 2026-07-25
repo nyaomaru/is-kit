@@ -1,6 +1,6 @@
 import { define } from './define';
 import type { Guard } from '@/types';
-import { getTag, OBJECT_TAG_ERROR } from '@/utils';
+import { getTag, OBJECT_TAG_ERROR } from '@/utils/object-tags';
 
 // WHY: DOM constructors such as URL and Blob are declared as constructor
 // objects with a prototype, not as the full Function interface. The helper

@@ -1,6 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { define } from '../define';
-import { everyBrandedSetValue } from '@/utils';
+import { everyBrandedSetValue } from '@/utils/guard-collections';
 import { isSet } from '../object';
 
 /**

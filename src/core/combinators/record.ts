@@ -1,6 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { define } from '../define';
-import { everyOwnEnumerableEntry } from '@/utils';
+import { everyOwnEnumerableEntry } from '@/utils/guard-collections';
 import { isPlainObject } from '../object';
 
 /**
