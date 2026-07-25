@@ -6,6 +6,30 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.6] - 2026-07-25
+
+### Changed
+
+- use direct imports for internal utilities by @nyaomaru in [#246](https://github.com/nyaomaru/is-kit/pull/246)
+
+### Docs
+
+- 1.11.5 by [bot] by @github-actions in [#244](https://github.com/nyaomaru/is-kit/pull/244)
+- add security policy by @nyaomaru in [#245](https://github.com/nyaomaru/is-kit/pull/245)
+
+### Test
+
+- verify root entrypoint exports by @nyaomaru in [#247](https://github.com/nyaomaru/is-kit/pull/247)
+- enforce exact root export contract by @nyaomaru in [#248](https://github.com/nyaomaru/is-kit/pull/248)
+
+### Chore
+
+- Release: 1.11.6 by [bot] by @github-actions in [#249](https://github.com/nyaomaru/is-kit/pull/249)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.5...v1.11.6
+
+[v1.11.6]: https://github.com/nyaomaru/is-kit/compare/v1.11.5...v1.11.6
+
 ## [v1.11.5] - 2026-07-20
 
 ### Fixed
@@ -1284,7 +1308,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.5...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.6...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
