@@ -1,4 +1,5 @@
-import { expectAssignable } from 'tsd';
+import { expectAssignable, expectType } from 'tsd';
+import * as publicApi from 'is-kit';
 import {
   and,
   andAll,
@@ -107,8 +108,8 @@ import type {
 // =============================================
 // describe: root entrypoint
 // =============================================
-// it: exports the complete public runtime API
-expectAssignable<readonly unknown[]>([
+// it: exports exactly the reviewed public runtime API
+const publicRuntimeContract = {
   and,
   andAll,
   arrayOf,
@@ -188,9 +189,14 @@ expectAssignable<readonly unknown[]>([
   toBooleanPredicates,
   tupleOf,
   typedStruct
-]);
+};
 
-// it: exports the complete public type API
+// WHY: Named imports catch removals, while the namespace key check also catches
+// unreviewed runtime additions.
+declare const publicRuntimeExportName: keyof typeof publicApi;
+expectType<keyof typeof publicRuntimeContract>(publicRuntimeExportName);
+
+// it: exports every type in the reviewed public type API
 type PublicTypeContract = readonly [
   ChainResult<unknown, readonly []>,
   Guard<unknown>,
