@@ -8,33 +8,32 @@ import { Heading } from '@/components/ui/heading';
 import { getDictionary } from '@/lib/dictionaries';
 import {
   SUPPORTED_LOCALES,
-  type Locale,
   DEFAULT_LOCALE,
-  LOCALE_PATHS
+  LOCALE_PATHS,
+  resolveLocale
 } from '@/constants/i18n';
 import { SITE_OPEN_GRAPH, SITE_TITLE } from '@/constants/site';
 
 type DocsPageProps = {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 };
 
 export async function generateStaticParams() {
   return SUPPORTED_LOCALES.map((lang) => ({ lang }));
 }
 
-export const dynamicParams = false;
-
 export async function generateMetadata({
   params
 }: DocsPageProps): Promise<Metadata> {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const locale = resolveLocale(lang);
+  const dict = await getDictionary(locale);
 
   return {
     title: SITE_TITLE,
     description: dict.top.description,
     alternates: {
-      canonical: LOCALE_PATHS[lang],
+      canonical: LOCALE_PATHS[locale],
       languages: {
         ...LOCALE_PATHS,
         'x-default': LOCALE_PATHS[DEFAULT_LOCALE]
@@ -44,14 +43,14 @@ export async function generateMetadata({
       ...SITE_OPEN_GRAPH,
       title: SITE_TITLE,
       description: dict.top.description,
-      url: LOCALE_PATHS[lang]
+      url: LOCALE_PATHS[locale]
     }
   };
 }
 
 export default async function DocsPage({ params }: DocsPageProps) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const dict = await getDictionary(resolveLocale(lang));
 
   return (
     <div className='container mx-auto px-4 py-12'>

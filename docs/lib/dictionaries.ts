@@ -1,5 +1,5 @@
 import type { Locale } from '@/constants/i18n';
-import { DEFAULT_LOCALE } from '@/constants/i18n';
+import { resolveLocale } from '@/constants/i18n';
 
 /**
  * Bundle of locale-specific copy consumed by the docs landing page sections.
@@ -125,6 +125,6 @@ export const DICTIONARIES: Record<Locale, Dict> = {
  * @param locale Locale identifier taken from the URL.
  * @returns Translated content used to render the docs homepage.
  */
-export async function getDictionary(locale: Locale): Promise<Dict> {
-  return DICTIONARIES[locale] ?? DICTIONARIES[DEFAULT_LOCALE];
+export async function getDictionary(locale: string): Promise<Dict> {
+  return DICTIONARIES[resolveLocale(locale)];
 }
