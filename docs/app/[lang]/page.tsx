@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { HeroSection } from '@/components/landing-page/hero-section';
 import { FeaturesSection } from '@/components/landing-page/features-section';
 import { APIReferencePreview } from '@/components/api-reference/preview';
@@ -8,20 +9,48 @@ import { getDictionary } from '@/lib/dictionaries';
 import {
   SUPPORTED_LOCALES,
   type Locale,
-  DEFAULT_LOCALE
+  DEFAULT_LOCALE,
+  LOCALE_PATHS
 } from '@/constants/i18n';
+import { SITE_TITLE } from '@/constants/site';
+
+type DocsPageProps = {
+  params: Promise<{ lang: Locale }>;
+};
 
 export async function generateStaticParams() {
   return SUPPORTED_LOCALES.map((lang) => ({ lang }));
 }
 
-export default async function DocsPage({
+export const dynamicParams = false;
+
+export async function generateMetadata({
   params
-}: {
-  params: Promise<{ lang: Locale }>;
-}) {
+}: DocsPageProps): Promise<Metadata> {
   const { lang } = await params;
-  const dict = await getDictionary(lang ?? DEFAULT_LOCALE);
+  const dict = await getDictionary(lang);
+
+  return {
+    title: SITE_TITLE,
+    description: dict.top.description,
+    alternates: {
+      canonical: LOCALE_PATHS[lang],
+      languages: {
+        ...LOCALE_PATHS,
+        'x-default': LOCALE_PATHS[DEFAULT_LOCALE]
+      }
+    },
+    openGraph: {
+      title: SITE_TITLE,
+      description: dict.top.description,
+      url: LOCALE_PATHS[lang]
+    }
+  };
+}
+
+export default async function DocsPage({ params }: DocsPageProps) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
 
   return (
     <div className='container mx-auto px-4 py-12'>

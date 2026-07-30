@@ -1,0 +1,6 @@
+export const SITE_URL = 'https://is-kit-docs.vercel.app';
+
+export const SITE_TITLE = 'is-kit Docs — TypeScript Type Guard Toolkit';
+
+export const SITE_DESCRIPTION =
+  'Documentation for is-kit, a lightweight, zero-dependency toolkit for building composable TypeScript type guards.';
