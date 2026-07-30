@@ -12,7 +12,7 @@ import {
   DEFAULT_LOCALE,
   LOCALE_PATHS
 } from '@/constants/i18n';
-import { SITE_TITLE } from '@/constants/site';
+import { SITE_OPEN_GRAPH, SITE_TITLE } from '@/constants/site';
 
 type DocsPageProps = {
   params: Promise<{ lang: Locale }>;
@@ -41,6 +41,7 @@ export async function generateMetadata({
       }
     },
     openGraph: {
+      ...SITE_OPEN_GRAPH,
       title: SITE_TITLE,
       description: dict.top.description,
       url: LOCALE_PATHS[lang]

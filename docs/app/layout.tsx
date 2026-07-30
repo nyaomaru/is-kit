@@ -4,7 +4,12 @@ import './globals.css';
 import { SiteHeader } from '@/components/navigation/site-header';
 import { SidebarLayout } from '@/components/layout/sidebar-layout';
 import { apiSections } from '@/constants/api-sections';
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/site';
+import {
+  SITE_DESCRIPTION,
+  SITE_OPEN_GRAPH,
+  SITE_TITLE,
+  SITE_URL
+} from '@/constants/site';
 
 const sourceSans3 = Source_Sans_3({
   subsets: ['latin'],
@@ -26,16 +31,9 @@ export const metadata: Metadata = {
     apple: '/iskit_favicon.png'
   },
   openGraph: {
+    ...SITE_OPEN_GRAPH,
     title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    type: 'website',
-    siteName: 'is-kit Docs',
-    images: [
-      {
-        url: '/iskit_logo1.svg',
-        alt: 'is-kit logo'
-      }
-    ]
+    description: SITE_DESCRIPTION
   },
   twitter: {
     card: 'summary_large_image',
