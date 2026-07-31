@@ -4,6 +4,12 @@ import './globals.css';
 import { SiteHeader } from '@/components/navigation/site-header';
 import { SidebarLayout } from '@/components/layout/sidebar-layout';
 import { apiSections } from '@/constants/api-sections';
+import {
+  SITE_DESCRIPTION,
+  SITE_OPEN_GRAPH,
+  SITE_TITLE,
+  SITE_URL
+} from '@/constants/site';
 
 const sourceSans3 = Source_Sans_3({
   subsets: ['latin'],
@@ -12,26 +18,27 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://is-kit-docs.vercel.app'),
-  title: 'is-kit • Docs',
-  description: 'Type-safe isXXX combinators and utilities',
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  robots: {
+    index: true,
+    follow: true
+  },
   icons: {
     icon: '/iskit_favicon.png',
     shortcut: '/iskit_favicon.png',
     apple: '/iskit_favicon.png'
   },
   openGraph: {
-    title: 'is-kit • Docs',
-    description: 'Type-safe isXXX combinators and utilities',
-    images: [
-      {
-        url: '/iskit_logo1.svg',
-        alt: 'is-kit logo'
-      }
-    ]
+    ...SITE_OPEN_GRAPH,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION
   },
   twitter: {
     card: 'summary_large_image',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ['/iskit_logo1.svg']
   }
 };
