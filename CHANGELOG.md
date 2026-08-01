@@ -6,6 +6,41 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.11.7] - 2026-08-01
+
+### Changed
+
+- improve metadata and search indexing by @nyaomaru in [#251](https://github.com/nyaomaru/is-kit/pull/251)
+
+### Docs
+
+- 1.11.6 by [bot] by @github-actions in [#250](https://github.com/nyaomaru/is-kit/pull/250)
+
+### Chore
+
+- deprecate utility exports v2 by @nyaomaru in [#252](https://github.com/nyaomaru/is-kit/pull/252)
+
+### Deprecated utility exports
+
+The following low-level utility exports are now deprecated and will be removed from the package root in `is-kit` v2:
+
+- `everyArrayValue`
+- `everyTupleValue`
+- `everySetValue`
+- `everyMapEntry`
+- `everyOwnEnumerableEntry`
+- `toBooleanPredicates`
+
+They remain available throughout v1, so this release introduces no runtime or type compatibility break.
+
+Use native iteration for boolean checks, or the corresponding narrowing guards:
+
+`arrayOf`, `tupleOf`, `setOf`, `mapOf`, and `recordOf`.`toBooleanPredicates` can be replaced with the original predicate array.
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.6...v1.11.7
+
+[v1.11.7]: https://github.com/nyaomaru/is-kit/compare/v1.11.6...v1.11.7
+
 ## [v1.11.6] - 2026-07-25
 
 ### Changed
@@ -1308,7 +1343,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.6...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.7...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
