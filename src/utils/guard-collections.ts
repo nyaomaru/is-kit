@@ -26,6 +26,8 @@ const everyKeyValueEntry = <K, V>(
 /**
  * Checks whether every array element satisfies the provided predicate.
  *
+ * @deprecated Use `Array.prototype.every` for boolean iteration or `arrayOf`
+ * for a narrowing guard. This root export will be removed in is-kit v2.
  * @param values Array values to validate.
  * @param predicate Predicate applied to each element.
  * @returns Whether all elements satisfy `predicate`.
@@ -38,6 +40,8 @@ export const everyArrayValue = (
 /**
  * Checks whether a tuple matches the provided element predicates in order.
  *
+ * @deprecated Use `tupleOf` for a narrowing guard or compare the tuple length
+ * and predicates directly. This root export will be removed in is-kit v2.
  * @param values Tuple candidate values.
  * @param predicates Predicates aligned to each tuple index.
  * @returns Whether lengths match and each index passes.
@@ -59,6 +63,8 @@ export const everyTupleValue = (
 /**
  * Checks whether every set value satisfies the provided predicate.
  *
+ * @deprecated Use `setOf` for a narrowing guard or iterate the set directly.
+ * This root export will be removed in is-kit v2.
  * @param values Set values to validate.
  * @param predicate Predicate applied to each value.
  * @returns Whether all set values satisfy `predicate`.
@@ -80,6 +86,8 @@ export const everyBrandedSetValue = (
 /**
  * Checks whether every map entry satisfies the provided key and value predicates.
  *
+ * @deprecated Use `mapOf` for a narrowing guard or iterate the map directly.
+ * This root export will be removed in is-kit v2.
  * @param values Map values to validate.
  * @param keyPredicate Predicate applied to each key.
  * @param valuePredicate Predicate applied to each value.
@@ -112,6 +120,9 @@ export const everyBrandedMapEntry = (
 /**
  * Checks whether every own enumerable string key/value pair satisfies the provided predicates.
  *
+ * @deprecated Use `recordOf` for a narrowing guard or
+ * `Object.entries(value).every(...)` for boolean iteration. This root export
+ * will be removed in is-kit v2.
  * @param values Plain object values to validate.
  * @param keyPredicate Predicate applied to each enumerable own string key.
  * @param valuePredicate Predicate applied to each corresponding value.

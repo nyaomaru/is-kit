@@ -528,6 +528,23 @@ The library is organized around a few small building blocks:
 
 For the full API list and dedicated pages, use the docs site below.
 
+### v2 migration notice
+
+Six low-level utility adapters remain available in v1 for compatibility but are
+deprecated and will no longer be exported from the package root in v2:
+
+| Deprecated export         | Migration path                                                         |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `everyArrayValue`         | Use `Array.prototype.every` or the `arrayOf` guard.                    |
+| `everyTupleValue`         | Use the `tupleOf` guard or compare tuple values directly.              |
+| `everySetValue`           | Use the `setOf` guard or iterate the set directly.                     |
+| `everyMapEntry`           | Use the `mapOf` guard or iterate the map directly.                     |
+| `everyOwnEnumerableEntry` | Use the `recordOf` guard or `Object.entries(value).every(...)`.        |
+| `toBooleanPredicates`     | Use the original predicate array directly; this helper is an identity. |
+
+The underlying internal helpers may remain in the implementation. Only their
+public root exports are planned for removal.
+
 ## 📚 Full Documentation
 
 For detailed API pages and more examples, see:
