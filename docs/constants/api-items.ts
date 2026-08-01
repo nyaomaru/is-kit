@@ -57,6 +57,12 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Convert boolean predicates to refinements.'
   },
   {
+    href: '/api-reference/types',
+    title: 'types',
+    description:
+      'Public type contracts for guards, parsing, schemas, and reusable wrappers.'
+  },
+  {
     href: '/api-reference/combinators/array-of',
     title: 'arrayOf',
     description: 'Guard arrays with an element guard.'
@@ -94,7 +100,8 @@ export const API_ITEMS: ApiItem[] = [
   {
     href: '/api-reference/combinators/typed-struct',
     title: 'typedStruct',
-    description: 'Typed struct wrapper that checks fields against an existing object type.'
+    description:
+      'Typed struct wrapper that checks fields against an existing object type.'
   },
   {
     href: '/api-reference/combinators/one-of-values',

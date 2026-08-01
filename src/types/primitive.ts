@@ -1,3 +1,4 @@
+/** Union of JavaScript primitive value types. */
 export type Primitive =
   | string
   | number
