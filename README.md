@@ -528,6 +528,23 @@ The library is organized around a few small building blocks:
 
 For the full API list and dedicated pages, use the docs site below.
 
+### Public types
+
+Start with the primary types for guard authoring, parsing, and schema inference:
+
+- `Predicate`, `Guard`, `Refinement`, `Refine`, `ParseResult`, `Primitive`
+- `InferSchema`, `StructOptions`, `TypedStructShape`, `TypedStructFields`
+
+Advanced building blocks support reusable wrappers and type-level extensions:
+
+- `GuardedOf`, `GuardedWithin`, `OutOfGuards`, `RefineChain`, `ChainResult`
+- `OptionalSchemaField`, `SchemaField`, `Schema`, `NoExtraKeys`
+- `OptionalObjectKeys`, `RequiredObjectKeys`
+
+Both groups are supported public API and follow semantic versioning. The
+classification only controls discoverability. `SchemaShape` remains internal
+and is not exported from the package root.
+
 ### v2 migration notice
 
 Six low-level utility adapters remain available in v1 for compatibility but are

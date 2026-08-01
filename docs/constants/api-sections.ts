@@ -13,7 +13,8 @@ export const apiSections: SidebarSection[] = [
       { href: '/api-reference/key', label: 'key' },
       { href: '/api-reference/primitive', label: 'primitive' },
       { href: '/api-reference/object', label: 'object' },
-      { href: '/api-reference/predicate', label: 'predicate' }
+      { href: '/api-reference/predicate', label: 'predicate' },
+      { href: '/api-reference/types', label: 'types' }
     ]
   },
   {

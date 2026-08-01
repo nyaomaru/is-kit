@@ -18,8 +18,8 @@ export default function ApiIndexPage() {
         <Stack gap='xs'>
           <Heading variant='h1'>API Reference</Heading>
           <Paragraph className='text-muted-foreground'>
-            Explore the available functions and combinators. Use the sidebar to
-            navigate.
+            Explore the available functions, combinators, and public types. Use
+            the sidebar to navigate.
           </Paragraph>
         </Stack>
       </Stack>
