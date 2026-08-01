@@ -109,6 +109,8 @@ import type {
 // describe: root entrypoint
 // =============================================
 // it: exports exactly the reviewed public runtime API
+// Note: The six deprecated utility adapters remain part of the v1 compatibility
+// contract and must not be removed until v2.
 const publicRuntimeContract = {
   and,
   andAll,
