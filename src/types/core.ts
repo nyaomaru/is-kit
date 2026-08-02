@@ -28,8 +28,11 @@ export type ChainResult<In, T extends readonly unknown[]> = T extends []
 export type OutOfGuards<T extends readonly Guard<unknown>[]> =
   T[number] extends Guard<infer U> ? U : never;
 
-/** Tagged validation result returned by safe parse helpers. */
+/** Tagged success/failure result containing the value when valid. */
 export type ParseResult<T> = { valid: true; value: T } | { valid: false };
+
+/** Function that explicitly transforms an input into a parsed output value. */
+export type Decoder<Input, Output> = (input: Input) => ParseResult<Output>;
 
 /** Extracts the narrowed output type from a predicate. */
 export type GuardedOf<F> = F extends ((value: unknown) => value is infer G)
