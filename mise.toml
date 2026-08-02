@@ -33,6 +33,10 @@ run = "pnpm test"
 description = "Run tsd type tests"
 run = "pnpm test:types"
 
+[tasks.test-package]
+description = "Smoke-test the packed npm artifact"
+run = "pnpm test:package"
+
 [tasks.ci]
 description = "Run lint, build, runtime and type tests"
 depends = ["lint", "build", "test", "test-types"]

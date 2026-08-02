@@ -576,6 +576,7 @@ Requires Node 22.22.0 and pnpm 11.2.2.
 - `pnpm build`
 - `pnpm test`
 - `pnpm test:types`
+- `pnpm test:package`
 
 See `DEVELOPER.md` for setup details and `CONTRIBUTE.md` for contribution workflow.
 

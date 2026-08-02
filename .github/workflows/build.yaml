@@ -15,3 +15,5 @@ jobs:
         uses: ./.github/actions/setup-project
       - name: Run build
         run: mise run build
+      - name: Smoke-test package artifact
+        run: mise run test-package

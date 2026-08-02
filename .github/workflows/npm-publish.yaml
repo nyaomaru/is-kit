@@ -34,6 +34,9 @@ jobs:
       - name: Build package
         run: mise run build
 
+      - name: Smoke-test package artifact
+        run: mise run test-package
+
       - name: Verify tag matches package.json version
         run: |
           TAG="${GITHUB_REF_NAME#v}"
