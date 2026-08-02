@@ -1,4 +1,4 @@
-import { expectError, expectType } from 'tsd';
+import { expectNotAssignable, expectType } from 'tsd';
 import {
   hasKey,
   hasKeys,
@@ -59,4 +59,4 @@ if (hasKindAndId(candidate)) {
 }
 
 // it: rejects empty keys at compile time
-expectError(hasKeys());
+expectNotAssignable<Parameters<typeof hasKeys>>([]);
