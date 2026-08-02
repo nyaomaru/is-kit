@@ -61,6 +61,7 @@ resolution regressions.
 Verify with:
 
 ```sh
+pnpm build
 pnpm test:package
 pnpm lint
 pnpm test

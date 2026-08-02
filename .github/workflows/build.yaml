@@ -13,5 +13,7 @@ jobs:
         uses: actions/checkout@v6
       - name: Setup project
         uses: ./.github/actions/setup-project
-      - name: Build and smoke-test package artifact
+      - name: Run build
+        run: mise run build
+      - name: Smoke-test package artifact
         run: mise run test-package
