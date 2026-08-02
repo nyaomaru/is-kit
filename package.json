@@ -18,6 +18,7 @@
   "scripts": {
     "test": "jest",
     "test:types": "tsd",
+    "test:package": "pnpm build && node tests/package-smoke.mjs",
     "lint": "oxlint .",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",

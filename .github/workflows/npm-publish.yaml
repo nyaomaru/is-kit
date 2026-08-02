@@ -31,8 +31,8 @@ jobs:
       - name: Test
         run: mise run test
 
-      - name: Build package
-        run: mise run build
+      - name: Build and smoke-test package artifact
+        run: mise run test-package
 
       - name: Verify tag matches package.json version
         run: |
