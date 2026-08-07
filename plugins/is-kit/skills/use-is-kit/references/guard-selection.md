@@ -7,7 +7,7 @@ version.
 ## Decision table
 
 | Need                                            | Prefer                                                                               |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------ | ------- |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------ |
 | Primitive or platform value                     | Existing `isString`, `isNumber`, `isBoolean`, `isDate`, `isError`, and similar guard |
 | Exact primitive literal                         | `equals(value)` or `oneOfValues(...)`                                                |
 | Union of guarded types                          | `or(...)`                                                                            |
@@ -15,7 +15,7 @@ version.
 | Base guard plus multiple narrowing steps        | `andAll(base, ...steps)`                                                             |
 | Reusable negation                               | `not(guard)`                                                                         |
 | Accept `null`, `undefined`, or both             | `nullable`, `optional`, or `nullish`                                                 |
-| Direct `null                                    | undefined` check                                                                     | `isNil` |
+| Direct `null \| undefined` check                | `isNil`                                                                              |
 | Custom guard from an `unknown` runtime check    | `define<T>(check)`                                                                   |
 | Boolean condition over an already narrowed type | `predicateToRefine<T>(check)`                                                        |
 | Homogeneous array, record, set, or map          | Matching collection combinator                                                       |

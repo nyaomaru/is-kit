@@ -6,12 +6,12 @@ boundary safety, or type narrowing.
 ## Common conversions
 
 | Existing pattern                      | Typical is-kit form                                               |
-| ------------------------------------- | ----------------------------------------------------------------- | -------------------- | ----------------------------------------- |
+| ------------------------------------- | ----------------------------------------------------------------- |
 | `typeof value === 'string'`           | `isString(value)`                                                 |
 | `typeof value === 'number'`           | Choose `isNumber` or `isNumberPrimitive` by semantics             |
-| `value === null                       |                                                                   | value === undefined` | `isNil(value)`                            |
-| `value == null                        |                                                                   | guard(value)`        | `nullish(guard)` for a reusable guard     |
-| `guardA(value)                        |                                                                   | guardB(value)`       | `or(guardA, guardB)` for a reusable guard |
+| `value === null \|\| value === undefined` | `isNil(value)`                                               |
+| `value == null \|\| guard(value)`    | `nullish(guard)` for a reusable guard                              |
+| `guardA(value) \|\| guardB(value)`   | `or(guardA, guardB)` for a reusable guard                          |
 | `base(value) && condition(value)`     | `and(base, refinement)` for a reusable guard                      |
 | Repeated literal comparisons          | `oneOfValues(...)`                                                |
 | Handwritten array `.every(...)` guard | `arrayOf(elementGuard)`                                           |
