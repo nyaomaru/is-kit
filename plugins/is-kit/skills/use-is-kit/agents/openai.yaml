@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Use is-kit'
+  short_description: 'Build and migrate TypeScript type guards'
+  default_prompt: 'Use $use-is-kit to replace manual runtime checks with composable is-kit guards.'

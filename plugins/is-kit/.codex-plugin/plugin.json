@@ -1,0 +1,32 @@
+{
+  "name": "is-kit",
+  "version": "0.1.0",
+  "description": "Build and migrate composable TypeScript runtime type guards with is-kit.",
+  "author": {
+    "name": "nyaomaru",
+    "url": "https://github.com/nyaomaru"
+  },
+  "homepage": "https://is-kit-docs.vercel.app/",
+  "repository": "https://github.com/nyaomaru/is-kit",
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "type-guards",
+    "runtime-validation",
+    "type-narrowing"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "is-kit",
+    "shortDescription": "Build and migrate TypeScript type guards.",
+    "longDescription": "Create, compose, migrate, and review TypeScript runtime type guards with is-kit while preserving natural control-flow narrowing.",
+    "developerName": "nyaomaru",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://is-kit-docs.vercel.app/",
+    "defaultPrompt": [
+      "Replace manual TypeScript checks with composable is-kit guards.",
+      "Validate an unknown API response with is-kit."
+    ]
+  }
+}
