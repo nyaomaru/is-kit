@@ -38,4 +38,13 @@ const result = safeParse(isUser, input);
 
 ## AI agent setup
 
-Run `npx --yes is-kit@latest init-agent` in a consumer repository to add the recommended selection and usage rules to `AGENTS.md`. Use `npx --yes is-kit@latest init-agent --target claude` for `CLAUDE.md`.
+The recommended setup for Codex is the `is-kit` Marketplace plugin:
+
+```bash
+codex plugin marketplace add nyaomaru/is-kit
+codex plugin add is-kit@is-kit
+```
+
+The plugin provides the on-demand `use-is-kit` skill for guard selection, migrations, and object-boundary validation. The skill is distributed through the Git Marketplace and is not included in the `is-kit` npm package.
+
+For agents that do not support skills or plugins, run `npx --yes is-kit@latest init-agent` to add lightweight selection and usage rules to `AGENTS.md`. Use `npx --yes is-kit@latest init-agent --target claude` for `CLAUDE.md`.

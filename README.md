@@ -172,8 +172,23 @@ const isSlug = (value: unknown): value is string =>
 
 ### AI agent setup
 
-Add the recommended `is-kit` selection and usage rules to a repository's AI
-agent instructions:
+#### Recommended: Codex Marketplace plugin
+
+Install the `is-kit` plugin from this repository's Codex Marketplace:
+
+```bash
+codex plugin marketplace add nyaomaru/is-kit
+codex plugin add is-kit@is-kit
+```
+
+This is the primary distribution channel for the `use-is-kit` skill. It gives
+Codex an on-demand workflow for selecting guards, replacing manual runtime
+checks, and validating object boundaries with `is-kit`.
+
+#### Compatibility: instruction-only setup
+
+For agents that do not support skills or plugins, add the lightweight selection
+and usage rules to the repository's agent instructions:
 
 ```bash
 npx --yes is-kit@latest init-agent
