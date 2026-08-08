@@ -21,6 +21,8 @@ data transformations, or a schema-first workflow.
 - Use `nullable(guard)`, `optional(guard)`, or `nullish(guard)` when widening an
   existing guard to accept `null` and/or `undefined`.
 - Use `isNil(value)` when checking a value directly for `null | undefined`.
+- Use `isNotNil(value)` for the inverse check or to remove nullish array values
+  while preserving `Array.prototype.filter` narrowing.
 - Use `optionalKey(guard)` for optional object keys inside `struct`.
 
 ## Preferred Examples
@@ -30,6 +32,7 @@ import {
   and,
   define,
   isNil,
+  isNotNil,
   isNumber,
   isString,
   nullish,
@@ -39,6 +42,7 @@ import {
 
 const isId = or(isString, isNumber);
 const isMaybeName = nullish(isString);
+const presentNames = ['Ada', null, undefined].filter(isNotNil);
 const isSlug = define<string>(
   (value) => isString(value) && /^[a-z0-9-]+$/.test(value)
 );

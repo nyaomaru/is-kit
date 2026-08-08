@@ -167,8 +167,7 @@ export const isNil = or(isNull, isUndefined);
  * const presentValues = values.filter(isNotNil); // string[]
  * @see isNil
  */
-export const isNotNil = <T>(value: T): value is NonNullable<T> =>
-  !isNil(value);
+export const isNotNil = <T>(value: T): value is NonNullable<T> => !isNil(value);
 
 /**
  * Checks whether a value is a JavaScript primitive.

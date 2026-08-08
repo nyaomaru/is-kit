@@ -16,6 +16,7 @@ version.
 | Reusable negation                               | `not(guard)`                                                                         |
 | Accept `null`, `undefined`, or both             | `nullable`, `optional`, or `nullish`                                                 |
 | Direct `null \| undefined` check                | `isNil`                                                                              |
+| Direct non-nullish check or nullish filtering   | `isNotNil`                                                                           |
 | Custom guard from an `unknown` runtime check    | `define<T>(check)`                                                                   |
 | Boolean condition over an already narrowed type | `predicateToRefine<T>(check)`                                                        |
 | Homogeneous array, record, set, or map          | Matching collection combinator                                                       |

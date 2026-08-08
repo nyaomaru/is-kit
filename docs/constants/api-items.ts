@@ -32,7 +32,7 @@ export const API_ITEMS: ApiItem[] = [
     href: '/api-reference/nullish',
     title: 'nullish',
     description:
-      'Nullability helpers: isNil, nullable, optional, required, nonNull.'
+      'Nullability helpers: isNil, isNotNil, nullable, optional, required, nonNull.'
   },
   {
     href: '/api-reference/key',
