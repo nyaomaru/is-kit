@@ -155,6 +155,21 @@ export const isNull = define<null>((value) => value === null);
 export const isNil = or(isNull, isUndefined);
 
 /**
+ * Checks whether a value is neither `null` nor `undefined`.
+ *
+ * Narrows the input to `NonNullable<T>`, making it useful for removing nullish
+ * values with `Array.prototype.filter`.
+ *
+ * @param value Value to check.
+ * @returns `true` when the value is not nullish.
+ * @example
+ * const values: Array<string | null | undefined> = ['value', null];
+ * const presentValues = values.filter(isNotNil); // string[]
+ * @see isNil
+ */
+export const isNotNil = <T>(value: T): value is NonNullable<T> => !isNil(value);
+
+/**
  * Checks whether a value is a JavaScript primitive.
  *
  * Primitives: string, number, boolean, bigint, symbol, undefined, null.

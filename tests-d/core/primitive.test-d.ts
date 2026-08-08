@@ -17,6 +17,7 @@ import {
   isUndefined,
   isNull,
   isNil,
+  isNotNil,
   isPrimitive
 } from '../../src/core/primitive';
 import type { Predicate, Refine, Primitive } from '../../src/types';
@@ -60,6 +61,15 @@ expectType<Predicate<null>>(isNull);
 
 // it: isNil narrows to null | undefined
 expectType<Predicate<null | undefined>>(isNil);
+
+// it: isNotNil generically excludes null | undefined
+expectType<<T>(value: T) => value is NonNullable<T>>(isNotNil);
+const nullishStrings: Array<string | null | undefined> = [
+  'value',
+  null,
+  undefined
+];
+expectType<string[]>(nullishStrings.filter(isNotNil));
 
 // it: isPrimitive is a Predicate<Primitive>
 expectType<Predicate<Primitive>>(isPrimitive);

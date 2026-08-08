@@ -16,6 +16,7 @@ import {
   isUndefined,
   isNull,
   isNil,
+  isNotNil,
   isPrimitive
 } from '../../src/core/primitive';
 
@@ -148,6 +149,15 @@ describe('primitive guards', () => {
     expect(isNil('' as unknown)).toBe(false);
     expect(isNil(false as unknown)).toBe(false);
     expect(isNil(Number.NaN as unknown)).toBe(false);
+  });
+
+  it('isNotNil', () => {
+    expect(isNotNil(null)).toBe(false);
+    expect(isNotNil(undefined)).toBe(false);
+    expect(isNotNil(0)).toBe(true);
+    expect(isNotNil('')).toBe(true);
+    expect(isNotNil(false)).toBe(true);
+    expect(isNotNil(Number.NaN)).toBe(true);
   });
 
   it('isPrimitive', () => {

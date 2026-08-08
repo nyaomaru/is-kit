@@ -4,12 +4,25 @@ import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
 
-const sample = `import { isNil, isString, nullable, nonNull, nullish, optional, required } from 'is-kit';
+const sample = `import {
+  isNil,
+  isNotNil,
+  isString,
+  nullable,
+  nonNull,
+  nullish,
+  optional,
+  required,
+} from 'is-kit';
 
 isNil(null); // true
 isNil(undefined); // true
 isNil(0); // false
 // isNil checks a value directly for null | undefined.
+
+const values: Array<string | null | undefined> = ['value', null, undefined];
+const presentValues = values.filter(isNotNil); // string[]
+// isNotNil excludes null | undefined and preserves generic narrowing.
 
 const maybeString = nullable(isString);
 maybeString(null); // true
@@ -42,9 +55,10 @@ export default function NullishPage() {
             Nullability helpers to widen or narrow values such as{' '}
             <code>undefined</code> and <code>null</code>. For key-level optional
             fields inside <code>struct</code>, use <code>optionalKey(...)</code>
-            instead. Use <code className='mx-1'>isNil</code> when you only need
-            to check whether the value itself is <code>null</code> or{' '}
-            <code>undefined</code>.
+            instead. Use <code className='mx-1'>isNil</code> to check whether a
+            value is nullish, and <code className='mx-1'>isNotNil</code> for the
+            inverse check or to remove nullish array entries while preserving
+            their narrowed element type.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

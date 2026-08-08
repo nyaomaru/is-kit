@@ -18,6 +18,7 @@ const sample = `import {
   isUndefined,
   isNull,
   isNil,
+  isNotNil,
   isBigInt,
   isSymbol,
   isPrimitive,
@@ -31,6 +32,8 @@ isNull(null); // true
 isNil(undefined); // true
 isNil(null); // true
 isNil(0); // false
+isNotNil('value'); // true
+isNotNil(null); // false
 isBigInt(10n); // true
 isSymbol(Symbol('x')); // true
 
@@ -60,9 +63,11 @@ export default function PrimitivePage() {
             Finite numbers use <code className='mx-1'>isNumber</code> (excludes
             NaN/±Infinity). Use <code className='mx-1'>isPrimitive</code> to
             accept any primitive (string, number, boolean, bigint, symbol,
-            undefined, null), and <code className='mx-1'>isNil</code> for a
-            focused <code>null | undefined</code> check. Numeric helpers are
-            available: <code className='mx-1'>isInteger</code>,
+            undefined, null), <code className='mx-1'>isNil</code> for a focused
+            <code>null | undefined</code> check, and{' '}
+            <code className='mx-1'>isNotNil</code> for its generic inverse.
+            Numeric helpers are available:{' '}
+            <code className='mx-1'>isInteger</code>,
             <code className='mx-1'>isSafeInteger</code>,
             <code className='mx-1'>isPositive</code>,
             <code className='mx-1'>isNegative</code>,

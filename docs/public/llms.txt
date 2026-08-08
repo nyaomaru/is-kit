@@ -15,7 +15,14 @@ npm install is-kit
 ```
 
 ```ts
-import { isNumber, isString, optionalKey, safeParse, struct } from 'is-kit';
+import {
+  isNotNil,
+  isNumber,
+  isString,
+  optionalKey,
+  safeParse,
+  struct
+} from 'is-kit';
 
 const isUser = struct({
   id: isNumber,
@@ -25,6 +32,9 @@ const isUser = struct({
 
 declare const input: unknown;
 const result = safeParse(isUser, input);
+
+const names: Array<string | null | undefined> = ['Ada', null, undefined];
+const presentNames = names.filter(isNotNil); // string[]
 ```
 
 ## Documentation

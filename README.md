@@ -348,6 +348,8 @@ Use the nullish helpers to say exactly what is allowed.
 
 ```ts
 import {
+  isNil,
+  isNotNil,
   isString,
   nonNull,
   nullable,
@@ -361,18 +363,18 @@ const isNullishString = nullish(isString);
 const isOptionalString = optional(isString);
 const isDefinedString = required(optional(isString));
 const isNonNullString = nonNull(nullable(isString));
-```
-
-For a plain "is it `null` or `undefined`?" check, reach for `isNil` instead of
-hand-rolling `isNull(x) || isUndefined(x)`:
-
-```ts
-import { isNil } from 'is-kit';
 
 isNil(null); // true
 isNil(undefined); // true
 isNil(0); // false
+
+const values: Array<string | null | undefined> = ['value', null, undefined];
+const presentValues = values.filter(isNotNil); // string[]
 ```
+
+Use `isNil` for a direct nullish check instead of hand-rolling
+`isNull(x) || isUndefined(x)`. Use `isNotNil` for the inverse check or to
+remove nullish values while preserving `Array.prototype.filter` narrowing.
 
 ### 8. Parse or assert unknown input
 
@@ -538,7 +540,7 @@ The library is organized around a few small building blocks:
 - **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`
 - **Collections**: `arrayOf`, `nonEmptyArrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
 - **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
-- **Nullish handling**: `isNil`, `nullable`, `nonNull`, `nullish`, `optional`, `required`
+- **Nullish handling**: `isNil`, `isNotNil`, `nullable`, `nonNull`, `nullish`, `optional`, `required`
 - **Result helpers**: `safeParse`, `safeParseWith`, `safeJsonParse`, `assert`
 
 For the full API list and dedicated pages, use the docs site below.
