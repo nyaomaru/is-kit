@@ -6,6 +6,68 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.12.0] - 2026-08-08
+
+### Added
+
+- add internal decoder by @nyaomaru in [#256](https://github.com/nyaomaru/is-kit/pull/256)
+- add Codex Marketplace skill by @nyaomaru in [#258](https://github.com/nyaomaru/is-kit/pull/258)
+- add isNotNil guard by @nyaomaru in [#259](https://github.com/nyaomaru/is-kit/pull/259)
+  - Why: Add `isNotNil` as a dedicated generic guard for excluding `null` and `undefined` values.
+
+### Docs
+
+- 1.11.7 by [bot] by @github-actions in [#254](https://github.com/nyaomaru/is-kit/pull/254)
+- document public type exports by @nyaomaru in [#255](https://github.com/nyaomaru/is-kit/pull/255)
+
+### Test
+
+- add packed package smoke coverage by @nyaomaru in [#257](https://github.com/nyaomaru/is-kit/pull/257)
+
+### Chore
+
+- Release: 1.12.0 by [bot] by @github-actions in [#260](https://github.com/nyaomaru/is-kit/pull/260)
+
+### What's new 🚀
+
+#### Add `isNotNil`
+
+`isNotNil` checks whether a value is neither `null` nor `undefined`.
+
+It is the inverse of `isNil` and narrows the input to `NonNullable<T>`. This makes it especially useful with `Array.prototype.filter`, where nullish entries can be removed without a type assertion.
+
+```ts
+import { isNotNil } from 'is-kit';
+
+const values: Array<string | null | undefined> = [
+  'Ada',
+  null,
+  'Neko',
+  undefined
+];
+
+const names = values.filter(isNotNil);
+// string[]
+```
+
+Unlike a truthiness check,`isNotNil` preserves other falsy values and rejects only null and undefined.
+
+```ts
+isNotNil(null); // false
+isNotNil(undefined); // false
+
+isNotNil(0); // true
+isNotNil(''); // true
+isNotNil(false); // true
+isNotNil(Number.NaN); // true
+```
+
+Use `isNil` when detecting nullish values and `isNotNil` when requiring a present value or filtering nullish entries.
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.7...v1.12.0
+
+[v1.12.0]: https://github.com/nyaomaru/is-kit/compare/v1.11.7...v1.12.0
+
 ## [v1.11.7] - 2026-08-01
 
 ### Changed
@@ -1343,7 +1405,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.11.7...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.12.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
