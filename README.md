@@ -23,6 +23,8 @@
   </a>
 </p>
 
+<h2 align="center">Build small guards. Compose them.</h2>
+
 `is-kit` is a lightweight, zero-dependency toolkit for building reusable TypeScript **type guards**.
 
 It helps you write small `isFoo` functions, compose them into **richer runtime checks**, and keep **TypeScript narrowing** natural inside regular control flow.
