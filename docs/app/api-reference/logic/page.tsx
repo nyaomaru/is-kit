@@ -3,6 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
+import { createApiMetadata } from '@/lib/api-metadata';
+
+export const metadata = createApiMetadata('/api-reference/logic');
 
 const sample = `import { and, or, not, predicateToRefine, isString, isNumber } from 'is-kit';
 

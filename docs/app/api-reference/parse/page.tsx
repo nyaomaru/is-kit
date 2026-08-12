@@ -3,6 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
+import { createApiMetadata } from '@/lib/api-metadata';
+
+export const metadata = createApiMetadata('/api-reference/parse');
 
 const sample = `import { safeJsonParse, safeParse, safeParseWith, predicateToRefine, and, typedStruct, isString, isNumber } from 'is-kit';
 

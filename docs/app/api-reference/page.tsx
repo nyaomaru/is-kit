@@ -9,6 +9,9 @@ import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
 import { API_ITEMS } from '@/constants/api-items';
+import { createApiMetadata } from '@/lib/api-metadata';
+
+export const metadata = createApiMetadata('/api-reference');
 
 export default function ApiIndexPage() {
   const items = API_ITEMS;

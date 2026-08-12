@@ -3,6 +3,11 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
+import { createApiMetadata } from '@/lib/api-metadata';
+
+export const metadata = createApiMetadata(
+  '/api-reference/combinators/array-of'
+);
 
 const sample = `import { arrayOf, nonEmptyArrayOf, isString } from 'is-kit';
 
