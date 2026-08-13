@@ -3,6 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
+
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.nullish);
 
 const sample = `import {
   isNil,
@@ -63,7 +66,7 @@ export default function NullishPage() {
         </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/nullish' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.nullish} />
     </Stack>
   );
 }

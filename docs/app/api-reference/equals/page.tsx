@@ -3,6 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
+
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.equals);
 
 const sample = `import { equals } from 'is-kit';
 
@@ -59,7 +62,7 @@ export default function EqualsPage() {
         </Stack>
         <CodeBlock language='ts' code={sampleEqualsByAndKey} />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/equals' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.equals} />
     </Stack>
   );
 }

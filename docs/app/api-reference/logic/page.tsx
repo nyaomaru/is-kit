@@ -3,6 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
+
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.logic);
 
 const sample = `import { and, or, not, predicateToRefine, isString, isNumber } from 'is-kit';
 
@@ -100,7 +103,7 @@ export default function LogicPage() {
         </Stack>
         <CodeBlock language='ts' code={sampleGuardIn} />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/logic' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.logic} />
     </Stack>
   );
 }

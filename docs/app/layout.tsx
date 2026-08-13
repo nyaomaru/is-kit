@@ -7,6 +7,7 @@ import { apiSections } from '@/constants/api-sections';
 import {
   SITE_DESCRIPTION,
   SITE_OPEN_GRAPH,
+  SITE_SOCIAL_IMAGE,
   SITE_TITLE,
   SITE_URL
 } from '@/constants/site';
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ['/iskit_logo1.svg']
+    images: [SITE_SOCIAL_IMAGE]
   }
 };
 
