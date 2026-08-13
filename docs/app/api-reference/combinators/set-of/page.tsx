@@ -3,9 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
-import { createApiMetadata } from '@/lib/api-metadata';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
 
-export const metadata = createApiMetadata('/api-reference/combinators/set-of');
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.setOf);
 
 const sample = `import { setOf, isString } from 'is-kit';
 
@@ -25,7 +25,7 @@ export default function SetOfPage() {
         </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/combinators/set-of' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.setOf} />
     </Stack>
   );
 }

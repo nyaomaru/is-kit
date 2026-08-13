@@ -3,9 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
-import { createApiMetadata } from '@/lib/api-metadata';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
 
-export const metadata = createApiMetadata('/api-reference/assert');
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.assert);
 
 const sampleGuardAssert = `import { assert, isString } from 'is-kit';
 
@@ -66,7 +66,7 @@ export default function AssertPage() {
         </Stack>
         <CodeBlock language='ts' code={sampleRefineAssert} />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/assert' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.assert} />
     </Stack>
   );
 }

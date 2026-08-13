@@ -3,9 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
-import { createApiMetadata } from '@/lib/api-metadata';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
 
-export const metadata = createApiMetadata('/api-reference/predicate');
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.predicate);
 
 const sample = `import { predicateToRefine, and, isNumber } from 'is-kit';
 
@@ -59,7 +59,7 @@ export default function PredicatePage() {
         </Stack>
         <CodeBlock code={sampleTrueRefinement} language='ts' />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/predicate' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.predicate} />
     </Stack>
   );
 }

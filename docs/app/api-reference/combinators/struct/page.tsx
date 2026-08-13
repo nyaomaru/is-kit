@@ -3,9 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
-import { createApiMetadata } from '@/lib/api-metadata';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
 
-export const metadata = createApiMetadata('/api-reference/combinators/struct');
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.struct);
 
 const sample = `import {
   arrayOf,
@@ -77,7 +77,7 @@ export default function StructPage() {
         </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/combinators/struct' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.struct} />
     </Stack>
   );
 }

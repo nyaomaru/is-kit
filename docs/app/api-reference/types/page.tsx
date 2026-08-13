@@ -3,9 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
-import { createApiMetadata } from '@/lib/api-metadata';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
 
-export const metadata = createApiMetadata('/api-reference/types');
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.types);
 
 const sample = `import { isString, optionalKey, struct } from 'is-kit';
 import type {
@@ -147,7 +147,7 @@ export default function TypesPage() {
         </Paragraph>
       </Stack>
 
-      <ApiReferencePager currentHref='/api-reference/types' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.types} />
     </Stack>
   );
 }

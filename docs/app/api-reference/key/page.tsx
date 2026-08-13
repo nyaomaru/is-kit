@@ -3,9 +3,9 @@ import { CodeBlock } from '@/components/code/code-block';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
-import { createApiMetadata } from '@/lib/api-metadata';
+import { API_REFERENCE_PATHS, createApiMetadata } from '@/lib/api-metadata';
 
-export const metadata = createApiMetadata('/api-reference/key');
+export const metadata = createApiMetadata(API_REFERENCE_PATHS.key);
 
 const sampleHasKey = `import { hasKey } from 'is-kit';
 
@@ -97,7 +97,7 @@ export default function KeyPage() {
         </Stack>
         <CodeBlock language='ts' code={sampleNarrowKeyTo} />
       </Stack>
-      <ApiReferencePager currentHref='/api-reference/key' />
+      <ApiReferencePager currentHref={API_REFERENCE_PATHS.key} />
     </Stack>
   );
 }
