@@ -14,6 +14,19 @@
 npm install is-kit
 ```
 
+```bash
+vlt install is-kit
+```
+
+vlt requires registry configuration before installing a package by name. Run
+`vlt setup` once if a registry has not been configured yet.
+
+Install the JSR package with vlt:
+
+```bash
+vlt install jsr:@nyaomaru/is-kit
+```
+
 ```ts
 import {
   isNotNil,
