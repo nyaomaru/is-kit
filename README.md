@@ -36,7 +36,8 @@ It helps you write small `isFoo` functions, compose them into **richer runtime c
 - **Validate object** shapes and collections
 - **Parse or assert** `unknown` values without a large schema framework
 
-[📚 Documentation Site](https://is-kit-docs.vercel.app/)
+[📚 Documentation Site](https://is-kit-docs.vercel.app/) ·
+[🧭 Practical Guides](https://is-kit-docs.vercel.app/guides)
 
 > Best for **app-internal narrowing, filtering, and reusable guards**.
 
@@ -598,7 +599,12 @@ public root exports are planned for removal.
 
 For detailed API pages and more examples, see:
 
-https://is-kit-docs.vercel.app/
+- [Practical guides](https://is-kit-docs.vercel.app/guides)
+- [API reference](https://is-kit-docs.vercel.app/api-reference)
+- [Documentation home](https://is-kit-docs.vercel.app/)
+
+Start with [How to safely filter null and undefined from arrays in
+TypeScript](https://is-kit-docs.vercel.app/guides/filter-null-and-undefined).
 
 ## 👨‍💻 Development
 

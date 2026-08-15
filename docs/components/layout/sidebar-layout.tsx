@@ -21,7 +21,9 @@ export function SidebarLayout({
 }: SidebarLayoutProps) {
   const pathname = usePathname();
   const computedDefaultOpen =
-    defaultSidebarOpen ?? pathname?.startsWith('/api-reference') === true;
+    defaultSidebarOpen ??
+    (pathname?.startsWith('/api-reference') === true ||
+      pathname?.startsWith('/guides') === true);
 
   const isMobileViewport = () =>
     typeof window !== 'undefined' &&

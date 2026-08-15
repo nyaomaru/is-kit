@@ -4,6 +4,7 @@ import './globals.css';
 import { SiteHeader } from '@/components/navigation/site-header';
 import { SidebarLayout } from '@/components/layout/sidebar-layout';
 import { apiSections } from '@/constants/api-sections';
+import { guideSections } from '@/constants/guides';
 import {
   SITE_DESCRIPTION,
   SITE_OPEN_GRAPH,
@@ -58,7 +59,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning className={sourceSans3.variable}>
       <body className='antialiased'>
         <SiteHeader />
-        <SidebarLayout sections={apiSections}>
+        <SidebarLayout sections={[...apiSections, ...guideSections]}>
           <main className='w-full max-w-full overflow-x-hidden pt-14'>
             {children}
           </main>

@@ -1,0 +1,35 @@
+import type { SidebarSection } from '@/components/navigation/sidebar';
+
+export const GUIDE_PATHS = {
+  index: '/guides',
+  filterNullish: '/guides/filter-null-and-undefined'
+} as const;
+
+export type GuidePath = (typeof GUIDE_PATHS)[keyof typeof GUIDE_PATHS];
+
+export type GuideItem = {
+  href: Exclude<GuidePath, typeof GUIDE_PATHS.index>;
+  title: string;
+  navigationLabel: string;
+  description: string;
+};
+
+export const GUIDE_ITEMS: GuideItem[] = [
+  {
+    href: GUIDE_PATHS.filterNullish,
+    title: 'Filter null and undefined from arrays in TypeScript',
+    navigationLabel: 'Filter nullish values',
+    description:
+      'Remove nullish array entries without losing TypeScript narrowing or valid falsy values.'
+  }
+];
+
+export const guideSections: SidebarSection[] = [
+  {
+    title: 'Guides',
+    items: GUIDE_ITEMS.map(({ href, navigationLabel }) => ({
+      href,
+      label: navigationLabel
+    }))
+  }
+];

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { API_ITEMS } from '@/constants/api-items';
+import { GUIDE_ITEMS, GUIDE_PATHS } from '@/constants/guides';
 import {
   DEFAULT_LOCALE,
   LOCALE_PATHS,
@@ -41,5 +42,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: index === 0 ? 0.9 : 0.8
   }));
 
-  return [...localizedHomePages, ...apiReferencePages];
+  const guidePages: MetadataRoute.Sitemap = [
+    GUIDE_PATHS.index,
+    ...GUIDE_ITEMS.map(({ href }) => href)
+  ].map((path, index) => ({
+    url: toAbsoluteUrl(path),
+    changeFrequency: 'monthly',
+    priority: index === 0 ? 0.9 : 0.85
+  }));
+
+  return [...localizedHomePages, ...guidePages, ...apiReferencePages];
 }
