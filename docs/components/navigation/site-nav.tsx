@@ -28,6 +28,9 @@ export function SiteNav({
       <a href='/api-reference' className='group'>
         <span className='link-underline'>API</span>
       </a>
+      <Link href='/guides' className='group'>
+        <span className='link-underline'>Guides</span>
+      </Link>
       <a
         href='https://github.com/nyaomaru/is-kit'
         target='_blank'
