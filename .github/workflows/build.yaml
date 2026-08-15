@@ -17,3 +17,5 @@ jobs:
         run: mise run build
       - name: Smoke-test package artifact
         run: mise run test-package
+      - name: Smoke-test package artifact with vlt
+        run: mise run test-package-vlt

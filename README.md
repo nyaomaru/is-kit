@@ -73,11 +73,24 @@ bun add is-kit
 npm install is-kit
 # or
 yarn add is-kit
+# or
+vlt install is-kit
 ```
 
 ESM and CJS builds are available for npm consumers, and bundled types are included.
 
+vlt requires registry configuration before installing a package by name. Run
+`vlt setup` once if a registry has not been configured yet.
+
 ### JSR
+
+Install the JSR package with vlt:
+
+```bash
+vlt install jsr:@nyaomaru/is-kit
+```
+
+Or import it directly in runtimes that support `jsr:` specifiers:
 
 ```ts
 import { and, define, or } from 'jsr:@nyaomaru/is-kit';

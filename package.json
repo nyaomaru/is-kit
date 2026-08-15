@@ -19,6 +19,7 @@
     "test": "jest",
     "test:types": "tsd",
     "test:package": "node tests/package-smoke.mjs",
+    "test:package:vlt": "node tests/vlt-package-smoke.mjs",
     "lint": "oxlint .",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",

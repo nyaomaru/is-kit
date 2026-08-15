@@ -1,10 +1,11 @@
-export const INSTALL_TABS = ['pnpm', 'npm', 'yarn', 'bun'] as const;
+export const INSTALL_TABS = ['pnpm', 'npm', 'yarn', 'bun', 'vlt'] as const;
 export type InstallTab = (typeof INSTALL_TABS)[number];
 export const INSTALL_COMMANDS: Record<InstallTab, string> = {
   pnpm: 'pnpm add is-kit',
   npm: 'npm i is-kit',
   yarn: 'yarn add is-kit',
-  bun: 'bun add is-kit'
+  bun: 'bun add is-kit',
+  vlt: 'vlt install is-kit'
 };
 
 export const USAGE_TABS = [

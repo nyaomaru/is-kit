@@ -37,6 +37,10 @@ run = "pnpm test:types"
 description = "Smoke-test the packed npm artifact"
 run = "pnpm test:package"
 
+[tasks.test-package-vlt]
+description = "Smoke-test the packed npm artifact with vlt"
+run = "pnpm test:package:vlt"
+
 [tasks.ci]
 description = "Run lint, build, runtime and type tests"
 depends = ["lint", "build", "test", "test-types"]
