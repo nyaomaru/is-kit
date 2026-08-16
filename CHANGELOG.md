@@ -6,6 +6,28 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.12.1] - 2026-08-15
+
+### Added
+
+- add vlt installation support by @nyaomaru in [#266](https://github.com/nyaomaru/is-kit/pull/266)
+
+### Docs
+
+- 1.12.0 by [bot] by @github-actions in [#261](https://github.com/nyaomaru/is-kit/pull/261)
+- add API reference metadata by @nyaomaru in [#264](https://github.com/nyaomaru/is-kit/pull/264)
+- add nullish array filtering guide by @nyaomaru in [#267](https://github.com/nyaomaru/is-kit/pull/267)
+
+### Chore
+
+- update README by @nyaomaru in [#262](https://github.com/nyaomaru/is-kit/pull/262)
+- add issue forms by @nyaomaru in [#263](https://github.com/nyaomaru/is-kit/pull/263)
+- add Google site verification file by @nyaomaru in [#265](https://github.com/nyaomaru/is-kit/pull/265)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.12.0...v1.12.1
+
+[v1.12.1]: https://github.com/nyaomaru/is-kit/compare/v1.12.0...v1.12.1
+
 ## [v1.12.0] - 2026-08-08
 
 ### Added
@@ -1405,7 +1427,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.12.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.12.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
