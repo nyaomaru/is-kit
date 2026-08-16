@@ -600,6 +600,7 @@ public root exports are planned for removal.
 For detailed API pages and more examples, see:
 
 - [Practical guides](https://is-kit-docs.vercel.app/guides)
+- [Keep hand-written type guards in sync with TypeScript types](https://is-kit-docs.vercel.app/guides/keep-type-guards-in-sync)
 - [API reference](https://is-kit-docs.vercel.app/api-reference)
 - [Documentation home](https://is-kit-docs.vercel.app/)
 

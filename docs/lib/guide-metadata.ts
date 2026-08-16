@@ -17,6 +17,11 @@ const GUIDE_METADATA = {
     title: 'Filter null and undefined from Arrays in TypeScript | is-kit',
     description:
       'Safely filter null and undefined from TypeScript arrays while preserving type narrowing and valid falsy values.'
+  },
+  [GUIDE_PATHS.syncTypeGuards]: {
+    title: 'Keep Type Guards in Sync with TypeScript Types | is-kit',
+    description:
+      'Keep hand-written runtime guards aligned with existing TypeScript object types using typedStruct and field-level checks.'
   }
 } as const satisfies Record<GuidePath, GuideMetadataCopy>;
 
