@@ -21,7 +21,7 @@ const GUIDE_METADATA = {
   [GUIDE_PATHS.syncTypeGuards]: {
     title: 'Keep Type Guards in Sync with TypeScript Types | is-kit',
     description:
-      'Keep hand-written runtime guards aligned with existing TypeScript object types using typedStruct and field-level checks.'
+      'Keep hand-written runtime guards aligned with existing string-keyed TypeScript object types using typedStruct and field-level checks.'
   }
 } as const satisfies Record<GuidePath, GuideMetadataCopy>;
 

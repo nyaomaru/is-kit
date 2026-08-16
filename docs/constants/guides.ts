@@ -28,7 +28,7 @@ export const GUIDE_ITEMS: GuideItem[] = [
     title: 'Keep hand-written type guards in sync with TypeScript types',
     navigationLabel: 'Sync type guards',
     description:
-      'Make missing, extra, and incompatible guard fields visible when an existing object type changes.'
+      'Make missing, extra, and incompatible string-keyed guard fields visible when an existing object type changes.'
   }
 ];
 

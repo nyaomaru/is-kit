@@ -188,13 +188,14 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         </Heading>
         <Paragraph>
           Pass your existing object type to <code>typedStruct</code>, then
-          define one guard for every field.
+          define one guard for every string-keyed field.
         </Paragraph>
         <CodeBlock code={quickAnswer} language='ts' />
         <Paragraph>
           At runtime, this uses the same object validation as{' '}
           <code>struct</code>. At compile time, the field map is checked against{' '}
-          <code>User</code> for missing, extra, and incompatible fields.
+          <code>User</code> for missing, extra, and incompatible string-keyed
+          fields.
         </Paragraph>
         <Paragraph>
           The guards are still explicit. The useful part is that the compiler
@@ -224,23 +225,30 @@ export default function KeepTypeGuardsInSyncGuidePage() {
 
       <Stack variant='section' gap='md'>
         <Heading variant='h2' className='text-2xl tracking-tight'>
-          Make structural drift visible
+          Make string-keyed structural drift visible
         </Heading>
         <Paragraph>
+          For ordinary string-keyed object shapes,{' '}
           <code>typedStruct&lt;User&gt;()</code> turns the object type into a
           compile-time contract for the field map.
         </Paragraph>
         <CodeBlock code={visibleDrift} language='ts' />
         <Paragraph>
-          The same check also rejects schema fields that do not exist on{' '}
-          <code>User</code>. Renames, additions, removals, and field-type
-          changes therefore surface next to the guard definition during type
-          checking.
+          The same check also rejects string-keyed schema fields that do not
+          exist on <code>User</code>. String-keyed renames, additions, removals,
+          and field-type changes therefore surface next to the guard definition
+          during type checking.
         </Paragraph>
         <Paragraph>
           This does not remove maintenance. It moves forgotten maintenance from
           production behavior into a compiler error.
         </Paragraph>
+        <blockquote className='border-l-2 border-primary/70 py-1 pl-5 text-lg leading-relaxed'>
+          This drift guarantee is limited to string-keyed properties. Numeric
+          and symbol properties are excluded from <code>TypedStructShape</code>,
+          so they are not required in the field map and cannot be validated by
+          the resulting <code>typedStruct</code> guard.
+        </blockquote>
       </Stack>
 
       <Stack variant='section' gap='md'>
@@ -248,9 +256,9 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           Keep optional keys explicit
         </Heading>
         <Paragraph>
-          Optional object properties must still appear in the field map. Wrap
-          them with <code>optionalKey</code> so the key may be absent at
-          runtime.
+          Optional string-keyed object properties must still appear in the field
+          map. Wrap them with <code>optionalKey</code> so the key may be absent
+          at runtime.
         </Paragraph>
         <CodeBlock code={optionalFields} language='ts' />
         <Paragraph>
@@ -261,8 +269,8 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         </Paragraph>
         <Paragraph>
           Requiring optional keys in the field map is deliberate. If a new
-          optional property is added to <code>User</code>, the guard should not
-          ignore it silently.
+          optional string-keyed property is added to <code>User</code>, the
+          guard should not ignore it silently.
         </Paragraph>
       </Stack>
 
@@ -291,8 +299,8 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           Compile-time fields and runtime extra keys
         </Heading>
         <Paragraph>
-          <code>typedStruct</code> always rejects extra fields in the guard
-          definition. Extra keys in an input object are a separate runtime
+          <code>typedStruct</code> rejects extra string-keyed fields in the
+          guard definition. Extra keys in an input object are a separate runtime
           choice.
         </Paragraph>
         <CodeBlock code={exactObjects} language='ts' />
@@ -362,6 +370,10 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         <ul className='list-disc space-y-2 pl-6'>
           <li>It does not generate runtime validation from erased types.</li>
           <li>
+            It does not track or validate numeric and symbol properties on the
+            target type.
+          </li>
+          <li>
             It cannot prove that a custom predicate’s implementation is honest.
           </li>
           <li>
@@ -384,11 +396,12 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         </Heading>
         <ul className='list-disc space-y-2 pl-6'>
           <li>
-            Use <code>typedStruct&lt;T&gt;()</code> when <code>T</code> already
-            exists and needs a runtime guard.
+            Use <code>typedStruct&lt;T&gt;()</code> when a string-keyed object
+            type <code>T</code> already exists and needs a runtime guard.
           </li>
           <li>
-            Declare required and optional keys so type drift stays visible.
+            Declare required and optional string keys so type drift stays
+            visible.
           </li>
           <li>Compose nested guards from the corresponding property types.</li>
           <li>

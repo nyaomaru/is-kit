@@ -8,7 +8,9 @@ import type {
 import { struct } from './struct';
 
 /**
- * Creates a `struct` builder checked against an existing object type.
+ * Creates a `struct` builder checked against an existing string-keyed object
+ * type. Numeric and symbol properties are excluded from the checked shape and
+ * cannot be validated by the resulting guard.
  * Optional target keys must also be declared with `optionalKey` so type drift
  * stays visible when the target type changes.
  *
