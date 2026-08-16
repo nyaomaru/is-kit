@@ -81,7 +81,8 @@ export type OptionalObjectKeys<T> = {
 export type RequiredObjectKeys<T> = Exclude<keyof T, OptionalObjectKeys<T>>;
 
 /**
- * Schema shape checked against an existing object type by `typedStruct`.
+ * String-keyed schema shape checked against an existing object type by
+ * `typedStruct`. Numeric and symbol properties are excluded.
  */
 export type TypedStructShape<T extends object> = {
   readonly [K in Extract<RequiredObjectKeys<T>, string>]-?: Predicate<T[K]>;

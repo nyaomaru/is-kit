@@ -521,7 +521,9 @@ if (parsed.valid) {
 sync with an existing object type. Optional keys in `T` must still be declared
 with `optionalKey(...)`; this makes drift visible when the target type changes.
 OpenAPI-generated response types are one useful case, but the helper is not an
-OpenAPI validator or schema generator.
+OpenAPI validator or schema generator. Drift detection is limited to
+string-keyed properties; numeric and symbol properties are excluded from the
+checked shape and cannot be validated by the resulting guard.
 
 ### Safe array filtering
 
@@ -600,6 +602,7 @@ public root exports are planned for removal.
 For detailed API pages and more examples, see:
 
 - [Practical guides](https://is-kit-docs.vercel.app/guides)
+- [Keep hand-written type guards in sync with TypeScript types](https://is-kit-docs.vercel.app/guides/keep-type-guards-in-sync)
 - [API reference](https://is-kit-docs.vercel.app/api-reference)
 - [Documentation home](https://is-kit-docs.vercel.app/)
 

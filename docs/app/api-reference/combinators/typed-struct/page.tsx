@@ -67,6 +67,11 @@ export default function TypedStructPage() {
             target type changes. This helper is not an OpenAPI validator or a
             schema generator.
           </Paragraph>
+          <Paragraph>
+            Drift detection is limited to string-keyed properties. Numeric and
+            symbol properties are excluded from <code>TypedStructShape</code>{' '}
+            and cannot be declared or validated by the resulting guard.
+          </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>

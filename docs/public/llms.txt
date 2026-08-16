@@ -55,6 +55,7 @@ const presentNames = names.filter(isNotNil); // string[]
 - [Documentation](https://is-kit-docs.vercel.app/en)
 - [Practical guides](https://is-kit-docs.vercel.app/guides)
 - [Filter null and undefined from arrays in TypeScript](https://is-kit-docs.vercel.app/guides/filter-null-and-undefined)
+- [Keep hand-written type guards in sync with TypeScript types](https://is-kit-docs.vercel.app/guides/keep-type-guards-in-sync)
 - [API reference](https://is-kit-docs.vercel.app/api-reference)
 - [README and usage guide](https://github.com/nyaomaru/is-kit#readme)
 - [AI agent rules](https://github.com/nyaomaru/is-kit/blob/main/docs/agent-rules.md)

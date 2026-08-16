@@ -133,7 +133,7 @@ const API_METADATA = {
   [API_REFERENCE_PATHS.typedStruct]: {
     title: 'typedStruct — Guard Existing TypeScript Types | is-kit',
     description:
-      'Keep a hand-written runtime object guard aligned with an existing TypeScript type using typedStruct and field-level checks.'
+      'Keep a hand-written runtime object guard aligned with an existing string-keyed TypeScript type using typedStruct and field-level checks.'
   },
   [API_REFERENCE_PATHS.oneOfValues]: {
     title: 'oneOfValues — TypeScript Literal Value Guard | is-kit',
