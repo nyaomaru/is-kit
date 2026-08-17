@@ -22,6 +22,11 @@ const GUIDE_METADATA = {
     title: 'Keep Type Guards in Sync with TypeScript Types | is-kit',
     description:
       'Keep hand-written runtime guards aligned with existing string-keyed TypeScript object types using typedStruct and field-level checks.'
+  },
+  [GUIDE_PATHS.validateUnknown]: {
+    title: 'Validate unknown in TypeScript Without a Schema Library | is-kit',
+    description:
+      'Validate unknown TypeScript values with small composable type guards and safeParse, without adopting a schema-first validation workflow.'
   }
 } as const satisfies Record<GuidePath, GuideMetadataCopy>;
 
