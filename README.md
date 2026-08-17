@@ -36,8 +36,8 @@ It helps you write small `isFoo` functions, compose them into **richer runtime c
 - **Validate object** shapes and collections
 - **Parse or assert** `unknown` values without a large schema framework
 
-[📚 Documentation Site](https://is-kit-docs.vercel.app/) ·
-[🧭 Practical Guides](https://is-kit-docs.vercel.app/guides)
+[📚 Documentation Site](https://is-kit.dev/) ·
+[🧭 Practical Guides](https://is-kit.dev/guides)
 
 > Best for **app-internal narrowing, filtering, and reusable guards**.
 
@@ -601,14 +601,14 @@ public root exports are planned for removal.
 
 For detailed API pages and more examples, see:
 
-- [Practical guides](https://is-kit-docs.vercel.app/guides)
-- [Keep hand-written type guards in sync with TypeScript types](https://is-kit-docs.vercel.app/guides/keep-type-guards-in-sync)
-- [Validate unknown without a schema library](https://is-kit-docs.vercel.app/guides/validate-unknown-without-schema-library)
-- [API reference](https://is-kit-docs.vercel.app/api-reference)
-- [Documentation home](https://is-kit-docs.vercel.app/)
+- [Practical guides](https://is-kit.dev/guides)
+- [Keep hand-written type guards in sync with TypeScript types](https://is-kit.dev/guides/keep-type-guards-in-sync)
+- [Validate unknown without a schema library](https://is-kit.dev/guides/validate-unknown-without-schema-library)
+- [API reference](https://is-kit.dev/api-reference)
+- [Documentation home](https://is-kit.dev/)
 
 Start with [How to safely filter null and undefined from arrays in
-TypeScript](https://is-kit-docs.vercel.app/guides/filter-null-and-undefined).
+TypeScript](https://is-kit.dev/guides/filter-null-and-undefined).
 
 ## 👨‍💻 Development
 
