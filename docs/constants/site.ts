@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export const SITE_URL = 'https://is-kit-docs.vercel.app';
+export const SITE_URL = 'https://is-kit.dev';
 
 export const SITE_TITLE = 'is-kit Docs — TypeScript Type Guard Toolkit';
 

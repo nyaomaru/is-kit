@@ -6,7 +6,7 @@
     "name": "nyaomaru",
     "url": "https://github.com/nyaomaru"
   },
-  "homepage": "https://is-kit-docs.vercel.app/",
+  "homepage": "https://is-kit.dev/",
   "repository": "https://github.com/nyaomaru/is-kit",
   "license": "MIT",
   "keywords": [
@@ -23,7 +23,7 @@
     "developerName": "nyaomaru",
     "category": "Developer Tools",
     "capabilities": ["Read", "Write"],
-    "websiteURL": "https://is-kit-docs.vercel.app/",
+    "websiteURL": "https://is-kit.dev/",
     "defaultPrompt": [
       "Replace manual TypeScript checks with composable is-kit guards.",
       "Validate an unknown API response with is-kit."

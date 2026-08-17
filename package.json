@@ -54,7 +54,7 @@
   "bugs": {
     "url": "https://github.com/nyaomaru/is-kit/issues"
   },
-  "homepage": "https://is-kit-docs.vercel.app/",
+  "homepage": "https://is-kit.dev/",
   "author": "nyaomaru",
   "license": "MIT",
   "packageManager": "pnpm@11.2.2",
