@@ -1,11 +1,17 @@
-import type { GuardedOf, GuardedWithin, Predicate } from '@/types';
-import { or } from '../logic';
+import type { GuardedOf, GuardedWithin, Predicate, Refinement } from '@/types';
+
+// WHY: `never` lets the implementation accept functions from any input domain
+// without falsely claiming that narrow-domain refinements accept `unknown`.
+type BooleanRefinement = (input: never) => boolean;
+
+type InputOf<F> =
+  F extends Refinement<infer Input, infer _Output> ? Input : never;
 
 /**
- * Combines multiple guards; passes when any one guard matches.
+ * Combines refinements sharing an input domain.
  *
- * @param guards One or more type guards/refinements to try.
- * @returns Predicate that narrows to the union of guarded types.
+ * @param refinements One or more refinements to try.
+ * @returns Refinement that narrows to the union of matching types.
  */
 export function oneOf<Fs extends readonly Predicate<unknown>[]>(
   ...guards: Fs
@@ -13,8 +19,18 @@ export function oneOf<Fs extends readonly Predicate<unknown>[]>(
 export function oneOf<A, Fs extends readonly Predicate<A>[]>(
   ...guards: Fs
 ): (input: A) => input is GuardedWithin<Fs, A>;
+export function oneOf<
+  First extends BooleanRefinement,
+  Rest extends readonly Refinement<InputOf<First>, InputOf<First>>[]
+>(
+  first: First,
+  ...rest: Rest
+): Refinement<
+  InputOf<First>,
+  Extract<GuardedOf<First> | GuardedOf<Rest[number]>, InputOf<First>>
+>;
 export function oneOf(
-  ...guards: readonly ((input: unknown) => input is unknown)[]
-) {
-  return or(...guards);
+  ...refinements: readonly ((input: never) => boolean)[]
+): (input: never) => boolean {
+  return (input) => refinements.some((refinement) => refinement(input));
 }

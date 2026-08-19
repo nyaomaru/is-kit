@@ -11,6 +11,26 @@ describe('and', () => {
     expect(isAString('zzz')).toBe(false);
     expect(isAString(123 as unknown)).toBe(false);
   });
+
+  it('composes refinements over a known input domain', () => {
+    type AstNode =
+      | { kind: 'identifier'; text: string }
+      | { kind: 'literal'; value: string };
+    type Identifier = Extract<AstNode, { kind: 'identifier' }>;
+    type NamedIdentifier = Identifier & { text: 'name' };
+
+    const isIdentifier = (node: AstNode): node is Identifier =>
+      node.kind === 'identifier';
+    const isNamed = (node: Identifier): node is NamedIdentifier =>
+      node.text === 'name';
+    const isNamedIdentifier = and(isIdentifier, isNamed);
+
+    expect(isNamedIdentifier({ kind: 'identifier', text: 'name' })).toBe(true);
+    expect(isNamedIdentifier({ kind: 'identifier', text: 'other' })).toBe(
+      false
+    );
+    expect(isNamedIdentifier({ kind: 'literal', value: 'name' })).toBe(false);
+  });
 });
 
 describe('andAll', () => {
@@ -22,6 +42,35 @@ describe('andAll', () => {
     expect(guard(8)).toBe(true);
     expect(guard(6)).toBe(false); // even but not multiple of 4
     expect(guard('8' as unknown)).toBe(false);
+  });
+
+  it('preserves short-circuiting for a known input domain', () => {
+    type AstNode =
+      | { kind: 'call'; expression: string }
+      | { kind: 'literal'; value: string };
+    type Call = Extract<AstNode, { kind: 'call' }>;
+    type NamedCall = Call & { expression: 'run' };
+
+    const isCall = jest.fn(
+      (node: AstNode): node is Call => node.kind === 'call'
+    );
+    const isNamedCall = jest.fn(
+      (node: Call): node is NamedCall => node.expression === 'run'
+    );
+    const isRunnable = jest.fn(
+      (node: NamedCall): node is NamedCall => node.expression.length > 0
+    );
+    const guard = andAll(isCall, isNamedCall, isRunnable);
+
+    expect(guard({ kind: 'literal', value: 'run' })).toBe(false);
+    expect(isNamedCall).not.toHaveBeenCalled();
+    expect(isRunnable).not.toHaveBeenCalled();
+
+    expect(guard({ kind: 'call', expression: 'other' })).toBe(false);
+    expect(isRunnable).not.toHaveBeenCalled();
+
+    expect(guard({ kind: 'call', expression: 'run' })).toBe(true);
+    expect(isRunnable).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -39,6 +88,35 @@ describe('or', () => {
     expect(smallOrShort(7)).toBe(true);
     expect(smallOrShort('toolong')).toBe(false);
     expect(smallOrShort(100)).toBe(false);
+  });
+
+  it('composes refinements over a shared known input domain', () => {
+    type AstNode =
+      | { kind: 'identifier'; text: string }
+      | { kind: 'literal'; value: string }
+      | { kind: 'call' };
+    type Identifier = Extract<AstNode, { kind: 'identifier' }>;
+    type Literal = Extract<AstNode, { kind: 'literal' }>;
+
+    const isIdentifier = (node: AstNode): node is Identifier =>
+      node.kind === 'identifier';
+    const isLiteral = (node: AstNode): node is Literal =>
+      node.kind === 'literal';
+    const isIdentifierOrLiteral = or(isIdentifier, isLiteral);
+
+    expect(isIdentifierOrLiteral({ kind: 'identifier', text: 'name' })).toBe(
+      true
+    );
+    expect(isIdentifierOrLiteral({ kind: 'literal', value: 'text' })).toBe(
+      true
+    );
+    expect(isIdentifierOrLiteral({ kind: 'call' })).toBe(false);
+  });
+
+  it('rejects every value when no refinements are provided', () => {
+    const never = or();
+
+    expect(never('value')).toBe(false);
   });
 });
 
