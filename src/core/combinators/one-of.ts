@@ -1,11 +1,5 @@
 import type { GuardedOf, GuardedWithin, Predicate, Refinement } from '@/types';
-
-// WHY: `never` lets the implementation accept functions from any input domain
-// without falsely claiming that narrow-domain refinements accept `unknown`.
-type BooleanRefinement = (input: never) => boolean;
-
-type InputOf<F> =
-  F extends Refinement<infer Input, infer _Output> ? Input : never;
+import type { BooleanRefinement, InputOf } from '../refinement-internals';
 
 /**
  * Combines refinements sharing an input domain.

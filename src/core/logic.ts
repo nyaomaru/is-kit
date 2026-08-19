@@ -8,13 +8,7 @@ import type {
   OutOfGuards,
   Predicate
 } from '@/types';
-
-// WHY: `never` lets implementation overloads accept functions from any input
-// domain without falsely claiming that narrow-domain refinements accept `unknown`.
-type BooleanRefinement = (input: never) => boolean;
-
-type InputOf<F> =
-  F extends Refinement<infer Input, infer _Output> ? Input : never;
+import type { BooleanRefinement, InputOf } from './refinement-internals';
 
 /**
  * Combines a precondition refinement with an additional refinement.
