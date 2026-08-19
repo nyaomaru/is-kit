@@ -31,6 +31,33 @@ describe('and', () => {
     );
     expect(isNamedIdentifier({ kind: 'literal', value: 'name' })).toBe(false);
   });
+
+  it('coerces truthy and falsy predicate results to booleans', () => {
+    type LoosePredicate = (input: unknown) => unknown;
+    const composeLoose = and as unknown as (
+      precondition: LoosePredicate,
+      condition: LoosePredicate
+    ) => LoosePredicate;
+
+    expect(
+      composeLoose(
+        () => 'truthy',
+        () => ({ matched: true })
+      )('value')
+    ).toBe(true);
+    expect(
+      composeLoose(
+        () => 1,
+        () => 0
+      )('value')
+    ).toBe(false);
+    expect(
+      composeLoose(
+        () => undefined,
+        () => 'truthy'
+      )('value')
+    ).toBe(false);
+  });
 });
 
 describe('andAll', () => {

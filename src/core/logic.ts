@@ -46,7 +46,7 @@ export function and(
   precondition: BooleanRefinement,
   condition: BooleanRefinement
 ): BooleanRefinement {
-  return (input) => precondition(input) && condition(input);
+  return (input) => !!(precondition(input) && condition(input));
 }
 
 /**
