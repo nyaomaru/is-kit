@@ -78,14 +78,14 @@ export function andAll<A, B extends A, C extends B, D extends C>(
   step1: Refine<NoInfer<B>, C>,
   step2: Refine<NoInfer<C>, D>
 ): Refinement<A, D>;
-export function andAll<A, B extends A>(
-  precondition: Refinement<A, B>,
-  ...steps: readonly Refine<NoInfer<B>, NoInfer<B>>[]
-): Refinement<A, B>;
 export function andAll<A, B extends A, Chain extends readonly unknown[]>(
   precondition: Refinement<A, B>,
   ...steps: Chain & RefineChain<NoInfer<B>, Chain>
 ): Refinement<A, ChainResult<B, Chain>>;
+export function andAll<A, B extends A>(
+  precondition: Refinement<A, B>,
+  ...steps: readonly Refine<NoInfer<B>, NoInfer<B>>[]
+): Refinement<A, B>;
 export function andAll(
   precondition: (input: never) => boolean,
   ...steps: readonly ((input: never) => boolean)[]

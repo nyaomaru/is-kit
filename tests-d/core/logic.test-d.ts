@@ -81,6 +81,25 @@ const namedIdentifierCall = andAll(
 );
 expectType<Refine<AstNode, NamedIdentifierCall>>(namedIdentifierCall);
 
+// it: prefers tuple narrowing when every step accepts the original domain
+type PipelineDomain = { level: 1 | 2 | 3 | 4 };
+type PipelineFirst = { level: 1 | 2 | 3 };
+type PipelineSecond = { level: 1 | 2 };
+type PipelineFinal = { level: 1 };
+type PipelineInput = PipelineDomain | string;
+declare const isPipelineDomain: Refine<PipelineInput, PipelineDomain>;
+declare const narrowsPipelineFirst: Refine<PipelineDomain, PipelineFirst>;
+declare const narrowsPipelineSecond: Refine<PipelineDomain, PipelineSecond>;
+declare const narrowsPipelineFinal: Refine<PipelineDomain, PipelineFinal>;
+const pipelineSteps = [
+  narrowsPipelineFirst,
+  narrowsPipelineSecond,
+  narrowsPipelineFinal
+] as const;
+expectType<Refine<PipelineInput, PipelineFinal>>(
+  andAll(isPipelineDomain, ...pipelineSteps)
+);
+
 // it: preserves the v1 explicit generic parameters
 expectType<Predicate<string>>(andAll<string>(isString));
 expectType<Predicate<'a'>>(andAll<string, 'a'>(isString, isLiteralA));
