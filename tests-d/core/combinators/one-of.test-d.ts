@@ -48,3 +48,8 @@ if (isIdentifierOrLiteral(astNode)) {
 // it: preserves the empty-call behavior
 expectType<Predicate<never>>(oneOf());
 expectType<Predicate<never>>(oneOf<[]>());
+
+// it: rejects an ordinary boolean predicate as the first refinement
+const isPositiveBoolean = (value: number): boolean => value > 0;
+// @ts-expect-error: `oneOf` requires a type predicate as its first argument.
+oneOf(isPositiveBoolean);

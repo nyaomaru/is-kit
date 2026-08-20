@@ -8,7 +8,11 @@ import type {
   OutOfGuards,
   Predicate
 } from '@/types';
-import type { BooleanRefinement, InputOf } from './refinement-internals';
+import type {
+  BooleanRefinement,
+  InputOf,
+  RefinementFunction
+} from './refinement-internals';
 
 /**
  * Combines a precondition refinement with an additional refinement.
@@ -33,7 +37,7 @@ export function and<
   Precondition extends BooleanRefinement,
   B extends GuardedOf<Precondition>
 >(
-  precondition: Precondition,
+  precondition: Precondition & RefinementFunction<Precondition>,
   condition: Refine<GuardedOf<Precondition>, B>
 ): Refinement<InputOf<Precondition>, B>;
 export function and(
@@ -70,13 +74,13 @@ export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
   ...steps: Chain & RefineChain<A, Chain>
 ): Guard<ChainResult<A, Chain>>;
 export function andAll<Precondition extends BooleanRefinement>(
-  precondition: Precondition
+  precondition: Precondition & RefinementFunction<Precondition>
 ): Refinement<InputOf<Precondition>, GuardedOf<Precondition>>;
 export function andAll<
   Precondition extends BooleanRefinement,
   B extends GuardedOf<Precondition>
 >(
-  precondition: Precondition,
+  precondition: Precondition & RefinementFunction<Precondition>,
   step1: Refine<GuardedOf<Precondition>, B>
 ): Refinement<InputOf<Precondition>, B>;
 export function andAll<
@@ -84,7 +88,7 @@ export function andAll<
   B extends GuardedOf<Precondition>,
   C extends B
 >(
-  precondition: Precondition,
+  precondition: Precondition & RefinementFunction<Precondition>,
   step1: Refine<GuardedOf<Precondition>, B>,
   step2: Refine<B, C>
 ): Refinement<InputOf<Precondition>, C>;
@@ -92,7 +96,7 @@ export function andAll<
   Precondition extends BooleanRefinement,
   Chain extends readonly unknown[]
 >(
-  precondition: Precondition,
+  precondition: Precondition & RefinementFunction<Precondition>,
   ...steps: Chain & RefineChain<GuardedOf<Precondition>, Chain>
 ): Refinement<
   InputOf<Precondition>,
@@ -126,7 +130,7 @@ export function or<
   First extends BooleanRefinement,
   Rest extends readonly Refinement<InputOf<First>, InputOf<First>>[]
 >(
-  first: First,
+  first: First & RefinementFunction<First>,
   ...rest: Rest
 ): Refinement<
   InputOf<First>,

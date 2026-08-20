@@ -124,6 +124,16 @@ const isStringWithinPrimitive = (value: string | number): value is string =>
 // @ts-expect-error: Every `or` branch must accept the first branch's input domain.
 or(isIdentifier, isStringWithinPrimitive);
 
+// it: rejects ordinary boolean predicates as the first refinement
+const isPositiveBoolean = (value: number): boolean => value > 0;
+const rejectsEveryNever = (value: never): value is never => false;
+// @ts-expect-error: `and` requires a type predicate as its precondition.
+and(isPositiveBoolean, rejectsEveryNever);
+// @ts-expect-error: `andAll` requires a type predicate as its precondition.
+andAll(isPositiveBoolean);
+// @ts-expect-error: `or` requires a type predicate as its first argument.
+or(isPositiveBoolean);
+
 // =============================================
 // describe: guardIn
 // =============================================
