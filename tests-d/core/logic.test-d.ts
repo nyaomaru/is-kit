@@ -106,6 +106,24 @@ function composeAndAllGenerically<
   expectType<Refine<A, C>>(andAll(precondition, step));
 }
 
+// it: accepts a generic homogeneous refinement tuple
+function composeAndAllTupleGenerically<
+  A,
+  B extends A,
+  F extends Refine<A, B>,
+  Steps extends readonly Refine<B, B>[]
+>(precondition: F, steps: Steps) {
+  expectType<Refine<A, B>>(andAll(precondition, ...steps));
+}
+
+// it: accepts a homogeneous refinement array
+function composeAndAllArrayGenerically<A, B extends A, F extends Refine<A, B>>(
+  precondition: F,
+  steps: Refine<B, B>[]
+) {
+  expectType<Refine<A, B>>(andAll(precondition, ...steps));
+}
+
 // =============================================
 // describe: or
 // =============================================
