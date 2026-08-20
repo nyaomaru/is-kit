@@ -1,9 +1,4 @@
 import type { GuardedOf, GuardedWithin, Predicate, Refinement } from '@/types';
-import type {
-  BooleanRefinement,
-  InputOf,
-  RefinementFunction
-} from '../refinement-internals';
 
 /**
  * Combines refinements sharing an input domain.
@@ -17,16 +12,10 @@ export function oneOf<Fs extends readonly Predicate<unknown>[]>(
 export function oneOf<A, Fs extends readonly Predicate<A>[]>(
   ...guards: Fs
 ): (input: A) => input is GuardedWithin<Fs, A>;
-export function oneOf<
-  First extends BooleanRefinement,
-  Rest extends readonly Refinement<InputOf<First>, InputOf<First>>[]
->(
-  first: First & RefinementFunction<First>,
+export function oneOf<A, B extends A, Rest extends readonly Refinement<A, A>[]>(
+  first: Refinement<A, B>,
   ...rest: Rest
-): Refinement<
-  InputOf<First>,
-  Extract<GuardedOf<First> | GuardedOf<Rest[number]>, InputOf<First>>
->;
+): Refinement<A, B | GuardedOf<Rest[number]>>;
 export function oneOf(
   ...refinements: readonly ((input: never) => boolean)[]
 ): (input: never) => boolean {

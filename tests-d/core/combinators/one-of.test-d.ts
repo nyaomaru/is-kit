@@ -45,6 +45,16 @@ if (isIdentifierOrLiteral(astNode)) {
   expectType<Identifier | Literal>(astNode);
 }
 
+// it: accepts a generically constrained refinement
+function composeGenerically<
+  A,
+  B extends A,
+  C extends A,
+  F extends Refine<A, B>
+>(refinement: F, alternative: Refine<A, C>) {
+  expectType<Refine<A, B | C>>(oneOf(refinement, alternative));
+}
+
 // it: preserves the empty-call behavior
 expectType<Predicate<never>>(oneOf());
 expectType<Predicate<never>>(oneOf<[]>());

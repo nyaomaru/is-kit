@@ -60,6 +60,16 @@ if (identifierCall(astNode)) {
   expectType<Identifier>(astNode.expression);
 }
 
+// it: accepts a generically constrained refinement
+function composeAndGenerically<
+  A,
+  B extends A,
+  C extends B,
+  F extends Refine<A, B>
+>(precondition: F, condition: Refine<B, C>) {
+  expectType<Refine<A, C>>(and(precondition, condition));
+}
+
 // =============================================
 // describe: andAll
 // =============================================
@@ -85,6 +95,17 @@ if (namedIdentifierCall(astNode)) {
   expectType<'run'>(astNode.expression.text);
 }
 
+// it: accepts a generically constrained refinement
+function composeAndAllGenerically<
+  A,
+  B extends A,
+  C extends B,
+  F extends Refine<A, B>
+>(precondition: F, step: Refine<B, C>) {
+  expectType<Refine<A, B>>(andAll(precondition));
+  expectType<Refine<A, C>>(andAll(precondition, step));
+}
+
 // =============================================
 // describe: or
 // =============================================
@@ -107,6 +128,16 @@ expectType<Refine<AstNode, Identifier | Literal>>(identifierOrLiteral);
 
 if (identifierOrLiteral(astNode)) {
   expectType<Identifier | Literal>(astNode);
+}
+
+// it: accepts a generically constrained refinement
+function composeOrGenerically<
+  A,
+  B extends A,
+  C extends A,
+  F extends Refine<A, B>
+>(refinement: F, alternative: Refine<A, C>) {
+  expectType<Refine<A, B | C>>(or(refinement, alternative));
 }
 
 // it: preserves the v1 empty-call return type

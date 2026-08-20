@@ -8,11 +8,7 @@ import type {
   OutOfGuards,
   Predicate
 } from '@/types';
-import type {
-  BooleanRefinement,
-  InputOf,
-  RefinementFunction
-} from './refinement-internals';
+import type { BooleanRefinement } from './refinement-internals';
 
 /**
  * Combines a precondition refinement with an additional refinement.
@@ -33,13 +29,10 @@ export function and<A, B extends A>(
   precondition: Guard<A>,
   condition: Refine<A, B>
 ): Predicate<B>;
-export function and<
-  Precondition extends BooleanRefinement,
-  B extends GuardedOf<Precondition>
->(
-  precondition: Precondition & RefinementFunction<Precondition>,
-  condition: Refine<GuardedOf<Precondition>, B>
-): Refinement<InputOf<Precondition>, B>;
+export function and<A, B extends A, C extends B>(
+  precondition: Refinement<A, B>,
+  condition: Refine<NoInfer<B>, C>
+): Refinement<A, C>;
 export function and(
   precondition: BooleanRefinement,
   condition: BooleanRefinement
@@ -73,35 +66,22 @@ export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
   precondition: Guard<A>,
   ...steps: Chain & RefineChain<A, Chain>
 ): Guard<ChainResult<A, Chain>>;
-export function andAll<Precondition extends BooleanRefinement>(
-  precondition: Precondition & RefinementFunction<Precondition>
-): Refinement<InputOf<Precondition>, GuardedOf<Precondition>>;
-export function andAll<
-  Precondition extends BooleanRefinement,
-  B extends GuardedOf<Precondition>
->(
-  precondition: Precondition & RefinementFunction<Precondition>,
-  step1: Refine<GuardedOf<Precondition>, B>
-): Refinement<InputOf<Precondition>, B>;
-export function andAll<
-  Precondition extends BooleanRefinement,
-  B extends GuardedOf<Precondition>,
-  C extends B
->(
-  precondition: Precondition & RefinementFunction<Precondition>,
-  step1: Refine<GuardedOf<Precondition>, B>,
-  step2: Refine<B, C>
-): Refinement<InputOf<Precondition>, C>;
-export function andAll<
-  Precondition extends BooleanRefinement,
-  Chain extends readonly unknown[]
->(
-  precondition: Precondition & RefinementFunction<Precondition>,
-  ...steps: Chain & RefineChain<GuardedOf<Precondition>, Chain>
-): Refinement<
-  InputOf<Precondition>,
-  ChainResult<GuardedOf<Precondition>, Chain>
->;
+export function andAll<A, B extends A>(
+  precondition: Refinement<A, B>
+): Refinement<A, B>;
+export function andAll<A, B extends A, C extends B>(
+  precondition: Refinement<A, B>,
+  step1: Refine<NoInfer<B>, C>
+): Refinement<A, C>;
+export function andAll<A, B extends A, C extends B, D extends C>(
+  precondition: Refinement<A, B>,
+  step1: Refine<NoInfer<B>, C>,
+  step2: Refine<NoInfer<C>, D>
+): Refinement<A, D>;
+export function andAll<A, B extends A, Chain extends readonly unknown[]>(
+  precondition: Refinement<A, B>,
+  ...steps: Chain & RefineChain<NoInfer<B>, Chain>
+): Refinement<A, ChainResult<B, Chain>>;
 export function andAll(
   precondition: (input: never) => boolean,
   ...steps: readonly ((input: never) => boolean)[]
@@ -126,16 +106,10 @@ export function andAll(
 export function or<P extends readonly Guard<unknown>[]>(
   ...guards: P
 ): Guard<OutOfGuards<P>>;
-export function or<
-  First extends BooleanRefinement,
-  Rest extends readonly Refinement<InputOf<First>, InputOf<First>>[]
->(
-  first: First & RefinementFunction<First>,
+export function or<A, B extends A, Rest extends readonly Refinement<A, A>[]>(
+  first: Refinement<A, B>,
   ...rest: Rest
-): Refinement<
-  InputOf<First>,
-  Extract<GuardedOf<First> | GuardedOf<Rest[number]>, InputOf<First>>
->;
+): Refinement<A, B | GuardedOf<Rest[number]>>;
 export function or(
   ...refinements: readonly ((input: never) => boolean)[]
 ): (input: never) => boolean {
