@@ -8,7 +8,11 @@ import type {
   OutOfGuards,
   Predicate
 } from '@/types';
-import type { BooleanRefinement } from './refinement-internals';
+import type {
+  BooleanRefinement,
+  LastOr,
+  RefinementsFromOutputs
+} from './refinement-internals';
 
 /**
  * Combines a precondition refinement with an additional refinement.
@@ -82,6 +86,12 @@ export function andAll<A, B extends A, Chain extends readonly unknown[]>(
   precondition: Refinement<A, B>,
   ...steps: Chain & RefineChain<NoInfer<B>, Chain>
 ): Refinement<A, ChainResult<B, Chain>>;
+// WHY: Inferring the output tuple lets generic ordered chains prove their
+// relationships without evaluating `RefineChain` against an unresolved tuple.
+export function andAll<A, B extends A, Outputs extends B[]>(
+  precondition: Refinement<A, B>,
+  ...steps: readonly unknown[] & RefinementsFromOutputs<B, Outputs>
+): Refinement<A, LastOr<B, Outputs>>;
 export function andAll<A, B extends A>(
   precondition: Refinement<A, B>,
   ...steps: readonly Refine<NoInfer<B>, NoInfer<B>>[]

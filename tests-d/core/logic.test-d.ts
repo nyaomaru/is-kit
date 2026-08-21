@@ -143,6 +143,33 @@ function composeAndAllArrayGenerically<A, B extends A, F extends Refine<A, B>>(
   expectType<Refine<A, B>>(andAll(precondition, ...steps));
 }
 
+// it: accepts a generic heterogeneous refinement chain
+function composeAndAllChainGenerically<
+  A,
+  B extends A,
+  C extends B,
+  D extends C,
+  E extends D,
+  F extends Refine<A, B>,
+  Steps extends [Refine<B, C>, Refine<C, D>, Refine<D, E>]
+>(precondition: F, steps: Steps) {
+  expectType<Refine<A, E>>(andAll(precondition, ...steps));
+}
+
+// it: accepts longer generic heterogeneous refinement chains
+function composeLongerAndAllChainGenerically<
+  A,
+  B extends A,
+  C extends B,
+  D extends C,
+  E extends D,
+  G extends E,
+  F extends Refine<A, B>,
+  Steps extends [Refine<B, C>, Refine<C, D>, Refine<D, E>, Refine<E, G>]
+>(precondition: F, steps: Steps) {
+  expectType<Refine<A, G>>(andAll(precondition, ...steps));
+}
+
 // =============================================
 // describe: or
 // =============================================
@@ -185,6 +212,8 @@ expectType<Predicate<unknown>>(or<[]>());
 // it: rejects refinements whose output is outside the narrowed input
 // @ts-expect-error: A literal cannot refine a call after `isCall` succeeds.
 and(isCall, isLiteral);
+// @ts-expect-error: Every `andAll` step must refine the preceding output.
+andAll(isCall, hasIdentifierExpression, isLiteral, hasRunExpression);
 
 // it: rejects union refinements with unrelated input domains
 const isStringWithinPrimitive = (value: string | number): value is string =>
