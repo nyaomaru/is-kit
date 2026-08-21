@@ -1,22 +1,28 @@
 import type {
   Guard,
+  GuardedOf,
   Refine,
   RefineChain,
   ChainResult,
+  Refinement,
   OutOfGuards,
   Predicate
 } from '@/types';
-import { toBooleanPredicates } from '@/utils/to-boolean-predicates';
-import { define } from './define';
+import type {
+  BooleanRefinement,
+  LastOr,
+  RefinementsFromOutputs
+} from './refinement-internals';
+import { isFunction } from './object';
 
 /**
- * Combines a precondition guard with an additional refinement to narrow the type.
+ * Combines a precondition refinement with an additional refinement.
  * Prefer this over hand-written `precondition(x) && condition(x)` when the
- * composed predicate should be reused as a guard.
+ * composed refinement should be reused.
  *
  * @param precondition Broad guard evaluated first; short-circuits on failure.
  * @param condition Refinement evaluated only when `precondition` passes.
- * @returns Predicate that narrows the input to a subtype.
+ * @returns Refinement that preserves the precondition's input domain.
  * @example
  * const isPositiveNumber = and(
  *   isNumber,
@@ -27,23 +33,27 @@ import { define } from './define';
 export function and<A, B extends A>(
   precondition: Guard<A>,
   condition: Refine<A, B>
-): Predicate<B> {
-  return define<B>((input) => {
-    if (precondition(input)) {
-      return condition(input);
-    }
-    return false;
-  });
+): Predicate<B>;
+export function and<A, B extends A, C extends B>(
+  precondition: Refinement<A, B>,
+  condition: Refine<NoInfer<B>, C>
+): Refinement<A, C>;
+export function and(
+  precondition: BooleanRefinement,
+  condition: BooleanRefinement
+): BooleanRefinement {
+  return (input) => !!(precondition(input) && condition(input));
 }
 
 /**
- * Chains a sequence of refinements after a precondition, returning the final guard type.
+ * Chains refinements while preserving the precondition's input domain.
  * Use this instead of nested `&&` checks when each step should keep narrowing
  * the next refinement.
+ * Pass a generic readonly chain as one tuple to preserve its final narrowing.
  *
  * @param precondition Initial guard applied first.
  * @param steps Subsequent refinements applied in order.
- * @returns Guard reflecting the result of the refinement chain.
+ * @returns Refinement reflecting the final result of the chain.
  * @example
  * const isPublicTitle = andAll(isString, minLength(4), startsWithPublic);
  * @see and
@@ -61,31 +71,79 @@ export function andAll<A, B extends A, C extends B>(
 export function andAll<A, Chain extends readonly Refine<unknown, unknown>[]>(
   precondition: Guard<A>,
   ...steps: Chain & RefineChain<A, Chain>
-): Guard<ChainResult<A, Chain>> {
-  return define<ChainResult<A, Chain>>((input) => {
+): Guard<ChainResult<A, Chain>>;
+export function andAll<A, B extends A>(
+  precondition: Refinement<A, B>
+): Refinement<A, B>;
+export function andAll<A, B extends A, C extends B>(
+  precondition: Refinement<A, B>,
+  step1: Refine<NoInfer<B>, C>
+): Refinement<A, C>;
+export function andAll<A, B extends A, C extends B, D extends C>(
+  precondition: Refinement<A, B>,
+  step1: Refine<NoInfer<B>, C>,
+  step2: Refine<NoInfer<C>, D>
+): Refinement<A, D>;
+export function andAll<A, B extends A, Chain extends readonly unknown[]>(
+  precondition: Refinement<A, B>,
+  ...steps: Chain & RefineChain<NoInfer<B>, Chain>
+): Refinement<A, ChainResult<B, Chain>>;
+// WHY: A readonly tuple argument preserves its generic constraint, while
+// spreading the same unresolved tuple can lose the chain's final output.
+export function andAll<A, B extends A, Outputs extends readonly B[]>(
+  precondition: Refinement<A, B>,
+  steps: RefinementsFromOutputs<NoInfer<B>, Outputs>
+): Refinement<A, LastOr<B, Outputs>>;
+// WHY: Inferring the output tuple lets generic ordered chains prove their
+// relationships without evaluating `RefineChain` against an unresolved tuple.
+export function andAll<A, B extends A, Outputs extends B[]>(
+  precondition: Refinement<A, B>,
+  ...steps: readonly unknown[] & RefinementsFromOutputs<B, Outputs>
+): Refinement<A, LastOr<B, Outputs>>;
+export function andAll<A, B extends A>(
+  precondition: Refinement<A, B>,
+  ...steps: readonly Refine<NoInfer<B>, NoInfer<B>>[]
+): Refinement<A, B>;
+export function andAll(
+  precondition: BooleanRefinement,
+  stepOrSteps?: BooleanRefinement | readonly BooleanRefinement[],
+  ...remainingSteps: readonly BooleanRefinement[]
+): BooleanRefinement {
+  const steps =
+    stepOrSteps === undefined
+      ? remainingSteps
+      : isFunction(stepOrSteps)
+        ? [stepOrSteps, ...remainingSteps]
+        : [...stepOrSteps, ...remainingSteps];
+
+  return (input) => {
     if (!precondition(input)) return false;
-    return applyRefinements(input, steps);
-  });
+    return steps.every((step) => step(input));
+  };
 }
 
 /**
- * Logical OR over multiple guards.
- * Prefer this over hand-written `guardA(x) || guardB(x)` when the composed
- * predicate should be reused as a guard.
+ * Logical OR over refinements sharing an input domain.
+ * Prefer this over hand-written `refineA(x) || refineB(x)` when the composed
+ * refinement should be reused.
  *
- * @param guards Guards to evaluate; passes if any guard passes.
- * @returns Guard for the union of all guarded types.
+ * @param refinements Refinements to evaluate; passes if any refinement passes.
+ * @returns Refinement for the union of all narrowed types.
  * @example
  * const isId = or(isString, isNumber);
  * @see oneOf
  */
 export function or<P extends readonly Guard<unknown>[]>(
   ...guards: P
-): Guard<OutOfGuards<P>> {
-  const predicates = toBooleanPredicates(guards);
-  return define<OutOfGuards<P>>((input) =>
-    predicates.some((guard) => guard(input))
-  );
+): Guard<OutOfGuards<P>>;
+export function or<A, B extends A, Rest extends readonly Refinement<A, A>[]>(
+  first: Refinement<A, B>,
+  ...rest: Rest
+): Refinement<A, B | GuardedOf<Rest[number]>>;
+export function or(
+  ...refinements: readonly ((input: never) => boolean)[]
+): (input: never) => boolean {
+  return (input) => refinements.some((refinement) => refinement(input));
 }
 
 /**
@@ -118,25 +176,4 @@ export function not<A, B extends A>(
 ): Refine<A, Exclude<A, B>>;
 export function not(fn: (input: unknown) => boolean) {
   return (input: unknown) => !fn(input);
-}
-
-// WHY: Overloads model refinement chains without casting; the runtime simply
-// applies each refinement in order while preserving short-circuit behavior.
-function applyRefinements<In>(value: In): value is In;
-function applyRefinements<
-  In,
-  Steps extends readonly Refine<unknown, unknown>[]
->(
-  value: In,
-  steps: Steps & RefineChain<In, Steps>
-): value is ChainResult<In, Steps>;
-function applyRefinements(
-  value: unknown,
-  steps?: readonly ((value: unknown) => boolean)[]
-): boolean {
-  if (!steps || steps.length === 0) return true;
-  for (const step of steps) {
-    if (!step(value)) return false;
-  }
-  return true;
 }

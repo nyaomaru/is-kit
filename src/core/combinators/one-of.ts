@@ -1,11 +1,10 @@
-import type { GuardedOf, GuardedWithin, Predicate } from '@/types';
-import { or } from '../logic';
+import type { GuardedOf, GuardedWithin, Predicate, Refinement } from '@/types';
 
 /**
- * Combines multiple guards; passes when any one guard matches.
+ * Combines refinements sharing an input domain.
  *
- * @param guards One or more type guards/refinements to try.
- * @returns Predicate that narrows to the union of guarded types.
+ * @param refinements One or more refinements to try.
+ * @returns Refinement that narrows to the union of matching types.
  */
 export function oneOf<Fs extends readonly Predicate<unknown>[]>(
   ...guards: Fs
@@ -13,8 +12,12 @@ export function oneOf<Fs extends readonly Predicate<unknown>[]>(
 export function oneOf<A, Fs extends readonly Predicate<A>[]>(
   ...guards: Fs
 ): (input: A) => input is GuardedWithin<Fs, A>;
+export function oneOf<A, B extends A, Rest extends readonly Refinement<A, A>[]>(
+  first: Refinement<A, B>,
+  ...rest: Rest
+): Refinement<A, B | GuardedOf<Rest[number]>>;
 export function oneOf(
-  ...guards: readonly ((input: unknown) => input is unknown)[]
-) {
-  return or(...guards);
+  ...refinements: readonly ((input: never) => boolean)[]
+): (input: never) => boolean {
+  return (input) => refinements.some((refinement) => refinement(input));
 }

@@ -1,8 +1,8 @@
-/** Predicate that accepts an unknown value and narrows it to `T`. */
-export type Predicate<T> = (value: unknown) => value is T;
-
 /** Refinement that narrows a known input type `A` to its subtype `B`. */
 export type Refinement<A, B extends A> = (value: A) => value is B;
+
+/** Predicate that accepts an unknown value and narrows it to `T`. */
+export type Predicate<T> = Refinement<unknown, T>;
 
 /** Readability alias for {@link Predicate}. */
 export type Guard<T> = Predicate<T>;
@@ -34,10 +34,8 @@ export type ParseResult<T> = { valid: true; value: T } | { valid: false };
 /** Function that explicitly transforms an input into a parsed output value. */
 export type Decoder<Input, Output> = (input: Input) => ParseResult<Output>;
 
-/** Extracts the narrowed output type from a predicate. */
-export type GuardedOf<F> = F extends ((value: unknown) => value is infer G)
-  ? G
-  : never;
+/** Extracts the narrowed output type from a predicate or refinement. */
+export type GuardedOf<F> = F extends Refinement<infer A, infer B> ? B : never;
 
 /** Extracts guard outputs that remain assignable to a known input type. */
 export type GuardedWithin<Fs, A> = Extract<
