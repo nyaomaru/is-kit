@@ -13,6 +13,7 @@ import type {
   LastOr,
   RefinementsFromOutputs
 } from './refinement-internals';
+import { isFunction } from './object';
 
 /**
  * Combines a precondition refinement with an additional refinement.
@@ -48,6 +49,7 @@ export function and(
  * Chains refinements while preserving the precondition's input domain.
  * Use this instead of nested `&&` checks when each step should keep narrowing
  * the next refinement.
+ * Pass a generic readonly chain as one tuple to preserve its final narrowing.
  *
  * @param precondition Initial guard applied first.
  * @param steps Subsequent refinements applied in order.
@@ -86,6 +88,12 @@ export function andAll<A, B extends A, Chain extends readonly unknown[]>(
   precondition: Refinement<A, B>,
   ...steps: Chain & RefineChain<NoInfer<B>, Chain>
 ): Refinement<A, ChainResult<B, Chain>>;
+// WHY: A readonly tuple argument preserves its generic constraint, while
+// spreading the same unresolved tuple can lose the chain's final output.
+export function andAll<A, B extends A, Outputs extends readonly B[]>(
+  precondition: Refinement<A, B>,
+  steps: RefinementsFromOutputs<NoInfer<B>, Outputs>
+): Refinement<A, LastOr<B, Outputs>>;
 // WHY: Inferring the output tuple lets generic ordered chains prove their
 // relationships without evaluating `RefineChain` against an unresolved tuple.
 export function andAll<A, B extends A, Outputs extends B[]>(
@@ -97,9 +105,17 @@ export function andAll<A, B extends A>(
   ...steps: readonly Refine<NoInfer<B>, NoInfer<B>>[]
 ): Refinement<A, B>;
 export function andAll(
-  precondition: (input: never) => boolean,
-  ...steps: readonly ((input: never) => boolean)[]
-): (input: never) => boolean {
+  precondition: BooleanRefinement,
+  stepOrSteps?: BooleanRefinement | readonly BooleanRefinement[],
+  ...remainingSteps: readonly BooleanRefinement[]
+): BooleanRefinement {
+  const steps =
+    stepOrSteps === undefined
+      ? remainingSteps
+      : isFunction(stepOrSteps)
+        ? [stepOrSteps, ...remainingSteps]
+        : [...stepOrSteps, ...remainingSteps];
+
   return (input) => {
     if (!precondition(input)) return false;
     return steps.every((step) => step(input));

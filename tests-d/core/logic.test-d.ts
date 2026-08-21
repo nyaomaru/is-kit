@@ -170,6 +170,19 @@ function composeLongerAndAllChainGenerically<
   expectType<Refine<A, G>>(andAll(precondition, ...steps));
 }
 
+// it: preserves narrowing for a readonly generic chain passed as a tuple
+function composeReadonlyAndAllChainGenerically<
+  A,
+  B extends A,
+  C extends B,
+  D extends C,
+  E extends D,
+  F extends Refine<A, B>,
+  Steps extends readonly [Refine<B, C>, Refine<C, D>, Refine<D, E>]
+>(precondition: F, steps: Steps) {
+  expectType<Refine<A, E>>(andAll(precondition, steps));
+}
+
 // =============================================
 // describe: or
 // =============================================
@@ -214,6 +227,8 @@ expectType<Predicate<unknown>>(or<[]>());
 and(isCall, isLiteral);
 // @ts-expect-error: Every `andAll` step must refine the preceding output.
 andAll(isCall, hasIdentifierExpression, isLiteral, hasRunExpression);
+// @ts-expect-error: A readonly tuple must also refine each preceding output.
+andAll(isCall, [hasIdentifierExpression, isLiteral, hasRunExpression] as const);
 
 // it: rejects union refinements with unrelated input domains
 const isStringWithinPrimitive = (value: string | number): value is string =>

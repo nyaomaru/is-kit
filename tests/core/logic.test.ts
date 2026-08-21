@@ -71,6 +71,17 @@ describe('andAll', () => {
     expect(guard('8' as unknown)).toBe(false);
   });
 
+  it('accepts a readonly refinement tuple', () => {
+    const isEven = predicateToRefine<number>((n) => n % 2 === 0);
+    const isMultipleOf4 = predicateToRefine<number>((n) => n % 4 === 0);
+    const steps = [isEven, isMultipleOf4] as const;
+    const guard = andAll(isNumber, steps);
+
+    expect(guard(8)).toBe(true);
+    expect(guard(6)).toBe(false);
+    expect(guard('8' as unknown)).toBe(false);
+  });
+
   it('preserves short-circuiting for a known input domain', () => {
     type AstNode =
       | { kind: 'call'; expression: string }
