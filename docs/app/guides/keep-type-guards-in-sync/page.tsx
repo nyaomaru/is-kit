@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -162,6 +164,17 @@ export default function KeepTypeGuardsInSyncGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Sync type guards'
+        media={
+          <Image
+            src='/iskit_guide2.png'
+            alt=''
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='How to Keep Hand-Written Type Guards in Sync with TypeScript Types'
         description='Start with the type you already have, write the runtime checks by hand, and make structural drift a compile-time error.'
       />
