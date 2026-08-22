@@ -1,7 +1,13 @@
 import { CodeBlock } from '@/components/code/code-block';
-import { Heading } from '@/components/ui/heading';
+import {
+  GuideArticle,
+  GuideCallout,
+  GuideHeader,
+  GuideList,
+  GuideSection
+} from '@/components/guides/guide-layout';
+import { GuideTable } from '@/components/guides/guide-table';
 import { Paragraph } from '@/components/ui/paragraph';
-import { Stack } from '@/components/ui/stack';
 import { TextLink } from '@/components/ui/text-link';
 import { GUIDE_PATHS } from '@/constants/guides';
 import { API_REFERENCE_PATHS } from '@/lib/api-metadata';
@@ -153,39 +159,14 @@ isMessage({ title: '   ', body: 'Hello' }); // false`;
 
 export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
   return (
-    <Stack
-      variant='article'
-      className='container mx-auto max-w-4xl px-4 py-10'
-      gap='xl'
-    >
-      <Stack variant='section' gap='sm' className='border-b pb-8'>
-        <nav aria-label='Breadcrumb'>
-          <ol className='flex items-center gap-2 text-sm font-medium tracking-[0.14em] uppercase text-primary/70'>
-            <li>
-              <TextLink href={GUIDE_PATHS.index} className='text-inherit'>
-                Guides
-              </TextLink>
-            </li>
-            <li aria-hidden='true'>/</li>
-            <li aria-current='page'>Validate unknown</li>
-          </ol>
-        </nav>
-        <Heading
-          variant='h1'
-          className='max-w-3xl leading-tight tracking-tight'
-        >
-          How to Validate unknown in TypeScript Without a Schema Library
-        </Heading>
-        <Paragraph variant='lead' className='max-w-3xl text-primary/80'>
-          Keep untrusted values unknown, compose the runtime checks you need,
-          and narrow them with a small tagged result.
-        </Paragraph>
-      </Stack>
+    <GuideArticle>
+      <GuideHeader
+        breadcrumbLabel='Validate unknown'
+        title='How to Validate unknown in TypeScript Without a Schema Library'
+        description='Keep untrusted values unknown, compose the runtime checks you need, and narrow them with a small tagged result.'
+      />
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          The quick answer
-        </Heading>
+      <GuideSection title='The quick answer'>
         <Paragraph>
           Build a reusable object guard, then pass it and the unknown value to{' '}
           <code>safeParse</code>.
@@ -201,12 +182,9 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           There is no generated schema and no hidden conversion. The accepted
           type is inferred directly from the guards you composed.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Keep boundary values unknown
-        </Heading>
+      <GuideSection title='Keep boundary values unknown'>
         <Paragraph>
           HTTP responses, parsed JSON, storage values, message payloads, and
           data from third-party code do not become trustworthy because your
@@ -217,16 +195,13 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           it prevents property access until code has established what the value
           actually is.
         </Paragraph>
-        <blockquote className='border-l-2 border-primary/70 py-1 pl-5 text-lg leading-relaxed'>
+        <GuideCallout>
           <code>unknown</code> is not missing type information. It is an honest
           description of an unverified boundary value.
-        </blockquote>
-      </Stack>
+        </GuideCallout>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          A type assertion is not validation
-        </Heading>
+      <GuideSection title='A type assertion is not validation'>
         <Paragraph>
           The shortest way past <code>unknown</code> is often an <code>as</code>{' '}
           assertion. It is also the easiest way to move the risk somewhere less
@@ -241,12 +216,9 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           A guard connects both sides: it returns a boolean at runtime and
           narrows the same value when that boolean is true.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Compose the payload you actually accept
-        </Heading>
+      <GuideSection title='Compose the payload you actually accept'>
         <Paragraph>
           Start with primitive guards, then compose literals, optional keys,
           nullable values, arrays, and nested objects.
@@ -261,12 +233,9 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           <code>nullable</code> means an existing value may be <code>null</code>
           . Keeping those meanings separate makes the runtime contract explicit.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Use a direct guard or a tagged result
-        </Heading>
+      <GuideSection title='Use a direct guard or a tagged result'>
         <Paragraph>
           Guards already work directly in TypeScript control flow. Use{' '}
           <code>safeParse</code> when the validated value needs to move through
@@ -277,12 +246,9 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           <code>safeParse</code> does not clone or transform the value. On
           success, it returns the same value after the guard has accepted it.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Validate JSON at the decode boundary
-        </Heading>
+      <GuideSection title='Validate JSON at the decode boundary'>
         <Paragraph>
           <code>JSON.parse</code> returns <code>any</code>.{' '}
           <code>safeJsonParse</code> contains that unsafe result as{' '}
@@ -294,12 +260,9 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           share the same small failure result, and values are never coerced to
           satisfy the guard.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Decide whether extra keys are allowed
-        </Heading>
+      <GuideSection title='Decide whether extra keys are allowed'>
         <Paragraph>
           By default, <code>struct</code> validates declared fields and permits
           additional keys. Use <code>exact: true</code> when the boundary needs
@@ -311,12 +274,9 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           <code>Object.keys</code> semantics, so symbol properties are outside
           this check.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Add focused domain rules
-        </Heading>
+      <GuideSection title='Add focused domain rules'>
         <Paragraph>
           Structural checks are often enough. When a field has a small business
           rule, compose a refinement after its broader guard.
@@ -327,60 +287,47 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           rather than <code>unknown</code>. The resulting guard stays reusable
           and preserves normal TypeScript narrowing.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Choose the smallest sufficient approach
-        </Heading>
-        <div className='overflow-x-auto rounded-md border'>
-          <table className='w-full min-w-2xl border-collapse text-left text-sm'>
-            <thead>
-              <tr className='border-b bg-primary/5'>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Approach
-                </th>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Best for
-                </th>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Tradeoff
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='border-b'>
-                <td className='px-4 py-3'>Inline typeof checks</td>
-                <td className='px-4 py-3'>One local primitive value</td>
-                <td className='px-4 py-3'>Repeats as shapes grow</td>
-              </tr>
-              <tr className='border-b'>
-                <td className='px-4 py-3'>is-kit guards</td>
-                <td className='px-4 py-3'>Reusable boolean validation</td>
-                <td className='px-4 py-3'>No structured error details</td>
-              </tr>
-              <tr>
-                <td className='px-4 py-3'>Schema library</td>
-                <td className='px-4 py-3'>Rich errors and transformations</td>
-                <td className='px-4 py-3'>
-                  Introduces a schema-first workflow
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <GuideSection title='Choose the smallest sufficient approach'>
+        <GuideTable
+          columns={['Approach', 'Best for', 'Tradeoff']}
+          rows={[
+            {
+              key: 'inline-typeof',
+              cells: [
+                'Inline typeof checks',
+                'One local primitive value',
+                'Repeats as shapes grow'
+              ]
+            },
+            {
+              key: 'is-kit-guards',
+              cells: [
+                'is-kit guards',
+                'Reusable boolean validation',
+                'No structured error details'
+              ]
+            },
+            {
+              key: 'schema-library',
+              cells: [
+                'Schema library',
+                'Rich errors and transformations',
+                'Introduces a schema-first workflow'
+              ]
+            }
+          ]}
+        />
         <Paragraph>
           You are still adding is-kit as a package. The distinction is that it
           is a zero-runtime-dependency type guard toolkit, not a schema language
           or validation framework.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          When a schema library is the better choice
-        </Heading>
-        <ul className='list-disc space-y-2 pl-6'>
+      <GuideSection title='When a schema library is the better choice'>
+        <GuideList>
           <li>
             You need field paths and multiple structured validation issues.
           </li>
@@ -389,18 +336,15 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           <li>
             Your forms or API framework integrate with a schema ecosystem.
           </li>
-        </ul>
+        </GuideList>
         <Paragraph>
           is-kit guards answer a narrower question: does this value satisfy the
           predicate, and if so, what can TypeScript safely narrow it to?
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md' className='border-t pt-8'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Summary
-        </Heading>
-        <ul className='list-disc space-y-2 pl-6'>
+      <GuideSection title='Summary' className='border-t pt-8'>
+        <GuideList>
           <li>Keep unverified boundary values typed as unknown.</li>
           <li>Use guards instead of assertions when runtime trust matters.</li>
           <li>Compose small predicates into the payload shape you accept.</li>
@@ -411,14 +355,14 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           <li>
             Adopt a schema library when richer validation is the requirement.
           </li>
-        </ul>
+        </GuideList>
         <Paragraph>
           Continue with the{' '}
           <TextLink href={API_REFERENCE_PATHS.parse}>parse</TextLink> and{' '}
           <TextLink href={API_REFERENCE_PATHS.struct}>struct</TextLink> API
           references for the complete contracts.
         </Paragraph>
-      </Stack>
-    </Stack>
+      </GuideSection>
+    </GuideArticle>
   );
 }

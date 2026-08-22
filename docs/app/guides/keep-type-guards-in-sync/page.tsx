@@ -1,7 +1,13 @@
 import { CodeBlock } from '@/components/code/code-block';
-import { Heading } from '@/components/ui/heading';
+import {
+  GuideArticle,
+  GuideCallout,
+  GuideHeader,
+  GuideList,
+  GuideSection
+} from '@/components/guides/guide-layout';
+import { GuideTable } from '@/components/guides/guide-table';
 import { Paragraph } from '@/components/ui/paragraph';
-import { Stack } from '@/components/ui/stack';
 import { TextLink } from '@/components/ui/text-link';
 import { GUIDE_PATHS } from '@/constants/guides';
 import { API_REFERENCE_PATHS } from '@/lib/api-metadata';
@@ -153,39 +159,14 @@ isExactUser({ id: 'user-1', name: 'Ada', debug: true }); // false`;
 
 export default function KeepTypeGuardsInSyncGuidePage() {
   return (
-    <Stack
-      variant='article'
-      className='container mx-auto max-w-4xl px-4 py-10'
-      gap='xl'
-    >
-      <Stack variant='section' gap='sm' className='border-b pb-8'>
-        <nav aria-label='Breadcrumb'>
-          <ol className='flex items-center gap-2 text-sm font-medium tracking-[0.14em] uppercase text-primary/70'>
-            <li>
-              <TextLink href={GUIDE_PATHS.index} className='text-inherit'>
-                Guides
-              </TextLink>
-            </li>
-            <li aria-hidden='true'>/</li>
-            <li aria-current='page'>Sync type guards</li>
-          </ol>
-        </nav>
-        <Heading
-          variant='h1'
-          className='max-w-3xl leading-tight tracking-tight'
-        >
-          How to Keep Hand-Written Type Guards in Sync with TypeScript Types
-        </Heading>
-        <Paragraph variant='lead' className='max-w-3xl text-primary/80'>
-          Start with the type you already have, write the runtime checks by
-          hand, and make structural drift a compile-time error.
-        </Paragraph>
-      </Stack>
+    <GuideArticle>
+      <GuideHeader
+        breadcrumbLabel='Sync type guards'
+        title='How to Keep Hand-Written Type Guards in Sync with TypeScript Types'
+        description='Start with the type you already have, write the runtime checks by hand, and make structural drift a compile-time error.'
+      />
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          The quick answer
-        </Heading>
+      <GuideSection title='The quick answer'>
         <Paragraph>
           Pass your existing object type to <code>typedStruct</code>, then
           define one guard for every string-keyed field.
@@ -201,12 +182,9 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           The guards are still explicit. The useful part is that the compiler
           now knows which type they are supposed to follow.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Why a type predicate can drift silently
-        </Heading>
+      <GuideSection title='Why a type predicate can drift silently'>
         <Paragraph>
           A hand-written predicate often starts small. Then the application type
           gains a field, while the runtime check stays unchanged.
@@ -217,16 +195,13 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           <code>value is User</code> is a promise made by your function, not a
           proof derived from its body.
         </Paragraph>
-        <blockquote className='border-l-2 border-primary/70 py-1 pl-5 text-lg leading-relaxed'>
+        <GuideCallout>
           The compiler can check a guard’s declared type. It cannot prove that
           arbitrary runtime logic checks every field.
-        </blockquote>
-      </Stack>
+        </GuideCallout>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Make string-keyed structural drift visible
-        </Heading>
+      <GuideSection title='Make string-keyed structural drift visible'>
         <Paragraph>
           For ordinary string-keyed object shapes,{' '}
           <code>typedStruct&lt;User&gt;()</code> turns the object type into a
@@ -243,18 +218,15 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           This does not remove maintenance. It moves forgotten maintenance from
           production behavior into a compiler error.
         </Paragraph>
-        <blockquote className='border-l-2 border-primary/70 py-1 pl-5 text-lg leading-relaxed'>
+        <GuideCallout>
           This drift guarantee is limited to string-keyed properties. Numeric
           and symbol properties are excluded from <code>TypedStructShape</code>,
           so they are not required in the field map and cannot be validated by
           the resulting <code>typedStruct</code> guard.
-        </blockquote>
-      </Stack>
+        </GuideCallout>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Keep optional keys explicit
-        </Heading>
+      <GuideSection title='Keep optional keys explicit'>
         <Paragraph>
           Optional string-keyed object properties must still appear in the field
           map. Wrap them with <code>optionalKey</code> so the key may be absent
@@ -272,12 +244,9 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           optional string-keyed property is added to <code>User</code>, the
           guard should not ignore it silently.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Compose nested existing types
-        </Heading>
+      <GuideSection title='Compose nested existing types'>
         <Paragraph>
           For nested objects, define a focused guard from the corresponding
           property type and compose it into the parent guard.
@@ -288,16 +257,13 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           connected to the original type without copying the object shape into
           another TypeScript alias.
         </Paragraph>
-        <blockquote className='border-l-2 border-primary/70 py-1 pl-5 text-lg leading-relaxed font-semibold'>
+        <GuideCallout emphasized>
           Reuse the existing type at compile time. Compose small guards at
           runtime.
-        </blockquote>
-      </Stack>
+        </GuideCallout>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Compile-time fields and runtime extra keys
-        </Heading>
+      <GuideSection title='Compile-time fields and runtime extra keys'>
         <Paragraph>
           <code>typedStruct</code> rejects extra string-keyed fields in the
           guard definition. Extra keys in an input object are a separate runtime
@@ -309,65 +275,55 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           additional own enumerable string keys. Enable it when the runtime
           boundary requires a closed object shape.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Choose the right source of truth
-        </Heading>
-        <div className='overflow-x-auto rounded-md border'>
-          <table className='w-full min-w-2xl border-collapse text-left text-sm'>
-            <thead>
-              <tr className='border-b bg-primary/5'>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Approach
-                </th>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Source of truth
-                </th>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Best for
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='border-b'>
-                <td className='px-4 py-3'>Manual predicate</td>
-                <td className='px-4 py-3'>Your implementation</td>
-                <td className='px-4 py-3'>Custom, non-structural logic</td>
-              </tr>
-              <tr className='border-b'>
-                <td className='px-4 py-3'>struct</td>
-                <td className='px-4 py-3'>The guard field map</td>
-                <td className='px-4 py-3'>Guard-first object types</td>
-              </tr>
-              <tr className='border-b'>
-                <td className='px-4 py-3'>typedStruct</td>
-                <td className='px-4 py-3'>An existing TypeScript type</td>
-                <td className='px-4 py-3'>Type-first application code</td>
-              </tr>
-              <tr>
-                <td className='px-4 py-3'>Schema library or codegen</td>
-                <td className='px-4 py-3'>A schema or generated artifact</td>
-                <td className='px-4 py-3'>
-                  Rich errors, transforms, or generation
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <GuideSection title='Choose the right source of truth'>
+        <GuideTable
+          columns={['Approach', 'Source of truth', 'Best for']}
+          rows={[
+            {
+              key: 'manual-predicate',
+              cells: [
+                'Manual predicate',
+                'Your implementation',
+                'Custom, non-structural logic'
+              ]
+            },
+            {
+              key: 'struct',
+              cells: [
+                'struct',
+                'The guard field map',
+                'Guard-first object types'
+              ]
+            },
+            {
+              key: 'typed-struct',
+              cells: [
+                'typedStruct',
+                'An existing TypeScript type',
+                'Type-first application code'
+              ]
+            },
+            {
+              key: 'schema-library',
+              cells: [
+                'Schema library or codegen',
+                'A schema or generated artifact',
+                'Rich errors, transforms, or generation'
+              ]
+            }
+          ]}
+        />
         <Paragraph>
           Use <code>struct</code> when the guard should define the resulting
           type. Use <code>typedStruct</code> when the TypeScript type already
           exists and the hand-written guard must follow it.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          What typedStruct does not do
-        </Heading>
-        <ul className='list-disc space-y-2 pl-6'>
+      <GuideSection title='What typedStruct does not do'>
+        <GuideList>
           <li>It does not generate runtime validation from erased types.</li>
           <li>
             It does not track or validate numeric and symbol properties on the
@@ -383,18 +339,15 @@ export default function KeepTypeGuardsInSyncGuidePage() {
             It does not replace a schema-first workflow when a schema is your
             actual source of truth.
           </li>
-        </ul>
+        </GuideList>
         <Paragraph>
           It is intentionally smaller: a typed bridge between an existing object
           type and the guards you choose to run.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md' className='border-t pt-8'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Summary
-        </Heading>
-        <ul className='list-disc space-y-2 pl-6'>
+      <GuideSection title='Summary' className='border-t pt-8'>
+        <GuideList>
           <li>
             Use <code>typedStruct&lt;T&gt;()</code> when a string-keyed object
             type <code>T</code> already exists and needs a runtime guard.
@@ -408,7 +361,7 @@ export default function KeepTypeGuardsInSyncGuidePage() {
             Use <code>exact: true</code> only when runtime inputs must reject
             additional keys.
           </li>
-        </ul>
+        </GuideList>
         <Paragraph>
           For the complete contract and additional examples, see the{' '}
           <TextLink href={API_REFERENCE_PATHS.typedStruct}>
@@ -416,7 +369,7 @@ export default function KeepTypeGuardsInSyncGuidePage() {
           </TextLink>
           .
         </Paragraph>
-      </Stack>
-    </Stack>
+      </GuideSection>
+    </GuideArticle>
   );
 }
