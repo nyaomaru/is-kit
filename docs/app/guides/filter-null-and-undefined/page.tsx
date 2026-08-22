@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -99,6 +101,17 @@ export default function FilterNullAndUndefinedGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Filter nullish values'
+        media={
+          <Image
+            src='/iskit_guide1.png'
+            alt=''
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='How to Safely Filter null and undefined from Arrays in TypeScript'
         description='Remove nullish values, preserve valid falsy values, and let TypeScript infer the array you actually have.'
       />

@@ -28,6 +28,8 @@ export function GuideArticle({ className, ...props }: GuideArticleProps) {
 type GuideHeaderProps = {
   /** Short current-page label shown after the Guides breadcrumb. */
   breadcrumbLabel: string;
+  /** Optional visual shown between the breadcrumb and title. */
+  media?: React.ReactNode;
   /** Main guide heading. */
   title: string;
   /** Introductory summary shown below the heading. */
@@ -37,12 +39,14 @@ type GuideHeaderProps = {
 /**
  * Renders a guide breadcrumb, title, and lead description.
  * @param breadcrumbLabel Current guide label used in the breadcrumb.
+ * @param media Optional visual displayed below the breadcrumb.
  * @param title Guide page title.
  * @param description Short guide introduction.
  * @returns Shared guide header.
  */
 export function GuideHeader({
   breadcrumbLabel,
+  media,
   title,
   description
 }: GuideHeaderProps) {
@@ -59,6 +63,7 @@ export function GuideHeader({
           <li aria-current='page'>{breadcrumbLabel}</li>
         </ol>
       </nav>
+      {media}
       <Heading variant='h1' className='max-w-3xl leading-tight tracking-tight'>
         {title}
       </Heading>
