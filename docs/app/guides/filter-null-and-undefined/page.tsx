@@ -1,7 +1,13 @@
 import { CodeBlock } from '@/components/code/code-block';
-import { Heading } from '@/components/ui/heading';
+import {
+  GuideArticle,
+  GuideCallout,
+  GuideHeader,
+  GuideList,
+  GuideSection
+} from '@/components/guides/guide-layout';
+import { GuideTable } from '@/components/guides/guide-table';
 import { Paragraph } from '@/components/ui/paragraph';
-import { Stack } from '@/components/ui/stack';
 import { TextLink } from '@/components/ui/text-link';
 import { GUIDE_PATHS } from '@/constants/guides';
 import { API_REFERENCE_PATHS } from '@/lib/api-metadata';
@@ -90,39 +96,14 @@ if (isNotNil(value)) {
 
 export default function FilterNullAndUndefinedGuidePage() {
   return (
-    <Stack
-      variant='article'
-      className='container mx-auto max-w-4xl px-4 py-10'
-      gap='xl'
-    >
-      <Stack variant='section' gap='sm' className='border-b pb-8'>
-        <nav aria-label='Breadcrumb'>
-          <ol className='flex items-center gap-2 text-sm font-medium tracking-[0.14em] uppercase text-primary/70'>
-            <li>
-              <TextLink href={GUIDE_PATHS.index} className='text-inherit'>
-                Guides
-              </TextLink>
-            </li>
-            <li aria-hidden='true'>/</li>
-            <li aria-current='page'>Filter nullish values</li>
-          </ol>
-        </nav>
-        <Heading
-          variant='h1'
-          className='max-w-3xl leading-tight tracking-tight'
-        >
-          How to Safely Filter null and undefined from Arrays in TypeScript
-        </Heading>
-        <Paragraph variant='lead' className='max-w-3xl text-primary/80'>
-          Remove nullish values, preserve valid falsy values, and let TypeScript
-          infer the array you actually have.
-        </Paragraph>
-      </Stack>
+    <GuideArticle>
+      <GuideHeader
+        breadcrumbLabel='Filter nullish values'
+        title='How to Safely Filter null and undefined from Arrays in TypeScript'
+        description='Remove nullish values, preserve valid falsy values, and let TypeScript infer the array you actually have.'
+      />
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          The quick answer
-        </Heading>
+      <GuideSection title='The quick answer'>
         <Paragraph>
           Pass <code>isNotNil</code> directly to <code>Array.filter</code>.
         </Paragraph>
@@ -137,12 +118,9 @@ export default function FilterNullAndUndefinedGuidePage() {
           That is the whole solution. But the common alternatives are worth
           understanding, because they do not all mean the same thing.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          The tempting shortcut: filter(Boolean)
-        </Heading>
+      <GuideSection title='The tempting shortcut: filter(Boolean)'>
         <Paragraph>You may already have code like this:</Paragraph>
         <CodeBlock code={booleanShortcut} language='ts' />
         <Paragraph>This works.</Paragraph>
@@ -153,16 +131,13 @@ export default function FilterNullAndUndefinedGuidePage() {
           strings, zero, and <code>false</code>. It also does not communicate a
           nullish-specific type predicate to <code>Array.filter</code>.
         </Paragraph>
-        <blockquote className='border-l-2 border-primary/70 py-1 pl-5 text-lg leading-relaxed'>
+        <GuideCallout>
           “Remove nullish values” and “remove every falsy value” are different
           requirements.
-        </blockquote>
-      </Stack>
+        </GuideCallout>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Preserve valid falsy values
-        </Heading>
+      <GuideSection title='Preserve valid falsy values'>
         <Paragraph>
           A value does not become missing just because JavaScript considers it
           falsy.
@@ -177,12 +152,9 @@ export default function FilterNullAndUndefinedGuidePage() {
           <code>isNotNil</code> rejects exactly two values: <code>null</code>{' '}
           and <code>undefined</code>.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          The explicit inline version
-        </Heading>
+      <GuideSection title='The explicit inline version'>
         <Paragraph>
           You do not need a library for a one-off check. An explicit type
           predicate is perfectly valid TypeScript.
@@ -197,12 +169,9 @@ export default function FilterNullAndUndefinedGuidePage() {
           generic, it preserves whatever non-nullish union each array already
           contains.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          A practical object example
-        </Heading>
+      <GuideSection title='A practical object example'>
         <Paragraph>
           Nullable values often appear after mapping an object property.
         </Paragraph>
@@ -211,16 +180,13 @@ export default function FilterNullAndUndefinedGuidePage() {
           The guard is still just a function. It works naturally at the normal
           control-flow point where the nullable values appear.
         </Paragraph>
-        <blockquote className='border-l-2 border-primary/70 py-1 pl-5 text-lg leading-relaxed font-semibold'>
+        <GuideCallout emphasized>
           Build small guards, then reuse them where TypeScript narrowing
           matters.
-        </blockquote>
-      </Stack>
+        </GuideCallout>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          isNil and isNotNil
-        </Heading>
+      <GuideSection title='isNil and isNotNil'>
         <Paragraph>
           Use <code>isNotNil</code> when you want the non-nullish values. Use{' '}
           <code>isNil</code> when you want to handle the missing branch itself.
@@ -235,58 +201,47 @@ export default function FilterNullAndUndefinedGuidePage() {
           </TextLink>
           .
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Which approach should you use?
-        </Heading>
-        <div className='overflow-x-auto rounded-md border'>
-          <table className='w-full min-w-2xl border-collapse text-left text-sm'>
-            <thead>
-              <tr className='border-b bg-primary/5'>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Approach
-                </th>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Best for
-                </th>
-                <th className='px-4 py-3 font-semibold tracking-wide'>
-                  Watch out for
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='border-b'>
-                <td className='px-4 py-3'>filter(Boolean)</td>
-                <td className='px-4 py-3'>Removing every falsy value</td>
-                <td className='px-4 py-3'>Also removes 0, false, and ''</td>
-              </tr>
-              <tr className='border-b'>
-                <td className='px-4 py-3'>Inline predicate</td>
-                <td className='px-4 py-3'>A local, one-off check</td>
-                <td className='px-4 py-3'>Repeats easily across a codebase</td>
-              </tr>
-              <tr>
-                <td className='px-4 py-3'>filter(isNotNil)</td>
-                <td className='px-4 py-3'>Reusable nullish filtering</td>
-                <td className='px-4 py-3'>Requires importing is-kit</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <GuideSection title='Which approach should you use?'>
+        <GuideTable
+          columns={['Approach', 'Best for', 'Watch out for']}
+          rows={[
+            {
+              key: 'filter-boolean',
+              cells: [
+                'filter(Boolean)',
+                'Removing every falsy value',
+                "Also removes 0, false, and ''"
+              ]
+            },
+            {
+              key: 'inline-predicate',
+              cells: [
+                'Inline predicate',
+                'A local, one-off check',
+                'Repeats easily across a codebase'
+              ]
+            },
+            {
+              key: 'filter-is-not-nil',
+              cells: [
+                'filter(isNotNil)',
+                'Reusable nullish filtering',
+                'Requires importing is-kit'
+              ]
+            }
+          ]}
+        />
         <Paragraph>
           There is no need to turn every inline condition into an abstraction.
           Use <code>isNotNil</code> when the shared meaning and reusable
           narrowing make the call site clearer.
         </Paragraph>
-      </Stack>
+      </GuideSection>
 
-      <Stack variant='section' gap='md' className='border-t pt-8'>
-        <Heading variant='h2' className='text-2xl tracking-tight'>
-          Summary
-        </Heading>
-        <ul className='list-disc space-y-2 pl-6'>
+      <GuideSection title='Summary' className='border-t pt-8'>
+        <GuideList>
           <li>
             Use <code>filter(isNotNil)</code> to remove <code>null</code> and{' '}
             <code>undefined</code> while narrowing the result.
@@ -300,12 +255,12 @@ export default function FilterNullAndUndefinedGuidePage() {
             Prefer a named guard when the same runtime meaning appears in more
             than one place.
           </li>
-        </ul>
+        </GuideList>
         <Paragraph>
           The goal is not shorter syntax alone. It is making “present value”
           mean the same thing everywhere your TypeScript application needs it.
         </Paragraph>
-      </Stack>
-    </Stack>
+      </GuideSection>
+    </GuideArticle>
   );
 }
