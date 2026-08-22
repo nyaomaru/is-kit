@@ -6,6 +6,198 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.13.0] - 2026-08-22
+
+### Added
+
+- support known-domain refinement composition by @nyaomaru in [#274](https://github.com/nyaomaru/is-kit/pull/274)
+  - Why: Support known-domain refinement composition to enhance type safety and flexibility in type definitions.
+
+### Docs
+
+- 1.12.1 by [bot] by @github-actions in [#269](https://github.com/nyaomaru/is-kit/pull/269)
+- add guide for keeping type guards in sync by @nyaomaru in [#270](https://github.com/nyaomaru/is-kit/pull/270)
+- add guide for validating unknown values by @nyaomaru in [#271](https://github.com/nyaomaru/is-kit/pull/271)
+- migrate documentation URLs to is-kit.dev by @nyaomaru in [#272](https://github.com/nyaomaru/is-kit/pull/272)
+- use PNG image for social previews by @nyaomaru in [#273](https://github.com/nyaomaru/is-kit/pull/273)
+- extract shared guide components by @nyaomaru in [#275](https://github.com/nyaomaru/is-kit/pull/275)
+
+### What's new 🚀
+
+#### Compose refinements while preserving their input domain
+
+`and`, `andAll`, `or`, and `oneOf` now preserve the original input domain when composing refinements.
+
+Previously, composing type predicates could widen the resulting function back to a guard accepting `unknown`. The returned predicate now remains a `Refine<A, B>`, retaining both its known input type and final narrowed output.
+
+```ts
+import { and, andAll, oneOf, or } from 'is-kit';
+import type { Refine } from 'is-kit';
+
+type AstNode =
+  | { kind: 'identifier'; text: string }
+  | { kind: 'literal'; value: string }
+  | { kind: 'call'; expression: AstNode };
+
+type Identifier = Extract<AstNode, { kind: 'identifier' }>;
+type Literal = Extract<AstNode, { kind: 'literal' }>;
+type Call = Extract<AstNode, { kind: 'call' }>;
+
+type IdentifierCall = Call & {
+  expression: Identifier;
+};
+
+type NamedIdentifierCall = IdentifierCall & {
+  expression: Identifier & { text: 'run' };
+};
+
+const isIdentifier = (node: AstNode): node is Identifier =>
+  node.kind === 'identifier';
+
+const isLiteral = (node: AstNode): node is Literal =>
+  node.kind === 'literal';
+
+const hasIdentifierExpression = (
+  node: Call
+): node is IdentifierCall => isIdentifier(node.expression);
+
+const hasRunExpression = (
+  node: IdentifierCall
+): node is NamedIdentifierCall => node.expression.text === 'run';
+
+const identifierCall = and(isCall, hasIdentifierExpression);
+// Refine<AstNode, IdentifierCall>
+
+const namedIdentifierCall = andAll(
+  isCall,
+  hasIdentifierExpression,
+  hasRunExpression
+);
+// Refine<AstNode, NamedIdentifierCall>
+
+const identifierOrLiteral = or(isIdentifier, isLiteral);
+// Refine<AstNode, Identifier | Literal>
+
+const leafNode = oneOf(isIdentifier, isLiteral);
+// Refine<AstNode, Identifier | Literal>
+```
+
+The refinements can be reused directly with values whose domain is already known:
+
+```ts
+declare const node: AstNode;
+
+if (namedIdentifierCall(node)) {
+  node.expression.text;
+  // 'run'
+}
+```
+
+#### Forward generic refinement chains to `andAll`
+
+Higher-order helpers can now forward generically constrained refinements without losing their narrowing.
+
+This includes:
+
+- generically constrained individual refinements;
+- homogeneous refinement arrays and rest tuples;
+- progressive heterogeneous refinement chains;
+- concrete tuples whose refinements accept a broader input domain.
+
+```ts
+import { andAll } from 'is-kit';
+import type { Refine } from 'is-kit';
+
+function composeChain<
+  A,
+  B extends A,
+  C extends B,
+  D extends C,
+  E extends D,
+  F extends Refine<A, B>,
+  Steps extends [
+    Refine<B, C>,
+    Refine<C, D>,
+    Refine<D, E>
+  ]
+>(precondition: F, steps: Steps) {
+  return andAll(precondition, ...steps);
+  // Refine<A, E>
+}
+```
+
+For a generic readonly tuple, pass the tuple directly instead of spreading it:
+
+```ts
+function composeReadonlyChain<
+  A,
+  B extends A,
+  C extends B,
+  D extends C,
+  E extends D,
+  F extends Refine<A, B>,
+  Steps extends readonly [
+    Refine<B, C>,
+    Refine<C, D>,
+    Refine<D, E>
+  ]
+>(precondition: F, steps: Steps) {
+  return andAll(precondition, steps);
+  // Refine<A, E>
+}
+```
+
+Existing spread calls remain supported:
+
+```ts
+const namedIdentifierCall = andAll(
+  isCall,
+  hasIdentifierExpression,
+  hasRunExpression
+);
+```
+
+#### Safer refinement constraints
+
+Refinement combinators now reject ordinary boolean-returning functions where a type predicate is required.
+
+```ts
+andAll(isPositive);
+```
+
+This prevents a boolean callback from being treated as proof of type narrowing. Invalid refinement chains whose output does not extend the preceding input are also rejected.
+
+#### Improved public refinement types
+
+`Predicate<T>` is now defined in terms of `Refinement<unknown, T>`, establishing `Refinement<A, B>` as the common representation for both unknown-input guards and known-domain refinements.
+
+`GuardedOf<F>` can now extract the narrowed output from either form.
+
+```ts
+import type {
+  GuardedOf,
+  Predicate,
+  Refinement
+} from 'is-kit';
+
+type StringPredicate = Predicate<string>;
+type StringRefinement = Refinement<string | number, string>;
+
+type PredicateOutput = GuardedOf<StringPredicate>;
+// string
+
+type RefinementOutput = GuardedOf<StringRefinement>;
+// string
+```
+
+#### 📄 Documentation improvements 
+
+The documentation is now available at [is-kit.dev](https://is-kit.dev/).
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.12.1...v1.13.0
+
+[v1.13.0]: https://github.com/nyaomaru/is-kit/compare/v1.12.1...v1.13.0
+
 ## [v1.12.1] - 2026-08-15
 
 ### Added
@@ -1427,7 +1619,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.12.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.13.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
