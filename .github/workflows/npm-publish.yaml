@@ -16,12 +16,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup Node (for npm auth)
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          registry-url: 'https://registry.npmjs.org'
-
       - name: Setup project
         uses: ./.github/actions/setup-project
 
@@ -46,8 +40,14 @@ jobs:
             exit 1
           fi
 
+      # WHY: npm Trusted Publishing requires npm 11.5.1 or later. Set up
+      # Node 24 after mise so its bundled npm remains first on PATH.
+      - name: Setup Node for trusted publishing
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
       - name: Publish to npm
-        run: pnpm publish --access public --no-git-checks --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+        run: npm publish --access public --ignore-scripts
