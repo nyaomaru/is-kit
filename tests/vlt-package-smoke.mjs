@@ -53,13 +53,15 @@ try {
     `${JSON.stringify({ private: true, type: 'module' }, null, 2)}\n`
   );
 
+  // WHY: vlt install requires the default `npm` registry alias; the scalar
+  // `--registry` option does not configure aliases in a fresh CI environment.
   run('npm', [
     'exec',
     '--yes',
     `--package=vlt@${VLT_VERSION_SPEC}`,
     '--',
     'vlt',
-    `--registry=${NPM_REGISTRY}`,
+    `--registries=npm=${NPM_REGISTRY}`,
     'install',
     tarballSpec
   ]);
