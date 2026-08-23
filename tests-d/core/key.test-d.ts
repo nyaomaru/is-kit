@@ -132,8 +132,14 @@ if (hasStringAtZero(tuple)) {
 }
 
 declare const dynamicIndex: number;
+declare const unionIndex: 0 | 1;
+declare const mixedValidAndNegativeIndex: 0 | -1;
 // @ts-expect-error: A dynamic index cannot soundly narrow one specific element.
 refineIndex(dynamicIndex, isString);
+// @ts-expect-error: A union cannot identify the one element checked at runtime.
+refineIndex(unionIndex, isString);
+// @ts-expect-error: A union remains invalid even when one member is a valid index.
+refineIndex(mixedValidAndNegativeIndex, isString);
 // @ts-expect-error: Negative numbers are not array indices.
 refineIndex(-1, isString);
 // @ts-expect-error: Fractional numbers are not array indices.

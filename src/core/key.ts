@@ -56,14 +56,18 @@ type SinglePropertyKey<Key extends PropertyKey> = [Key] extends [never]
           ? never
           : Key;
 
-/** Keeps only non-negative integer literals that identify one array index. */
-type ArrayIndex<Index extends number> = number extends Index
+/** Keeps only one non-negative integer literal that identifies an array index. */
+type ArrayIndex<Index extends number> = [Index] extends [never]
   ? never
-  : `${Index}` extends `-${string}`
+  : number extends Index
     ? never
-    : `${Index}` extends `${bigint}`
-      ? Index
-      : never;
+    : true extends IsUnion<Index>
+      ? never
+      : `${Index}` extends `-${string}`
+        ? never
+        : `${Index}` extends `${bigint}`
+          ? Index
+          : never;
 
 /**
  * Lifts a required-property refinement to its parent object.
