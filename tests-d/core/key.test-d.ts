@@ -143,16 +143,41 @@ refineIndex(0.5, isString);
 // describe: refinement constraints
 // =============================================
 // it: accepts generically constrained refinements
-function liftRefinementGenerically<
-  K extends PropertyKey,
-  A,
-  B extends A,
-  F extends Refinement<A, B>
->(key: K, refinement: F) {
-  refineKey(key, refinement);
-  refineDefinedKey(key, refinement);
+function liftRefinementGenerically<A, B extends A, F extends Refinement<A, B>>(
+  refinement: F
+) {
+  refineKey('value', refinement);
+  refineDefinedKey('value', refinement);
   refineIndex(0, refinement);
 }
+
+// it: rejects keys that can select more than one property
+declare const unionStringKey: 'name' | 'id';
+declare const broadStringKey: string;
+declare const unionNumberKey: 0 | 1;
+declare const broadNumberKey: number;
+declare const firstSymbolKey: unique symbol;
+declare const secondSymbolKey: unique symbol;
+declare const unionSymbolKey: typeof firstSymbolKey | typeof secondSymbolKey;
+declare const broadSymbolKey: symbol;
+
+// @ts-expect-error: A union key does not identify one checked property.
+refineKey(unionStringKey, isString);
+// @ts-expect-error: A broad key does not identify one checked property.
+refineKey(broadStringKey, isString);
+// @ts-expect-error: A numeric union does not identify one checked property.
+refineKey(unionNumberKey, isString);
+// @ts-expect-error: A broad number does not identify one checked property.
+refineKey(broadNumberKey, isString);
+// @ts-expect-error: A symbol union does not identify one checked property.
+refineKey(unionSymbolKey, isString);
+// @ts-expect-error: A broad symbol does not identify one checked property.
+refineKey(broadSymbolKey, isString);
+
+// @ts-expect-error: Optional refinement has the same singleton-key contract.
+refineDefinedKey(unionStringKey, isString);
+// @ts-expect-error: Optional refinement rejects broad property keys.
+refineDefinedKey(broadStringKey, isString);
 
 // it: rejects ordinary boolean functions
 const returnsBoolean = (value: unknown): boolean => Boolean(value);

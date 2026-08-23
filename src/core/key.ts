@@ -36,6 +36,26 @@ export const hasKeys = <
   );
 };
 
+/** Detects whether a type represents more than one possible value. */
+type IsUnion<Value, Whole = Value> = Value extends Whole
+  ? [Whole] extends [Value]
+    ? false
+    : true
+  : never;
+
+/** Keeps only one literal property key so one read cannot narrow other keys. */
+type SinglePropertyKey<Key extends PropertyKey> = [Key] extends [never]
+  ? never
+  : string extends Key
+    ? never
+    : number extends Key
+      ? never
+      : symbol extends Key
+        ? never
+        : true extends IsUnion<Key>
+          ? never
+          : Key;
+
 /** Keeps only non-negative integer literals that identify one array index. */
 type ArrayIndex<Index extends number> = number extends Index
   ? never
@@ -47,17 +67,20 @@ type ArrayIndex<Index extends number> = number extends Index
 
 /**
  * Lifts a required-property refinement to its parent object.
- * @param key Required property to refine.
+ * @param key Single literal key of the required property to refine.
  * @param refinement Refinement applied to the property value.
  * @returns Refinement that preserves the parent type and narrows the property.
  * @example
  * const hasIdentifierExpression = refineKey('expression', ts.isIdentifier);
  */
 export function refineKey<
-  K extends PropertyKey,
+  const K extends PropertyKey,
   PropertyInput,
   PropertyOutput extends PropertyInput
->(key: K, refinement: Refinement<PropertyInput, PropertyOutput>) {
+>(
+  key: K & SinglePropertyKey<K>,
+  refinement: Refinement<PropertyInput, PropertyOutput>
+) {
   return <ObjectType extends Record<K, PropertyInput>>(
     value: ObjectType
   ): value is ObjectType & Record<K, PropertyOutput> => refinement(value[key]);
@@ -65,7 +88,7 @@ export function refineKey<
 
 /**
  * Lifts a defined optional-property refinement to its parent object.
- * @param key Optional property to refine when defined.
+ * @param key Single literal key of the optional property to refine when defined.
  * @param refinement Refinement applied only to a defined property value.
  * @returns Refinement that requires and narrows the property.
  * @example
@@ -75,10 +98,13 @@ export function refineKey<
  * );
  */
 export function refineDefinedKey<
-  K extends PropertyKey,
+  const K extends PropertyKey,
   PropertyInput,
   PropertyOutput extends PropertyInput
->(key: K, refinement: Refinement<PropertyInput, PropertyOutput>) {
+>(
+  key: K & SinglePropertyKey<K>,
+  refinement: Refinement<PropertyInput, PropertyOutput>
+) {
   return <ObjectType extends Partial<Record<K, PropertyInput | undefined>>>(
     value: ObjectType
   ): value is ObjectType & Record<K, Exclude<PropertyOutput, undefined>> => {
