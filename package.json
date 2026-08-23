@@ -17,7 +17,7 @@
   },
   "scripts": {
     "test": "jest",
-    "test:types": "tsd",
+    "test:types": "tsd && tsc -p tests-d/tsconfig.property-refinement.json",
     "test:package": "node tests/package-smoke.mjs",
     "test:package:vlt": "node tests/vlt-package-smoke.mjs",
     "lint": "oxlint .",

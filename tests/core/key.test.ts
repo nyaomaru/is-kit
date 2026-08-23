@@ -1,7 +1,15 @@
-import { hasKey, hasKeys, narrowKeyTo } from '@/core/key';
+import {
+  hasKey,
+  hasKeys,
+  narrowKeyTo,
+  refineDefinedKey,
+  refineIndex,
+  refineKey
+} from '@/core/key';
 import { struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { oneOfValues } from '@/core/combinators/one-of-values';
+import { and } from '@/core/logic';
 
 const isUser = struct({
   id: isString,
@@ -91,5 +99,178 @@ describe('key: hasKeys', () => {
     expect(guard({ kind: 'user', id: 1 })).toBe(false);
     expect(guard({})).toBe(false);
     expect(guard(null)).toBe(false);
+  });
+});
+
+describe('key: refineKey', () => {
+  const hasStringName = refineKey('name', isString);
+
+  it('refines a required property', () => {
+    expect(hasStringName({ name: 'Ada', id: 1 })).toBe(true);
+    expect(hasStringName({ name: 42, id: 1 })).toBe(false);
+  });
+
+  it('reads the property once and invokes the refinement once', () => {
+    let reads = 0;
+    let calls = 0;
+    const value = {
+      get name(): unknown {
+        reads += 1;
+        return 'Ada';
+      }
+    };
+    const refinement = refineKey('name', (candidate): candidate is string => {
+      calls += 1;
+      return isString(candidate);
+    });
+
+    expect(refinement(value)).toBe(true);
+    expect(reads).toBe(1);
+    expect(calls).toBe(1);
+  });
+
+  it('uses normal property access for inherited properties', () => {
+    const value = Object.create({ name: 'inherited' }) as {
+      readonly name: unknown;
+    };
+
+    expect(hasStringName(value)).toBe(true);
+  });
+
+  it('supports numeric and symbol keys', () => {
+    const symbolKey = Symbol('name');
+
+    expect(refineKey(0, isString)(['first'])).toBe(true);
+    expect(refineKey(symbolKey, isString)({ [symbolKey]: 'Ada' })).toBe(true);
+  });
+
+  it('composes nested property refinements', () => {
+    const hasStringChildName = refineKey('child', refineKey('name', isString));
+
+    expect(hasStringChildName({ child: { name: 'Ada' } })).toBe(true);
+    expect(hasStringChildName({ child: { name: 42 } })).toBe(false);
+  });
+
+  it('does not read a property when an outer guard fails', () => {
+    type Candidate =
+      | { readonly kind: 'skip'; readonly name: unknown }
+      | { readonly kind: 'read'; readonly name: unknown };
+    const isReadable = (
+      value: Candidate
+    ): value is Extract<Candidate, { readonly kind: 'read' }> =>
+      value.kind === 'read';
+    const hasReadableStringName = and(isReadable, hasStringName);
+    let reads = 0;
+    const value: Candidate = {
+      kind: 'skip',
+      get name(): unknown {
+        reads += 1;
+        return 'Ada';
+      }
+    };
+
+    expect(hasReadableStringName(value)).toBe(false);
+    expect(reads).toBe(0);
+  });
+});
+
+describe('key: refineDefinedKey', () => {
+  const hasDefinedStringName = refineDefinedKey('name', isString);
+
+  it('refines a defined optional property', () => {
+    expect(hasDefinedStringName({ name: 'Ada', id: 1 })).toBe(true);
+    expect(hasDefinedStringName({ name: 42, id: 1 })).toBe(false);
+  });
+
+  it.each([
+    ['a missing property', { id: 1 }],
+    ['an explicitly undefined property', { name: undefined, id: 1 }]
+  ])('rejects %s without invoking the refinement', (_label, value) => {
+    let calls = 0;
+    const refinement = refineDefinedKey(
+      'name',
+      (candidate: unknown): candidate is string => {
+        calls += 1;
+        return isString(candidate);
+      }
+    );
+
+    expect(refinement(value)).toBe(false);
+    expect(calls).toBe(0);
+  });
+
+  it('reads a defined property once and invokes the refinement once', () => {
+    let reads = 0;
+    let calls = 0;
+    const value = {
+      get name(): unknown {
+        reads += 1;
+        return 'Ada';
+      }
+    };
+    const refinement = refineDefinedKey(
+      'name',
+      (candidate): candidate is string => {
+        calls += 1;
+        return isString(candidate);
+      }
+    );
+
+    expect(refinement(value)).toBe(true);
+    expect(reads).toBe(1);
+    expect(calls).toBe(1);
+  });
+});
+
+describe('key: refineIndex', () => {
+  const hasStringAtZero = refineIndex(0, isString);
+
+  it('refines an element in a readonly array', () => {
+    const matching = ['first', 2] as const;
+    const failing = [1, 'second'] as const;
+
+    expect(hasStringAtZero(matching)).toBe(true);
+    expect(hasStringAtZero(failing)).toBe(false);
+  });
+
+  it.each([
+    ['an out-of-bounds index', []],
+    ['a sparse hole', new Array<unknown>(1)],
+    ['an explicitly undefined element', [undefined]]
+  ])('rejects %s without invoking the refinement', (_label, value) => {
+    let calls = 0;
+    const refinement = refineIndex(
+      0,
+      (candidate: unknown): candidate is string => {
+        calls += 1;
+        return isString(candidate);
+      }
+    );
+
+    expect(refinement(value)).toBe(false);
+    expect(calls).toBe(0);
+  });
+
+  it('reads a defined element once and invokes the refinement once', () => {
+    let reads = 0;
+    let calls = 0;
+    const value: unknown[] = [];
+    Object.defineProperty(value, 0, {
+      get() {
+        reads += 1;
+        return 'first';
+      }
+    });
+    const refinement = refineIndex(
+      0,
+      (candidate: unknown): candidate is string => {
+        calls += 1;
+        return isString(candidate);
+      }
+    );
+
+    expect(refinement(value)).toBe(true);
+    expect(reads).toBe(1);
+    expect(calls).toBe(1);
   });
 });

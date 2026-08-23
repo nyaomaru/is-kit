@@ -1,4 +1,4 @@
-import type { Guard, GuardedOf, Predicate } from '@/types';
+import type { Guard, GuardedOf, Predicate, Refinement } from '@/types';
 import { hasOwnPropertyKey, hasOwnPropertyKeys } from '@/utils/own-properties';
 import { equalsKey } from './equals';
 import { define } from './define';
@@ -35,6 +35,92 @@ export const hasKeys = <
     (input) => isObject(input) && hasOwnPropertyKeys(input, keys)
   );
 };
+
+/** Keeps only non-negative integer literals that identify one array index. */
+type ArrayIndex<Index extends number> = number extends Index
+  ? never
+  : `${Index}` extends `-${string}`
+    ? never
+    : `${Index}` extends `${bigint}`
+      ? Index
+      : never;
+
+/**
+ * Lifts a required-property refinement to its parent object.
+ * @param key Required property to refine.
+ * @param refinement Refinement applied to the property value.
+ * @returns Refinement that preserves the parent type and narrows the property.
+ * @example
+ * const hasIdentifierExpression = refineKey('expression', ts.isIdentifier);
+ */
+export function refineKey<
+  K extends PropertyKey,
+  PropertyInput,
+  PropertyOutput extends PropertyInput
+>(key: K, refinement: Refinement<PropertyInput, PropertyOutput>) {
+  return <ObjectType extends Record<K, PropertyInput>>(
+    value: ObjectType
+  ): value is ObjectType & Record<K, PropertyOutput> => refinement(value[key]);
+}
+
+/**
+ * Lifts a defined optional-property refinement to its parent object.
+ * @param key Optional property to refine when defined.
+ * @param refinement Refinement applied only to a defined property value.
+ * @returns Refinement that requires and narrows the property.
+ * @example
+ * const hasCallInitializer = refineDefinedKey(
+ *   'initializer',
+ *   ts.isCallExpression
+ * );
+ */
+export function refineDefinedKey<
+  K extends PropertyKey,
+  PropertyInput,
+  PropertyOutput extends PropertyInput
+>(key: K, refinement: Refinement<PropertyInput, PropertyOutput>) {
+  return <ObjectType extends Partial<Record<K, PropertyInput | undefined>>>(
+    value: ObjectType
+  ): value is ObjectType & Record<K, Exclude<PropertyOutput, undefined>> => {
+    // WHY: Optional Compiler API properties may be absent or explicitly
+    // undefined. Never pass either state to a narrow-domain refinement.
+    const property = value[key];
+    return property !== undefined && refinement(property);
+  };
+}
+
+/**
+ * Refines one defined element of a readonly array.
+ * @param index Non-negative integer literal identifying the element.
+ * @param refinement Refinement applied only to a defined element.
+ * @returns Refinement that narrows the selected index.
+ * @example
+ * const hasStringFirstArgument = refineIndex(0, ts.isStringLiteral);
+ */
+export function refineIndex<
+  const Index extends number,
+  ElementInput,
+  ElementOutput extends ElementInput
+>(
+  index: ArrayIndex<Index>,
+  refinement: Refinement<ElementInput, ElementOutput>
+): Refinement<
+  readonly ElementInput[],
+  readonly ElementInput[] & {
+    readonly [K in Index]: Exclude<ElementOutput, undefined>;
+  }
+> {
+  return (
+    value
+  ): value is readonly ElementInput[] & {
+    readonly [K in Index]: Exclude<ElementOutput, undefined>;
+  } => {
+    // WHY: Array access can produce undefined through bounds, sparse holes, or
+    // explicit values even when noUncheckedIndexedAccess is disabled.
+    const element = value[index];
+    return element !== undefined && refinement(element);
+  };
+}
 
 /**
  * Builds a guard that narrows a specific key to the provided literal value.

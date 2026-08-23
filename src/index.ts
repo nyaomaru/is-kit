@@ -2,7 +2,14 @@
 export { assert } from './core/assert';
 export { define } from './core/define';
 export { equals, equalsBy, equalsKey } from './core/equals';
-export { hasKey, hasKeys, narrowKeyTo } from './core/key';
+export {
+  hasKey,
+  hasKeys,
+  narrowKeyTo,
+  refineDefinedKey,
+  refineIndex,
+  refineKey
+} from './core/key';
 export { lazy } from './core/lazy';
 export { and, andAll, guardIn, not, or } from './core/logic';
 export { nullable, nonNull, nullish, optional, required } from './core/nullish';
