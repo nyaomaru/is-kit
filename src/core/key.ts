@@ -54,7 +54,13 @@ type SinglePropertyKey<Key extends PropertyKey> = [Key] extends [never]
         ? never
         : true extends IsUnion<Key>
           ? never
-          : Key;
+          : [Key] extends [string]
+            ? // WHY: Infinite template-literal keys produce index signatures,
+              // which an object with no declared properties satisfies.
+              {} extends Record<Key, never>
+              ? never
+              : Key
+            : Key;
 
 /** Keeps only one non-negative integer literal that identifies an array index. */
 type ArrayIndex<Index extends number> = [Index] extends [never]

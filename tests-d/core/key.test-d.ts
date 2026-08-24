@@ -160,6 +160,8 @@ function liftRefinementGenerically<A, B extends A, F extends Refinement<A, B>>(
 // it: rejects keys that can select more than one property
 declare const unionStringKey: 'name' | 'id';
 declare const broadStringKey: string;
+declare const patternedStringKey: `field-${string}`;
+declare const patternedNumberKey: `field-${number}`;
 declare const unionNumberKey: 0 | 1;
 declare const broadNumberKey: number;
 declare const firstSymbolKey: unique symbol;
@@ -171,6 +173,10 @@ declare const broadSymbolKey: symbol;
 refineKey(unionStringKey, isString);
 // @ts-expect-error: A broad key does not identify one checked property.
 refineKey(broadStringKey, isString);
+// @ts-expect-error: A template pattern can identify multiple properties.
+refineKey(patternedStringKey, isString);
+// @ts-expect-error: A numeric template pattern can identify multiple properties.
+refineKey(patternedNumberKey, isString);
 // @ts-expect-error: A numeric union does not identify one checked property.
 refineKey(unionNumberKey, isString);
 // @ts-expect-error: A broad number does not identify one checked property.
@@ -184,6 +190,8 @@ refineKey(broadSymbolKey, isString);
 refineDefinedKey(unionStringKey, isString);
 // @ts-expect-error: Optional refinement rejects broad property keys.
 refineDefinedKey(broadStringKey, isString);
+// @ts-expect-error: Optional refinement rejects template patterns.
+refineDefinedKey(patternedStringKey, isString);
 
 // it: rejects ordinary boolean functions
 const returnsBoolean = (value: unknown): boolean => Boolean(value);
