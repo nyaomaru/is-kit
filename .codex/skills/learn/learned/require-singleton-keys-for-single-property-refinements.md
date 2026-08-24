@@ -1,8 +1,9 @@
 # Require Singleton Keys for Single-Property Refinements
 
 **Captured:** 2026-08-23
+**Updated:** 2026-08-24
 **Context:** Type predicates that check one runtime property and narrow it on the parent object
-**Tags:** typescript, type-guards, refinements, property-keys, unions, soundness, tsd, api-design
+**Tags:** typescript, type-guards, refinements, property-keys, unions, template-literals, soundness, tsd, api-design
 
 ## Problem
 
@@ -15,11 +16,19 @@ If `K` is `'a' | 'b'`, the runtime key selects either `a` or `b`, while
 `number`, or `symbol` keys are worse because the predicate appears to narrow
 every compatible property after reading only one.
 
+Infinite template-literal types such as `` `field-${string}` `` and
+`` `field-${number}` `` have the same problem. Neither `string extends Key`
+nor a union detector rejects them, even though each type represents many
+possible runtime keys.
+
 ## Solution
 
-Require the key to be one non-union literal before using `Record<K, Output>` as
-the predicate result. Reject broad primitive key types and detect literal
-unions with a distributive conditional type.
+Require the key to be one finite, non-union literal before using
+`Record<K, Output>` as the predicate result. Reject broad primitive key types,
+detect literal unions, and reject infinite string patterns through their mapped
+type behavior: `Record<Pattern, never>` becomes an index signature that an
+object with no declared properties satisfies, while a record over a concrete
+literal still requires that property.
 
 ```ts
 type IsUnion<Value, Whole = Value> = Value extends Whole
@@ -28,8 +37,9 @@ type IsUnion<Value, Whole = Value> = Value extends Whole
     : true
   : never;
 
-type SinglePropertyKey<Key extends PropertyKey> =
-  string extends Key
+type SinglePropertyKey<Key extends PropertyKey> = [Key] extends [never]
+  ? never
+  : string extends Key
     ? never
     : number extends Key
       ? never
@@ -37,12 +47,20 @@ type SinglePropertyKey<Key extends PropertyKey> =
         ? never
         : true extends IsUnion<Key>
           ? never
-          : Key;
+          : [Key] extends [string]
+            ? {} extends Record<Key, never>
+              ? never
+              : Key
+            : Key;
 
 function refineKey<const K extends PropertyKey>(
   key: K & SinglePropertyKey<K>
 ): unknown;
 ```
+
+Keep the string branch non-distributive as `[Key] extends [string]`. Writing
+`Key extends string` distributes over a union such as `'a' | 'b'`, checks each
+member independently, and accidentally defeats the earlier union rejection.
 
 An alternative is to return a union with one narrowed member for each literal
 key. That is more complex, still cannot safely model broad key types, and gives
@@ -57,8 +75,9 @@ higher-order helper must also fix or enforce a singleton key.
 
 Apply this pattern whenever one runtime lookup is reflected with a mapped type
 or `Record<K, ...>` in a type predicate. Add negative `tsd` cases for string,
-number, and symbol unions and their broad primitive types, alongside positive
-cases for each singleton literal kind.
+number, and symbol unions, their broad primitive types, and infinite template
+patterns such as `` `field-${string}` `` and `` `field-${number}` ``. Keep
+positive cases for each singleton literal kind.
 
 Validate similar changes with `pnpm build`, `pnpm test:types`, `pnpm lint`, and
 the packed-package smoke test so the emitted declaration has the same
