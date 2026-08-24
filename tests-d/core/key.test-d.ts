@@ -134,6 +134,7 @@ if (hasStringAtZero(tuple)) {
 declare const dynamicIndex: number;
 declare const unionIndex: 0 | 1;
 declare const mixedValidAndNegativeIndex: 0 | -1;
+declare const brandedIndex: number & { readonly __brand: 'index' };
 // @ts-expect-error: A dynamic index cannot soundly narrow one specific element.
 refineIndex(dynamicIndex, isString);
 // @ts-expect-error: A union cannot identify the one element checked at runtime.
@@ -144,6 +145,8 @@ refineIndex(mixedValidAndNegativeIndex, isString);
 refineIndex(-1, isString);
 // @ts-expect-error: Fractional numbers are not array indices.
 refineIndex(0.5, isString);
+// @ts-expect-error: A branded number still represents multiple possible indices.
+refineIndex(brandedIndex, isString);
 
 // =============================================
 // describe: refinement constraints
@@ -162,6 +165,8 @@ declare const unionStringKey: 'name' | 'id';
 declare const broadStringKey: string;
 declare const patternedStringKey: `field-${string}`;
 declare const patternedNumberKey: `field-${number}`;
+declare const brandedNumberKey: number & { readonly __brand: 'number-key' };
+declare const brandedSymbolKey: symbol & { readonly __brand: 'symbol-key' };
 declare const unionNumberKey: 0 | 1;
 declare const broadNumberKey: number;
 declare const firstSymbolKey: unique symbol;
@@ -177,6 +182,10 @@ refineKey(broadStringKey, isString);
 refineKey(patternedStringKey, isString);
 // @ts-expect-error: A numeric template pattern can identify multiple properties.
 refineKey(patternedNumberKey, isString);
+// @ts-expect-error: A branded number can identify multiple properties.
+refineKey(brandedNumberKey, isString);
+// @ts-expect-error: A branded symbol can identify multiple properties.
+refineKey(brandedSymbolKey, isString);
 // @ts-expect-error: A numeric union does not identify one checked property.
 refineKey(unionNumberKey, isString);
 // @ts-expect-error: A broad number does not identify one checked property.
@@ -192,6 +201,10 @@ refineDefinedKey(unionStringKey, isString);
 refineDefinedKey(broadStringKey, isString);
 // @ts-expect-error: Optional refinement rejects template patterns.
 refineDefinedKey(patternedStringKey, isString);
+// @ts-expect-error: Optional refinement rejects branded number domains.
+refineDefinedKey(brandedNumberKey, isString);
+// @ts-expect-error: Optional refinement rejects branded symbol domains.
+refineDefinedKey(brandedSymbolKey, isString);
 
 // it: rejects ordinary boolean functions
 const returnsBoolean = (value: unknown): boolean => Boolean(value);

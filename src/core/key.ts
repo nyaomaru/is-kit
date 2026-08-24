@@ -46,34 +46,23 @@ type IsUnion<Value, Whole = Value> = Value extends Whole
 /** Keeps only one literal property key so one read cannot narrow other keys. */
 type SinglePropertyKey<Key extends PropertyKey> = [Key] extends [never]
   ? never
-  : string extends Key
+  : true extends IsUnion<Key>
     ? never
-    : number extends Key
+    : // WHY: Broad, patterned, and opaque key domains produce index
+      // signatures, which an object with no declared properties satisfies.
+      {} extends Record<Key, never>
       ? never
-      : symbol extends Key
-        ? never
-        : true extends IsUnion<Key>
-          ? never
-          : [Key] extends [string]
-            ? // WHY: Infinite template-literal keys produce index signatures,
-              // which an object with no declared properties satisfies.
-              {} extends Record<Key, never>
-              ? never
-              : Key
-            : Key;
+      : Key;
 
 /** Keeps only one non-negative integer literal that identifies an array index. */
-type ArrayIndex<Index extends number> = [Index] extends [never]
-  ? never
-  : number extends Index
+type ArrayIndex<Index extends number> =
+  SinglePropertyKey<Index> extends never
     ? never
-    : true extends IsUnion<Index>
+    : `${Index}` extends `-${string}`
       ? never
-      : `${Index}` extends `-${string}`
-        ? never
-        : `${Index}` extends `${bigint}`
-          ? Index
-          : never;
+      : `${Index}` extends `${bigint}`
+        ? Index
+        : never;
 
 /**
  * Lifts a required-property refinement to its parent object.
