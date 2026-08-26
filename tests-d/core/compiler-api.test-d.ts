@@ -1,6 +1,7 @@
-import { expectType } from 'tsd';
+import { expectAssignable, expectType } from 'tsd';
 import * as ts from 'typescript';
 import { oneOf } from '@/core/combinators';
+import { refineDefinedKey, refineIndex, refineKey } from '@/core/key';
 import { and, andAll, or } from '@/core/logic';
 import type { GuardedOf, Refine } from '@/types';
 
@@ -64,4 +65,57 @@ if (isRequireCall(node)) {
 
 if (isStringLike(node)) {
   expectType<ts.StringLiteral | ts.NoSubstitutionTemplateLiteral>(node);
+}
+
+// =============================================
+// describe: TypeScript Compiler API property refinements
+// =============================================
+// it: refines a required child node while preserving its parent
+const hasIdentifierExpression = refineKey('expression', ts.isIdentifier);
+const isCallWithIdentifierExpression = and(
+  ts.isCallExpression,
+  hasIdentifierExpression
+);
+
+if (isCallWithIdentifierExpression(node)) {
+  expectAssignable<ts.CallExpression>(node);
+  expectAssignable<ts.Identifier>(node.expression);
+}
+
+// it: requires and refines an optional child node
+const hasCallInitializer = refineDefinedKey('initializer', ts.isCallExpression);
+declare let declaration: ts.VariableDeclaration;
+
+if (hasCallInitializer(declaration)) {
+  expectAssignable<ts.CallExpression>(declaration.initializer);
+}
+
+// it: refines a readonly NodeArray index
+const hasStringFirstArgument = refineKey(
+  'arguments',
+  refineIndex(0, ts.isStringLiteral)
+);
+const isCallWithStringFirstArgument = and(
+  ts.isCallExpression,
+  hasStringFirstArgument
+);
+
+if (isCallWithStringFirstArgument(node)) {
+  expectType<ts.StringLiteral>(node.arguments[0]);
+}
+
+// it: composes optional, required, and indexed child refinements
+const isBlockStartingWithReturn = and(
+  ts.isBlock,
+  refineKey('statements', refineIndex(0, ts.isReturnStatement))
+);
+const hasBodyStartingWithReturn = refineDefinedKey(
+  'body',
+  isBlockStartingWithReturn
+);
+declare let method: ts.MethodDeclaration;
+
+if (hasBodyStartingWithReturn(method)) {
+  expectAssignable<ts.Block>(method.body);
+  expectType<ts.ReturnStatement>(method.body.statements[0]);
 }
