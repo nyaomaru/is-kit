@@ -4,6 +4,7 @@ export const GUIDE_PATHS = {
   index: '/guides',
   filterNullish: '/guides/filter-null-and-undefined',
   syncTypeGuards: '/guides/keep-type-guards-in-sync',
+  typescriptCompilerApi: '/guides/typescript-compiler-api',
   validateUnknown: '/guides/validate-unknown-without-schema-library'
 } as const;
 
@@ -30,6 +31,13 @@ export const GUIDE_ITEMS: GuideItem[] = [
     navigationLabel: 'Sync type guards',
     description:
       'Make missing, extra, and incompatible string-keyed guard fields visible when an existing object type changes.'
+  },
+  {
+    href: GUIDE_PATHS.typescriptCompilerApi,
+    title: 'Use is-kit with the TypeScript Compiler API',
+    navigationLabel: 'TypeScript Compiler API',
+    description:
+      'Compose ts.isX refinements and preserve required, optional, indexed, and nested child-node narrowing.'
   },
   {
     href: GUIDE_PATHS.validateUnknown,

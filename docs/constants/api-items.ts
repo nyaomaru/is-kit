@@ -9,6 +9,11 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Wrap a predicate as a typed guard.'
   },
   {
+    href: '/api-reference/lazy',
+    title: 'lazy',
+    description: 'Create recursive guards with lazy initialization.'
+  },
+  {
     href: '/api-reference/equals',
     title: 'equals',
     description: 'Value equality helpers: equals, equalsBy, equalsKey.'
@@ -38,7 +43,7 @@ export const API_ITEMS: ApiItem[] = [
     href: '/api-reference/key',
     title: 'key',
     description:
-      'Key helpers for presence checks (hasKey/hasKeys) and literal narrowing.'
+      'Key presence, literal narrowing, and required, optional, or indexed property refinements.'
   },
   {
     href: '/api-reference/primitive',

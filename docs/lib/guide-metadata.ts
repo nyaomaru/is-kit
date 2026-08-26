@@ -23,6 +23,11 @@ const GUIDE_METADATA = {
     description:
       'Keep hand-written runtime guards aligned with existing string-keyed TypeScript object types using typedStruct and field-level checks.'
   },
+  [GUIDE_PATHS.typescriptCompilerApi]: {
+    title: 'Use is-kit with the TypeScript Compiler API | is-kit',
+    description:
+      'Compose TypeScript Compiler API node refinements and safely narrow required, optional, indexed, and nested AST children with is-kit.'
+  },
   [GUIDE_PATHS.validateUnknown]: {
     title: 'Validate unknown in TypeScript Without a Schema Library | is-kit',
     description:

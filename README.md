@@ -227,6 +227,7 @@ If you are new to the library, these are the pieces to remember:
 - `define<T>(fn)` turns a boolean check into a typed guard.
 - `lazy(factory)` defers a guard definition so recursive structures can refer to themselves.
 - `predicateToRefine(fn)` upgrades an existing predicate so it can participate in narrowing chains.
+- `refineKey(key, guard)` carries a child refinement back onto its parent type.
 - `struct({...})` builds an object-shape guard.
 - `safeParse(guard, value)` gives you a small tagged result object.
 - `assert(guard, value)` throws if the value does not match.
@@ -358,7 +359,28 @@ const isTree: Predicate<Tree> = lazy(() =>
 
 `lazy` does not detect circular references in the input value.
 
-### 7. Handle null and undefined explicitly
+### 7. Refine properties on existing types
+
+Use the property helpers when an object is already typed and one child value
+needs additional narrowing.
+
+```ts
+import { isString, refineDefinedKey, refineIndex, refineKey } from 'is-kit';
+
+const hasStringValue = refineKey('value', isString);
+const hasDefinedStringLabel = refineDefinedKey('label', isString);
+const hasStringAtZero = refineIndex(0, isString);
+```
+
+- `refineKey` refines one required property.
+- `refineDefinedKey` returns `false` for a missing or `undefined` property.
+- `refineIndex` returns `false` for an out-of-bounds, sparse, or `undefined`
+  element.
+
+Each key or index must identify one concrete runtime location. This keeps one
+successful lookup from incorrectly narrowing multiple properties.
+
+### 8. Handle null and undefined explicitly
 
 Use the nullish helpers to say exactly what is allowed.
 
@@ -392,7 +414,7 @@ Use `isNil` for a direct nullish check instead of hand-rolling
 `isNull(x) || isUndefined(x)`. Use `isNotNil` for the inverse check or to
 remove nullish values while preserving `Array.prototype.filter` narrowing.
 
-### 8. Parse or assert unknown input
+### 9. Parse or assert unknown input
 
 Use `safeParse` when you want a result object, and `assert` when invalid data should stop execution.
 
@@ -411,7 +433,7 @@ assert(isString, input, 'Expected a string');
 input.toUpperCase();
 ```
 
-### 9. Decode and validate JSON input
+### 10. Decode and validate JSON input
 
 Use `safeJsonParse` at a JSON text boundary. It decodes the text, treats the
 result as `unknown`, and only returns the value after the guard accepts it.
@@ -443,7 +465,7 @@ if (result.valid) {
 coercion and does not depend on a transport or schema format such as HTTP or
 OpenAPI.
 
-### 10. Narrow object keys
+### 11. Narrow object keys
 
 Use key helpers when the important part of a value is one property.
 
@@ -555,7 +577,7 @@ The library is organized around a few small building blocks:
 
 - **Primitives**: `isString`, `isNumber`, `isBoolean`, `isInteger`, ...
 - **Composition**: `define`, `and`, `andAll`, `or`, `not`, `oneOf`
-- **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`
+- **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`, `refineKey`, `refineDefinedKey`, `refineIndex`
 - **Collections**: `arrayOf`, `nonEmptyArrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
 - **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
 - **Nullish handling**: `isNil`, `isNotNil`, `nullable`, `nonNull`, `nullish`, `optional`, `required`
@@ -603,6 +625,7 @@ For detailed API pages and more examples, see:
 
 - [Practical guides](https://is-kit.dev/guides)
 - [Keep hand-written type guards in sync with TypeScript types](https://is-kit.dev/guides/keep-type-guards-in-sync)
+- [Use is-kit with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)
 - [Validate unknown without a schema library](https://is-kit.dev/guides/validate-unknown-without-schema-library)
 - [API reference](https://is-kit.dev/api-reference)
 - [Documentation home](https://is-kit.dev/)

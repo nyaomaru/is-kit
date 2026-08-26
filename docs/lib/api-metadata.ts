@@ -10,6 +10,7 @@ type ApiMetadataCopy = {
 export const API_REFERENCE_PATHS = {
   index: '/api-reference',
   define: '/api-reference/define',
+  lazy: '/api-reference/lazy',
   equals: '/api-reference/equals',
   logic: '/api-reference/logic',
   parse: '/api-reference/parse',
@@ -45,6 +46,11 @@ const API_METADATA = {
     description:
       'Create reusable TypeScript type guards from boolean predicates with define while preserving natural type narrowing.'
   },
+  [API_REFERENCE_PATHS.lazy]: {
+    title: 'lazy — Recursive TypeScript Type Guards | is-kit',
+    description:
+      'Define recursive TypeScript type guards with lazy initialization and a cached predicate factory.'
+  },
   [API_REFERENCE_PATHS.equals]: {
     title: 'equals — Type-Safe Equality Guards | is-kit',
     description:
@@ -71,9 +77,9 @@ const API_METADATA = {
       'Check and compose nullish values with isNil, isNotNil, nullable, optional, required, and nonNull TypeScript guards.'
   },
   [API_REFERENCE_PATHS.key]: {
-    title: 'hasKey, hasKeys, and narrowKeyTo | is-kit',
+    title: 'Key and Property Refinement Helpers | is-kit',
     description:
-      'Check object keys and narrow property values safely in TypeScript with hasKey, hasKeys, and narrowKeyTo.'
+      'Check object keys and safely narrow required, optional, and indexed child values with refineKey, refineDefinedKey, and refineIndex.'
   },
   [API_REFERENCE_PATHS.primitive]: {
     title: 'Primitive Type Guards for TypeScript | is-kit',

@@ -5,6 +5,7 @@ export const apiSections: SidebarSection[] = [
     title: 'Core',
     items: [
       { href: '/api-reference/define', label: 'define' },
+      { href: '/api-reference/lazy', label: 'lazy' },
       { href: '/api-reference/equals', label: 'equals' },
       { href: '/api-reference/logic', label: 'logic' },
       { href: '/api-reference/parse', label: 'parse' },
