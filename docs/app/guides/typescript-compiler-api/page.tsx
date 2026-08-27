@@ -55,6 +55,27 @@ const declarations = nodes.filter(isNamedDeclaration);
 // (ts.ClassDeclaration | ts.FunctionDeclaration |
 //  ts.VariableDeclaration)[]`;
 
+const reusableContexts = `import * as ts from 'typescript';
+import { and, refineKey } from 'is-kit';
+
+const isIdentifierNamedJsxAttribute = and(
+  ts.isJsxAttribute,
+  refineKey('name', ts.isIdentifier),
+);
+
+declare const attributes: readonly ts.JsxAttributeLike[];
+
+const attribute = attributes.find(isIdentifierNamedJsxAttribute);
+// (ts.JsxAttribute & { name: ts.Identifier }) | undefined
+
+function visit(node: ts.Node): void {
+  if (isIdentifierNamedJsxAttribute(node)) {
+    node.name.text;
+  }
+
+  ts.forEachChild(node, visit);
+}`;
+
 const optionalChild = `import * as ts from 'typescript';
 import { refineDefinedKey } from 'is-kit';
 
@@ -164,6 +185,19 @@ export default function TypeScriptCompilerApiGuidePage() {
           The resulting functions remain ordinary type predicates. Reuse them in
           branches, visitors, <code>filter</code>, <code>find</code>, or other
           APIs that understand TypeScript predicates.
+        </Paragraph>
+      </GuideSection>
+
+      <GuideSection title='Reuse a refined node in find and visitors'>
+        <Paragraph>
+          A named guard can move between collection methods and AST traversal
+          without losing its refined child type. This is especially useful for
+          repeated JSX attribute checks.
+        </Paragraph>
+        <CodeBlock code={reusableContexts} language='ts' />
+        <Paragraph>
+          The same predicate narrows the result returned by <code>find</code>{' '}
+          and the current node inside the visitor branch.
         </Paragraph>
       </GuideSection>
 
@@ -280,6 +314,24 @@ export default function TypeScriptCompilerApiGuidePage() {
           <li>It does not detect cycles or control AST traversal.</li>
           <li>It does not replace a clear one-off inline condition.</li>
         </GuideList>
+      </GuideSection>
+
+      <GuideSection title='TypeScript 7 Compiler API compatibility'>
+        <Paragraph>
+          TypeScript 7 can type-check is-kit declarations, but TypeScript 7.0
+          does not ship the legacy JavaScript Compiler API used by the examples
+          in this guide. API-based tooling should keep the TypeScript 6 API
+          available through the official{' '}
+          <TextLink href='https://www.npmjs.com/package/@typescript/typescript6'>
+            @typescript/typescript6 compatibility package
+          </TextLink>
+          .
+        </Paragraph>
+        <Paragraph>
+          This is a TypeScript 7 platform transition rather than an is-kit
+          runtime limitation. is-kit itself has no TypeScript runtime or peer
+          dependency.
+        </Paragraph>
       </GuideSection>
 
       <GuideSection title='Summary' className='border-t pt-8'>

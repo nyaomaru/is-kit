@@ -33,6 +33,10 @@ run = "pnpm test"
 description = "Run tsd type tests"
 run = "pnpm test:types"
 
+[tasks.test-typescript-compat]
+description = "Compile the packed declarations with one TypeScript version"
+run = "pnpm test:typescript-compat"
+
 [tasks.test-package]
 description = "Smoke-test the packed npm artifact"
 run = "pnpm test:package"
