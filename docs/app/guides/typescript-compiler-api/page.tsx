@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -118,6 +120,17 @@ export default function TypeScriptCompilerApiGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='TypeScript Compiler API'
+        media={
+          <Image
+            src='/iskit_guide3.png'
+            alt=''
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='Using is-kit with the TypeScript Compiler API'
         description='Compose ts.isX refinements directly, lift child-node checks onto their parents, and preserve precise AST narrowing without TypeScript-specific adapters.'
       />
