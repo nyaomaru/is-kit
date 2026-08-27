@@ -17,3 +17,25 @@ jobs:
         run: mise run build
       - name: Run type tests
         run: mise run test-types
+
+  compatibility:
+    name: TypeScript ${{ matrix.typescript }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        typescript:
+          - '5.7'
+          - '5.8'
+          - '5.9'
+          - '6.0'
+          - '7.0'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+      - name: Build package
+        run: mise run build
+      - name: Test published declarations
+        run: pnpm test:typescript-compat ${{ matrix.typescript }}

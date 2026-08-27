@@ -18,6 +18,7 @@
   "scripts": {
     "test": "jest",
     "test:types": "tsd && tsc -p tests-d/tsconfig.property-refinement.json",
+    "test:typescript-compat": "node tests/typescript-compatibility.mjs",
     "test:package": "node tests/package-smoke.mjs",
     "test:package:vlt": "node tests/vlt-package-smoke.mjs",
     "lint": "oxlint .",

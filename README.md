@@ -79,6 +79,14 @@ vlt install is-kit
 ```
 
 ESM and CJS builds are available for npm consumers, and bundled types are included.
+The published declarations support TypeScript 5.7 and newer. CI compiles the
+packed package against every TypeScript minor from 5.7 through the current
+stable release.
+
+TypeScript 7 can type-check is-kit declarations, but TypeScript 7.0 does not
+ship the legacy JavaScript Compiler API. Tools that need that API can follow
+the official [TypeScript 7 side-by-side guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6-0)
+and use `@typescript/typescript6` for programmatic access.
 
 vlt requires registry configuration before installing a package by name. Run
 `vlt setup` once if a registry has not been configured yet.
