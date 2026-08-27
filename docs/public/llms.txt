@@ -50,12 +50,42 @@ const names: Array<string | null | undefined> = ['Ada', null, undefined];
 const presentNames = names.filter(isNotNil); // string[]
 ```
 
+Refine one child on an existing typed value:
+
+```ts
+import { isString, refineDefinedKey, refineIndex, refineKey } from 'is-kit';
+
+const hasStringValue = refineKey('value', isString);
+const hasDefinedStringLabel = refineDefinedKey('label', isString);
+const hasStringAtZero = refineIndex(0, isString);
+```
+
+Use `lazy` when a recursive guard must refer to itself:
+
+```ts
+import { arrayOf, isString, lazy, typedStruct } from 'is-kit';
+import type { Predicate } from 'is-kit';
+
+type Tree = {
+  readonly value: string;
+  readonly children: readonly Tree[];
+};
+
+const isTree: Predicate<Tree> = lazy(() =>
+  typedStruct<Tree>()({
+    value: isString,
+    children: arrayOf(isTree)
+  })
+);
+```
+
 ## Documentation
 
 - [Documentation](https://is-kit.dev/en)
 - [Practical guides](https://is-kit.dev/guides)
 - [Filter null and undefined from arrays in TypeScript](https://is-kit.dev/guides/filter-null-and-undefined)
 - [Keep hand-written type guards in sync with TypeScript types](https://is-kit.dev/guides/keep-type-guards-in-sync)
+- [Use is-kit with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)
 - [Validate unknown without a schema library](https://is-kit.dev/guides/validate-unknown-without-schema-library)
 - [API reference](https://is-kit.dev/api-reference)
 - [README and usage guide](https://github.com/nyaomaru/is-kit#readme)

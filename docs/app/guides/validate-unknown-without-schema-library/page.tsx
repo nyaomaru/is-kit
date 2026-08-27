@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -162,6 +164,17 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Validate unknown'
+        media={
+          <Image
+            src='/iskit_guide4.png'
+            alt=''
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='How to Validate unknown in TypeScript Without a Schema Library'
         description='Keep untrusted values unknown, compose the runtime checks you need, and narrow them with a small tagged result.'
       />
