@@ -58,6 +58,8 @@ export default function EqualsPage() {
           <Heading variant='h2'>equalsBy / equalsKey</Heading>
           <Paragraph>
             Compare by derived values or by property keys when building guards.
+            <code>equalsKey</code> narrows a singleton literal property; union
+            and broad keys remain runtime checks with object-only narrowing.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleEqualsByAndKey} />

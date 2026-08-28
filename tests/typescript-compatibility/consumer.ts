@@ -1,5 +1,15 @@
 import * as ts from 'typescript-api';
-import { and, oneOf, refineDefinedKey, refineIndex, refineKey } from 'is-kit';
+import {
+  and,
+  equalsKey,
+  hasKey,
+  hasKeys,
+  narrowKeyTo,
+  oneOf,
+  refineDefinedKey,
+  refineIndex,
+  refineKey
+} from 'is-kit';
 
 // =============================================
 // describe: published declaration compatibility
@@ -85,6 +95,44 @@ declare const broadKey: string;
 declare const unionKey: 'expression' | 'arguments';
 declare const patternedKey: `child-${string}`;
 declare const brandedNumberKey: number & { readonly brand: 'property-key' };
+
+// it: keeps multi-value key helpers callable without over-narrowing
+type Pair = { readonly left: number; readonly right: number };
+declare const isPair: (value: unknown) => value is Pair;
+declare const selectedPairKey: 'left' | 'right';
+const hasSelectedKey = hasKey(selectedPairKey);
+const hasSelectedKeys = hasKeys(selectedPairKey);
+const selectedKeyEqualsValue = equalsKey(selectedPairKey, 1);
+const selectedValueEqualsOne = narrowKeyTo(isPair, selectedPairKey)(1);
+
+declare let unknownValue: unknown;
+if (hasSelectedKey(unknownValue)) {
+  const objectValue: object = unknownValue;
+  void objectValue;
+  // @ts-expect-error: A union key does not prove that left exists.
+  const left = unknownValue.left;
+  void left;
+}
+
+if (hasSelectedKeys(unknownValue)) {
+  // @ts-expect-error: A union argument checks one runtime key, not both.
+  const right = unknownValue.right;
+  void right;
+}
+
+if (selectedKeyEqualsValue(unknownValue)) {
+  // @ts-expect-error: Equality at one selected key does not narrow left.
+  const left = unknownValue.left;
+  void left;
+}
+
+if (selectedValueEqualsOne(unknownValue)) {
+  const pair: Pair = unknownValue;
+  void pair;
+  // @ts-expect-error: Neither property is known to equal the target literal.
+  const left: 1 = unknownValue.left;
+  void left;
+}
 
 // @ts-expect-error: A broad string does not identify one property.
 refineKey(broadKey, ts.isIdentifier);

@@ -111,7 +111,9 @@ export default function KeyPage() {
           <Heading variant='h2'>hasKey</Heading>
           <Paragraph>
             Narrow an unknown value to an object that owns a specific key. Handy
-            before custom refinements or discriminated-union checks.
+            before custom refinements or discriminated-union checks. A singleton
+            literal key narrows that property; a multi-value key domain narrows
+            only to <code>object</code>.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleHasKey} />
@@ -122,7 +124,8 @@ export default function KeyPage() {
           <Paragraph>
             Narrow an unknown value to an object that owns all specified keys.
             Useful as a compact pre-check before discriminated-union
-            refinements.
+            refinements. Key-specific narrowing requires every argument to be a
+            singleton literal key.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleHasKeys} />
@@ -132,7 +135,8 @@ export default function KeyPage() {
           <Heading variant='h2'>narrowKeyTo</Heading>
           <Paragraph>
             Build reusable guards that narrow a property to specific literal
-            values.
+            values. A union or broad key remains callable as a runtime check but
+            preserves only the base guard type.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleNarrowKeyTo} />
@@ -174,12 +178,17 @@ export default function KeyPage() {
         <CodeBlock language='ts' code={sampleRefineIndex} />
       </Stack>
       <Stack variant='section' gap='sm'>
-        <Heading variant='h2'>One checked location</Heading>
+        <Heading variant='h2'>Key-specific narrowing</Heading>
         <Paragraph>
-          Property keys and indices must identify one concrete runtime location.
-          Broad keys, unions, template-literal patterns, and branded multi-value
-          key domains are rejected so one lookup cannot claim that several
-          properties were checked.
+          Precise property narrowing requires each key argument to identify one
+          concrete runtime location. The presence and equality helpers keep
+          broad keys, unions, template-literal patterns, and branded multi-value
+          domains usable, but safely omit key-specific narrowing.
+        </Paragraph>
+        <Paragraph>
+          The <code>refine*</code> helpers reject those multi-value domains
+          because their known-input contract must carry one checked child value
+          back onto one concrete location of the parent type.
         </Paragraph>
         <Paragraph>
           For nested Compiler API examples, continue with{' '}

@@ -1,7 +1,14 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
 import { define } from './define';
+import type { SinglePropertyKey } from './key-internals';
 import { isObject } from './object';
+
+type EqualsKeyPredicate<K extends PropertyKey, T> = [
+  SinglePropertyKey<K>
+] extends [never]
+  ? Predicate<object>
+  : <A extends Record<K, unknown>>(input: unknown) => input is A & Record<K, T>;
 
 // WHY: Control-flow analysis does not preserve the narrowed target of a generic
 // predicate like `F extends Predicate<unknown>` at the call site. Re-expressing
@@ -61,23 +68,24 @@ export function equalsBy<F extends Predicate<unknown>, K>(
 /**
  * Creates a guard that matches objects having a key equal to the target value.
  *
- * @param key Property key to compare.
+ * @param key Property key to compare; singleton literals narrow that property.
  * @param target Value to compare using `Object.is`.
- * @returns Predicate narrowing to objects where `key` exists and equals `target`.
+ * @returns Predicate with key-specific narrowing for a singleton literal key,
+ * or object-only narrowing for a multi-value key domain.
  */
-export function equalsKey<K extends PropertyKey, const T>(
+export function equalsKey<const K extends PropertyKey, const T>(
   key: K,
   target: T
-): <A extends Record<K, unknown>>(input: unknown) => input is A & Record<K, T> {
-  const hasMatchingKey = define<Record<K, T>>((input) => {
+): EqualsKeyPredicate<K, T>;
+export function equalsKey(
+  key: PropertyKey,
+  target: unknown
+): Predicate<object> {
+  return define<object>((input) => {
     return (
       isObject(input) &&
       hasOwnPropertyKey(input, key) &&
       Object.is(input[key], target)
     );
   });
-
-  return <A extends Record<K, unknown>>(
-    input: unknown
-  ): input is A & Record<K, T> => hasMatchingKey(input);
 }

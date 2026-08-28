@@ -520,6 +520,11 @@ if (isAdmin(value)) {
 }
 ```
 
+Singleton literal keys preserve key-specific narrowing. Union, broad, patterned,
+or branded key domains remain usable as runtime checks, but they narrow only to
+an object—or to the base guard type for `narrowKeyTo`—because one runtime key
+cannot prove that every possible key was checked.
+
 ## 🌍 Real-world use cases
 
 Here are the kinds of problems `is-kit` is especially good at solving:
