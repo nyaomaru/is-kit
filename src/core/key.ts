@@ -115,8 +115,8 @@ export function refineDefinedKey<
 }
 
 /**
- * Refines one defined element of a readonly array.
- * @param index Non-negative integer literal identifying the element.
+ * Refines one defined own element of a readonly array.
+ * @param index Non-negative integer literal identifying the own element.
  * @param refinement Refinement applied only to a defined element.
  * @returns Refinement that narrows the selected index.
  * @example
@@ -140,8 +140,12 @@ export function refineIndex<
   ): value is readonly ElementInput[] & {
     readonly [K in Index]: Exclude<ElementOutput, undefined>;
   } => {
-    // WHY: Array access can produce undefined through bounds, sparse holes, or
-    // explicit values even when noUncheckedIndexedAccess is disabled.
+    // WHY: An own-key check distinguishes actual elements from out-of-bounds
+    // access and sparse holes, including holes shadowed by inherited values.
+    if (!hasOwnPropertyKey(value, index)) return false;
+
+    // WHY: Explicit undefined values remain invalid even when
+    // noUncheckedIndexedAccess is disabled.
     const element = value[index];
     return element !== undefined && refinement(element);
   };

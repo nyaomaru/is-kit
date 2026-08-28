@@ -220,6 +220,14 @@ describe('key: refineDefinedKey', () => {
     expect(reads).toBe(1);
     expect(calls).toBe(1);
   });
+
+  it('uses normal property access for inherited defined properties', () => {
+    const value: { readonly name?: unknown } = Object.create({
+      name: 'inherited'
+    });
+
+    expect(hasDefinedStringName(value)).toBe(true);
+  });
 });
 
 describe('key: refineIndex', () => {
@@ -239,6 +247,23 @@ describe('key: refineIndex', () => {
     ['an explicitly undefined element', [undefined]]
   ])('rejects %s without invoking the refinement', (_label, value) => {
     let calls = 0;
+    const refinement = refineIndex(
+      0,
+      (candidate: unknown): candidate is string => {
+        calls += 1;
+        return isString(candidate);
+      }
+    );
+
+    expect(refinement(value)).toBe(false);
+    expect(calls).toBe(0);
+  });
+
+  it('rejects an inherited value at a sparse index', () => {
+    let calls = 0;
+    const prototype = ['inherited'];
+    const value = new Array<unknown>(1);
+    Object.setPrototypeOf(value, prototype);
     const refinement = refineIndex(
       0,
       (candidate: unknown): candidate is string => {

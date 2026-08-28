@@ -143,7 +143,8 @@ export default function KeyPage() {
           <Paragraph>
             Apply a refinement to one required property and preserve the
             narrowed property on its existing parent type. The property is read
-            once and passed to the refinement once.
+            once and passed to the refinement once. Normal property access
+            allows inherited values and accessors.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleRefineKey} />
@@ -154,7 +155,8 @@ export default function KeyPage() {
           <Paragraph>
             Require and refine one optional property. A missing property or an{' '}
             <code>undefined</code> value returns <code>false</code> without
-            invoking the supplied refinement.
+            invoking the supplied refinement. A defined inherited value is
+            accepted through normal property access.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleRefineDefinedKey} />
@@ -163,9 +165,10 @@ export default function KeyPage() {
         <Stack gap='xs'>
           <Heading variant='h2'>refineIndex</Heading>
           <Paragraph>
-            Require and refine one element of a readonly array. Out-of-bounds,
-            sparse, and <code>undefined</code> elements return{' '}
-            <code>false</code> before the supplied refinement runs.
+            Require and refine one own element of a readonly array.
+            Out-of-bounds, sparse, inherited, and <code>undefined</code>{' '}
+            elements return <code>false</code> before the supplied refinement
+            runs.
           </Paragraph>
         </Stack>
         <CodeBlock language='ts' code={sampleRefineIndex} />

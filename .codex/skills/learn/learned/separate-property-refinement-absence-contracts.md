@@ -15,6 +15,10 @@ produce a child value, but they do not share one safe runtime contract.
 - An array index may be out of bounds, a sparse hole, or explicitly contain
   `undefined`, even when `noUncheckedIndexedAccess` is disabled.
 
+Reading an index is not enough to distinguish a sparse hole from an element.
+Normal property access can resolve a numeric property inherited from the array
+prototype, causing a hole to appear defined.
+
 Collapsing these cases into one overload makes the treatment of `undefined`
 depend on overload selection. Calling a narrow-domain refinement such as a
 TypeScript Compiler API `ts.isX` function with `undefined` is outside its input
@@ -28,9 +32,23 @@ Use separate helpers with explicit semantics:
    to the supplied refinement.
 2. `refineDefinedKey` accepts an optional property, reads it once, and returns
    `false` without invoking the refinement when the value is `undefined`.
-3. `refineIndex` accepts a readonly array, reads one index once, and returns
-   `false` without invoking the refinement for an out-of-bounds, sparse, or
-   `undefined` element.
+3. `refineIndex` accepts a readonly array, requires an own property at the
+   selected index, reads that element once, and returns `false` without invoking
+   the refinement for an out-of-bounds, sparse, inherited, or `undefined`
+   element.
+
+Check ownership before reading the element:
+
+```ts
+if (!Object.hasOwn(value, index)) return false;
+
+const element = value[index];
+return element !== undefined && refinement(element);
+```
+
+Property refinements intentionally use normal property access and may accept
+inherited values or accessors. Do not extract the three helpers into one shared
+lookup path because their ownership and absence contracts differ.
 
 For optional objects, include value-level `undefined` in the constraint:
 
@@ -69,7 +87,9 @@ const isBlockStartingWithReturn = and(
 Apply this pattern whenever a combinator projects a refinement through an
 object property or collection index. Test the API with both
 `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess`, and include runtime
-assertions that the child refinement is not invoked for undefined values.
+assertions that the child refinement is not invoked for undefined values. For
+index refinements, also create a sparse array with an inherited numeric value
+and verify that the result is `false` without invoking the child refinement.
 
 Do not add a missing-value-passes variant without a separate design. Its output
 type and present-`undefined` behavior are materially different.
