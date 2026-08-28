@@ -29,11 +29,12 @@ export type KeyPresence<Key extends PropertyKey> = [
   : Record<Key, unknown>;
 
 /** Narrows concrete key arguments, or only object-ness when any may vary. */
-export type KeyPresences<Keys extends readonly PropertyKey[]> = [Keys] extends [
-  SinglePropertyKeys<Keys>
-]
-  ? Record<Keys[number], unknown>
-  : object;
+export type KeyPresences<Keys extends readonly PropertyKey[]> =
+  true extends IsUnion<Keys>
+    ? object
+    : [Keys] extends [SinglePropertyKeys<Keys>]
+      ? Record<Keys[number], unknown>
+      : object;
 
 /** Keeps only one non-negative integer literal that identifies an array index. */
 export type ArrayIndex<Index extends number> =

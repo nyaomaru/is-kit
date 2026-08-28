@@ -100,8 +100,10 @@ declare const brandedNumberKey: number & { readonly brand: 'property-key' };
 type Pair = { readonly left: number; readonly right: number };
 declare const isPair: (value: unknown) => value is Pair;
 declare const selectedPairKey: 'left' | 'right';
+declare const selectedPairKeyTuple: readonly ['left'] | readonly ['right'];
 const hasSelectedKey = hasKey(selectedPairKey);
 const hasSelectedKeys = hasKeys(selectedPairKey);
+const hasSelectedKeyTuple = hasKeys(...selectedPairKeyTuple);
 const selectedKeyEqualsValue = equalsKey(selectedPairKey, 1);
 const selectedValueEqualsOne = narrowKeyTo(isPair, selectedPairKey)(1);
 
@@ -118,6 +120,12 @@ if (hasSelectedKeys(unknownValue)) {
   // @ts-expect-error: A union argument checks one runtime key, not both.
   const right = unknownValue.right;
   void right;
+}
+
+if (hasSelectedKeyTuple(unknownValue)) {
+  // @ts-expect-error: A tuple union supplies one runtime tuple, not every key.
+  const left = unknownValue.left;
+  void left;
 }
 
 if (selectedKeyEqualsValue(unknownValue)) {

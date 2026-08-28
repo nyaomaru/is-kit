@@ -100,13 +100,19 @@ if (hasKindAndId(candidate)) {
 // it: falls back when any argument may identify multiple runtime keys
 const hasOneSelectedKey = hasKeys(selectedKey);
 const hasKindAndDynamicKey = hasKeys('kind', broadKey);
+declare const selectedKeyTuple: readonly ['kind'] | readonly ['id'];
+const hasSelectedKeyTuple = hasKeys(...selectedKeyTuple);
 
 expectType<Predicate<object>>(hasOneSelectedKey);
 expectType<Predicate<object>>(hasKindAndDynamicKey);
+expectType<Predicate<object>>(hasSelectedKeyTuple);
 expectType<Predicate<Record<'kind' | 'id', unknown>>>(
   hasKeys<readonly ['kind', 'id']>('kind', 'id')
 );
 expectType<Predicate<object>>(hasKeys<readonly ['kind' | 'id']>(selectedKey));
+expectType<Predicate<object>>(
+  hasKeys<readonly ['kind'] | readonly ['id']>(...selectedKeyTuple)
+);
 
 // it: rejects empty keys at compile time
 expectNotAssignable<Parameters<typeof hasKeys>>([]);
