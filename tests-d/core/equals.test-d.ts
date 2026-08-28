@@ -46,4 +46,25 @@ if (hasKindUser(keyRecordCandidate)) {
   expectType<'user'>(keyRecordCandidate.kind);
 }
 
+// it: keeps union and broad keys callable without narrowing unchecked keys
+declare const selectedKey: 'kind' | 'id';
+declare const broadKey: string;
+const selectedKeyEqualsUser = equalsKey(selectedKey, 'user');
+const dynamicKeyEqualsUser = equalsKey(broadKey, 'user');
+
+expectType<Predicate<object>>(selectedKeyEqualsUser);
+expectType<Predicate<object>>(dynamicKeyEqualsUser);
+expectType<
+  <A extends Record<'kind', unknown>>(
+    input: unknown
+  ) => input is A & Record<'kind', 'user'>
+>(equalsKey<'kind', 'user'>('kind', 'user'));
+expectType<Predicate<object>>(
+  equalsKey<'kind' | 'id', 'user'>(selectedKey, 'user')
+);
+
+if (selectedKeyEqualsUser(keyRecordCandidate)) {
+  expectType<object>(keyRecordCandidate);
+}
+
 // oneOfValues tests moved to tests-d/core/combinators/one-of-values.test-d.ts

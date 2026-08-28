@@ -55,6 +55,15 @@ describe('equalsKey', () => {
 
     expect(isUser(nil)).toBe(true);
   });
+
+  it('compares only the runtime-selected key from a union', () => {
+    const createSelectedKeyComparator = (key: 'kind' | 'id') =>
+      equalsKey(key, 'user');
+    const selectedKindIsUser = createSelectedKeyComparator('kind');
+
+    expect(selectedKindIsUser({ kind: 'user' })).toBe(true);
+    expect(selectedKindIsUser({ id: 'user' })).toBe(false);
+  });
 });
 
 // oneOfValues tests moved to tests/core/combinators/one-of-values.test.ts

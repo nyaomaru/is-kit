@@ -37,6 +37,15 @@ describe('key: narrowKeyTo', () => {
     expect(isGuest(admin)).toBe(false);
     expect(isTrial(admin)).toBe(false);
   });
+
+  it('checks only the runtime-selected key from a union', () => {
+    const createSelectedKeyGuard = (key: 'age' | 'role') =>
+      narrowKeyTo(isUser, key)(20);
+    const hasSelectedAge = createSelectedKeyGuard('age');
+
+    expect(hasSelectedAge({ id: '1', age: 20, role: 'guest' })).toBe(true);
+    expect(hasSelectedAge({ id: '1', age: 21, role: 'guest' })).toBe(false);
+  });
 });
 
 describe('key: hasKey', () => {
@@ -62,6 +71,14 @@ describe('key: hasKey', () => {
     const value = Object.create(null) as Record<'kind', unknown>;
     value.kind = 'guest';
     expect(hasKind(value)).toBe(true);
+  });
+
+  it('checks only the runtime-selected key from a union', () => {
+    const createSelectedKeyGuard = (key: 'kind' | 'id') => hasKey(key);
+    const hasSelectedKind = createSelectedKeyGuard('kind');
+
+    expect(hasSelectedKind({ kind: 'user' })).toBe(true);
+    expect(hasSelectedKind({ id: 1 })).toBe(false);
   });
 });
 
@@ -99,6 +116,17 @@ describe('key: hasKeys', () => {
     expect(guard({ kind: 'user', id: 1 })).toBe(false);
     expect(guard({})).toBe(false);
     expect(guard(null)).toBe(false);
+  });
+
+  it('checks only each runtime-selected key from union arguments', () => {
+    const createSelectedKeysGuard = (
+      first: 'kind' | 'id',
+      second: 'name' | 'role'
+    ) => hasKeys(first, second);
+    const hasKindAndName = createSelectedKeysGuard('kind', 'name');
+
+    expect(hasKindAndName({ kind: 'user', name: 'Ada' })).toBe(true);
+    expect(hasKindAndName({ id: 1, role: 'admin' })).toBe(false);
   });
 });
 

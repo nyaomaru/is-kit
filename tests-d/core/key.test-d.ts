@@ -40,6 +40,27 @@ if (isGuest(candidate)) {
   expectType<'guest'>(candidate.role);
 }
 
+// it: keeps union and broad keys callable without narrowing every candidate key
+type Pair = Readonly<{ left: number; right: number }>;
+declare const isPair: Predicate<Pair>;
+declare const selectedPairKey: 'left' | 'right';
+declare const broadDictionaryKey: string;
+declare const isNumberDictionary: Predicate<Readonly<Record<string, number>>>;
+
+const hasSelectedOne = narrowKeyTo(isPair, selectedPairKey)(1);
+const hasDynamicOne = narrowKeyTo(isNumberDictionary, broadDictionaryKey)(1);
+
+expectType<Predicate<Pair>>(hasSelectedOne);
+expectType<Predicate<Readonly<Record<string, number>>>>(hasDynamicOne);
+expectType<Predicate<Pair>>(
+  narrowKeyTo<Pair, 'left' | 'right'>(isPair, selectedPairKey)(1)
+);
+
+if (hasSelectedOne(candidate)) {
+  expectType<number>(candidate.left);
+  expectType<number>(candidate.right);
+}
+
 // =============================================
 // describe: hasKey
 // =============================================
@@ -48,6 +69,21 @@ const hasKind = hasKey('kind');
 if (hasKind(candidate)) {
   expectType<Record<'kind', unknown>>(candidate);
   expectType<unknown>(candidate.kind);
+}
+
+// it: keeps dynamic key checks callable without claiming every possible key
+declare const selectedKey: 'kind' | 'id';
+declare const broadKey: string;
+const hasSelectedKey = hasKey(selectedKey);
+const hasDynamicKey = hasKey(broadKey);
+
+expectType<Predicate<object>>(hasSelectedKey);
+expectType<Predicate<object>>(hasDynamicKey);
+expectType<Predicate<Record<'kind', unknown>>>(hasKey<'kind'>('kind'));
+expectType<Predicate<object>>(hasKey<'kind' | 'id'>(selectedKey));
+
+if (hasSelectedKey(candidate)) {
+  expectType<object>(candidate);
 }
 
 // =============================================
@@ -60,6 +96,23 @@ if (hasKindAndId(candidate)) {
   expectType<unknown>(candidate.kind);
   expectType<unknown>(candidate.id);
 }
+
+// it: falls back when any argument may identify multiple runtime keys
+const hasOneSelectedKey = hasKeys(selectedKey);
+const hasKindAndDynamicKey = hasKeys('kind', broadKey);
+declare const selectedKeyTuple: readonly ['kind'] | readonly ['id'];
+const hasSelectedKeyTuple = hasKeys(...selectedKeyTuple);
+
+expectType<Predicate<object>>(hasOneSelectedKey);
+expectType<Predicate<object>>(hasKindAndDynamicKey);
+expectType<Predicate<object>>(hasSelectedKeyTuple);
+expectType<Predicate<Record<'kind' | 'id', unknown>>>(
+  hasKeys<readonly ['kind', 'id']>('kind', 'id')
+);
+expectType<Predicate<object>>(hasKeys<readonly ['kind' | 'id']>(selectedKey));
+expectType<Predicate<object>>(
+  hasKeys<readonly ['kind'] | readonly ['id']>(...selectedKeyTuple)
+);
 
 // it: rejects empty keys at compile time
 expectNotAssignable<Parameters<typeof hasKeys>>([]);
