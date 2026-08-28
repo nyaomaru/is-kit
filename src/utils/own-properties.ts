@@ -10,10 +10,10 @@
  * @param key Property key to check.
  * @returns Whether `key` is present directly on `value`.
  */
-export const hasOwnPropertyKey = <K extends PropertyKey>(
-  value: Record<PropertyKey, unknown>,
+export const hasOwnPropertyKey = <Value extends object, K extends PropertyKey>(
+  value: Value,
   key: K
-): value is Record<K, unknown> => Object.hasOwn(value, key);
+): value is Value & Record<K, unknown> => Object.hasOwn(value, key);
 
 /**
  * Checks whether an object has every requested own property key.

@@ -380,10 +380,14 @@ const hasDefinedStringLabel = refineDefinedKey('label', isString);
 const hasStringAtZero = refineIndex(0, isString);
 ```
 
-- `refineKey` refines one required property.
+- `refineKey` refines one required property using normal property access.
 - `refineDefinedKey` returns `false` for a missing or `undefined` property.
 - `refineIndex` returns `false` for an out-of-bounds, sparse, or `undefined`
-  element.
+  own element.
+
+The property helpers accept inherited values and accessors. The index helper
+requires an own element so a sparse hole cannot pass through an inherited
+numeric property.
 
 Each key or index must identify one concrete runtime location. This keeps one
 successful lookup from incorrectly narrowing multiple properties.
