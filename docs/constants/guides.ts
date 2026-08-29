@@ -4,6 +4,7 @@ export const GUIDE_PATHS = {
   index: '/guides',
   filterNullish: '/guides/filter-null-and-undefined',
   syncTypeGuards: '/guides/keep-type-guards-in-sync',
+  heyApiTypedStruct: '/guides/validate-hey-api-generated-types',
   typescriptCompilerApi: '/guides/typescript-compiler-api',
   validateUnknown: '/guides/validate-unknown-without-schema-library'
 } as const;
@@ -31,6 +32,13 @@ export const GUIDE_ITEMS: GuideItem[] = [
     navigationLabel: 'Sync type guards',
     description:
       'Make missing, extra, and incompatible string-keyed guard fields visible when an existing object type changes.'
+  },
+  {
+    href: GUIDE_PATHS.heyApiTypedStruct,
+    title: 'Validate Hey API generated types with typedStruct',
+    navigationLabel: 'Validate Hey API types',
+    description:
+      'Keep generated response types as the source of truth while validating selected runtime payloads with small hand-written guards.'
   },
   {
     href: GUIDE_PATHS.typescriptCompilerApi,
