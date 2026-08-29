@@ -6,6 +6,111 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.14.0] - 2026-08-29
+
+### Added
+
+- add guide thumbnail by @nyaomaru in [#279](https://github.com/nyaomaru/is-kit/pull/279)
+- add property refinement helpers by @nyaomaru in [#280](https://github.com/nyaomaru/is-kit/pull/280)
+  - Why: These helpers cover required properties, optional properties, and indexed elements without conflating their different semantics.
+
+### Fixed
+
+- use OIDC for npm publishing by @nyaomaru in [#278](https://github.com/nyaomaru/is-kit/pull/278)
+  - Why: The workflow now uses Node.js 24 and npm publish, removing the long-lived NPM_TOKEN fallback.
+- require own elements in refineIndex by @nyaomaru in [#283](https://github.com/nyaomaru/is-kit/pull/283)
+- prevent key helpers from over-narrowing union key by @nyaomaru in [#284](https://github.com/nyaomaru/is-kit/pull/284)
+- use guide images in social metadata by @nyaomaru in [#286](https://github.com/nyaomaru/is-kit/pull/286)
+
+### Changed
+
+- document property refinements and lazy by @nyaomaru in [#281](https://github.com/nyaomaru/is-kit/pull/281)
+- separate key guards from property refinements by @nyaomaru in [#285](https://github.com/nyaomaru/is-kit/pull/285)
+
+### Docs
+
+- 1.13.0 by [bot] by @github-actions in [#277](https://github.com/nyaomaru/is-kit/pull/277)
+
+### Test
+
+- add TypeScript compatibility matrix by @nyaomaru in [#282](https://github.com/nyaomaru/is-kit/pull/282)
+
+### Chore
+
+- Release: 1.14.0 by [bot] by @github-actions in [#287](https://github.com/nyaomaru/is-kit/pull/287)
+
+### What's new 🚀
+
+#### Refine nested properties with reusable type guards
+
+is-kit now provides three helpers for lifting an existing refinement onto an object property or array element:
+
+- `refineKey`:  refine a required property
+- `refineDefinedKey`: refine an optional property when defined and make it required in the narrowed type
+- `refineIndex`: require and refine a defined own array element
+
+They work with any compatible TypeScript type guard, including the TypeScript Compiler API, without adding a runtime or peer dependency on TypeScript.
+
+```ts
+import * as ts from 'typescript';
+import {
+  and,
+  refineDefinedKey,
+  refineIndex,
+  refineKey
+} from 'is-kit';
+
+const isIdentifierCall = and(
+  ts.isCallExpression,
+  refineKey('expression', ts.isIdentifier)
+);
+
+const isVariableWithCallInitializer = and(
+  ts.isVariableDeclaration,
+  refineDefinedKey('initializer', ts.isCallExpression)
+);
+
+const isCallWithStringFirstArgument = and(
+  ts.isCallExpression,
+  refineKey('arguments', refineIndex(0, ts.isStringLiteral))
+);
+
+declare const node: ts.Node;
+
+if (isIdentifierCall(node)) {
+  node.expression.text;
+  // node.expression is ts.Identifier
+}
+
+if (isVariableWithCallInitializer(node)) {
+  node.initializer.expression;
+  // node.initializer is present and is ts.CallExpression
+}
+
+if (isCallWithStringFirstArgument(node)) {
+  node.arguments[0].text;
+  // node.arguments[0] is present and is ts.StringLiteral
+}
+```
+
+The helpers preserve the original parent type while narrowing only the property or element checked at runtime.
+
+`refineDefinedKey` returns false for missing or undefined properties without passing those values to the supplied refinement. `refineIndex` does the same for out-of-bounds indices, sparse holes, inherited indexed values, and explicitly undefined elements.
+
+For these property-refinement helpers, keys must identify one concrete property, and indices must be non-negative integer literals. Broad keys, unions, template-literal patterns, and branded multi-value key domains are rejected at compile time so one runtime lookup cannot incorrectly narrow multiple locations.
+
+#### Safer narrowing for dynamic keys
+
+`hasKey`, `hasKeys`, `equalsKey`, and `narrowKeyTo` now provide key-specific narrowing only when the key identifies one concrete property.
+
+Union and broad keys remain usable as runtime checks, but safely fall back to object-only narrowing—or preserve the base guard type for `narrowKeyTo` because checking one runtime-selected key cannot prove that every possible key was checked.
+
+The published declarations are tested with TypeScript 5.7 through 7.0.
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.13.0...v1.14.0
+
+[v1.14.0]: https://github.com/nyaomaru/is-kit/compare/v1.13.0...v1.14.0
+
 ## [v1.13.0] - 2026-08-22
 
 ### Added
@@ -1619,7 +1724,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
