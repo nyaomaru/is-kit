@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -130,6 +132,17 @@ export default function ValidateHeyApiGeneratedTypesGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Validate Hey API types'
+        media={
+          <Image
+            src='/iskit_guide5.png'
+            alt=''
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='How to Validate Hey API Generated Types with typedStruct'
         description='Keep generated TypeScript types as the source of truth while adding small runtime guards at the API boundaries that need them.'
       />

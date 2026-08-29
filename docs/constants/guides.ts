@@ -34,13 +34,6 @@ export const GUIDE_ITEMS: GuideItem[] = [
       'Make missing, extra, and incompatible string-keyed guard fields visible when an existing object type changes.'
   },
   {
-    href: GUIDE_PATHS.heyApiTypedStruct,
-    title: 'Validate Hey API generated types with typedStruct',
-    navigationLabel: 'Validate Hey API types',
-    description:
-      'Keep generated response types as the source of truth while validating selected runtime payloads with small hand-written guards.'
-  },
-  {
     href: GUIDE_PATHS.typescriptCompilerApi,
     title: 'Use is-kit with the TypeScript Compiler API',
     navigationLabel: 'TypeScript Compiler API',
@@ -53,6 +46,13 @@ export const GUIDE_ITEMS: GuideItem[] = [
     navigationLabel: 'Validate unknown',
     description:
       'Validate untrusted TypeScript values with small composable guards and a lightweight tagged result.'
+  },
+  {
+    href: GUIDE_PATHS.heyApiTypedStruct,
+    title: 'Validate Hey API generated types with typedStruct',
+    navigationLabel: 'Validate Hey API types',
+    description:
+      'Keep generated response types as the source of truth while validating selected runtime payloads with small hand-written guards.'
   }
 ];
 
