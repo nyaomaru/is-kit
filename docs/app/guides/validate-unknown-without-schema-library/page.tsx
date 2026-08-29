@@ -167,7 +167,7 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
         media={
           <Image
             src='/iskit_guide4.png'
-            alt=''
+            alt='guide4 thumbnail'
             width={1000}
             height={420}
             sizes='(max-width: 896px) calc(100vw - 2rem), 864px'

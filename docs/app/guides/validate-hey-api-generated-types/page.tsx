@@ -135,7 +135,7 @@ export default function ValidateHeyApiGeneratedTypesGuidePage() {
         media={
           <Image
             src='/iskit_guide5.png'
-            alt=''
+            alt='guide5 thumbnail'
             width={1000}
             height={420}
             sizes='(max-width: 896px) calc(100vw - 2rem), 864px'

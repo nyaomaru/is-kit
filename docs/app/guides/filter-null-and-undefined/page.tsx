@@ -104,7 +104,7 @@ export default function FilterNullAndUndefinedGuidePage() {
         media={
           <Image
             src='/iskit_guide1.png'
-            alt=''
+            alt='guide1 thumbnail'
             width={1000}
             height={420}
             sizes='(max-width: 896px) calc(100vw - 2rem), 864px'

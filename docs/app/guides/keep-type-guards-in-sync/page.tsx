@@ -167,7 +167,7 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         media={
           <Image
             src='/iskit_guide2.png'
-            alt=''
+            alt='guide2 thumbnail'
             width={1000}
             height={420}
             sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
