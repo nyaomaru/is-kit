@@ -29,6 +29,11 @@ const GUIDE_METADATA = {
     image: '/iskit_guide2.png',
     imageAlt: 'Keep hand-written type guards in sync with TypeScript types'
   },
+  [GUIDE_PATHS.heyApiTypedStruct]: {
+    title: 'Validate Hey API Generated Types with typedStruct | is-kit',
+    description:
+      'Validate selected Hey API generated response types at runtime with typedStruct while keeping generated TypeScript types as the source of truth.'
+  },
   [GUIDE_PATHS.typescriptCompilerApi]: {
     title: 'Use is-kit with the TypeScript Compiler API | is-kit',
     description:

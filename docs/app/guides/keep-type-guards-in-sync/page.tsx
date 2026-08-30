@@ -167,7 +167,7 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         media={
           <Image
             src='/iskit_guide2.png'
-            alt=''
+            alt='guide2 thumbnail'
             width={1000}
             height={420}
             sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
@@ -378,7 +378,7 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         <Paragraph>
           For the complete contract and additional examples, see the{' '}
           <TextLink href={API_REFERENCE_PATHS.typedStruct}>
-            typedStruct API reference
+            <i>typedStruct API reference</i>
           </TextLink>
           .
         </Paragraph>

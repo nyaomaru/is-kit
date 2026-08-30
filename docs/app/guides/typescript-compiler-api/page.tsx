@@ -52,8 +52,7 @@ const strings = nodes.filter(isStringLike);
 // (ts.StringLiteral | ts.NoSubstitutionTemplateLiteral)[]
 
 const declarations = nodes.filter(isNamedDeclaration);
-// (ts.ClassDeclaration | ts.FunctionDeclaration |
-//  ts.VariableDeclaration)[]`;
+// (ts.ClassDeclaration | ts.FunctionDeclaration | ts.VariableDeclaration)[]`;
 
 const reusableContexts = `import * as ts from 'typescript';
 import { and, refineKey } from 'is-kit';
@@ -144,7 +143,7 @@ export default function TypeScriptCompilerApiGuidePage() {
         media={
           <Image
             src='/iskit_guide3.png'
-            alt=''
+            alt='guide3 thumbnail'
             width={1000}
             height={420}
             sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
@@ -321,9 +320,9 @@ export default function TypeScriptCompilerApiGuidePage() {
           TypeScript 7 can type-check is-kit declarations, but TypeScript 7.0
           does not ship the legacy JavaScript Compiler API used by the examples
           in this guide. API-based tooling should keep the TypeScript 6 API
-          available through the official{' '}
+          available through the official
           <TextLink href='https://www.npmjs.com/package/@typescript/typescript6'>
-            @typescript/typescript6 compatibility package
+            <i>@typescript/typescript6 compatibility package</i>
           </TextLink>
           .
         </Paragraph>
@@ -353,12 +352,14 @@ export default function TypeScriptCompilerApiGuidePage() {
           </li>
         </GuideList>
         <Paragraph>
-          See the{' '}
-          <TextLink href={API_REFERENCE_PATHS.key}>key API reference</TextLink>{' '}
-          for the complete property contracts and the{' '}
+          See the
+          <TextLink href={API_REFERENCE_PATHS.key}>
+            <i>key API reference</i>
+          </TextLink>
+          for the complete property contracts and the
           <TextLink href={API_REFERENCE_PATHS.logic}>
-            logic API reference
-          </TextLink>{' '}
+            <i>logic API reference</i>
+          </TextLink>
           for known-domain composition.
         </Paragraph>
       </GuideSection>
