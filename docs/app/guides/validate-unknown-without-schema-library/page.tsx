@@ -181,12 +181,12 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
 
       <GuideSection title='The quick answer'>
         <Paragraph>
-          Build a reusable object guard, then pass it and the unknown value to{' '}
+          Build a reusable object guard, then pass it and the unknown value to
           <code>safeParse</code>.
         </Paragraph>
         <CodeBlock code={quickAnswer} language='ts' />
         <Paragraph>
-          The guard performs the runtime checks. <code>safeParse</code> returns{' '}
+          The guard performs the runtime checks. <code>safeParse</code> returns
           <code>{'{ valid: true, value }'}</code> or{' '}
           <code>{'{ valid: false }'}</code>, so TypeScript can narrow the result
           with an ordinary branch.
@@ -216,7 +216,7 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
 
       <GuideSection title='A type assertion is not validation'>
         <Paragraph>
-          The shortest way past <code>unknown</code> is often an <code>as</code>{' '}
+          The shortest way past <code>unknown</code> is often an <code>as</code>
           assertion. It is also the easiest way to move the risk somewhere less
           visible.
         </Paragraph>
@@ -242,7 +242,7 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           reuse it at another boundary, or compose it into a larger guard.
         </Paragraph>
         <Paragraph>
-          <code>optionalKey</code> means the property may be absent.{' '}
+          <code>optionalKey</code> means the property may be absent.
           <code>nullable</code> means an existing value may be <code>null</code>
           . Keeping those meanings separate makes the runtime contract explicit.
         </Paragraph>
@@ -250,7 +250,7 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
 
       <GuideSection title='Use a direct guard or a tagged result'>
         <Paragraph>
-          Guards already work directly in TypeScript control flow. Use{' '}
+          Guards already work directly in TypeScript control flow. Use
           <code>safeParse</code> when the validated value needs to move through
           a result-oriented branch or function boundary.
         </Paragraph>
@@ -263,8 +263,8 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
 
       <GuideSection title='Validate JSON at the decode boundary'>
         <Paragraph>
-          <code>JSON.parse</code> returns <code>any</code>.{' '}
-          <code>safeJsonParse</code> contains that unsafe result as{' '}
+          <code>JSON.parse</code> returns <code>any</code>.
+          <code>safeJsonParse</code> contains that unsafe result as
           <code>unknown</code> and applies your guard before returning it.
         </Paragraph>
         <CodeBlock code={jsonBoundary} language='ts' />
@@ -283,7 +283,7 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
         </Paragraph>
         <CodeBlock code={exactObject} language='ts' />
         <Paragraph>
-          Exact mode rejects extra own enumerable string keys. It follows{' '}
+          Exact mode rejects extra own enumerable string keys. It follows
           <code>Object.keys</code> semantics, so symbol properties are outside
           this check.
         </Paragraph>
@@ -362,7 +362,7 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           <li>Use guards instead of assertions when runtime trust matters.</li>
           <li>Compose small predicates into the payload shape you accept.</li>
           <li>
-            Use <code>safeParse</code> for a tagged result and{' '}
+            Use <code>safeParse</code> for a tagged result and
             <code>safeJsonParse</code> at JSON text boundaries.
           </li>
           <li>
@@ -370,10 +370,15 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
           </li>
         </GuideList>
         <Paragraph>
-          Continue with the{' '}
-          <TextLink href={API_REFERENCE_PATHS.parse}>parse</TextLink> and{' '}
-          <TextLink href={API_REFERENCE_PATHS.struct}>struct</TextLink> API
-          references for the complete contracts.
+          Continue with the
+          <TextLink href={API_REFERENCE_PATHS.parse}>
+            <i>parse</i>
+          </TextLink>
+          and
+          <TextLink href={API_REFERENCE_PATHS.struct}>
+            <i>struct</i>
+          </TextLink>
+          API references for the complete contracts.
         </Paragraph>
       </GuideSection>
     </GuideArticle>

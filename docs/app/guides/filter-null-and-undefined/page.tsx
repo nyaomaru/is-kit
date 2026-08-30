@@ -210,7 +210,7 @@ export default function FilterNullAndUndefinedGuidePage() {
           <code>nullish</code>, <code>optional</code>, and <code>required</code>
           —see the{' '}
           <TextLink href={API_REFERENCE_PATHS.nullish}>
-            nullish API reference
+            <i>nullish API reference</i>
           </TextLink>
           .
         </Paragraph>

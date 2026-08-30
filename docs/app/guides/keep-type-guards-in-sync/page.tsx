@@ -378,7 +378,7 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         <Paragraph>
           For the complete contract and additional examples, see the{' '}
           <TextLink href={API_REFERENCE_PATHS.typedStruct}>
-            typedStruct API reference
+            <i>typedStruct API reference</i>
           </TextLink>
           .
         </Paragraph>

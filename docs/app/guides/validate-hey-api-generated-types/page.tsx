@@ -388,15 +388,15 @@ export default function ValidateHeyApiGeneratedTypesGuidePage() {
         <Paragraph>
           Continue with the{' '}
           <TextLink href={API_REFERENCE_PATHS.typedStruct}>
-            typedStruct API reference
+            <i>typedStruct API reference</i>
           </TextLink>
           , the{' '}
           <TextLink href={GUIDE_PATHS.syncTypeGuards}>
-            type-guard synchronization guide
+            <i>type-guard synchronization guide</i>
           </TextLink>
           , or the{' '}
           <TextLink href={GUIDE_PATHS.validateUnknown}>
-            unknown validation guide
+            <i>unknown validation guide</i>
           </TextLink>
           .
         </Paragraph>
