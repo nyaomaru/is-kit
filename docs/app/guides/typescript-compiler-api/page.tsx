@@ -135,6 +135,14 @@ if (ts.isReturnStatement(node) && node.expression) {
   visit(node.expression);
 }`;
 
+const typescript7Ast = `import * as ast from 'typescript/unstable/ast';
+import { and, refineKey } from 'is-kit';
+
+const isCallWithIdentifierExpression = and(
+  ast.isCallExpression,
+  refineKey('expression', ast.isIdentifier),
+);`;
+
 export default function TypeScriptCompilerApiGuidePage() {
   return (
     <GuideArticle>
@@ -317,15 +325,25 @@ export default function TypeScriptCompilerApiGuidePage() {
 
       <GuideSection title='TypeScript 7 Compiler API compatibility'>
         <Paragraph>
-          TypeScript 7 can type-check is-kit declarations, but TypeScript 7.0
-          does not ship the legacy JavaScript Compiler API used by the examples
-          in this guide. API-based tooling should keep the TypeScript 6 API
-          available through the official
+          TypeScript 7.0 does not yet expose a stable programmatic API
+          equivalent to the TypeScript 6 package-root Compiler API. However, AST
+          node types and <code>isX</code> predicates are available through the
+          experimental <code>typescript/unstable/ast</code> entry point.
+        </Paragraph>
+        <CodeBlock code={typescript7Ast} language='ts' />
+        <Paragraph>
+          The same is-kit composition patterns therefore work with TypeScript 7
+          AST predicates. Tooling that depends on the broader TypeScript 6
+          Compiler API or language-service surface may still need the official{' '}
           <TextLink href='https://www.npmjs.com/package/@typescript/typescript6'>
             <i>@typescript/typescript6 compatibility package</i>
-          </TextLink>
-          .
+          </TextLink>{' '}
+          during the transition.
         </Paragraph>
+        <GuideCallout>
+          <code>typescript/unstable/ast</code> is an experimental API surface
+          and may change before TypeScript provides a stable programmatic API.
+        </GuideCallout>
         <Paragraph>
           This is a TypeScript 7 platform transition rather than an is-kit
           runtime limitation. is-kit itself has no TypeScript runtime or peer
