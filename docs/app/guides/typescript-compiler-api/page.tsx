@@ -297,17 +297,54 @@ export default function TypeScriptCompilerApiGuidePage() {
         </GuideCallout>
       </GuideSection>
 
-      <GuideSection title='Keep one-off checks inline'>
+      <GuideSection title='Use composition where it earns its keep'>
         <Paragraph>
-          Composition pays off when a predicate is named, reused, nested, or
-          passed to another API. A single local condition may remain clearer in
-          the Compiler API's native style.
+          While designing this API, we reviewed active open-source parsers,
+          linters, and transforms built on the Compiler API. The same nested
+          narrowing shapes appeared repeatedly: calls with identifier
+          expressions, declarations with defined initializers, and calls with a
+          checked argument.
         </Paragraph>
+        <Paragraph>
+          Local prototypes confirmed that is-kit can preserve those checks as
+          reusable parent refinements. They also showed that adding a dependency
+          is not automatically worthwhile. Choose the smallest approach that
+          matches how often the predicate is reused.
+        </Paragraph>
+        <GuideTable
+          columns={['Situation', 'Prefer', 'Reason']}
+          rows={[
+            {
+              key: 'one-off',
+              cells: [
+                'One local branch',
+                'Native ts.isX predicates',
+                'The inline condition is already the clearest expression'
+              ]
+            },
+            {
+              key: 'reusable',
+              cells: [
+                'Repeated or reusable AST shape',
+                'A named is-kit composition',
+                'Reuse the runtime check and its parent narrowing together'
+              ]
+            },
+            {
+              key: 'existing',
+              cells: [
+                'The project already uses is-kit',
+                'refineKey, refineDefinedKey, or refineIndex',
+                'Keep nested narrowing consistent without another dependency'
+              ]
+            }
+          ]}
+        />
         <CodeBlock code={inlineCheck} language='ts' />
-        <Paragraph>
-          Do not extract every boolean expression. Prefer is-kit when the guard
-          becomes part of the program's reusable type vocabulary.
-        </Paragraph>
+        <GuideCallout>
+          Use is-kit to build reusable type vocabulary, not to replace every
+          clear <code>ts.isX</code> condition.
+        </GuideCallout>
       </GuideSection>
 
       <GuideSection title='What the integration does not add'>
