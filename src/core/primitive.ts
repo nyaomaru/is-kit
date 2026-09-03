@@ -151,10 +151,10 @@ export const isNull = define<null>((value) => value === null);
  * isNil(undefined); // true
  * isNil(0); // false
  */
-// WHY: Loose equality intentionally checks both nullish values without the
-// function and array-iteration overhead of composing `isNull` and `isUndefined`.
+// WHY: Explicit strict checks preserve object semantics for browser values such
+// as `document.all`, which loose equality treats as nullish for web compatibility.
 export const isNil = (value: unknown): value is null | undefined =>
-  value == null;
+  value === null || value === undefined;
 
 /**
  * Checks whether a value is neither `null` nor `undefined`.
@@ -170,7 +170,8 @@ export const isNil = (value: unknown): value is null | undefined =>
  * @see isNil
  */
 // WHY: Keep this hot-path-friendly for uses such as `array.filter(isNotNil)`.
-export const isNotNil = <T>(value: T): value is NonNullable<T> => value != null;
+export const isNotNil = <T>(value: T): value is NonNullable<T> =>
+  value !== null && value !== undefined;
 
 /**
  * Checks whether a value is a JavaScript primitive.
