@@ -150,9 +150,11 @@ export const isNull = define<null>((value) => value === null);
  * isNil(null); // true
  * isNil(undefined); // true
  * isNil(0); // false
- * @see or
  */
-export const isNil = or(isNull, isUndefined);
+// WHY: Loose equality intentionally checks both nullish values without the
+// function and array-iteration overhead of composing `isNull` and `isUndefined`.
+export const isNil = (value: unknown): value is null | undefined =>
+  value == null;
 
 /**
  * Checks whether a value is neither `null` nor `undefined`.
@@ -167,7 +169,8 @@ export const isNil = or(isNull, isUndefined);
  * const presentValues = values.filter(isNotNil); // string[]
  * @see isNil
  */
-export const isNotNil = <T>(value: T): value is NonNullable<T> => !isNil(value);
+// WHY: Keep this hot-path-friendly for uses such as `array.filter(isNotNil)`.
+export const isNotNil = <T>(value: T): value is NonNullable<T> => value != null;
 
 /**
  * Checks whether a value is a JavaScript primitive.
