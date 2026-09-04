@@ -35,13 +35,6 @@ export const GUIDE_ITEMS: GuideItem[] = [
       'Make missing, extra, and incompatible string-keyed guard fields visible when an existing object type changes.'
   },
   {
-    href: GUIDE_PATHS.propertyRefinement,
-    title: 'Refine properties on existing TypeScript types',
-    navigationLabel: 'Refine existing properties',
-    description:
-      'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements.'
-  },
-  {
     href: GUIDE_PATHS.typescriptCompilerApi,
     title: 'Advanced property refinement with the TypeScript Compiler API',
     navigationLabel: 'Compiler API (advanced)',
@@ -61,6 +54,13 @@ export const GUIDE_ITEMS: GuideItem[] = [
     navigationLabel: 'Validate Hey API types',
     description:
       'Keep generated response types as the source of truth while validating selected runtime payloads with small hand-written guards.'
+  },
+  {
+    href: GUIDE_PATHS.propertyRefinement,
+    title: 'Refine properties on existing TypeScript types',
+    navigationLabel: 'Refine existing properties',
+    description:
+      'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements.'
   }
 ];
 
