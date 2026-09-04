@@ -179,9 +179,11 @@ try {
       );
     }
   }
-
-  console.log(`\nTemporary research directory: ${temporaryRoot}`);
 } finally {
+  if (keepTemporaryFiles) {
+    console.log(`\nTemporary research directory: ${temporaryRoot}`);
+  }
+
   if (!keepTemporaryFiles) {
     rmSync(temporaryRoot, { recursive: true, force: true });
   }
