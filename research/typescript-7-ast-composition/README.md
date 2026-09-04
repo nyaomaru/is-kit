@@ -23,10 +23,10 @@ From the repository root:
 node research/typescript-7-ast-composition/run.mjs
 ```
 
-The runner packs the current repository, creates isolated temporary consumers,
-installs the exact compiler versions below, and emits declarations for the
-strict baseline plus three `exactOptionalPropertyTypes` /
-`noUncheckedIndexedAccess` combinations:
+The runner builds and packs the current repository, verifies that the package
+entry files exist, creates isolated temporary consumers, installs the exact
+compiler versions below, and emits declarations for the strict baseline plus
+three `exactOptionalPropertyTypes` / `noUncheckedIndexedAccess` combinations:
 
 - TypeScript 6.0.3
 - TypeScript 7.0.2

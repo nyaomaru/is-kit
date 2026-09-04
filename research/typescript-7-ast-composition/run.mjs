@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import {
   copyFileSync,
   cpSync,
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -27,6 +28,11 @@ const npmEnvironment = {
   npm_config_cache: npmCacheDirectory,
   npm_config_update_notifier: 'false'
 };
+const packageEntryFiles = [
+  'dist/index.js',
+  'dist/index.mjs',
+  'dist/index.d.ts'
+];
 
 const versions = [
   { label: 'ts6', version: '6.0.3', fixture: 'ts6' },
@@ -47,6 +53,17 @@ const run = (command, args, cwd) =>
 
 try {
   mkdirSync(packageDirectory, { recursive: true });
+
+  // WHY: dist is gitignored, and npm pack has no lifecycle hook that builds it.
+  // Build explicitly so this runner also works from a clean checkout.
+  run('pnpm', ['build'], repositoryRoot);
+
+  for (const entry of packageEntryFiles) {
+    if (!existsSync(join(repositoryRoot, entry))) {
+      throw new Error(`Package build did not create ${entry}`);
+    }
+  }
+
   run('npm', ['pack', '--pack-destination', packageDirectory], repositoryRoot);
 
   const packageFilename = readdirSync(packageDirectory).find((name) =>
