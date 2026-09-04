@@ -5,6 +5,7 @@ export const GUIDE_PATHS = {
   filterNullish: '/guides/filter-null-and-undefined',
   syncTypeGuards: '/guides/keep-type-guards-in-sync',
   heyApiTypedStruct: '/guides/validate-hey-api-generated-types',
+  propertyRefinement: '/guides/refine-properties-on-existing-types',
   typescriptCompilerApi: '/guides/typescript-compiler-api',
   validateUnknown: '/guides/validate-unknown-without-schema-library'
 } as const;
@@ -34,11 +35,18 @@ export const GUIDE_ITEMS: GuideItem[] = [
       'Make missing, extra, and incompatible string-keyed guard fields visible when an existing object type changes.'
   },
   {
-    href: GUIDE_PATHS.typescriptCompilerApi,
-    title: 'Use is-kit with the TypeScript Compiler API',
-    navigationLabel: 'TypeScript Compiler API',
+    href: GUIDE_PATHS.propertyRefinement,
+    title: 'Refine properties on existing TypeScript types',
+    navigationLabel: 'Refine existing properties',
     description:
-      'Compose ts.isX refinements and preserve required, optional, indexed, and nested child-node narrowing.'
+      'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements.'
+  },
+  {
+    href: GUIDE_PATHS.typescriptCompilerApi,
+    title: 'Advanced property refinement with the TypeScript Compiler API',
+    navigationLabel: 'Compiler API (advanced)',
+    description:
+      'Apply reusable property refinement to broad AST nodes without treating the TypeScript 7 AST as a discriminated union.'
   },
   {
     href: GUIDE_PATHS.validateUnknown,

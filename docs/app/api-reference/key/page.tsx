@@ -191,11 +191,16 @@ export default function KeyPage() {
           back onto one concrete location of the parent type.
         </Paragraph>
         <Paragraph>
-          For nested Compiler API examples, continue with{' '}
-          <TextLink href={GUIDE_PATHS.typescriptCompilerApi}>
-            Using is-kit with the TypeScript Compiler API
+          For reusable required, optional, indexed, nested, and literal property
+          examples, continue with{' '}
+          <TextLink href={GUIDE_PATHS.propertyRefinement}>
+            Refine properties on existing TypeScript types
           </TextLink>
-          .
+          . The{' '}
+          <TextLink href={GUIDE_PATHS.typescriptCompilerApi}>
+            TypeScript Compiler API guide
+          </TextLink>
+          uses the same generic pattern as an advanced example.
         </Paragraph>
       </Stack>
       <ApiReferencePager currentHref={API_REFERENCE_PATHS.key} />
