@@ -6,6 +6,32 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.14.1] - 2026-09-05
+
+### Fixed
+
+- preserve strict nullish combinator semantics by @nyaomaru in [#294](https://github.com/nyaomaru/is-kit/pull/294)
+
+### Changed
+
+- simplify nullish guards by @nyaomaru in [#292](https://github.com/nyaomaru/is-kit/pull/292)
+- avoid exception-driven typed array checks by @nyaomaru in [#295](https://github.com/nyaomaru/is-kit/pull/295)
+
+### Docs
+
+- 1.14.0 by [bot] by @github-actions in [#288](https://github.com/nyaomaru/is-kit/pull/288)
+- validate hey-api types by @nyaomaru in [#289](https://github.com/nyaomaru/is-kit/pull/289)
+- clarify TypeScript 7 Compiler API compatibility by @nyaomaru in [#290](https://github.com/nyaomaru/is-kit/pull/290)
+- clarify when to compose Compiler API guards by @nyaomaru in [#291](https://github.com/nyaomaru/is-kit/pull/291)
+
+### Chore
+
+- Release: 1.14.1 by [bot] by @github-actions in [#296](https://github.com/nyaomaru/is-kit/pull/296)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.0...v1.14.1
+
+[v1.14.1]: https://github.com/nyaomaru/is-kit/compare/v1.14.0...v1.14.1
+
 ## [v1.14.0] - 2026-08-29
 
 ### Added
@@ -1724,7 +1750,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
