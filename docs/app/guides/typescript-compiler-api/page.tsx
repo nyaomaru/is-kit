@@ -32,6 +32,20 @@ if (isCallWithIdentifierExpression(node)) {
   // node: ts.CallExpression & { expression: ts.Identifier }
 }`;
 
+const broadAstKind = `import * as ast from 'typescript/unstable/ast';
+
+declare const node: ast.Node;
+
+if (node.kind === ast.SyntaxKind.CallExpression) {
+  // A broad ast.Node is a base interface, not a discriminated union.
+  // The kind comparison does not expose CallExpression properties.
+  // @ts-expect-error: expression is not available on ast.Node
+  node.expression;
+}
+
+// TypeScript can narrow a union whose members declare distinct literal kinds.
+// That is a different input model from the shipped broad ast.Node type.`;
+
 const knownDomainComposition = `import * as ts from 'typescript';
 import { oneOf, or } from 'is-kit';
 
@@ -147,7 +161,7 @@ export default function TypeScriptCompilerApiGuidePage() {
   return (
     <GuideArticle>
       <GuideHeader
-        breadcrumbLabel='TypeScript Compiler API'
+        breadcrumbLabel='Compiler API (advanced)'
         media={
           <Image
             src='/iskit_guide3.png'
@@ -159,14 +173,36 @@ export default function TypeScriptCompilerApiGuidePage() {
             className='my-4 h-auto w-full rounded-xl border'
           />
         }
-        title='Using is-kit with the TypeScript Compiler API'
-        description='Compose ts.isX refinements directly, lift child-node checks onto their parents, and preserve precise AST narrowing without TypeScript-specific adapters.'
+        title='Advanced Property Refinement with the TypeScript Compiler API'
+        description='Use broad AST nodes as a demanding example of reusable property refinement: narrow the node with isX, then preserve checked child facts on the parent.'
       />
+
+      <GuideSection title='TypeScript 7 does not make broad AST nodes a discriminated union'>
+        <Paragraph>
+          TypeScript can narrow a genuine discriminated union through a{' '}
+          <code>kind</code> comparison. The broad <code>Node</code> and child
+          types currently shipped by the TypeScript 7 AST API are base
+          interfaces instead, so the same comparison does not recover a concrete
+          node type.
+        </Paragraph>
+        <CodeBlock code={broadAstKind} language='ts' />
+        <GuideCallout emphasized>
+          For broad AST inputs, <code>ast.isCallExpression</code>,{' '}
+          <code>ast.isIdentifier</code>, and the other <code>isX</code>{' '}
+          predicates still perform the node narrowing.
+        </GuideCallout>
+        <Paragraph>
+          A custom generated AST union can behave differently. That proves the
+          benefit of a narrower input model; it does not describe the broad AST
+          types shipped by TypeScript 7.
+        </Paragraph>
+      </GuideSection>
 
       <GuideSection title='The quick answer'>
         <Paragraph>
-          Combine a Compiler API node guard with <code>refineKey</code> when a
-          required child node must also be narrowed.
+          First use a Compiler API <code>isX</code> guard to narrow the broad
+          node. Then use <code>refineKey</code> when a required child node must
+          also be narrowed and the compound predicate should be reusable.
         </Paragraph>
         <CodeBlock code={quickAnswer} language='ts' />
         <Paragraph>
@@ -179,6 +215,14 @@ export default function TypeScriptCompilerApiGuidePage() {
           Check the child once at runtime, then preserve the same checked fact
           on the parent in TypeScript control flow.
         </GuideCallout>
+        <Paragraph>
+          This is not an AST-specific feature. It is the same generic property
+          refinement described in{' '}
+          <TextLink href={GUIDE_PATHS.propertyRefinement}>
+            Refine properties on existing TypeScript types
+          </TextLink>
+          ; the Compiler API is an advanced use case.
+        </Paragraph>
       </GuideSection>
 
       <GuideSection title='Compose Compiler API refinements directly'>
@@ -362,9 +406,9 @@ export default function TypeScriptCompilerApiGuidePage() {
 
       <GuideSection title='TypeScript 7 Compiler API compatibility'>
         <Paragraph>
-          TypeScript 7.0 does not yet expose a stable programmatic API
-          equivalent to the TypeScript 6 package-root Compiler API. However, AST
-          node types and <code>isX</code> predicates are available through the
+          The current TypeScript 7 package does not expose a stable programmatic
+          API equivalent to the TypeScript 6 package-root Compiler API. AST node
+          types and <code>isX</code> predicates are available through the
           experimental <code>typescript/unstable/ast</code> entry point.
         </Paragraph>
         <CodeBlock code={typescript7Ast} language='ts' />
@@ -380,6 +424,9 @@ export default function TypeScriptCompilerApiGuidePage() {
         <GuideCallout>
           <code>typescript/unstable/ast</code> is an experimental API surface
           and may change before TypeScript provides a stable programmatic API.
+          This guidance will be re-evaluated when that AST API becomes stable,
+          rather than tracking rolling nightly changes as documentation
+          promises.
         </GuideCallout>
         <Paragraph>
           This is a TypeScript 7 platform transition rather than an is-kit
@@ -391,7 +438,8 @@ export default function TypeScriptCompilerApiGuidePage() {
       <GuideSection title='Summary' className='border-t pt-8'>
         <GuideList>
           <li>
-            Compose <code>ts.isX</code> functions directly.
+            Broad TypeScript 7 AST nodes are not a discriminated union; keep
+            using <code>isX</code> functions to narrow them.
           </li>
           <li>
             Use <code>refineKey</code> for required child properties.
@@ -404,6 +452,10 @@ export default function TypeScriptCompilerApiGuidePage() {
           </li>
           <li>
             Keep local one-off checks inline when extraction adds no value.
+          </li>
+          <li>
+            Treat Compiler API integration as an advanced application of generic
+            property refinement, not the reason these helpers exist.
           </li>
         </GuideList>
         <Paragraph>

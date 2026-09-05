@@ -34,10 +34,16 @@ const GUIDE_METADATA = {
     description:
       'Validate selected Hey API generated response types at runtime with typedStruct while keeping generated TypeScript types as the source of truth.'
   },
-  [GUIDE_PATHS.typescriptCompilerApi]: {
-    title: 'Use is-kit with the TypeScript Compiler API | is-kit',
+  [GUIDE_PATHS.propertyRefinement]: {
+    title: 'Refine Properties on Existing TypeScript Types | is-kit',
     description:
-      'Compose TypeScript Compiler API node refinements and safely narrow required, optional, indexed, and nested AST children with is-kit.',
+      'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements on existing TypeScript types.'
+  },
+  [GUIDE_PATHS.typescriptCompilerApi]: {
+    title:
+      'Advanced Property Refinement with the TypeScript Compiler API | is-kit',
+    description:
+      'Use TypeScript Compiler API guards as an advanced example of reusable property refinement across broad AST node types.',
     image: '/iskit_guide3.png',
     imageAlt: 'Using is-kit with the TypeScript Compiler API'
   },

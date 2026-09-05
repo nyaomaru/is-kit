@@ -55,10 +55,23 @@ Refine one child on an existing typed value:
 ```ts
 import { isString, refineDefinedKey, refineIndex, refineKey } from 'is-kit';
 
+type Item = {
+  readonly value: string | number;
+  readonly label?: string | number;
+};
+
 const hasStringValue = refineKey('value', isString);
 const hasDefinedStringLabel = refineDefinedKey('label', isString);
 const hasStringAtZero = refineIndex(0, isString);
+
+declare const items: readonly Item[];
+const textItems = items.filter(hasStringValue);
+// Array<Item & Record<'value', string>>
 ```
+
+These helpers preserve the original parent type together with the checked
+property type through branches, `filter`, and `find` without a handwritten
+intersection annotation.
 
 Use `lazy` when a recursive guard must refer to itself:
 
@@ -85,7 +98,8 @@ const isTree: Predicate<Tree> = lazy(() =>
 - [Practical guides](https://is-kit.dev/guides)
 - [Filter null and undefined from arrays in TypeScript](https://is-kit.dev/guides/filter-null-and-undefined)
 - [Keep hand-written type guards in sync with TypeScript types](https://is-kit.dev/guides/keep-type-guards-in-sync)
-- [Use is-kit with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)
+- [Refine properties on existing TypeScript types](https://is-kit.dev/guides/refine-properties-on-existing-types)
+- [Advanced property refinement with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)
 - [Validate unknown without a schema library](https://is-kit.dev/guides/validate-unknown-without-schema-library)
 - [API reference](https://is-kit.dev/api-reference)
 - [README and usage guide](https://github.com/nyaomaru/is-kit#readme)

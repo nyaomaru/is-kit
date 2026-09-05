@@ -375,10 +375,24 @@ needs additional narrowing.
 ```ts
 import { isString, refineDefinedKey, refineIndex, refineKey } from 'is-kit';
 
+type Item = {
+  readonly value: string | number;
+  readonly label?: string | number;
+};
+
 const hasStringValue = refineKey('value', isString);
 const hasDefinedStringLabel = refineDefinedKey('label', isString);
 const hasStringAtZero = refineIndex(0, isString);
+
+declare const items: readonly Item[];
+const textItems = items.filter(hasStringValue);
+// Array<Item & Record<'value', string>>
 ```
+
+The important part is reusable parent narrowing: the predicate retains both
+the original `Item` type and the checked property type through `filter`,
+`find`, and control-flow branches without a handwritten intersection
+annotation.
 
 - `refineKey` refines one required property using normal property access.
 - `refineDefinedKey` returns `false` for a missing or `undefined` property.
@@ -391,6 +405,11 @@ numeric property.
 
 Each key or index must identify one concrete runtime location. This keeps one
 successful lookup from incorrectly narrowing multiple properties.
+
+See [Refine properties on existing TypeScript
+types](https://is-kit.dev/guides/refine-properties-on-existing-types) for
+required, optional, indexed, nested, and literal examples. The TypeScript
+Compiler API is one advanced application of this generic pattern.
 
 ### 8. Handle null and undefined explicitly
 
@@ -642,7 +661,8 @@ For detailed API pages and more examples, see:
 
 - [Practical guides](https://is-kit.dev/guides)
 - [Keep hand-written type guards in sync with TypeScript types](https://is-kit.dev/guides/keep-type-guards-in-sync)
-- [Use is-kit with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)
+- [Refine properties on existing TypeScript types](https://is-kit.dev/guides/refine-properties-on-existing-types)
+- [Advanced property refinement with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)
 - [Validate unknown without a schema library](https://is-kit.dev/guides/validate-unknown-without-schema-library)
 - [API reference](https://is-kit.dev/api-reference)
 - [Documentation home](https://is-kit.dev/)

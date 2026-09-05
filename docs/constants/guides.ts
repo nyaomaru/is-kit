@@ -5,6 +5,7 @@ export const GUIDE_PATHS = {
   filterNullish: '/guides/filter-null-and-undefined',
   syncTypeGuards: '/guides/keep-type-guards-in-sync',
   heyApiTypedStruct: '/guides/validate-hey-api-generated-types',
+  propertyRefinement: '/guides/refine-properties-on-existing-types',
   typescriptCompilerApi: '/guides/typescript-compiler-api',
   validateUnknown: '/guides/validate-unknown-without-schema-library'
 } as const;
@@ -35,10 +36,10 @@ export const GUIDE_ITEMS: GuideItem[] = [
   },
   {
     href: GUIDE_PATHS.typescriptCompilerApi,
-    title: 'Use is-kit with the TypeScript Compiler API',
-    navigationLabel: 'TypeScript Compiler API',
+    title: 'Advanced property refinement with the TypeScript Compiler API',
+    navigationLabel: 'Compiler API (advanced)',
     description:
-      'Compose ts.isX refinements and preserve required, optional, indexed, and nested child-node narrowing.'
+      'Apply reusable property refinement to broad AST nodes without treating the TypeScript 7 AST as a discriminated union.'
   },
   {
     href: GUIDE_PATHS.validateUnknown,
@@ -53,6 +54,13 @@ export const GUIDE_ITEMS: GuideItem[] = [
     navigationLabel: 'Validate Hey API types',
     description:
       'Keep generated response types as the source of truth while validating selected runtime payloads with small hand-written guards.'
+  },
+  {
+    href: GUIDE_PATHS.propertyRefinement,
+    title: 'Refine properties on existing TypeScript types',
+    navigationLabel: 'Refine existing properties',
+    description:
+      'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements.'
   }
 ];
 

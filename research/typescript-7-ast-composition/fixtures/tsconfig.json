@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "exactOptionalPropertyTypes": true,
+    "lib": ["ESNext", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noUncheckedIndexedAccess": true,
+    "outDir": "declarations",
+    "strict": true,
+    "target": "ES2022"
+  },
+  "include": ["*.ts"]
+}
