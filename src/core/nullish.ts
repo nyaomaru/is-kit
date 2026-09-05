@@ -1,21 +1,5 @@
 import type { Guard, Refine } from '@/types';
 
-const allowWhen =
-  (
-    acceptedValue: (value: unknown) => boolean,
-    predicate: (value: unknown) => boolean
-  ) =>
-  (value: unknown) =>
-    acceptedValue(value) || predicate(value);
-
-const requireWhen =
-  (
-    rejectedValue: (value: unknown) => boolean,
-    predicate: (value: unknown) => boolean
-  ) =>
-  (value: unknown) =>
-    !rejectedValue(value) && predicate(value);
-
 /**
  * Allows `null` in addition to values accepted by the given guard/refinement.
  * Use this instead of hand-writing `value === null || guard(value)` when the
@@ -32,7 +16,7 @@ export function nullable<A, B extends A>(
   refine: Refine<A, B>
 ): Refine<A | null, B | null>;
 export function nullable(fn: (value: unknown) => boolean) {
-  return allowWhen((value) => value === null, fn);
+  return (value: unknown) => value === null || fn(value);
 }
 
 /**
@@ -48,7 +32,7 @@ export function nonNull<A, B extends A>(
   refine: Refine<A, B>
 ): Refine<Exclude<A, null>, Exclude<B, null>>;
 export function nonNull(fn: (value: unknown) => boolean) {
-  return requireWhen((value) => value === null, fn);
+  return (value: unknown) => value !== null && fn(value);
 }
 
 /**
@@ -67,7 +51,9 @@ export function nullish<A, B extends A>(
   refine: Refine<A, B>
 ): Refine<A | null | undefined, B | null | undefined>;
 export function nullish(fn: (value: unknown) => boolean) {
-  return allowWhen((value) => value == null, fn);
+  // WHY: Explicit strict checks preserve the declared nullish set for browser
+  // values such as `document.all`, which loose equality treats as nullish.
+  return (value: unknown) => value === null || value === undefined || fn(value);
 }
 
 /**
@@ -85,7 +71,7 @@ export function optional<A, B extends A>(
   refine: Refine<A, B>
 ): Refine<A | undefined, B | undefined>;
 export function optional(fn: (value: unknown) => boolean) {
-  return allowWhen((value) => value === undefined, fn);
+  return (value: unknown) => value === undefined || fn(value);
 }
 
 /**
@@ -101,5 +87,5 @@ export function required<A, B extends A>(
   refine: Refine<A | undefined, B | undefined>
 ): Refine<A, B>;
 export function required(fn: (value: unknown) => boolean) {
-  return requireWhen((value) => value === undefined, fn);
+  return (value: unknown) => value !== undefined && fn(value);
 }

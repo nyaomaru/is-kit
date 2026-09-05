@@ -30,6 +30,13 @@ describe('nullable', () => {
       false
     );
   });
+
+  it('does not call the inner guard for null', () => {
+    const inner = jest.fn((value: unknown): value is string => isString(value));
+
+    expect(nullable(inner)(null)).toBe(true);
+    expect(inner).not.toHaveBeenCalled();
+  });
 });
 
 describe('nonNull', () => {
@@ -49,6 +56,13 @@ describe('nonNull', () => {
     ).toBe(false);
     expect(isPositiveNonNull(1)).toBe(true);
     expect(isPositiveNonNull(0)).toBe(false);
+  });
+
+  it('does not call the inner guard for null', () => {
+    const inner = jest.fn((value: unknown): value is string => isString(value));
+
+    expect(nonNull(inner)(null)).toBe(false);
+    expect(inner).not.toHaveBeenCalled();
   });
 });
 
@@ -70,6 +84,15 @@ describe('nullish', () => {
     expect(isAOrNullish(undefined)).toBe(true);
     expect(isAOrNullish('abc')).toBe(true);
     expect(isAOrNullish('xbc')).toBe(false);
+  });
+
+  it('does not call the inner guard for null or undefined', () => {
+    const inner = jest.fn((value: unknown): value is string => isString(value));
+    const isNullishString = nullish(inner);
+
+    expect(isNullishString(null)).toBe(true);
+    expect(isNullishString(undefined)).toBe(true);
+    expect(inner).not.toHaveBeenCalled();
   });
 });
 
@@ -94,6 +117,13 @@ describe('optional', () => {
       (isEvenOrUndefined as unknown as (x: unknown) => boolean)(null)
     ).toBe(false);
   });
+
+  it('does not call the inner guard for undefined', () => {
+    const inner = jest.fn((value: unknown): value is string => isString(value));
+
+    expect(optional(inner)(undefined)).toBe(true);
+    expect(inner).not.toHaveBeenCalled();
+  });
 });
 
 describe('required', () => {
@@ -112,5 +142,15 @@ describe('required', () => {
     expect(allowNullButNotUndefined('hello')).toBe(true);
     expect(allowNullButNotUndefined(undefined)).toBe(false);
     expect(allowNullButNotUndefined(0)).toBe(false);
+  });
+
+  it('does not call the inner guard for undefined', () => {
+    const inner = jest.fn(
+      (value: unknown): value is string | undefined =>
+        value === undefined || isString(value)
+    );
+
+    expect(required(inner)(undefined)).toBe(false);
+    expect(inner).not.toHaveBeenCalled();
   });
 });
