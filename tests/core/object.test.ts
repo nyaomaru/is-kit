@@ -88,7 +88,8 @@ describe('core/object guards', () => {
       weakMap: new WeakMap(),
       weakSet: new WeakSet(),
       arrayBuffer: new ArrayBuffer(8),
-      dataView: new DataView(new ArrayBuffer(8))
+      dataView: new DataView(new ArrayBuffer(8)),
+      typedArray: new Uint16Array(2)
     })`) as Record<string, unknown>;
 
     expect(isDate(values.date)).toBe(true);
@@ -99,6 +100,7 @@ describe('core/object guards', () => {
     expect(isWeakSet(values.weakSet)).toBe(true);
     expect(isArrayBuffer(values.arrayBuffer)).toBe(true);
     expect(isDataView(values.dataView)).toBe(true);
+    expect(isTypedArray(values.typedArray)).toBe(true);
   });
 
   it('accepts built-in subclasses while preserving valid Date semantics', () => {
@@ -145,9 +147,25 @@ describe('core/object guards', () => {
   });
 
   it('handles typed arrays and buffers', () => {
+    const typedArrays: readonly ArrayBufferView[] = [
+      new Int8Array(2),
+      new Uint8Array(2),
+      new Uint8ClampedArray(2),
+      new Int16Array(2),
+      new Uint16Array(2),
+      new Int32Array(2),
+      new Uint32Array(2),
+      new Float32Array(2),
+      new Float64Array(2),
+      new BigInt64Array(2),
+      new BigUint64Array(2)
+    ];
+
     expect(isArrayBuffer(new ArrayBuffer(8))).toBe(true);
     expect(isDataView(new DataView(new ArrayBuffer(8)))).toBe(true);
-    expect(isTypedArray(new Uint8Array(2))).toBe(true);
+    for (const typedArray of typedArrays) {
+      expect(isTypedArray(typedArray)).toBe(true);
+    }
     expect(isTypedArray(new DataView(new ArrayBuffer(8)))).toBe(false);
 
     const spoofedDataView = new DataView(new ArrayBuffer(8));
@@ -157,6 +175,16 @@ describe('core/object guards', () => {
     expect(isDataView(spoofedDataView)).toBe(true);
     expect(isTypedArray(spoofedDataView)).toBe(false);
 
+    const spoofedTypedArray = new Uint8Array(2);
+    Object.defineProperty(spoofedTypedArray, Symbol.toStringTag, {
+      value: 'DataView'
+    });
+    expect(isTypedArray(spoofedTypedArray)).toBe(true);
+
+    class TypedArraySubclass extends Uint8Array {}
+    expect(isTypedArray(new TypedArraySubclass(2))).toBe(true);
+    expect(isTypedArray(new Proxy(new Uint8Array(2), {}))).toBe(false);
+
     const transferredBuffer = new ArrayBuffer(8);
     const detachedDataView = new DataView(transferredBuffer);
     structuredClone(transferredBuffer, { transfer: [transferredBuffer] });
@@ -165,6 +193,13 @@ describe('core/object guards', () => {
     expect(() => detachedDataView.byteLength).toThrow(TypeError);
     expect(isDataView(detachedDataView)).toBe(true);
     expect(isTypedArray(detachedDataView)).toBe(false);
+
+    const typedArrayBuffer = new ArrayBuffer(8);
+    const detachedTypedArray = new Uint8Array(typedArrayBuffer);
+    structuredClone(typedArrayBuffer, { transfer: [typedArrayBuffer] });
+
+    expect(ArrayBuffer.isView(detachedTypedArray)).toBe(true);
+    expect(isTypedArray(detachedTypedArray)).toBe(true);
   });
 
   it('detects Error, URL, Blob, File', () => {

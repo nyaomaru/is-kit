@@ -54,6 +54,10 @@ const arrayBufferByteLength = getIntrinsicGetter(
   'byteLength'
 );
 const dataViewBuffer = getIntrinsicGetter(DataView.prototype, 'buffer');
+const typedArrayName = Object.getOwnPropertyDescriptor(
+  Object.getPrototypeOf(Uint8Array.prototype),
+  Symbol.toStringTag
+)?.get;
 
 const defineOptionalInstanceGuard = <T>(
   constructor: InstanceCheckTarget<T> | undefined
@@ -214,8 +218,11 @@ export const isDataView = defineIntrinsicBrandGuard<DataView>((value) =>
  *
  * @returns Predicate narrowing to `ArrayBufferView`.
  */
+// WHY: The captured %TypedArray%.prototype @@toStringTag getter checks the
+// internal TypedArray name without trusting a spoofable property. It returns
+// undefined for DataView and other values instead of rejecting them by exception.
 export const isTypedArray = define<ArrayBufferView>(
-  (value) => ArrayBuffer.isView(value) && !isDataView(value)
+  (value) => typedArrayName?.call(value) !== undefined
 );
 
 /**
