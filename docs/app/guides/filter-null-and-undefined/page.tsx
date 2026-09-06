@@ -145,6 +145,15 @@ export default function FilterNullAndUndefinedGuidePage() {
           nullish-specific type predicate to <code>Array.filter</code>.
         </Paragraph>
         <GuideCallout>
+          Want to catch this distinction during linting? The{' '}
+          <TextLink href='https://github.com/nyaomaru/eslint-plugin-is-kit/blob/main/docs/rules/no-ambiguous-filter-boolean.md'>
+            <code>is-kit/no-ambiguous-filter-boolean</code> rule
+          </TextLink>{' '}
+          uses TypeScript type information and reports{' '}
+          <code>filter(Boolean)</code> only when the array type contains both a
+          nullish value and another possible falsy value.
+        </GuideCallout>
+        <GuideCallout>
           “Remove nullish values” and “remove every falsy value” are different
           requirements.
         </GuideCallout>

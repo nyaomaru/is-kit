@@ -135,6 +135,23 @@ This is the core idea of `is-kit`:
 2. Compose them.
 3. Reuse them anywhere TypeScript narrowing matters.
 
+## ESLint integration
+
+[`eslint-plugin-is-kit`](https://github.com/nyaomaru/eslint-plugin-is-kit)
+detects ambiguous or redundant array predicates and can suggest reusable
+is-kit guards when they preserve runtime behavior and useful narrowing.
+
+```ts
+values.filter(Boolean); // May also remove "", 0, false, and NaN.
+values.filter(isNotNil); // Removes only null and undefined.
+```
+
+```sh
+pnpm add -D eslint-plugin-is-kit
+```
+
+See the [plugin setup and rule reference](https://github.com/nyaomaru/eslint-plugin-is-kit#readme).
+
 ## 🧭 Guard Composition Guide
 
 When writing reusable guards with `is-kit`, start from the library primitives:
