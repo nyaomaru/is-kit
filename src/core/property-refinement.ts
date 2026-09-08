@@ -8,7 +8,7 @@ import type { ArrayIndex, SinglePropertyKey } from './key-internals';
  * @param refinement Refinement applied to the property value.
  * @returns Refinement that preserves the parent type and narrows the property.
  * @example
- * const hasIdentifierExpression = refineKey('expression', ts.isIdentifier);
+ * const hasStringValue = refineKey('value', isString);
  */
 export function refineKey<
   const K extends PropertyKey,
@@ -29,10 +29,7 @@ export function refineKey<
  * @param refinement Refinement applied only to a defined property value.
  * @returns Refinement that requires and narrows the property.
  * @example
- * const hasCallInitializer = refineDefinedKey(
- *   'initializer',
- *   ts.isCallExpression
- * );
+ * const hasDefinedStringLabel = refineDefinedKey('label', isString);
  */
 export function refineDefinedKey<
   const K extends PropertyKey,
@@ -45,8 +42,8 @@ export function refineDefinedKey<
   return <ObjectType extends Partial<Record<K, PropertyInput | undefined>>>(
     value: ObjectType
   ): value is ObjectType & Record<K, Exclude<PropertyOutput, undefined>> => {
-    // WHY: Optional Compiler API properties may be absent or explicitly
-    // undefined. Never pass either state to a narrow-domain refinement.
+    // WHY: Optional properties may be absent or explicitly undefined. Never
+    // pass either state to a narrow-domain refinement.
     const property = value[key];
     return property !== undefined && refinement(property);
   };
@@ -58,7 +55,7 @@ export function refineDefinedKey<
  * @param refinement Refinement applied only to a defined element.
  * @returns Refinement that narrows the selected index.
  * @example
- * const hasStringFirstArgument = refineIndex(0, ts.isStringLiteral);
+ * const hasStringAtZero = refineIndex(0, isString);
  */
 export function refineIndex<
   const Index extends number,

@@ -1,66 +1,67 @@
 import Link from 'next/link';
-import { apiSections } from '@/constants/api-sections';
+
 import {
   Card,
+  CardDescription,
   CardHeader,
-  CardTitle,
-  CardDescription
+  CardTitle
 } from '@/components/ui/card';
+import { guideSections } from '@/constants/guides';
 import { cn } from '@/lib/utils';
 
-type Item = {
-  /** URL for the API reference entry. */
+type GuideNavigationItem = {
   href: string;
-  /** Human readable label for navigation. */
   label: string;
 };
 
-function flatten(sections = apiSections): Item[] {
-  const out: Item[] = [];
-  for (const section of sections) {
-    for (const item of section.items)
-      out.push({ href: item.href, label: item.label });
-  }
-  return out;
+/**
+ * Returns guide links in the same order displayed by the sidebar.
+ * @returns Ordered guide navigation entries.
+ */
+function getGuideNavigationItems(): GuideNavigationItem[] {
+  return guideSections.flatMap((section) => section.items);
 }
 
-export type ApiReferencePagerProps = {
-  /** Href of the item currently in view; used to compute the next link. */
+export type GuidePagerProps = {
+  /** Href of the guide currently in view; used to determine the next guide. */
   currentHref: string;
-  /** Tailwind class overrides merged onto the container nav. */
+  /** Tailwind class overrides merged onto the pager navigation element. */
   className?: string;
 };
-export function ApiReferencePager({
-  currentHref,
-  className
-}: ApiReferencePagerProps) {
-  const list = flatten();
-  const idx = list.findIndex((x) => x.href === currentHref);
-  const next = idx >= 0 ? list[idx + 1] : undefined;
+
+/**
+ * Links a guide to the guide index and its next sidebar-ordered guide.
+ * @param currentHref Href of the guide currently in view.
+ * @param className Optional classes merged onto the navigation container.
+ * @returns Guide pager navigation.
+ */
+export function GuidePager({ currentHref, className }: GuidePagerProps) {
+  const items = getGuideNavigationItems();
+  const currentIndex = items.findIndex((item) => item.href === currentHref);
+  const next = currentIndex >= 0 ? items[currentIndex + 1] : undefined;
 
   return (
-    <nav aria-label='API pager' className={cn('mt-1', className)}>
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-3 items-stretch w-full'>
+    <nav aria-label='Guide pager' className={cn('mt-1', className)}>
+      <div className='grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-3'>
         <Link
-          href='/api-reference'
+          href='/guides'
           className='group block h-full w-full justify-self-stretch rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
-          aria-label='API Reference home'
+          aria-label='Guides overview'
         >
           <Card className='h-full w-full transition-colors group-hover:border-primary'>
             <CardHeader>
               <div className='inline-block w-fit'>
                 <CardTitle className='inline-block text-lg underline-offset-4'>
-                  API Reference
+                  Guides
                 </CardTitle>
                 <div className='h-px w-0 bg-primary transition-[width] duration-500 group-hover:w-full' />
               </div>
               <CardDescription className='mt-3'>
-                Explore all APIs and categories
+                Explore all guides
               </CardDescription>
             </CardHeader>
           </Card>
         </Link>
-        {/* spacer column on md+ to create breathing room */}
         <div className='hidden md:block' aria-hidden />
         {next ? (
           <Link
@@ -77,7 +78,7 @@ export function ApiReferencePager({
                   <div className='h-px w-0 bg-primary transition-[width] duration-500 group-hover:w-full' />
                 </div>
                 <CardDescription className='mt-3'>
-                  Continue to the next API
+                  Continue to the next guide
                 </CardDescription>
               </CardHeader>
             </Card>
