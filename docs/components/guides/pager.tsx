@@ -45,7 +45,7 @@ export function GuidePager({ currentHref, className }: GuidePagerProps) {
       <div className='grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-3'>
         <Link
           href='/guides'
-          className='group block h-full w-full justify-self-stretch focus:outline-hidden'
+          className='group block h-full w-full justify-self-stretch rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
           aria-label='Guides overview'
         >
           <Card className='h-full w-full transition-colors group-hover:border-primary'>
@@ -66,7 +66,7 @@ export function GuidePager({ currentHref, className }: GuidePagerProps) {
         {next ? (
           <Link
             href={next.href}
-            className='group block h-full w-full justify-self-stretch focus:outline-hidden'
+            className='group block h-full w-full justify-self-stretch rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
             aria-label={`Next: ${next.label}`}
           >
             <Card className='h-full w-full transition-colors group-hover:border-primary'>

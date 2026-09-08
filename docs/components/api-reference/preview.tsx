@@ -35,7 +35,7 @@ export function APIReferencePreview({
           <Link
             key={item.href}
             href={item.href}
-            className='group focus:outline-hidden'
+            className='group block rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
           >
             <Card className='h-full transition-colors group-hover:border-primary'>
               <CardHeader>
