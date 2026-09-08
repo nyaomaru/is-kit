@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -140,6 +142,17 @@ export default function RefinePropertiesOnExistingTypesGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Refine existing properties'
+        media={
+          <Image
+            src='/iskit_guide6.png'
+            alt='guide5 thumbnail'
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='Refine Properties on Existing TypeScript Types'
         description='Lift a check on one child value back onto its parent, then reuse the resulting predicate in branches, filter, find, and deeper compositions.'
       />
