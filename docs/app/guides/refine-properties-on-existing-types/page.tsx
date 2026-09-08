@@ -8,6 +8,7 @@ import {
   GuideList,
   GuideSection
 } from '@/components/guides/guide-layout';
+import { GuidePager } from '@/components/guides/pager';
 import { GuideTable } from '@/components/guides/guide-table';
 import { Paragraph } from '@/components/ui/paragraph';
 import { TextLink } from '@/components/ui/text-link';
@@ -335,6 +336,7 @@ export default function RefinePropertiesOnExistingTypesGuidePage() {
           for the complete contracts and key-domain restrictions.
         </Paragraph>
       </GuideSection>
+      <GuidePager currentHref={GUIDE_PATHS.propertyRefinement} />
     </GuideArticle>
   );
 }

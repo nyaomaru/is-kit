@@ -36,7 +36,7 @@ export const GUIDE_ITEMS: GuideItem[] = [
   },
   {
     href: GUIDE_PATHS.typescriptCompilerApi,
-    title: 'Advanced property refinement with the TypeScript Compiler API',
+    title: 'Advanced property refinement with TypeScript Compiler API',
     navigationLabel: 'Compiler API (advanced)',
     description:
       'Apply reusable property refinement to broad AST nodes without treating the TypeScript 7 AST as a discriminated union.'

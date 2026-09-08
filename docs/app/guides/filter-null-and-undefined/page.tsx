@@ -8,6 +8,7 @@ import {
   GuideList,
   GuideSection
 } from '@/components/guides/guide-layout';
+import { GuidePager } from '@/components/guides/pager';
 import { GuideTable } from '@/components/guides/guide-table';
 import { Paragraph } from '@/components/ui/paragraph';
 import { TextLink } from '@/components/ui/text-link';
@@ -274,6 +275,7 @@ export default function FilterNullAndUndefinedGuidePage() {
           mean the same thing everywhere your TypeScript application needs it.
         </Paragraph>
       </GuideSection>
+      <GuidePager currentHref={GUIDE_PATHS.filterNullish} />
     </GuideArticle>
   );
 }
