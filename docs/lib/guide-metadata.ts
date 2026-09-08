@@ -37,7 +37,9 @@ const GUIDE_METADATA = {
   [GUIDE_PATHS.propertyRefinement]: {
     title: 'Refine Properties on Existing TypeScript Types | is-kit',
     description:
-      'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements on existing TypeScript types.'
+      'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements on existing TypeScript types.',
+    image: '/iskit_guide6.png',
+    imageAlt: 'Refine properties on existing TypeScript types'
   },
   [GUIDE_PATHS.typescriptCompilerApi]: {
     title:
