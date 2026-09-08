@@ -146,7 +146,7 @@ export default function RefinePropertiesOnExistingTypesGuidePage() {
         media={
           <Image
             src='/iskit_guide6.png'
-            alt='guide5 thumbnail'
+            alt='guide6 thumbnail'
             width={1000}
             height={420}
             sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
