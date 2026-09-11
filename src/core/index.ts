@@ -3,6 +3,7 @@ export * from './combinators';
 export * from './define';
 export * from './equals';
 export * from './key';
+export * from './lazy';
 export * from './logic';
 export * from './nullish';
 export * from './object';

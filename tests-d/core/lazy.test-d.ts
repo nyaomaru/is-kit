@@ -1,5 +1,6 @@
 import { expectType } from 'tsd';
-import { arrayOf, lazy, typedStruct } from '@/index';
+import { lazy } from '@/core';
+import { arrayOf, typedStruct } from '@/core/combinators';
 import { isString } from '@/core/primitive';
 import type { Predicate } from '@/types';
 
