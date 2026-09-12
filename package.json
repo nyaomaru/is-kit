@@ -21,6 +21,7 @@
     "test:typescript-compat": "node tests/typescript-compatibility.mjs",
     "test:package": "node tests/package-smoke.mjs",
     "test:package:vlt": "node tests/vlt-package-smoke.mjs",
+    "bench:core": "node bench/core-workloads.mjs",
     "lint": "oxlint .",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
