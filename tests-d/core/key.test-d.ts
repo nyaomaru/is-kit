@@ -228,6 +228,7 @@ if (hasReadyTextPayload(envelope)) {
   // a more specific caller property, so assert assignability rather than an
   // identical displayed intersection type.
   expectAssignable<string>(envelope.payload.body);
+  expectAssignable<typeof envelope.payload.body>('body');
 }
 
 declare const dynamicIndex: number;
