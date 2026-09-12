@@ -9,7 +9,8 @@ import {
 import { struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { oneOfValues } from '@/core/combinators/one-of-values';
-import { and } from '@/core/logic';
+import { and, andAll } from '@/core/logic';
+import { equals } from '@/core/equals';
 
 const isUser = struct({
   id: isString,
@@ -325,5 +326,46 @@ describe('key: refineIndex', () => {
     expect(refinement(value)).toBe(true);
     expect(reads).toBe(1);
     expect(calls).toBe(1);
+  });
+});
+
+describe('key: practical property refinement composition', () => {
+  type TextPayload = {
+    readonly kind: 'text';
+    readonly status: 'pending' | 'ready';
+    readonly body: string | Uint8Array;
+  };
+  type BinaryPayload = {
+    readonly kind: 'binary';
+    readonly bytes: Uint8Array;
+  };
+  type Envelope = { readonly payload: TextPayload | BinaryPayload };
+
+  const isTextPayload = (
+    payload: TextPayload | BinaryPayload
+  ): payload is TextPayload => payload.kind === 'text';
+  const hasReadyTextPayload = refineKey(
+    'payload',
+    andAll(
+      isTextPayload,
+      refineKey('status', equals('ready')),
+      refineKey('body', isString)
+    )
+  );
+
+  it('accepts a ready text payload with a string body', () => {
+    const value: Envelope = {
+      payload: { kind: 'text', status: 'ready', body: 'Hello' }
+    };
+
+    expect(hasReadyTextPayload(value)).toBe(true);
+  });
+
+  it.each<Envelope>([
+    { payload: { kind: 'binary', bytes: new Uint8Array() } },
+    { payload: { kind: 'text', status: 'pending', body: 'Hello' } },
+    { payload: { kind: 'text', status: 'ready', body: new Uint8Array() } }
+  ])('rejects a payload that misses one nested refinement', (value) => {
+    expect(hasReadyTextPayload(value)).toBe(false);
   });
 });
