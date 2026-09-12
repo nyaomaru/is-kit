@@ -6,6 +6,28 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.14.2] - 2026-09-12
+
+### Fixed
+
+- export lazy from core barrel by @nyaomaru in [#299](https://github.com/nyaomaru/is-kit/pull/299)
+
+### Changed
+
+- center generic property refinement guidance by @nyaomaru in [#293](https://github.com/nyaomaru/is-kit/pull/293)
+  - Why: Reframe the Compiler API guide around the verified TypeScript 7 behavior to clarify necessary predicates.
+- cover practical property refinement composition by @nyaomaru in [#300](https://github.com/nyaomaru/is-kit/pull/300)
+
+### Docs
+
+- 1.14.1 by [bot] by @github-actions in [#297](https://github.com/nyaomaru/is-kit/pull/297)
+- add eslint-plugin-is-kit integration by @nyaomaru in [#298](https://github.com/nyaomaru/is-kit/pull/298)
+- Release: 1.14.2 by [bot] by @github-actions in [#301](https://github.com/nyaomaru/is-kit/pull/301)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.1...v1.14.2
+
+[v1.14.2]: https://github.com/nyaomaru/is-kit/compare/v1.14.1...v1.14.2
+
 ## [v1.14.1] - 2026-09-05
 
 ### Fixed
@@ -1750,7 +1772,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
