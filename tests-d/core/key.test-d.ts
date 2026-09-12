@@ -1,4 +1,4 @@
-import { expectNotAssignable, expectType } from 'tsd';
+import { expectAssignable, expectNotAssignable, expectType } from 'tsd';
 import {
   hasKey,
   hasKeys,
@@ -9,7 +9,9 @@ import {
   struct,
   isString,
   isNumber,
-  oneOfValues
+  oneOfValues,
+  andAll,
+  equals
 } from 'is-kit';
 import type { Predicate, Refinement } from 'is-kit';
 
@@ -182,6 +184,51 @@ declare let tuple: readonly [string | number, boolean];
 if (hasStringAtZero(tuple)) {
   expectType<string>(tuple[0]);
   expectType<boolean>(tuple[1]);
+}
+
+// =============================================
+// describe: practical property refinement composition
+// =============================================
+// it: preserves a defined optional API field through Array.filter
+type Job = {
+  readonly id: string;
+  readonly result?: string | Uint8Array;
+};
+
+declare const jobs: readonly Job[];
+const completedTextJobs = jobs.filter(refineDefinedKey('result', isString));
+
+expectType<Array<Job & Record<'result', string>>>(completedTextJobs);
+
+// it: lifts nested discriminant and field refinements to an envelope
+type TextPayload = {
+  readonly kind: 'text';
+  readonly status: 'pending' | 'ready';
+  readonly body: string | Uint8Array;
+};
+type BinaryPayload = { readonly kind: 'binary'; readonly bytes: Uint8Array };
+type Envelope = { readonly payload: TextPayload | BinaryPayload };
+
+const isTextPayload = (
+  payload: TextPayload | BinaryPayload
+): payload is TextPayload => payload.kind === 'text';
+const hasReadyTextPayload = refineKey(
+  'payload',
+  andAll(
+    isTextPayload,
+    refineKey('status', equals('ready')),
+    refineKey('body', isString)
+  )
+);
+
+declare let envelope: Envelope;
+if (hasReadyTextPayload(envelope)) {
+  expectType<'ready'>(envelope.payload.status);
+  // Note: The parent intersection prevents a generic refinement from widening
+  // a more specific caller property, so assert assignability rather than an
+  // identical displayed intersection type.
+  expectAssignable<string>(envelope.payload.body);
+  expectAssignable<typeof envelope.payload.body>('body');
 }
 
 declare const dynamicIndex: number;
