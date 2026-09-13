@@ -6,6 +6,7 @@ export const GUIDE_PATHS = {
   syncTypeGuards: '/guides/keep-type-guards-in-sync',
   heyApiTypedStruct: '/guides/validate-hey-api-generated-types',
   propertyRefinement: '/guides/refine-properties-on-existing-types',
+  recursiveTypeGuards: '/guides/recursive-type-guards',
   typescriptCompilerApi: '/guides/typescript-compiler-api',
   validateUnknown: '/guides/validate-unknown-without-schema-library'
 } as const;
@@ -61,6 +62,13 @@ export const GUIDE_ITEMS: GuideItem[] = [
     navigationLabel: 'Refine existing properties',
     description:
       'Build reusable predicates that preserve required, optional, indexed, nested, and literal property refinements.'
+  },
+  {
+    href: GUIDE_PATHS.recursiveTypeGuards,
+    title: 'Recursive type guards in TypeScript with lazy',
+    navigationLabel: 'Recursive type guards',
+    description:
+      'Define, compose, and safely apply recursive type guards to tree-shaped TypeScript and JSON data.'
   }
 ];
 

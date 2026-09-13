@@ -41,6 +41,11 @@ const GUIDE_METADATA = {
     image: '/iskit_guide6.png',
     imageAlt: 'Refine properties on existing TypeScript types'
   },
+  [GUIDE_PATHS.recursiveTypeGuards]: {
+    title: 'Recursive Type Guards in TypeScript with lazy | is-kit',
+    description:
+      'Build recursive TypeScript type guards for tree-shaped data with lazy, typedStruct, and arrayOf while keeping cyclic values out of scope.'
+  },
   [GUIDE_PATHS.typescriptCompilerApi]: {
     title:
       'Advanced Property Refinement with the TypeScript Compiler API | is-kit',
