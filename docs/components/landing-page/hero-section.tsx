@@ -20,7 +20,7 @@ export function HeroSection({ description }: HeroSectionProps) {
           width={300}
           height={300}
           sizes='(max-width: 768px) 150px, 300px'
-          className='h-[150px] w-auto max-w-full sm:h-[180px] md:h-[300px]'
+          className='h-[150px] w-auto max-w-full sm:h-[180px] md:h-[200px]'
         />
       </Link>
       <Paragraph
