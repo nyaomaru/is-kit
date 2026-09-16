@@ -104,7 +104,7 @@ export default function FilterNullAndUndefinedGuidePage() {
         breadcrumbLabel='Filter nullish values'
         media={
           <Image
-            src='/iskit_guide1.png'
+            src='/iskit_guide1.gif'
             alt='guide1 thumbnail'
             width={1000}
             height={420}

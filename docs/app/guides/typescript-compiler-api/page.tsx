@@ -165,7 +165,7 @@ export default function TypeScriptCompilerApiGuidePage() {
         breadcrumbLabel='Compiler API (advanced)'
         media={
           <Image
-            src='/iskit_guide3.png'
+            src='/iskit_guide3.gif'
             alt='guide3 thumbnail'
             width={1000}
             height={420}

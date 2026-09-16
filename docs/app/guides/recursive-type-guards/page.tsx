@@ -111,7 +111,7 @@ export default function RecursiveTypeGuardsGuidePage() {
         breadcrumbLabel='Recursive type guards'
         media={
           <Image
-            src='/iskit_guide7.png'
+            src='/iskit_guide7.gif'
             alt='Pixel-art is-kit dinosaur next to the is-kit logo'
             width={1000}
             height={420}

@@ -135,7 +135,7 @@ export default function ValidateHeyApiGeneratedTypesGuidePage() {
         breadcrumbLabel='Validate Hey API types'
         media={
           <Image
-            src='/iskit_guide5.png'
+            src='/iskit_guide5.gif'
             alt='guide5 thumbnail'
             width={1000}
             height={420}

@@ -167,7 +167,7 @@ export default function KeepTypeGuardsInSyncGuidePage() {
         breadcrumbLabel='Sync type guards'
         media={
           <Image
-            src='/iskit_guide2.png'
+            src='/iskit_guide2.gif'
             alt='guide2 thumbnail'
             width={1000}
             height={420}
