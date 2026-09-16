@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -107,6 +109,17 @@ export default function RecursiveTypeGuardsGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Recursive type guards'
+        media={
+          <Image
+            src='/iskit_guide7.png'
+            alt='Pixel-art is-kit dinosaur next to the is-kit logo'
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='Recursive Type Guards in TypeScript with lazy'
         description='Define a guard once, let it refer to itself safely, and use it to validate tree-shaped values without turning your runtime checks into a schema framework.'
       />
@@ -119,7 +132,7 @@ export default function RecursiveTypeGuardsGuidePage() {
         <CodeBlock code={quickAnswer} language='ts' />
         <Paragraph>
           <code>isTree</code> is still an ordinary reusable type guard. It works
-          in branches, with <code>safeParse</code>, and anywhere a
+          in branches, with <code>safeParse</code>, and anywhere a{' '}
           <code>Predicate&lt;Tree&gt;</code> is accepted.
         </Paragraph>
       </GuideSection>

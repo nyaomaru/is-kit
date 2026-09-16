@@ -44,7 +44,9 @@ const GUIDE_METADATA = {
   [GUIDE_PATHS.recursiveTypeGuards]: {
     title: 'Recursive Type Guards in TypeScript with lazy | is-kit',
     description:
-      'Build recursive TypeScript type guards for tree-shaped data with lazy, typedStruct, and arrayOf while keeping cyclic values out of scope.'
+      'Build recursive TypeScript type guards for tree-shaped data with lazy, typedStruct, and arrayOf while keeping cyclic values out of scope.',
+    image: '/iskit_guide7.png',
+    imageAlt: 'Pixel-art is-kit dinosaur next to the is-kit logo'
   },
   [GUIDE_PATHS.typescriptCompilerApi]: {
     title:
