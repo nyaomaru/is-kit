@@ -145,7 +145,7 @@ export default function RefinePropertiesOnExistingTypesGuidePage() {
         breadcrumbLabel='Refine existing properties'
         media={
           <Image
-            src='/iskit_guide6.png'
+            src='/iskit_guide6.gif'
             alt='guide6 thumbnail'
             width={1000}
             height={420}

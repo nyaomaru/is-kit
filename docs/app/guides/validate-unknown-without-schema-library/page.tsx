@@ -167,7 +167,7 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
         breadcrumbLabel='Validate unknown'
         media={
           <Image
-            src='/iskit_guide4.png'
+            src='/iskit_guide4.gif'
             alt='guide4 thumbnail'
             width={1000}
             height={420}
