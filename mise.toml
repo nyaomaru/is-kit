@@ -22,7 +22,7 @@ description = "Run Oxlint over the repo"
 run = "pnpm lint"
 
 [tasks.build]
-description = "Bundle via tsup to dist/"
+description = "Bundle via tsdown to dist/"
 run = "pnpm build"
 
 [tasks.test]

@@ -1,7 +1,6 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from 'tsdown';
 
-// WHY: tsup's declaration bundling drops entry-file comments, so the AI-facing
-// guide must be attached as a dts banner to appear at the top of dist/index.d.ts.
+// WHY: The AI-facing guide is part of this package's declaration-file contract.
 const dtsBanner = `/**
  * is-kit guard authoring guide:
  * - Use define<T>(...) for reusable custom runtime checks.
@@ -12,12 +11,15 @@ const dtsBanner = `/**
  */`;
 
 export default defineConfig({
+  banner: { dts: dtsBanner },
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
-  dts: {
-    banner: dtsBanner
-  },
+  dts: true,
   clean: true,
   outDir: 'dist',
+  outExtensions: ({ format }) => ({
+    dts: format === 'cjs' ? '.d.ts' : '.d.mts',
+    js: format === 'cjs' ? '.js' : '.mjs'
+  }),
   target: 'esnext'
 });
