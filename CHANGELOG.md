@@ -6,6 +6,23 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.14.3] - 2026-09-19
+
+### Docs
+
+- 1.14.2 by [bot] by @github-actions in [#302](https://github.com/nyaomaru/is-kit/pull/302)
+- add recursive type guards by @nyaomaru in [#304](https://github.com/nyaomaru/is-kit/pull/304)
+
+### Chore
+
+- add core performance workloads by @nyaomaru in [#303](https://github.com/nyaomaru/is-kit/pull/303)
+- migrate build from tsup to tsdown by @nyaomaru in [#305](https://github.com/nyaomaru/is-kit/pull/305)
+- Release: 1.14.3 by [bot] by @github-actions in [#306](https://github.com/nyaomaru/is-kit/pull/306)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.2...v1.14.3
+
+[v1.14.3]: https://github.com/nyaomaru/is-kit/compare/v1.14.2...v1.14.3
+
 ## [v1.14.2] - 2026-09-12
 
 ### Fixed
@@ -1772,7 +1789,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.2...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.3...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
