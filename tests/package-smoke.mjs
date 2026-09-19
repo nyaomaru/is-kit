@@ -1,7 +1,9 @@
+import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import {
   mkdirSync,
   mkdtempSync,
+  readFileSync,
   readdirSync,
   rmSync,
   writeFileSync
@@ -55,6 +57,25 @@ try {
     '--package-lock=false',
     tarballPath
   ]);
+
+  const installedPackageDirectory = join(
+    consumerDirectory,
+    'node_modules',
+    'is-kit'
+  );
+  const installedPackageJson = JSON.parse(
+    readFileSync(join(installedPackageDirectory, 'package.json'), 'utf8')
+  );
+  const rootExport = installedPackageJson.exports['.'];
+
+  assert.deepEqual(installedPackageJson.dependencies ?? {}, {});
+  assert.equal(rootExport.types, './dist/index.d.ts');
+  assert.equal(rootExport.import, './dist/index.mjs');
+  assert.equal(rootExport.require, './dist/index.js');
+  assert.match(
+    readFileSync(join(installedPackageDirectory, 'dist', 'index.d.ts'), 'utf8'),
+    /^\/\*\*\n \* is-kit guard authoring guide:/
+  );
 
   writeConsumerFile(
     'esm-smoke.mjs',
