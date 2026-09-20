@@ -700,3 +700,15 @@ Requires Node 22.22.0 and pnpm 11.2.2.
 See `DEVELOPER.md` for setup details and `CONTRIBUTE.md` for contribution workflow.
 
 Pick a guard, compose it, and ship with confidence 🚀
+
+## Star History
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=nyaomaru%2Fis-kit&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=nyaomaru/is-kit&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=nyaomaru/is-kit&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=nyaomaru/is-kit&type=date&legend=top-left" />
+ </picture>
+</a>
