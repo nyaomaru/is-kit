@@ -703,8 +703,6 @@ Pick a guard, compose it, and ship with confidence 🚀
 
 ## Star History
 
-## Star History
-
 <a href="https://www.star-history.com/?repos=nyaomaru%2Fis-kit&type=date&legend=top-left">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=nyaomaru/is-kit&type=date&theme=dark&legend=top-left" />
