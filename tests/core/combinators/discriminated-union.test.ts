@@ -78,6 +78,32 @@ describe('discriminatedUnion', () => {
     expect(isResult({ ok: true, error: 'failed' })).toBe(false);
   });
 
+  it('supports members whose discriminant contains multiple literals', () => {
+    type GroupedEvent =
+      | { kind: 'a' | 'b'; value: string }
+      | { kind: 'c'; count: number };
+
+    const isABEvent = typedStruct<Extract<GroupedEvent, { kind: 'a' | 'b' }>>()(
+      {
+        kind: (value): value is 'a' | 'b' => value === 'a' || value === 'b',
+        value: isString
+      }
+    );
+    const isCEvent = typedStruct<Extract<GroupedEvent, { kind: 'c' }>>()({
+      kind: (value): value is 'c' => value === 'c',
+      count: isNumber
+    });
+    const isGroupedEvent = discriminatedUnion<GroupedEvent>()('kind', {
+      a: isABEvent,
+      b: isABEvent,
+      c: isCEvent
+    });
+
+    expect(isGroupedEvent({ kind: 'a', value: 'first' })).toBe(true);
+    expect(isGroupedEvent({ kind: 'b', value: 'second' })).toBe(true);
+    expect(isGroupedEvent({ kind: 'c', count: 3 })).toBe(true);
+  });
+
   it('requires __proto__ to be an own branch-map property', () => {
     type ProtoEvent = { kind: '__proto__'; value: string };
     const isProtoEvent = typedStruct<ProtoEvent>()({

@@ -65,6 +65,17 @@ type MapCoversDiscriminants<
   ? unknown
   : never;
 
+type MatchingDiscriminantMember<
+  T extends object,
+  K extends DiscriminantKey<T>,
+  Value extends DiscriminantValue
+> =
+  T extends Record<K, DiscriminantValue>
+    ? Value extends T[K]
+      ? T
+      : never
+    : never;
+
 type DiscriminatedUnionGuardMap<
   T extends object,
   K extends DiscriminantKey<T>
@@ -72,7 +83,9 @@ type DiscriminatedUnionGuardMap<
   readonly [Value in DiscriminantValues<
     T,
     K
-  > as DiscriminantMapKey<Value>]: Predicate<Extract<T, Record<K, Value>>>;
+  > as DiscriminantMapKey<Value>]: Predicate<
+    MatchingDiscriminantMember<T, K, Value>
+  >;
 };
 
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>

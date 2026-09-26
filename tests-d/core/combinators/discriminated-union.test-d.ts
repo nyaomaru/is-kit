@@ -98,6 +98,35 @@ expectType<
   >
 >(isResult);
 
+// it: reuses a member guard for every literal in its discriminant union
+type GroupedEvent =
+  | { kind: 'a' | 'b'; value: string }
+  | { kind: 'c'; count: number };
+type ABEvent = Extract<GroupedEvent, { kind: 'a' | 'b' }>;
+type CEvent = Extract<GroupedEvent, { kind: 'c' }>;
+const isABEvent = typedStruct<ABEvent>()({
+  kind: oneOfValues('a', 'b'),
+  value: isString
+});
+const isCEvent = typedStruct<CEvent>()({
+  kind: oneOfValues('c'),
+  count: isNumber
+});
+const isGroupedEvent = discriminatedUnion<GroupedEvent>()('kind', {
+  a: isABEvent,
+  b: isABEvent,
+  c: isCEvent
+});
+expectType<Predicate<Readonly<ABEvent> | Readonly<CEvent>>>(isGroupedEvent);
+
+// it: rejects a branch guard from another member when literals share a member
+discriminatedUnion<GroupedEvent>()('kind', {
+  // @ts-expect-error: The a branch must validate the member that contains a.
+  a: isCEvent,
+  b: isABEvent,
+  c: isCEvent
+});
+
 // it: rejects discriminants that would use the same JavaScript object key
 type NumberKeyCollision =
   | { kind: 1; value: number }
