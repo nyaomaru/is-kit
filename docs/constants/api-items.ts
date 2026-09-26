@@ -88,6 +88,11 @@ export const API_ITEMS: ApiItem[] = [
     description: 'Guard maps with key and value guards.'
   },
   {
+    href: '/api-reference/combinators/discriminated-union',
+    title: 'discriminatedUnion',
+    description: 'Exhaustively guard a discriminated union by branch.'
+  },
+  {
     href: '/api-reference/combinators/one-of',
     title: 'oneOf',
     description: 'Passes when any guard passes (union).'

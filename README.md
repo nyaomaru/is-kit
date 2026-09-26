@@ -513,7 +513,45 @@ if (result.valid) {
 coercion and does not depend on a transport or schema format such as HTTP or
 OpenAPI.
 
-### 11. Narrow object keys
+### 11. Validate an exhaustive discriminated union
+
+Use `discriminatedUnion<T>()` with `typedStruct` to keep both the branch
+fields and the union coverage aligned with an existing TypeScript type.
+
+```ts
+import { discriminatedUnion, isNumber, oneOfValues, typedStruct } from 'is-kit';
+
+type Event =
+  | { kind: 'click'; x: number; y: number }
+  | { kind: 'scroll'; delta: number };
+
+const isEvent = discriminatedUnion<Event>()('kind', {
+  click: typedStruct<Extract<Event, { kind: 'click' }>>()({
+    kind: oneOfValues('click'),
+    x: isNumber,
+    y: isNumber
+  }),
+  scroll: typedStruct<Extract<Event, { kind: 'scroll' }>>()({
+    kind: oneOfValues('scroll'),
+    delta: isNumber
+  })
+});
+```
+
+The object keys must exactly match the union's discriminant values, so adding
+or removing an `Event` member produces a type error until its guard is updated.
+The discriminant must be a required finite literal `string`, `number`,
+`symbol`, or boolean property on every member. Broad `string`, `number`, and
+`symbol` discriminants and infinite template-literal types are rejected because
+they cannot be represented exhaustively. Boolean branches use the `true` and
+`false` object keys, which is useful for `Result` types with an `ok` field.
+Discriminants that would coerce to the same object key, such as `1` and `'1'`,
+are rejected because they cannot be represented as separate branches.
+For a `__proto__` discriminant, write the branch as `['__proto__']: guard` (or
+use a null-prototype map); the uncomputed object-literal form changes the
+object's prototype instead of creating a branch entry.
+
+### 12. Narrow object keys
 
 Use key helpers when the important part of a value is one property.
 
@@ -630,7 +668,7 @@ The library is organized around a few small building blocks:
 
 - **Primitives**: `isString`, `isNumber`, `isBoolean`, `isInteger`, ...
 - **Composition**: `define`, `and`, `andAll`, `or`, `not`, `oneOf`
-- **Object shapes**: `struct`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`, `refineKey`, `refineDefinedKey`, `refineIndex`
+- **Object shapes**: `struct`, `typedStruct`, `discriminatedUnion`, `optionalKey`, `hasKey`, `hasKeys`, `narrowKeyTo`, `refineKey`, `refineDefinedKey`, `refineIndex`
 - **Collections**: `arrayOf`, `nonEmptyArrayOf`, `tupleOf`, `setOf`, `mapOf`, `recordOf`
 - **Literals**: `oneOfValues`, `equals`, `equalsBy`, `equalsKey`
 - **Nullish handling**: `isNil`, `isNotNil`, `nullable`, `nonNull`, `nullish`, `optional`, `required`
