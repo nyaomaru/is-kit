@@ -141,10 +141,8 @@ export function discriminatedUnion<T extends object>() {
         return false;
       }
 
-      // WHY: Object keys coerce booleans to strings. Type-level mapping uses
-      // the same `true`/`false` key spelling, so Result-style unions dispatch
-      // to the branch whose compile-time key was required.
-      const key = isBoolean(value) ? String(value) : value;
+      // WHY: Keep runtime lookup aligned with type-level key normalization.
+      const key = isSymbol(value) ? value : String(value);
       if (!hasOwnPropertyKey(guards, key)) return false;
 
       const guard: Predicate<unknown> = guards[key as keyof G];
