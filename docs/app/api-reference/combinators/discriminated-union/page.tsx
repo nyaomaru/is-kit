@@ -65,7 +65,8 @@ export default function DiscriminatedUnionPage() {
             <code>string</code>, <code>number</code>, <code>symbol</code>, or
             boolean property on every union member. Broad <code>string</code>,{' '}
             <code>number</code>, and <code>symbol</code> values are rejected
-            because a branch map cannot represent them exhaustively. Boolean
+            because a branch map cannot represent them exhaustively. Infinite
+            template-literal types are rejected for the same reason. Boolean
             branches use <code>true</code> and <code>false</code> object keys,
             which makes <code>ok</code>-based Result types a natural fit.
           </Paragraph>

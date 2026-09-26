@@ -542,9 +542,9 @@ The object keys must exactly match the union's discriminant values, so adding
 or removing an `Event` member produces a type error until its guard is updated.
 The discriminant must be a required finite literal `string`, `number`,
 `symbol`, or boolean property on every member. Broad `string`, `number`, and
-`symbol` discriminants are rejected because they cannot be represented
-exhaustively. Boolean branches use the `true` and `false` object keys, which is
-useful for `Result` types with an `ok` field.
+`symbol` discriminants and infinite template-literal types are rejected because
+they cannot be represented exhaustively. Boolean branches use the `true` and
+`false` object keys, which is useful for `Result` types with an `ok` field.
 Discriminants that would coerce to the same object key, such as `1` and `'1'`,
 are rejected because they cannot be represented as separate branches.
 For a `__proto__` discriminant, write the branch as `['__proto__']: guard` (or

@@ -55,6 +55,16 @@ type NonCollidingDiscriminants<
   ? unknown
   : never;
 
+type MapCoversDiscriminants<
+  T extends object,
+  K extends DiscriminantKey<T>,
+  Guards extends object
+> = [DiscriminantRuntimeKey<DiscriminantValues<T, K>>] extends [
+  DiscriminantRuntimeKey<Extract<keyof Guards, DiscriminantValue>>
+]
+  ? unknown
+  : never;
+
 type DiscriminatedUnionGuardMap<
   T extends object,
   K extends DiscriminantKey<T>
@@ -103,7 +113,8 @@ export function discriminatedUnion<T extends object>() {
   >(
     discriminant: K,
     guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K>> &
-      NonCollidingDiscriminants<T, K>
+      NonCollidingDiscriminants<T, K> &
+      MapCoversDiscriminants<T, K, G>
   ): Predicate<GuardedOf<G[keyof G]>> => {
     assertSafeProtoBranch(guards);
 

@@ -164,6 +164,18 @@ discriminatedUnion<BroadSymbolEvent>()('kind', {
   [onlySymbol]: isBroadSymbolEvent
 });
 
+// it: rejects infinite template-literal discriminants
+type InfiniteTemplateEvent = { kind: `event-${string}`; value: string };
+const isEventOne = typedStruct<InfiniteTemplateEvent>()({
+  kind: oneOfValues('event-one'),
+  value: isString
+});
+
+// @ts-expect-error: An infinite template-literal discriminant cannot be exhaustively mapped.
+discriminatedUnion<InfiniteTemplateEvent>()('kind', {
+  'event-one': isEventOne
+});
+
 // it: rejects a missing union branch
 // @ts-expect-error: Each discriminant value needs a branch guard.
 discriminatedUnion<Event>()('kind', {
