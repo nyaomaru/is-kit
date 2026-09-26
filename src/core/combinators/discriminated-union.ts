@@ -6,21 +6,8 @@ import { hasOwnPropertyKey } from '@/utils/own-properties';
 
 type DiscriminantValue = PropertyKey | boolean;
 
-type IsFiniteDiscriminantValue<Values extends DiscriminantValue> =
-  string extends Values
-    ? false
-    : number extends Values
-      ? false
-      : symbol extends Values
-        ? false
-        : true;
-
 type DiscriminantKey<T extends object> = {
-  [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>]
-    ? IsFiniteDiscriminantValue<T[K] & DiscriminantValue> extends true
-      ? K
-      : never
-    : never;
+  [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>] ? K : never;
 }[keyof T];
 
 type DiscriminantValues<T extends object, K extends DiscriminantKey<T>> =
@@ -55,15 +42,17 @@ type NonCollidingDiscriminants<
   ? unknown
   : never;
 
-type MapCoversDiscriminants<
+type ExactDiscriminantValues<
   T extends object,
   K extends DiscriminantKey<T>,
-  Guards extends object
-> = [DiscriminantRuntimeKey<DiscriminantValues<T, K>>] extends [
-  DiscriminantRuntimeKey<Extract<keyof Guards, DiscriminantValue>>
-]
-  ? unknown
-  : never;
+  Values extends readonly DiscriminantValue[]
+> = number extends Values['length']
+  ? never
+  : [DiscriminantValues<T, K>] extends [Values[number]]
+    ? [Values[number]] extends [DiscriminantValues<T, K>]
+      ? unknown
+      : never
+    : never;
 
 type MatchingDiscriminantMember<
   T extends object,
@@ -78,12 +67,10 @@ type MatchingDiscriminantMember<
 
 type DiscriminatedUnionGuardMap<
   T extends object,
-  K extends DiscriminantKey<T>
+  K extends DiscriminantKey<T>,
+  Values extends DiscriminantValue
 > = {
-  readonly [Value in DiscriminantValues<
-    T,
-    K
-  > as DiscriminantMapKey<Value>]: Predicate<
+  readonly [Value in Values as DiscriminantMapKey<Value>]: Predicate<
     MatchingDiscriminantMember<T, K, Value>
   >;
 };
@@ -93,6 +80,9 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isNumberPrimitive(value) ||
   isSymbol(value) ||
   isBoolean(value);
+
+const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
+  isSymbol(value) ? value : String(value);
 
 const assertSafeProtoBranch = (guards: object): void => {
   if (hasOwnPropertyKey(guards, '__proto__')) return;
@@ -107,29 +97,44 @@ const assertSafeProtoBranch = (guards: object): void => {
   }
 };
 
+const assertBranchKeys = (
+  values: readonly DiscriminantValue[],
+  guards: object
+): void => {
+  for (const value of values) {
+    if (!hasOwnPropertyKey(guards, toRuntimeKey(value))) {
+      throw new TypeError(
+        `Missing discriminatedUnion branch guard for ${String(value)}.`
+      );
+    }
+  }
+};
+
 /**
  * Creates an exhaustive guard for a union whose members share a literal discriminant.
- * Each discriminant value must have exactly one compatible branch guard. Values
- * that coerce to the same object key, such as `1` and `'1'`, are rejected.
+ * A tuple of every discriminant value keeps finite coverage explicit at runtime
+ * and compile time. Values that coerce to the same object key, such as `1` and
+ * `'1'`, are rejected.
  * Use `['__proto__']` for that literal discriminant so it becomes an own map key.
- * Broad `string`, `number`, and `symbol` discriminants are rejected because
- * their domains cannot be represented exhaustively by an object map.
  *
  * @param discriminant Required property that identifies each union member.
+ * @param values Finite tuple containing every discriminant value.
  * @param guards Branch guards keyed by the discriminant values.
  * @returns Predicate narrowing to the union accepted by the branch guards.
  */
 export function discriminatedUnion<T extends object>() {
   return <
     const K extends DiscriminantKey<T>,
-    const G extends DiscriminatedUnionGuardMap<T, K>
+    const Values extends readonly DiscriminantValue[],
+    const G extends DiscriminatedUnionGuardMap<T, K, Values[number]>
   >(
     discriminant: K,
-    guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K>> &
-      NonCollidingDiscriminants<T, K> &
-      MapCoversDiscriminants<T, K, G>
+    values: Values & ExactDiscriminantValues<T, K, Values>,
+    guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K, Values[number]>> &
+      NonCollidingDiscriminants<T, K>
   ): Predicate<GuardedOf<G[keyof G]>> => {
     assertSafeProtoBranch(guards);
+    assertBranchKeys(values, guards);
 
     return define<GuardedOf<G[keyof G]>>((input) => {
       if (!isObject(input) || !hasOwnPropertyKey(input, discriminant)) {
@@ -141,8 +146,7 @@ export function discriminatedUnion<T extends object>() {
         return false;
       }
 
-      // WHY: Keep runtime lookup aligned with type-level key normalization.
-      const key = isSymbol(value) ? value : String(value);
+      const key = toRuntimeKey(value);
       if (!hasOwnPropertyKey(guards, key)) return false;
 
       const guard: Predicate<unknown> = guards[key as keyof G];

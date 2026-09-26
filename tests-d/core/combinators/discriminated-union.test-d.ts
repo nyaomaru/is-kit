@@ -27,7 +27,7 @@ const isScrollEvent = typedStruct<ScrollEvent>()({
 // describe: discriminatedUnion
 // =============================================
 // it: requires a guard for every discriminant value
-const isEvent = discriminatedUnion<Event>()('kind', {
+const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
   click: isClickEvent,
   scroll: isScrollEvent
 });
@@ -47,10 +47,14 @@ const isImageContent = typedStruct<Extract<Content, { type: 'image' }>>()({
   type: oneOfValues('image'),
   value: isString
 });
-const isStringContent = discriminatedUnion<Content>()('type', {
-  text: isTextContent,
-  image: isImageContent
-});
+const isStringContent = discriminatedUnion<Content>()(
+  'type',
+  ['text', 'image'],
+  {
+    text: isTextContent,
+    image: isImageContent
+  }
+);
 expectType<
   Predicate<
     | Readonly<{ type: 'text'; value: string }>
@@ -62,7 +66,7 @@ expectType<
 type Response =
   | { status: 200; body: string }
   | { status: 404; message: string };
-const isResponse = discriminatedUnion<Response>()('status', {
+const isResponse = discriminatedUnion<Response>()('status', [200, 404], {
   200: typedStruct<Extract<Response, { status: 200 }>>()({
     status: oneOfValues(200),
     body: isString
@@ -81,7 +85,7 @@ expectType<
 
 // it: supports Result-style boolean discriminants
 type Result = { ok: true; value: string } | { ok: false; error: string };
-const isResult = discriminatedUnion<Result>()('ok', {
+const isResult = discriminatedUnion<Result>()('ok', [true, false], {
   true: typedStruct<Extract<Result, { ok: true }>>()({
     ok: oneOfValues(true),
     value: isString
@@ -112,15 +116,19 @@ const isCEvent = typedStruct<CEvent>()({
   kind: oneOfValues('c'),
   count: isNumber
 });
-const isGroupedEvent = discriminatedUnion<GroupedEvent>()('kind', {
-  a: isABEvent,
-  b: isABEvent,
-  c: isCEvent
-});
+const isGroupedEvent = discriminatedUnion<GroupedEvent>()(
+  'kind',
+  ['a', 'b', 'c'],
+  {
+    a: isABEvent,
+    b: isABEvent,
+    c: isCEvent
+  }
+);
 expectType<Predicate<Readonly<ABEvent> | Readonly<CEvent>>>(isGroupedEvent);
 
 // it: rejects a branch guard from another member when literals share a member
-discriminatedUnion<GroupedEvent>()('kind', {
+discriminatedUnion<GroupedEvent>()('kind', ['a', 'b', 'c'], {
   // @ts-expect-error: The a branch must validate the member that contains a.
   a: isCEvent,
   b: isABEvent,
@@ -139,7 +147,7 @@ const isNumberKeyCollision = typedStruct<
 });
 
 // @ts-expect-error: 1 and '1' both resolve to the same object key.
-discriminatedUnion<NumberKeyCollision>()('kind', {
+discriminatedUnion<NumberKeyCollision>()('kind', [1, '1'], {
   1: isNumberKeyCollision
 });
 
@@ -154,7 +162,7 @@ const isBooleanKeyCollision = typedStruct<
 });
 
 // @ts-expect-error: true and 'true' both resolve to the same object key.
-discriminatedUnion<BooleanKeyCollision>()('kind', {
+discriminatedUnion<BooleanKeyCollision>()('kind', [true, 'true'], {
   true: isBooleanKeyCollision
 });
 
@@ -166,7 +174,7 @@ const isBroadStringEvent = typedStruct<BroadStringEvent>()({
 });
 
 // @ts-expect-error: A broad string discriminant cannot be exhaustively mapped.
-discriminatedUnion<BroadStringEvent>()('kind', {
+discriminatedUnion<BroadStringEvent>()('kind', ['only'], {
   only: isBroadStringEvent
 });
 
@@ -177,7 +185,7 @@ const isBroadNumberEvent = typedStruct<BroadNumberEvent>()({
 });
 
 // @ts-expect-error: A broad number discriminant cannot be exhaustively mapped.
-discriminatedUnion<BroadNumberEvent>()('kind', {
+discriminatedUnion<BroadNumberEvent>()('kind', [1], {
   1: isBroadNumberEvent
 });
 
@@ -189,7 +197,7 @@ const isBroadSymbolEvent = typedStruct<BroadSymbolEvent>()({
 });
 
 // @ts-expect-error: A broad symbol discriminant cannot be exhaustively mapped.
-discriminatedUnion<BroadSymbolEvent>()('kind', {
+discriminatedUnion<BroadSymbolEvent>()('kind', [onlySymbol], {
   [onlySymbol]: isBroadSymbolEvent
 });
 
@@ -201,18 +209,38 @@ const isEventOne = typedStruct<InfiniteTemplateEvent>()({
 });
 
 // @ts-expect-error: An infinite template-literal discriminant cannot be exhaustively mapped.
-discriminatedUnion<InfiniteTemplateEvent>()('kind', {
+discriminatedUnion<InfiniteTemplateEvent>()('kind', ['event-one'], {
   'event-one': isEventOne
+});
+
+const templateKeyedGuards: Record<
+  `event-${string}`,
+  Predicate<InfiniteTemplateEvent>
+> = {
+  'event-one': isEventOne
+};
+
+discriminatedUnion<InfiniteTemplateEvent>()(
+  'kind',
+  // @ts-expect-error: A template-keyed Record cannot make an infinite domain finite.
+  ['event-one'],
+  templateKeyedGuards
+);
+
+// it: rejects a value tuple that omits a finite discriminant
+// @ts-expect-error: The tuple must contain every discriminant value.
+discriminatedUnion<Event>()('kind', ['click'], {
+  click: isClickEvent
 });
 
 // it: rejects a missing union branch
 // @ts-expect-error: Each discriminant value needs a branch guard.
-discriminatedUnion<Event>()('kind', {
+discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
   click: isClickEvent
 });
 
 // it: rejects a branch outside the target union
-discriminatedUnion<Event>()('kind', {
+discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
   click: isClickEvent,
   scroll: isScrollEvent,
   // @ts-expect-error: Extra discriminant values are not allowed.
@@ -220,7 +248,7 @@ discriminatedUnion<Event>()('kind', {
 });
 
 // it: rejects a guard for the wrong discriminated member
-discriminatedUnion<Event>()('kind', {
+discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
   // @ts-expect-error: The click branch must validate click events.
   click: isScrollEvent,
   scroll: isScrollEvent

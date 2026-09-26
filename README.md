@@ -525,7 +525,7 @@ type Event =
   | { kind: 'click'; x: number; y: number }
   | { kind: 'scroll'; delta: number };
 
-const isEvent = discriminatedUnion<Event>()('kind', {
+const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
   click: typedStruct<Extract<Event, { kind: 'click' }>>()({
     kind: oneOfValues('click'),
     x: isNumber,
@@ -538,12 +538,11 @@ const isEvent = discriminatedUnion<Event>()('kind', {
 });
 ```
 
-The object keys must exactly match the union's discriminant values, so adding
-or removing an `Event` member produces a type error until its guard is updated.
-The discriminant must be a required finite literal `string`, `number`,
-`symbol`, or boolean property on every member. Broad `string`, `number`, and
-`symbol` discriminants and infinite template-literal types are rejected because
-they cannot be represented exhaustively. Boolean branches use the `true` and
+The value tuple and object keys must each exactly match the union's
+discriminant values, so adding or removing an `Event` member produces a type
+error until both are updated. The tuple makes finite coverage explicit, so
+broad `string`, `number`, and `symbol` discriminants and infinite
+template-literal types are rejected. Boolean branches use the `true` and
 `false` object keys, which is useful for `Result` types with an `ok` field.
 Discriminants that would coerce to the same object key, such as `1` and `'1'`,
 are rejected because they cannot be represented as separate branches.

@@ -20,7 +20,7 @@ type Event =
   | { kind: 'click'; x: number; y: number }
   | { kind: 'scroll'; delta: number };
 
-const isEvent = discriminatedUnion<Event>()('kind', {
+const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
   click: typedStruct<Extract<Event, { kind: 'click' }>>()({
     kind: oneOfValues('click'),
     x: isNumber,
@@ -36,7 +36,7 @@ isEvent({ kind: 'click', x: 12, y: 24 }); // true
 isEvent({ kind: 'hover', target: 'button' }); // false
 
 // TypeScript error: the scroll branch is required.
-discriminatedUnion<Event>()('kind', {
+discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
   click: typedStruct<Extract<Event, { kind: 'click' }>>()({
     kind: oneOfValues('click'),
     x: isNumber,
@@ -56,7 +56,7 @@ export default function DiscriminatedUnionPage() {
             discriminant value, then delegates to that branch guard.
           </Paragraph>
           <Paragraph>
-            The branch map must have exactly one key for every discriminant
+            The value tuple and branch map must each contain every discriminant
             value. Pair it with <code>typedStruct</code> to check each branch's
             fields against its existing TypeScript type.
           </Paragraph>

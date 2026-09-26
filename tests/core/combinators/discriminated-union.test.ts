@@ -8,7 +8,7 @@ describe('discriminatedUnion', () => {
   type ClickEvent = Extract<Event, { kind: 'click' }>;
   type ScrollEvent = Extract<Event, { kind: 'scroll' }>;
 
-  const isEvent = discriminatedUnion<Event>()('kind', {
+  const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
     click: typedStruct<ClickEvent>()({
       kind: (value): value is 'click' => value === 'click',
       x: isNumber,
@@ -43,7 +43,7 @@ describe('discriminatedUnion', () => {
       | { status: 200; body: string }
       | { status: 404; message: string };
 
-    const isResponse = discriminatedUnion<Response>()('status', {
+    const isResponse = discriminatedUnion<Response>()('status', [200, 404], {
       200: typedStruct<Extract<Response, { status: 200 }>>()({
         status: (value): value is 200 => value === 200,
         body: isString
@@ -62,7 +62,7 @@ describe('discriminatedUnion', () => {
   it('supports boolean discriminants used by Result types', () => {
     type Result = { ok: true; value: string } | { ok: false; error: string };
 
-    const isResult = discriminatedUnion<Result>()('ok', {
+    const isResult = discriminatedUnion<Result>()('ok', [true, false], {
       true: typedStruct<Extract<Result, { ok: true }>>()({
         ok: (value): value is true => value === true,
         value: isString
@@ -93,11 +93,15 @@ describe('discriminatedUnion', () => {
       kind: (value): value is 'c' => value === 'c',
       count: isNumber
     });
-    const isGroupedEvent = discriminatedUnion<GroupedEvent>()('kind', {
-      a: isABEvent,
-      b: isABEvent,
-      c: isCEvent
-    });
+    const isGroupedEvent = discriminatedUnion<GroupedEvent>()(
+      'kind',
+      ['a', 'b', 'c'],
+      {
+        a: isABEvent,
+        b: isABEvent,
+        c: isCEvent
+      }
+    );
 
     expect(isGroupedEvent({ kind: 'a', value: 'first' })).toBe(true);
     expect(isGroupedEvent({ kind: 'b', value: 'second' })).toBe(true);
@@ -112,14 +116,18 @@ describe('discriminatedUnion', () => {
     });
 
     expect(() =>
-      discriminatedUnion<ProtoEvent>()('kind', {
+      discriminatedUnion<ProtoEvent>()('kind', ['__proto__'], {
         __proto__: isProtoEvent
       })
     ).toThrow("Use ['__proto__']");
 
-    const isSafeProtoEvent = discriminatedUnion<ProtoEvent>()('kind', {
-      ['__proto__']: isProtoEvent
-    });
+    const isSafeProtoEvent = discriminatedUnion<ProtoEvent>()(
+      'kind',
+      ['__proto__'],
+      {
+        ['__proto__']: isProtoEvent
+      }
+    );
 
     expect(isSafeProtoEvent({ kind: '__proto__', value: 'safe' })).toBe(true);
   });
