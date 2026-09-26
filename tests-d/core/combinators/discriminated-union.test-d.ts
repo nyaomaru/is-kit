@@ -4,7 +4,7 @@ import {
   oneOfValues,
   typedStruct
 } from '@/core/combinators';
-import { isNumber, isString } from '@/core/primitive';
+import { isBoolean, isNumber, isString } from '@/core/primitive';
 import type { Predicate } from '@/types';
 
 type Event =
@@ -97,6 +97,37 @@ expectType<
     | Readonly<{ ok: false; error: string }>
   >
 >(isResult);
+
+// it: rejects discriminants that would use the same JavaScript object key
+type NumberKeyCollision =
+  | { kind: 1; value: number }
+  | { kind: '1'; value: string };
+const isNumberKeyCollision = typedStruct<
+  Extract<NumberKeyCollision, { kind: 1 }>
+>()({
+  kind: oneOfValues(1),
+  value: isNumber
+});
+
+// @ts-expect-error: 1 and '1' both resolve to the same object key.
+discriminatedUnion<NumberKeyCollision>()('kind', {
+  1: isNumberKeyCollision
+});
+
+type BooleanKeyCollision =
+  | { kind: true; value: boolean }
+  | { kind: 'true'; value: string };
+const isBooleanKeyCollision = typedStruct<
+  Extract<BooleanKeyCollision, { kind: true }>
+>()({
+  kind: oneOfValues(true),
+  value: isBoolean
+});
+
+// @ts-expect-error: true and 'true' both resolve to the same object key.
+discriminatedUnion<BooleanKeyCollision>()('kind', {
+  true: isBooleanKeyCollision
+});
 
 // it: rejects a missing union branch
 // @ts-expect-error: Each discriminant value needs a branch guard.

@@ -17,6 +17,31 @@ type DiscriminantMapKey<Value extends DiscriminantValue> = Value extends boolean
   ? `${Value}`
   : Value;
 
+type DiscriminantRuntimeKey<Value extends DiscriminantValue> =
+  Value extends symbol
+    ? Value
+    : Value extends string | number | boolean
+      ? `${Value}`
+      : never;
+
+type CollidingDiscriminantValues<
+  Values extends DiscriminantValue,
+  AllValues extends DiscriminantValue = Values
+> = Values extends unknown
+  ? DiscriminantRuntimeKey<Values> extends DiscriminantRuntimeKey<
+      Exclude<AllValues, Values>
+    >
+    ? Values
+    : never
+  : never;
+
+type NonCollidingDiscriminants<
+  T extends object,
+  K extends DiscriminantKey<T>
+> = [CollidingDiscriminantValues<DiscriminantValues<T, K>>] extends [never]
+  ? unknown
+  : never;
+
 type DiscriminatedUnionGuardMap<
   T extends object,
   K extends DiscriminantKey<T>
@@ -35,7 +60,8 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
 
 /**
  * Creates an exhaustive guard for a union whose members share a literal discriminant.
- * Each discriminant value must have exactly one compatible branch guard.
+ * Each discriminant value must have exactly one compatible branch guard. Values
+ * that coerce to the same object key, such as `1` and `'1'`, are rejected.
  *
  * @param discriminant Required property that identifies each union member.
  * @param guards Branch guards keyed by the discriminant values.
@@ -47,7 +73,8 @@ export function discriminatedUnion<T extends object>() {
     const G extends DiscriminatedUnionGuardMap<T, K>
   >(
     discriminant: K,
-    guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K>>
+    guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K>> &
+      NonCollidingDiscriminants<T, K>
   ): Predicate<GuardedOf<G[keyof G]>> =>
     define<GuardedOf<G[keyof G]>>((input) => {
       if (!isObject(input) || !hasOwnPropertyKey(input, discriminant)) {

@@ -67,6 +67,11 @@ export default function DiscriminatedUnionPage() {
             <code>false</code> object keys, which makes <code>ok</code>-based
             Result types a natural fit.
           </Paragraph>
+          <Paragraph>
+            Discriminants that coerce to the same object key, such as{' '}
+            <code>1</code> and <code>'1'</code>, are rejected because a branch
+            map cannot represent them separately.
+          </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>
