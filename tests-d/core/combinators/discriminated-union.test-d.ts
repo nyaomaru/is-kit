@@ -79,6 +79,25 @@ expectType<
   >
 >(isResponse);
 
+// it: supports Result-style boolean discriminants
+type Result = { ok: true; value: string } | { ok: false; error: string };
+const isResult = discriminatedUnion<Result>()('ok', {
+  true: typedStruct<Extract<Result, { ok: true }>>()({
+    ok: oneOfValues(true),
+    value: isString
+  }),
+  false: typedStruct<Extract<Result, { ok: false }>>()({
+    ok: oneOfValues(false),
+    error: isString
+  })
+});
+expectType<
+  Predicate<
+    | Readonly<{ ok: true; value: string }>
+    | Readonly<{ ok: false; error: string }>
+  >
+>(isResult);
+
 // it: rejects a missing union branch
 // @ts-expect-error: Each discriminant value needs a branch guard.
 discriminatedUnion<Event>()('kind', {

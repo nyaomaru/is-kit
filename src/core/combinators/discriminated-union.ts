@@ -1,27 +1,37 @@
 import type { GuardedOf, NoExtraKeys, Predicate } from '@/types';
 import { define } from '../define';
 import { isObject } from '../object';
-import { isNumberPrimitive, isString, isSymbol } from '../primitive';
+import { isBoolean, isNumberPrimitive, isString, isSymbol } from '../primitive';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
 
+type DiscriminantValue = PropertyKey | boolean;
+
 type DiscriminantKey<T extends object> = {
-  [K in keyof T]-?: [T] extends [Record<K, PropertyKey>] ? K : never;
+  [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>] ? K : never;
 }[keyof T];
 
 type DiscriminantValues<T extends object, K extends DiscriminantKey<T>> =
-  T extends Record<K, infer Value> ? Value & PropertyKey : never;
+  T extends Record<K, infer Value> ? Value & DiscriminantValue : never;
+
+type DiscriminantMapKey<Value extends DiscriminantValue> = Value extends boolean
+  ? `${Value}`
+  : Value;
 
 type DiscriminatedUnionGuardMap<
   T extends object,
   K extends DiscriminantKey<T>
 > = {
-  readonly [Value in DiscriminantValues<T, K>]: Predicate<
-    Extract<T, Record<K, Value>>
-  >;
+  readonly [Value in DiscriminantValues<
+    T,
+    K
+  > as DiscriminantMapKey<Value>]: Predicate<Extract<T, Record<K, Value>>>;
 };
 
-const isPropertyKey = (value: unknown): value is PropertyKey =>
-  isString(value) || isNumberPrimitive(value) || isSymbol(value);
+const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
+  isString(value) ||
+  isNumberPrimitive(value) ||
+  isSymbol(value) ||
+  isBoolean(value);
 
 /**
  * Creates an exhaustive guard for a union whose members share a literal discriminant.
@@ -45,13 +55,17 @@ export function discriminatedUnion<T extends object>() {
       }
 
       const value = input[discriminant];
-      if (!isPropertyKey(value) || !hasOwnPropertyKey(guards, value)) {
+      if (!isDiscriminantValue(value)) {
         return false;
       }
 
-      // WHY: Property lookup follows JavaScript's key coercion, so numeric
-      // discriminants select object-literal branch keys such as `1` correctly.
-      const guard: Predicate<unknown> = guards[value as keyof G];
+      // WHY: Object keys coerce booleans to strings. Type-level mapping uses
+      // the same `true`/`false` key spelling, so Result-style unions dispatch
+      // to the branch whose compile-time key was required.
+      const key = isBoolean(value) ? String(value) : value;
+      if (!hasOwnPropertyKey(guards, key)) return false;
+
+      const guard: Predicate<unknown> = guards[key as keyof G];
       return guard(input);
     });
 }

@@ -58,4 +58,23 @@ describe('discriminatedUnion', () => {
     expect(isResponse({ status: 404, message: 'Not Found' })).toBe(true);
     expect(isResponse({ status: 500, message: 'Error' })).toBe(false);
   });
+
+  it('supports boolean discriminants used by Result types', () => {
+    type Result = { ok: true; value: string } | { ok: false; error: string };
+
+    const isResult = discriminatedUnion<Result>()('ok', {
+      true: typedStruct<Extract<Result, { ok: true }>>()({
+        ok: (value): value is true => value === true,
+        value: isString
+      }),
+      false: typedStruct<Extract<Result, { ok: false }>>()({
+        ok: (value): value is false => value === false,
+        error: isString
+      })
+    });
+
+    expect(isResult({ ok: true, value: 'done' })).toBe(true);
+    expect(isResult({ ok: false, error: 'failed' })).toBe(true);
+    expect(isResult({ ok: true, error: 'failed' })).toBe(false);
+  });
 });

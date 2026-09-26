@@ -62,8 +62,10 @@ export default function DiscriminatedUnionPage() {
           </Paragraph>
           <Paragraph>
             The discriminant must be a required <code>string</code>,{' '}
-            <code>number</code>, or <code>symbol</code> property on every union
-            member.
+            <code>number</code>, <code>symbol</code>, or boolean property on
+            every union member. Boolean branches use <code>true</code> and{' '}
+            <code>false</code> object keys, which makes <code>ok</code>-based
+            Result types a natural fit.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

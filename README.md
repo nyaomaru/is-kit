@@ -540,8 +540,9 @@ const isEvent = discriminatedUnion<Event>()('kind', {
 
 The object keys must exactly match the union's discriminant values, so adding
 or removing an `Event` member produces a type error until its guard is updated.
-The discriminant must be a required `string`, `number`, or `symbol` property
-on every member.
+The discriminant must be a required `string`, `number`, `symbol`, or boolean
+property on every member. Boolean branches use the `true` and `false` object
+keys, which is useful for `Result` types with an `ok` field.
 
 ### 12. Narrow object keys
 
