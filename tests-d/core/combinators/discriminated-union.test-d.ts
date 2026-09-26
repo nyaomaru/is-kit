@@ -4,7 +4,7 @@ import {
   oneOfValues,
   typedStruct
 } from '@/core/combinators';
-import { isBoolean, isNumber, isString } from '@/core/primitive';
+import { isBoolean, isNumber, isString, isSymbol } from '@/core/primitive';
 import type { Predicate } from '@/types';
 
 type Event =
@@ -127,6 +127,41 @@ const isBooleanKeyCollision = typedStruct<
 // @ts-expect-error: true and 'true' both resolve to the same object key.
 discriminatedUnion<BooleanKeyCollision>()('kind', {
   true: isBooleanKeyCollision
+});
+
+// it: rejects broad primitive discriminants that cannot be enumerated
+type BroadStringEvent = { kind: string; value: string };
+const isBroadStringEvent = typedStruct<BroadStringEvent>()({
+  kind: isString,
+  value: isString
+});
+
+// @ts-expect-error: A broad string discriminant cannot be exhaustively mapped.
+discriminatedUnion<BroadStringEvent>()('kind', {
+  only: isBroadStringEvent
+});
+
+type BroadNumberEvent = { kind: number; value: string };
+const isBroadNumberEvent = typedStruct<BroadNumberEvent>()({
+  kind: isNumber,
+  value: isString
+});
+
+// @ts-expect-error: A broad number discriminant cannot be exhaustively mapped.
+discriminatedUnion<BroadNumberEvent>()('kind', {
+  1: isBroadNumberEvent
+});
+
+declare const onlySymbol: unique symbol;
+type BroadSymbolEvent = { kind: symbol; value: string };
+const isBroadSymbolEvent = typedStruct<BroadSymbolEvent>()({
+  kind: isSymbol,
+  value: isString
+});
+
+// @ts-expect-error: A broad symbol discriminant cannot be exhaustively mapped.
+discriminatedUnion<BroadSymbolEvent>()('kind', {
+  [onlySymbol]: isBroadSymbolEvent
 });
 
 // it: rejects a missing union branch

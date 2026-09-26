@@ -6,8 +6,21 @@ import { hasOwnPropertyKey } from '@/utils/own-properties';
 
 type DiscriminantValue = PropertyKey | boolean;
 
+type IsFiniteDiscriminantValue<Values extends DiscriminantValue> =
+  string extends Values
+    ? false
+    : number extends Values
+      ? false
+      : symbol extends Values
+        ? false
+        : true;
+
 type DiscriminantKey<T extends object> = {
-  [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>] ? K : never;
+  [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>]
+    ? IsFiniteDiscriminantValue<T[K] & DiscriminantValue> extends true
+      ? K
+      : never
+    : never;
 }[keyof T];
 
 type DiscriminantValues<T extends object, K extends DiscriminantKey<T>> =
@@ -76,6 +89,8 @@ const assertSafeProtoBranch = (guards: object): void => {
  * Each discriminant value must have exactly one compatible branch guard. Values
  * that coerce to the same object key, such as `1` and `'1'`, are rejected.
  * Use `['__proto__']` for that literal discriminant so it becomes an own map key.
+ * Broad `string`, `number`, and `symbol` discriminants are rejected because
+ * their domains cannot be represented exhaustively by an object map.
  *
  * @param discriminant Required property that identifies each union member.
  * @param guards Branch guards keyed by the discriminant values.
