@@ -77,4 +77,24 @@ describe('discriminatedUnion', () => {
     expect(isResult({ ok: false, error: 'failed' })).toBe(true);
     expect(isResult({ ok: true, error: 'failed' })).toBe(false);
   });
+
+  it('requires __proto__ to be an own branch-map property', () => {
+    type ProtoEvent = { kind: '__proto__'; value: string };
+    const isProtoEvent = typedStruct<ProtoEvent>()({
+      kind: (value): value is '__proto__' => value === '__proto__',
+      value: isString
+    });
+
+    expect(() =>
+      discriminatedUnion<ProtoEvent>()('kind', {
+        __proto__: isProtoEvent
+      })
+    ).toThrow("Use ['__proto__']");
+
+    const isSafeProtoEvent = discriminatedUnion<ProtoEvent>()('kind', {
+      ['__proto__']: isProtoEvent
+    });
+
+    expect(isSafeProtoEvent({ kind: '__proto__', value: 'safe' })).toBe(true);
+  });
 });

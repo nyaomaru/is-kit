@@ -72,6 +72,12 @@ export default function DiscriminatedUnionPage() {
             <code>1</code> and <code>'1'</code>, are rejected because a branch
             map cannot represent them separately.
           </Paragraph>
+          <Paragraph>
+            For a <code>__proto__</code> discriminant, use the computed key{' '}
+            <code>['__proto__']</code> (or a null-prototype map). An uncomputed
+            object-literal key changes the map's prototype instead of creating a
+            branch entry.
+          </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>

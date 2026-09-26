@@ -545,6 +545,9 @@ property on every member. Boolean branches use the `true` and `false` object
 keys, which is useful for `Result` types with an `ok` field.
 Discriminants that would coerce to the same object key, such as `1` and `'1'`,
 are rejected because they cannot be represented as separate branches.
+For a `__proto__` discriminant, write the branch as `['__proto__']: guard` (or
+use a null-prototype map); the uncomputed object-literal form changes the
+object's prototype instead of creating a branch entry.
 
 ### 12. Narrow object keys
 

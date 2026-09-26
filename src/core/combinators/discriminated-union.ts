@@ -1,6 +1,6 @@
 import type { GuardedOf, NoExtraKeys, Predicate } from '@/types';
 import { define } from '../define';
-import { isObject } from '../object';
+import { isFunction, isObject } from '../object';
 import { isBoolean, isNumberPrimitive, isString, isSymbol } from '../primitive';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
 
@@ -58,10 +58,24 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isSymbol(value) ||
   isBoolean(value);
 
+const assertSafeProtoBranch = (guards: object): void => {
+  if (hasOwnPropertyKey(guards, '__proto__')) return;
+
+  // WHY: `{ __proto__: guard }` changes the object's prototype instead of
+  // creating an own branch entry. A guard function as the prototype identifies
+  // that likely typo and avoids silently rejecting the valid branch at runtime.
+  if (isFunction(Object.getPrototypeOf(guards))) {
+    throw new TypeError(
+      "Use ['__proto__'] for a discriminatedUnion branch key so it is an own property."
+    );
+  }
+};
+
 /**
  * Creates an exhaustive guard for a union whose members share a literal discriminant.
  * Each discriminant value must have exactly one compatible branch guard. Values
  * that coerce to the same object key, such as `1` and `'1'`, are rejected.
+ * Use `['__proto__']` for that literal discriminant so it becomes an own map key.
  *
  * @param discriminant Required property that identifies each union member.
  * @param guards Branch guards keyed by the discriminant values.
@@ -75,8 +89,10 @@ export function discriminatedUnion<T extends object>() {
     discriminant: K,
     guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K>> &
       NonCollidingDiscriminants<T, K>
-  ): Predicate<GuardedOf<G[keyof G]>> =>
-    define<GuardedOf<G[keyof G]>>((input) => {
+  ): Predicate<GuardedOf<G[keyof G]>> => {
+    assertSafeProtoBranch(guards);
+
+    return define<GuardedOf<G[keyof G]>>((input) => {
       if (!isObject(input) || !hasOwnPropertyKey(input, discriminant)) {
         return false;
       }
@@ -95,4 +111,5 @@ export function discriminatedUnion<T extends object>() {
       const guard: Predicate<unknown> = guards[key as keyof G];
       return guard(input);
     });
+  };
 }
