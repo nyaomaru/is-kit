@@ -1,4 +1,5 @@
 export * from './array';
+export * from './discriminated-union';
 export * from './map';
 export * from './one-of';
 export * from './one-of-values';

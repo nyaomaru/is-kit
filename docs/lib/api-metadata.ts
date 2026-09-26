@@ -25,6 +25,7 @@ export const API_REFERENCE_PATHS = {
   tupleOf: '/api-reference/combinators/tuple-of',
   setOf: '/api-reference/combinators/set-of',
   mapOf: '/api-reference/combinators/map-of',
+  discriminatedUnion: '/api-reference/combinators/discriminated-union',
   oneOf: '/api-reference/combinators/one-of',
   recordOf: '/api-reference/combinators/record-of',
   struct: '/api-reference/combinators/struct',
@@ -120,6 +121,11 @@ const API_METADATA = {
     title: 'mapOf — TypeScript Map Type Guard | is-kit',
     description:
       'Build a reusable TypeScript guard that validates a Map and checks every key and value with composed guards.'
+  },
+  [API_REFERENCE_PATHS.discriminatedUnion]: {
+    title: 'discriminatedUnion — Exhaustive Union Guard | is-kit',
+    description:
+      'Build an exhaustive TypeScript guard for a discriminated union, with one compatible branch guard for every discriminant value.'
   },
   [API_REFERENCE_PATHS.oneOf]: {
     title: 'oneOf — Compose Union Type Guards | is-kit',
