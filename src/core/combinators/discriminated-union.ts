@@ -6,8 +6,21 @@ import { hasOwnPropertyKey } from '@/utils/own-properties';
 
 type DiscriminantValue = PropertyKey | boolean;
 
+type IsFiniteDiscriminantValue<Values extends DiscriminantValue> =
+  string extends Values
+    ? false
+    : number extends Values
+      ? false
+      : symbol extends Values
+        ? false
+        : true;
+
 type DiscriminantKey<T extends object> = {
-  [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>] ? K : never;
+  [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>]
+    ? IsFiniteDiscriminantValue<T[K] & DiscriminantValue> extends true
+      ? K
+      : never
+    : never;
 }[keyof T];
 
 type DiscriminantValues<T extends object, K extends DiscriminantKey<T>> =

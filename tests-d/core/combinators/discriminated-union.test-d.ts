@@ -172,11 +172,21 @@ const isBroadStringEvent = typedStruct<BroadStringEvent>()({
   kind: isString,
   value: isString
 });
+const broadStringValue: string = 'only';
+const broadStringValues = [broadStringValue] as const;
+const broadStringGuards = { [broadStringValue]: isBroadStringEvent };
 
 // @ts-expect-error: A broad string discriminant cannot be exhaustively mapped.
 discriminatedUnion<BroadStringEvent>()('kind', ['only'], {
   only: isBroadStringEvent
 });
+
+discriminatedUnion<BroadStringEvent>()(
+  // @ts-expect-error: A broad tuple element cannot make a string domain finite.
+  'kind',
+  broadStringValues,
+  broadStringGuards
+);
 
 type BroadNumberEvent = { kind: number; value: string };
 const isBroadNumberEvent = typedStruct<BroadNumberEvent>()({
