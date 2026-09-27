@@ -25,6 +25,10 @@ export const apiSections: SidebarSection[] = [
       { href: '/api-reference/combinators/tuple-of', label: 'tupleOf' },
       { href: '/api-reference/combinators/set-of', label: 'setOf' },
       { href: '/api-reference/combinators/map-of', label: 'mapOf' },
+      {
+        href: '/api-reference/combinators/discriminated-union',
+        label: 'discriminatedUnion'
+      },
       { href: '/api-reference/combinators/one-of', label: 'oneOf' },
       { href: '/api-reference/combinators/record-of', label: 'recordOf' },
       { href: '/api-reference/combinators/struct', label: 'struct' },
