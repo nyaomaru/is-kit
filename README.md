@@ -525,7 +525,9 @@ type Event =
   | { kind: 'click'; x: number; y: number }
   | { kind: 'scroll'; delta: number };
 
-const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
+const eventUnion = discriminatedUnion<Event>();
+
+export const isEvent = eventUnion('kind', ['click', 'scroll'], {
   click: typedStruct<Extract<Event, { kind: 'click' }>>()({
     kind: oneOfValues('click'),
     x: isNumber,

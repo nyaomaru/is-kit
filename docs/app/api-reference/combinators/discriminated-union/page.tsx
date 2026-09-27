@@ -20,7 +20,9 @@ type Event =
   | { kind: 'click'; x: number; y: number }
   | { kind: 'scroll'; delta: number };
 
-const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
+const eventUnion = discriminatedUnion<Event>();
+
+export const isEvent = eventUnion('kind', ['click', 'scroll'], {
   click: typedStruct<Extract<Event, { kind: 'click' }>>()({
     kind: oneOfValues('click'),
     x: isNumber,
@@ -36,7 +38,7 @@ isEvent({ kind: 'click', x: 12, y: 24 }); // true
 isEvent({ kind: 'hover', target: 'button' }); // false
 
 // TypeScript error: the scroll branch is required.
-discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
+eventUnion('kind', ['click', 'scroll'], {
   click: typedStruct<Extract<Event, { kind: 'click' }>>()({
     kind: oneOfValues('click'),
     x: isNumber,
