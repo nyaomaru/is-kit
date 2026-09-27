@@ -6,6 +6,70 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.15.0] - 2026-09-27
+
+### Added
+
+- exhaustive discriminated union guards by @nyaomaru in [#311](https://github.com/nyaomaru/is-kit/pull/311)
+  - Why: Require every discriminant branch and reject extra or incompatible branches at compile time.
+
+### Changed
+
+- Release: 1.15.0 by [bot] by @github-actions in [#312](https://github.com/nyaomaru/is-kit/pull/312)
+
+### Docs
+
+- 1.14.3 by [bot] by @github-actions in [#307](https://github.com/nyaomaru/is-kit/pull/307)
+
+### Chore
+
+- Update README.md by @nyaomaru in [#308](https://github.com/nyaomaru/is-kit/pull/308)
+- Update README.md by @nyaomaru in [#309](https://github.com/nyaomaru/is-kit/pull/309)
+
+### What's new 🚀
+
+#### Exhaustively validate discriminated unions
+
+`discriminatedUnion` creates one type guard from a finite discriminated union. It requires every discriminant value in both the values tuple and branch map, so TypeScript catches missing, extra, or mismatched branches before runtime.
+
+```ts
+import {
+  discriminatedUnion,
+  isString,
+  oneOfValues,
+  typedStruct
+} from 'is-kit';
+
+type Result =
+  | { ok: true; value: string }
+  | { ok: false; error: string };
+
+const resultUnion = discriminatedUnion<Result>();
+
+export const isResult = resultUnion('ok', [true, false], {
+  true: typedStruct<Extract<Result, { ok: true }>>()({
+    ok: oneOfValues(true),
+    value: isString
+  }),
+  false: typedStruct<Extract<Result, { ok: false }>>()({
+    ok: oneOfValues(false),
+    error: isString
+  })
+});
+
+declare const input: unknown;
+
+if (isResult(input)) {
+  const message = input.ok ? input.value : input.error;
+}
+```
+
+It supports string, number, symbol, and boolean literal discriminants, rejects non-exhaustive domains, and prevents values that would collide as JavaScript object keys—such as 1 and '1'.
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.3...v1.15.0
+
+[v1.15.0]: https://github.com/nyaomaru/is-kit/compare/v1.14.3...v1.15.0
+
 ## [v1.14.3] - 2026-09-19
 
 ### Docs
@@ -1789,7 +1853,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.14.3...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.15.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
