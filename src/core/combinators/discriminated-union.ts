@@ -60,17 +60,34 @@ type NonCollidingDiscriminants<
   ? unknown
   : never;
 
+type IsUnion<Value, Whole = Value> = Value extends unknown
+  ? [Whole] extends [Value]
+    ? false
+    : true
+  : never;
+
+type HasUnionElement<Values extends readonly unknown[]> =
+  Values extends readonly [infer Head, ...infer Tail extends readonly unknown[]]
+    ? true extends IsUnion<Head>
+      ? true
+      : HasUnionElement<Tail>
+    : false;
+
 type ExactDiscriminantValues<
   T extends object,
   K extends DiscriminantKey<T>,
   Values extends readonly DiscriminantValue[]
-> = number extends Values['length']
-  ? never
-  : [DiscriminantValues<T, K>] extends [Values[number]]
-    ? [Values[number]] extends [DiscriminantValues<T, K>]
-      ? unknown
-      : never
-    : never;
+> = Values extends unknown
+  ? number extends Values['length']
+    ? never
+    : HasUnionElement<Values> extends true
+      ? never
+      : [DiscriminantValues<T, K>] extends [Values[number]]
+        ? [Values[number]] extends [DiscriminantValues<T, K>]
+          ? unknown
+          : never
+        : never
+  : never;
 
 type MatchingDiscriminantMember<
   T extends object,

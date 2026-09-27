@@ -282,6 +282,31 @@ discriminatedUnion<Event>()('kind', ['click'], {
   click: isClickEvent
 });
 
+// it: rejects a tuple element that can resolve to multiple discriminants
+declare const eventKind: 'click' | 'scroll';
+const ambiguousEventValues = [eventKind] as const;
+discriminatedUnion<Event>()(
+  'kind',
+  // @ts-expect-error: Each tuple element must be one discriminant literal.
+  ambiguousEventValues,
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  }
+);
+
+// it: rejects a union where a tuple variant omits a discriminant
+declare const partialEventValues: readonly ['click'] | readonly ['scroll'];
+discriminatedUnion<Event>()(
+  'kind',
+  // @ts-expect-error: Every possible tuple must cover all discriminants.
+  partialEventValues,
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  }
+);
+
 // it: rejects a missing union branch
 // @ts-expect-error: Each discriminant value needs a branch guard.
 discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
