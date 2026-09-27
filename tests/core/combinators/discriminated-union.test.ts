@@ -66,6 +66,21 @@ describe('discriminatedUnion', () => {
     expect(isEvent(undefined)).toBe(false);
   });
 
+  it('supports callable members with an own discriminant', () => {
+    type Handler = (() => void) & { kind: 'handler' };
+
+    const isHandler = (value: unknown): value is Handler =>
+      typeof value === 'function' && Reflect.get(value, 'kind') === 'handler';
+    const isHandlerUnion = discriminatedUnion<Handler>()('kind', ['handler'], {
+      handler: isHandler
+    });
+    const handler = Object.assign(() => undefined, {
+      kind: 'handler' as const
+    });
+
+    expect(isHandlerUnion(handler)).toBe(true);
+  });
+
   it('supports numeric discriminants', () => {
     type Response =
       | { status: 200; body: string }

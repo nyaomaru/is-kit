@@ -168,11 +168,14 @@ export function discriminatedUnion<T extends object>() {
     const declaredKeys = assertBranchKeys(values, guards);
 
     return define<GuardedOf<G[keyof G]>>((input) => {
-      if (!isObject(input) || !hasOwnPropertyKey(input, discriminant)) {
+      if (
+        (!isObject(input) && !isFunction(input)) ||
+        !hasOwnPropertyKey(input, discriminant)
+      ) {
         return false;
       }
 
-      const value = input[discriminant];
+      const value = Reflect.get(input, discriminant);
       if (!isDiscriminantValue(value)) {
         return false;
       }
