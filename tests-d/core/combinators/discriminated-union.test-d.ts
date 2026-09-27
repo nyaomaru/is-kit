@@ -135,6 +135,19 @@ discriminatedUnion<GroupedEvent>()('kind', ['a', 'b', 'c'], {
   c: isCEvent
 });
 
+// it: rejects a guard narrowed to a different literal in the same member
+type AEvent = ABEvent & { kind: 'a' };
+const isAEvent = typedStruct<AEvent>()({
+  kind: oneOfValues('a'),
+  value: isString
+});
+// @ts-expect-error: The b branch must accept the b discriminant value.
+discriminatedUnion<GroupedEvent>()('kind', ['a', 'b', 'c'], {
+  a: isAEvent,
+  b: isAEvent,
+  c: isCEvent
+});
+
 // it: rejects discriminants that would use the same JavaScript object key
 type NumberKeyCollision =
   | { kind: 1; value: number }

@@ -93,6 +93,31 @@ type DiscriminatedUnionGuardMap<
   >;
 };
 
+type InvalidGuardDiscriminantValues<
+  K extends PropertyKey,
+  Values extends DiscriminantValue,
+  G extends object
+> = {
+  [Value in Values as DiscriminantMapKey<Value>]: G extends Record<
+    DiscriminantMapKey<Value>,
+    infer Guard
+  >
+    ? GuardedOf<Guard> extends Record<K, DiscriminantValue>
+      ? Value extends GuardedOf<Guard>[K]
+        ? never
+        : Value
+      : Value
+    : Value;
+}[DiscriminantMapKey<Values>];
+
+type GuardsMatchDiscriminantValues<
+  K extends PropertyKey,
+  Values extends DiscriminantValue,
+  G extends object
+> = [InvalidGuardDiscriminantValues<K, Values, G>] extends [never]
+  ? unknown
+  : never;
+
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isString(value) ||
   isNumberPrimitive(value) ||
@@ -166,7 +191,8 @@ export function discriminatedUnion<T extends object>() {
     discriminant: K,
     values: Values & ExactDiscriminantValues<T, K, Values>,
     guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K, Values[number]>> &
-      NonCollidingDiscriminants<T, K>
+      NonCollidingDiscriminants<T, K> &
+      GuardsMatchDiscriminantValues<K, Values[number], G>
   ): Predicate<GuardedOf<G[keyof G]>> => {
     assertSafeProtoBranch(values, guards);
     const declaredKeys = assertBranchKeys(values, guards);
