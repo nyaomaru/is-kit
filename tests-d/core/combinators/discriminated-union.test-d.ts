@@ -231,11 +231,37 @@ const templateKeyedGuards: Record<
 };
 
 discriminatedUnion<InfiniteTemplateEvent>()(
-  'kind',
   // @ts-expect-error: A template-keyed Record cannot make an infinite domain finite.
+  'kind',
   ['event-one'],
   templateKeyedGuards
 );
+
+type NumericTemplateEvent = { kind: `item:${number}`; value: string };
+const isItemOne = typedStruct<NumericTemplateEvent>()({
+  kind: oneOfValues('item:1'),
+  value: isString
+});
+
+// @ts-expect-error: A number template-literal discriminant is infinite.
+discriminatedUnion<NumericTemplateEvent>()('kind', ['item:1'], {
+  'item:1': isItemOne
+});
+
+declare const kindBrand: unique symbol;
+type BrandedKind = string & { readonly [kindBrand]: 'kind' };
+type BrandedEvent = { kind: BrandedKind; value: string };
+declare const isBrandedKind: Predicate<BrandedKind>;
+declare const brandedValue: BrandedKind;
+const isBrandedEvent = typedStruct<BrandedEvent>()({
+  kind: isBrandedKind,
+  value: isString
+});
+
+// @ts-expect-error: A branded string discriminant is not a finite literal set.
+discriminatedUnion<BrandedEvent>()('kind', [brandedValue], {
+  [brandedValue]: isBrandedEvent
+});
 
 // it: rejects a value tuple that omits a finite discriminant
 // @ts-expect-error: The tuple must contain every discriminant value.

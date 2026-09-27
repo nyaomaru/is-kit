@@ -6,14 +6,19 @@ import { hasOwnPropertyKey } from '@/utils/own-properties';
 
 type DiscriminantValue = PropertyKey | boolean;
 
+type IsFixedDiscriminantValue<Value extends DiscriminantValue> =
+  Value extends unknown
+    ? Value extends boolean
+      ? true
+      : Value extends PropertyKey
+        ? {} extends Record<Value, unknown>
+          ? false
+          : true
+        : false
+    : never;
+
 type IsFiniteDiscriminantValue<Values extends DiscriminantValue> =
-  string extends Values
-    ? false
-    : number extends Values
-      ? false
-      : symbol extends Values
-        ? false
-        : true;
+  false extends IsFixedDiscriminantValue<Values> ? false : true;
 
 type DiscriminantKey<T extends object> = {
   [K in keyof T]-?: [T] extends [Record<K, DiscriminantValue>]
