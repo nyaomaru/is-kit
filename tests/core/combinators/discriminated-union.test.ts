@@ -32,6 +32,34 @@ describe('discriminatedUnion', () => {
     expect(isEvent(Object.create({ kind: 'click' }))).toBe(false);
   });
 
+  it('rejects branches omitted from the declared values tuple', () => {
+    type HoverEvent = { kind: 'hover'; target: string };
+
+    const guards = {
+      click: typedStruct<ClickEvent>()({
+        kind: (value): value is 'click' => value === 'click',
+        x: isNumber,
+        y: isNumber
+      }),
+      scroll: typedStruct<ScrollEvent>()({
+        kind: (value): value is 'scroll' => value === 'scroll',
+        delta: isNumber
+      }),
+      hover: typedStruct<HoverEvent>()({
+        kind: (value): value is 'hover' => value === 'hover',
+        target: isString
+      })
+    };
+    const eventGuards: Pick<typeof guards, 'click' | 'scroll'> = guards;
+    const isDeclaredEvent = discriminatedUnion<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      eventGuards
+    );
+
+    expect(isDeclaredEvent({ kind: 'hover', target: 'button' })).toBe(false);
+  });
+
   it('rejects non-object inputs', () => {
     expect(isEvent('click')).toBe(false);
     expect(isEvent(null)).toBe(false);
@@ -76,6 +104,30 @@ describe('discriminatedUnion', () => {
     expect(isResult({ ok: true, value: 'done' })).toBe(true);
     expect(isResult({ ok: false, error: 'failed' })).toBe(true);
     expect(isResult({ ok: true, error: 'failed' })).toBe(false);
+  });
+
+  it('rejects distinct unique symbol types with the same runtime key', () => {
+    const first: unique symbol = Symbol.for('is-kit:shared-event') as never;
+    const second: unique symbol = Symbol.for('is-kit:shared-event') as never;
+    type FirstEvent = { kind: typeof first; value: string };
+    type SecondEvent = { kind: typeof second; error: string };
+    type SymbolEvent = FirstEvent | SecondEvent;
+
+    const isFirstEvent = typedStruct<FirstEvent>()({
+      kind: (value): value is typeof first => value === first,
+      value: isString
+    });
+    const isSecondEvent = typedStruct<SecondEvent>()({
+      kind: (value): value is typeof second => value === second,
+      error: isString
+    });
+
+    expect(() =>
+      discriminatedUnion<SymbolEvent>()('kind', [first, second], {
+        [first]: isFirstEvent,
+        [second]: isSecondEvent
+      })
+    ).toThrow('Duplicate discriminatedUnion discriminant value');
   });
 
   it('supports members whose discriminant contains multiple literals', () => {

@@ -118,14 +118,27 @@ const assertSafeProtoBranch = (guards: object): void => {
 const assertBranchKeys = (
   values: readonly DiscriminantValue[],
   guards: object
-): void => {
+): ReadonlySet<PropertyKey> => {
+  const keys = new Set<PropertyKey>();
+
   for (const value of values) {
-    if (!hasOwnPropertyKey(guards, toRuntimeKey(value))) {
+    const key = toRuntimeKey(value);
+    if (keys.has(key)) {
+      throw new TypeError(
+        `Duplicate discriminatedUnion discriminant value for ${String(value)}.`
+      );
+    }
+
+    keys.add(key);
+
+    if (!hasOwnPropertyKey(guards, key)) {
       throw new TypeError(
         `Missing discriminatedUnion branch guard for ${String(value)}.`
       );
     }
   }
+
+  return keys;
 };
 
 /**
@@ -152,7 +165,7 @@ export function discriminatedUnion<T extends object>() {
       NonCollidingDiscriminants<T, K>
   ): Predicate<GuardedOf<G[keyof G]>> => {
     assertSafeProtoBranch(guards);
-    assertBranchKeys(values, guards);
+    const declaredKeys = assertBranchKeys(values, guards);
 
     return define<GuardedOf<G[keyof G]>>((input) => {
       if (!isObject(input) || !hasOwnPropertyKey(input, discriminant)) {
@@ -165,7 +178,9 @@ export function discriminatedUnion<T extends object>() {
       }
 
       const key = toRuntimeKey(value);
-      if (!hasOwnPropertyKey(guards, key)) return false;
+      if (!declaredKeys.has(key) || !hasOwnPropertyKey(guards, key)) {
+        return false;
+      }
 
       const guard: Predicate<unknown> = guards[key as keyof G];
       return guard(input);
