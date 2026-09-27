@@ -81,6 +81,27 @@ describe('discriminatedUnion', () => {
     expect(isHandlerUnion(handler)).toBe(true);
   });
 
+  it('supports callable guard maps without a __proto__ branch', () => {
+    const guards = Object.assign(() => undefined, {
+      click: typedStruct<ClickEvent>()({
+        kind: (value): value is 'click' => value === 'click',
+        x: isNumber,
+        y: isNumber
+      }),
+      scroll: typedStruct<ScrollEvent>()({
+        kind: (value): value is 'scroll' => value === 'scroll',
+        delta: isNumber
+      })
+    });
+    const isCallableMapEvent = discriminatedUnion<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      guards
+    );
+
+    expect(isCallableMapEvent({ kind: 'click', x: 12, y: 24 })).toBe(true);
+  });
+
   it('supports numeric discriminants', () => {
     type Response =
       | { status: 200; body: string }

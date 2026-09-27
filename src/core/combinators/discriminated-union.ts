@@ -102,7 +102,11 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
 const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
   isSymbol(value) ? value : String(value);
 
-const assertSafeProtoBranch = (guards: object): void => {
+const assertSafeProtoBranch = (
+  values: readonly DiscriminantValue[],
+  guards: object
+): void => {
+  if (!values.includes('__proto__')) return;
   if (hasOwnPropertyKey(guards, '__proto__')) return;
 
   // WHY: `{ __proto__: guard }` changes the object's prototype instead of
@@ -164,7 +168,7 @@ export function discriminatedUnion<T extends object>() {
     guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K, Values[number]>> &
       NonCollidingDiscriminants<T, K>
   ): Predicate<GuardedOf<G[keyof G]>> => {
-    assertSafeProtoBranch(guards);
+    assertSafeProtoBranch(values, guards);
     const declaredKeys = assertBranchKeys(values, guards);
 
     return define<GuardedOf<G[keyof G]>>((input) => {
