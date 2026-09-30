@@ -13,23 +13,23 @@
     "shadcn:list": "pnpm dlx shadcn@latest list"
   },
   "dependencies": {
-    "@radix-ui/react-label": "^2.1.11",
+    "@radix-ui/react-label": "^2.1.15",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "is-kit": "workspace:*",
-    "lucide-react": "^1.24.0",
-    "next": "^16.2.10",
+    "lucide-react": "^1.48.0",
+    "next": "^16.3.6",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "tailwind-merge": "^3.6.0"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@tailwindcss/postcss": "^4.3.2",
-    "postcss": "^8.5.16",
-    "tailwindcss": "^4.3.2",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   }
 }
