@@ -62,14 +62,14 @@
   "packageManager": "pnpm@11.2.2",
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "jest": "^30.4.2",
-    "lefthook": "^2.1.9",
-    "oxfmt": "^0.55.0",
-    "oxlint": "^1.70.0",
-    "ts-jest": "^29.4.11",
+    "jest": "^30.5.2",
+    "lefthook": "^2.1.14",
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0",
+    "ts-jest": "^29.4.14",
     "tsd": "^0.33.0",
     "tsdown": "^0.23.0",
-    "typedoc": "^0.28.19",
+    "typedoc": "^0.28.20",
     "typescript": "^6.0.3"
   },
   "tsd": {
