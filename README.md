@@ -27,13 +27,21 @@
 
 `is-kit` is a lightweight, zero-dependency toolkit for building reusable TypeScript **type guards**.
 
-It helps you write small `isFoo` functions, compose them into **richer runtime checks**, and keep **TypeScript narrowing** natural inside regular control flow.
+`is-kit` is not just a collection of `isX` helpers. Its main focus is composing
+small runtime checks into reusable guards while preserving useful TypeScript
+narrowing.
+
+It helps you write small `isFoo` functions, compose them into **richer runtime
+checks**, refine properties on values you already know about, and keep
+**TypeScript narrowing** natural inside regular control flow. Use it at runtime
+boundaries when needed, without requiring a schema-first workflow.
 
 **Runtime-safe** 🛡️, **composable** 🧩, and **ergonomic** ✨ without asking you to adopt a heavy schema workflow.
 
 - Build and reuse **typed guards**
 - **Compose guards** with `and`, `or`, `not`, `oneOf`
-- **Validate object** shapes and collections
+- Use `refineKey` to narrow a **child property** while preserving its parent type
+- **Validate object** shapes and collections when that is useful
 - **Parse or assert** `unknown` values without a large schema framework
 
 <a href="https://is-kit.dev/">
@@ -44,26 +52,41 @@ It helps you write small `isFoo` functions, compose them into **richer runtime c
 
 ## 🤔 Why use `is-kit`?
 
-Tired of rewriting the same `isFoo` checks again and again?
+Many TypeScript projects eventually grow a `utils/is.ts`, `libs/is.ts`, or
+`guards.ts` file. It fills with hand-written guards that solve the same
+problems across projects, are tedious to rewrite, and need manual care to keep
+their TypeScript narrowing correct as they evolve.
 
-`is-kit` is a good fit when you want to:
+`is-kit` exists to make those guards reusable, composable, and easier to
+maintain. The goal is not to replace every validation library; it is to make
+reusable TypeScript type guards easier to build, compose, and maintain.
+
+It is a good fit when you want to:
 
 - **write reusable `isX`** functions instead of one-off inline checks
 - keep runtime validation **lightweight and dependency-free**
 - **narrow values directly** in `if`, `filter`, and other TypeScript control flow
-- **compose validation logic** from small guards instead of large schema objects
+- **compose validation logic** from small guards, including property refinements
 
-`is-kit` is probably not the best first choice if you mainly want:
+If you only need a few standalone `isX` checks, a smaller type-check utility
+may be simpler. `is-kit` becomes useful when those checks need to be composed,
+refined, and reused across your application while preserving TypeScript
+narrowing.
+
+Schema validators such as Zod, Valibot, and ArkType often optimize for a
+different workflow. They may be a better fit when you mainly want:
 
 - rich, structured validation errors
 - schema-first workflows
 - data transformation pipelines
 
-In those cases, a schema validator such as `Zod` may be a better fit. (Of course, you can combine them 🍲)
+`is-kit` is aimed at reusable runtime predicates that behave naturally as
+TypeScript type guards. The approaches can also be used together: use a schema
+validator where its parsing model helps, and compose `is-kit` guards wherever
+ordinary narrowing and reusable predicates are the better fit.
 
-`is-kit` is meant to take the boring part out of writing guards, while still feeling like normal TypeScript.
-
-> Grab a coffee ☕ and let `is-kit` handle the repetitive part.
+`is-kit` is meant to take the repetitive part out of writing guards while still
+feeling like normal TypeScript.
 
 ## 📥 Install
 
@@ -108,7 +131,43 @@ import { and, define, or } from 'jsr:@nyaomaru/is-kit';
 
 ## ✨ Quick Start
 
-Start with a plain object guard and parse an `unknown` value.
+Start by composing small guards.
+
+```ts
+import { and, isNumber, isString, or, predicateToRefine } from 'is-kit';
+
+const isId = or(isString, isNumber);
+
+const isPositiveNumber = and(
+  isNumber,
+  predicateToRefine<number>((value) => value > 0)
+);
+```
+
+You can also refine one property of an already-typed parent value.
+
+```ts
+import { isString, refineKey } from 'is-kit';
+
+type Item = {
+  value: string | number;
+  id: number;
+};
+
+const hasStringValue = refineKey('value', isString);
+
+declare const items: Item[];
+
+const textItems = items.filter(hasStringValue);
+// Array<Item & { value: string }>
+```
+
+The original `Item` type is preserved while its checked `value` property is
+narrowed. This lets a reusable guard carry child narrowing back to the parent
+through `filter`, `find`, and control flow.
+
+For an `unknown` value at a runtime boundary, build an object guard and parse
+it.
 
 ```ts
 import { isNumber, isString, optionalKey, safeParse, struct } from 'is-kit';
@@ -523,8 +582,7 @@ fields and the union coverage aligned with an existing TypeScript type.
 import { discriminatedUnion, isNumber, oneOfValues, typedStruct } from 'is-kit';
 
 type Event =
-  | { kind: 'click'; x: number; y: number }
-  | { kind: 'scroll'; delta: number };
+  { kind: 'click'; x: number; y: number } | { kind: 'scroll'; delta: number };
 
 const eventUnion = discriminatedUnion<Event>();
 
