@@ -110,6 +110,7 @@ export default async function DocsPage({ params }: DocsPageProps) {
           }
         ]}
         variant='tabs'
+        autoAdvanceMs={0}
       />
 
       <APIReferencePreview
