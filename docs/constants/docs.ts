@@ -9,9 +9,10 @@ export const INSTALL_COMMANDS: Record<InstallTab, string> = {
 };
 
 export const USAGE_TABS = [
+  'logic',
+  'refinement',
   'define',
   'struct',
-  'logic',
   'parse',
   'combinators',
   'nullability',
@@ -56,6 +57,26 @@ const evaluations = ['ok', 'toolong', 123].map((value) => isShortString(value));
 // evaluations: [true, false, false]
 or(isString, isNumber)('x'); // true
 not(isString)(42); // true`,
+  refinement: `import { isString, refineKey } from 'is-kit';
+
+type Item = {
+  value: string | number;
+  id: number;
+};
+
+const hasStringValue = refineKey('value', isString);
+
+declare const items: Item[];
+declare const item: Item;
+
+const textItems = items.filter(hasStringValue);
+// Array<Item & { value: string }>
+
+const firstTextItem = items.find(hasStringValue);
+
+if (hasStringValue(item)) {
+  item.value.toUpperCase(); // value is string; Item is preserved
+}`,
   parse: `import { safeJsonParse, struct, isNumber, isString } from 'is-kit';
 
 const isUser = struct({

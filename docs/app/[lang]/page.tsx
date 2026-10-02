@@ -109,7 +109,7 @@ export default async function DocsPage({ params }: DocsPageProps) {
             description: dict.top.features.mixedDelimiters.description
           }
         ]}
-        variant='tabs'
+        variant='grid'
       />
 
       <APIReferencePreview

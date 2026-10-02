@@ -28,7 +28,7 @@ const en: Dict = {
   top: {
     title: 'is-kit',
     description:
-      'Type-safe utilities and combinators for building isXXX guards in TypeScript. Lightweight and zero-dependency.',
+      'A lightweight, zero-dependency toolkit for building and composing reusable TypeScript type guards while preserving useful narrowing.',
     button: { playground: 'Open Playground' },
     installation: { title: 'Installation' },
     usage: { title: 'Usage' },
@@ -73,7 +73,7 @@ const nl: Dict = {
   top: {
     title: 'is-kit',
     description:
-      'Type-veilige hulpprogramma’s om isXXX-guards te bouwen in TypeScript. Lichtgewicht, geen dependencies.',
+      'Een lichtgewicht toolkit zonder dependencies om herbruikbare TypeScript-typeguards te bouwen en samen te stellen, met behoud van bruikbare narrowing.',
     button: { playground: 'Playground openen' },
     installation: { title: 'Installatie' },
     usage: { title: 'Gebruik' },
