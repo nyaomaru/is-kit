@@ -36,8 +36,9 @@ It helps you write small `isFoo` functions, compose them into **richer runtime c
 - **Validate object** shapes and collections
 - **Parse or assert** `unknown` values without a large schema framework
 
-[📚 Documentation Site](https://is-kit.dev/) ·
-[🧭 Practical Guides](https://is-kit.dev/guides)
+<a href="https://is-kit.dev/">
+  <img src="docs/public/document_button.png" alt="Documentation Site" width="240">
+</a>
 
 > Best for **app-internal narrowing, filtering, and reusable guards**.
 
