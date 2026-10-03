@@ -40,6 +40,18 @@ describe('arrayOf (runtime)', () => {
     expect(is2DStringArray([['a'], ['b', 1 as any]])).toBe(false);
     expect(is2DStringArray('nope' as unknown)).toBe(false);
   });
+
+  it('uses the intrinsic iterator for arrays with an overridden iterator', () => {
+    const values = ['a'];
+    Object.defineProperty(values, Symbol.iterator, {
+      value: () => {
+        throw new Error('custom iterator should not run');
+      }
+    });
+
+    expect(() => isStringArray(values)).not.toThrow();
+    expect(isStringArray(values)).toBe(true);
+  });
 });
 
 describe('nonEmptyArrayOf (runtime)', () => {
@@ -61,5 +73,17 @@ describe('nonEmptyArrayOf (runtime)', () => {
   it('rejects non-array inputs', () => {
     expect(isNonEmptyStringArray('not array' as unknown)).toBe(false);
     expect(isNonEmptyStringArray({ 0: 'a', length: 1 } as unknown)).toBe(false);
+  });
+
+  it('uses the intrinsic iterator for arrays with an overridden iterator', () => {
+    const values = ['a'];
+    Object.defineProperty(values, Symbol.iterator, {
+      value: () => {
+        throw new Error('custom iterator should not run');
+      }
+    });
+
+    expect(() => isNonEmptyStringArray(values)).not.toThrow();
+    expect(isNonEmptyStringArray(values)).toBe(true);
   });
 });

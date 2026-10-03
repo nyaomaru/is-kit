@@ -84,7 +84,7 @@ const nl: Dict = {
         description: 'Stel predicaten samen die types precies verfijnen.'
       },
       arrayProcessing: {
-        title: 'Composteerbare logica',
+        title: 'Combineerbare logica',
         description: 'Combineer guards met and/or/not en behoud inferentie.'
       },
       nestedArray: {

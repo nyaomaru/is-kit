@@ -1,6 +1,6 @@
 import { define } from '../define';
 import type { GuardedOf, Predicate } from '@/types';
-import { everyArrayValue } from '@/utils/guard-collections';
+import { everyBrandedArrayValue } from '@/utils/guard-collections';
 
 /**
  * Validates an array where every element satisfies the provided guard.
@@ -12,7 +12,8 @@ export function arrayOf<F extends Predicate<unknown>>(
   elementGuard: F
 ): Predicate<readonly GuardedOf<F>[]> {
   return define<readonly GuardedOf<F>[]>(
-    (input) => Array.isArray(input) && everyArrayValue(input, elementGuard)
+    (input) =>
+      Array.isArray(input) && everyBrandedArrayValue(input, elementGuard)
   );
 }
 
@@ -29,6 +30,6 @@ export function nonEmptyArrayOf<F extends Predicate<unknown>>(
     (input) =>
       Array.isArray(input) &&
       input.length > 0 &&
-      everyArrayValue(input, elementGuard)
+      everyBrandedArrayValue(input, elementGuard)
   );
 }

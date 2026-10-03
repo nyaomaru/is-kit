@@ -1,5 +1,6 @@
 type BooleanPredicate<T> = (value: T) => boolean;
 
+const arrayValues = Array.prototype.values;
 const mapEntries = Map.prototype.entries;
 const setValues = Set.prototype.values;
 
@@ -36,6 +37,15 @@ export const everyArrayValue = (
   values: readonly unknown[],
   predicate: BooleanPredicate<unknown>
 ): boolean => everyIterableValue(values, predicate);
+
+/**
+ * Checks built-in Array data without invoking an instance-provided iterator.
+ * WHY: An Array subclass or instance may override its public iterator and throw.
+ */
+export const everyBrandedArrayValue = (
+  values: readonly unknown[],
+  predicate: BooleanPredicate<unknown>
+): boolean => everyIterableValue(arrayValues.call(values), predicate);
 
 /**
  * Checks whether a tuple matches the provided element predicates in order.
