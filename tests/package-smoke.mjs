@@ -38,12 +38,17 @@ const typescriptCli = resolve(
   'node_modules/typescript/bin/tsc'
 );
 
+// WHY: `types: []` keeps parent `node_modules/@types` packages, such as Jest,
+// out of this compile. The consumer has to type-check from the packed package
+// alone, including when the temp directory is created inside the workspace.
+// @see https://github.com/nyaomaru/is-kit/issues/322
 const nodeNextCompilerOptions = {
   module: 'NodeNext',
   moduleResolution: 'NodeNext',
   noEmit: true,
   strict: true,
-  target: 'ES2022'
+  target: 'ES2022',
+  types: []
 };
 
 const writeTypeScriptProject = (fileName, projectName, source) => {
