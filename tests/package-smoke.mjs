@@ -137,21 +137,18 @@ assert.equal(arrayOf(isString)(['a', 1]), false);
   );
 
   // WHY: This consumer is `"type": "module"`, so a `.ts` file is ESM only by
-  // package context. `.mts` and `.cts` force NodeNext into ESM and CJS
-  // resolution modes. Both modes still match the published `types` condition;
-  // the compile checks that this single declaration file is valid from either.
-  const valueAndTypeChecks = `
+  // package context. Separate `.mts` and `.cts` projects force NodeNext into
+  // ESM and CJS resolution modes. Both modes still match the published `types`
+  // condition; each fixture below is the full file compiled for that mode.
+  const esmTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
+import type { ParseResult, Predicate } from 'is-kit';
+
 const isStringArray: Predicate<readonly string[]> = arrayOf(isString);
 const result: ParseResult<string> = safeParse(isString, 'value');
+const moduleMeta: ImportMeta = import.meta;
 
 void isStringArray;
 void result;
-`;
-
-  const esmTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
-import type { ParseResult, Predicate } from 'is-kit';
-${valueAndTypeChecks}
-const moduleMeta: ImportMeta = import.meta;
 void moduleMeta;
 `;
 
@@ -160,11 +157,20 @@ void moduleMeta;
   const cjsTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
 import type { ParseResult, Predicate } from 'is-kit';
 import isKit = require('is-kit');
-${valueAndTypeChecks}
+
+const isStringArray: Predicate<readonly string[]> = arrayOf(isString);
+const result: ParseResult<string> = safeParse(isString, 'value');
+const requiredStringArray: Predicate<readonly string[]> = isKit.arrayOf(
+  isKit.isString
+);
 const requiredResult: isKit.ParseResult<string> = isKit.safeParse(
   isKit.isString,
   'value'
 );
+
+void isStringArray;
+void result;
+void requiredStringArray;
 void requiredResult;
 `;
 
