@@ -210,3 +210,10 @@ Scope guidelines:
 - Avoid trivial inline comments; concentrate where they prevent misunderstandings or regressions.
 
 Note: See `.github/prompts/jsdoc.prompt.md` for additional tone/phrasing inspiration.
+
+## Cursor Cloud specific instructions
+
+- Tool versions live in `mise.toml` (Node 22.22.0 and pnpm 11.2.2). Run `mise exec -- pnpm …` or `mise run <task>` so commands use that toolchain.
+- The docs site is `pnpm --filter ./docs dev` on port 3000. Open `http://localhost:3000`. Next.js 16 blocks dev-client resources for `127.0.0.1`, so code tabs and other client UI do not hydrate on that host.
+- Docs pages import the workspace package from `dist/`. After changing `src/`, run `mise exec -- pnpm build` before checking the site.
+- `next dev` writes `docs/AGENTS.md` and `docs/CLAUDE.md` when they are missing. Those files are regenerated locally and are not part of the library API.
