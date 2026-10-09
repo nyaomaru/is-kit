@@ -136,10 +136,10 @@ assert.equal(arrayOf(isString)(['a', 1]), false);
 `
   );
 
-  // WHY: A `.ts` file in this `"type": "module"` consumer is ESM only because
-  // of the package context. `.mts` and `.cts` force NodeNext to resolve the
-  // package `import` and `require` conditions separately, so one declaration
-  // path is not assumed to cover both module formats.
+  // WHY: This consumer is `"type": "module"`, so a `.ts` file is ESM only by
+  // package context. `.mts` and `.cts` force NodeNext into ESM and CJS
+  // resolution modes. Both modes still match the published `types` condition;
+  // the compile checks that this single declaration file is valid from either.
   const valueAndTypeChecks = `
 const isStringArray: Predicate<readonly string[]> = arrayOf(isString);
 const result: ParseResult<string> = safeParse(isString, 'value');
@@ -150,19 +150,16 @@ void result;
 
   const esmTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
 import type { ParseResult, Predicate } from 'is-kit';
-
 ${valueAndTypeChecks}
 const moduleMeta: ImportMeta = import.meta;
 void moduleMeta;
 `;
 
-  // WHY: import-equals-require is valid only in CommonJS and resolves through
-  // the package require condition. It fails if NodeNext treats this file as
-  // an ES module.
+  // WHY: import-equals-require is rejected in an ES module, so this compile
+  // fails when NodeNext does not classify the file as CommonJS.
   const cjsTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
 import type { ParseResult, Predicate } from 'is-kit';
 import isKit = require('is-kit');
-
 ${valueAndTypeChecks}
 const requiredResult: isKit.ParseResult<string> = isKit.safeParse(
   isKit.isString,
