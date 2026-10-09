@@ -33,6 +33,43 @@ const run = (command, args, cwd = consumerDirectory) =>
 const writeConsumerFile = (name, contents) =>
   writeFileSync(join(consumerDirectory, name), contents);
 
+const typescriptCli = resolve(
+  repositoryRoot,
+  'node_modules/typescript/bin/tsc'
+);
+
+const nodeNextCompilerOptions = {
+  module: 'NodeNext',
+  moduleResolution: 'NodeNext',
+  noEmit: true,
+  strict: true,
+  target: 'ES2022'
+};
+
+const writeTypeScriptProject = (fileName, projectName, source) => {
+  writeConsumerFile(fileName, source);
+  writeConsumerFile(
+    projectName,
+    `${JSON.stringify(
+      {
+        compilerOptions: nodeNextCompilerOptions,
+        files: [fileName]
+      },
+      null,
+      2
+    )}\n`
+  );
+};
+
+const compileTypeScript = (projectName) =>
+  run(process.execPath, [
+    typescriptCli,
+    '--project',
+    projectName,
+    '--pretty',
+    'false'
+  ]);
+
 try {
   mkdirSync(packageDirectory, { recursive: true });
   mkdirSync(consumerDirectory, { recursive: true });
@@ -99,48 +136,52 @@ assert.equal(arrayOf(isString)(['a', 1]), false);
 `
   );
 
-  writeConsumerFile(
-    'types-smoke.ts',
-    `import { arrayOf, isString, safeParse } from 'is-kit';
-import type { ParseResult, Predicate } from 'is-kit';
-
+  // WHY: A `.ts` file in this `"type": "module"` consumer is ESM only because
+  // of the package context. `.mts` and `.cts` force NodeNext to resolve the
+  // package `import` and `require` conditions separately, so one declaration
+  // path is not assumed to cover both module formats.
+  const valueAndTypeChecks = `
 const isStringArray: Predicate<readonly string[]> = arrayOf(isString);
 const result: ParseResult<string> = safeParse(isString, 'value');
 
 void isStringArray;
 void result;
-`
-  );
+`;
 
-  writeConsumerFile(
-    'tsconfig.json',
-    `${JSON.stringify(
-      {
-        compilerOptions: {
-          module: 'NodeNext',
-          moduleResolution: 'NodeNext',
-          noEmit: true,
-          strict: true,
-          target: 'ES2022'
-        },
-        files: ['types-smoke.ts']
-      },
-      null,
-      2
-    )}\n`
-  );
+  const esmTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
+import type { ParseResult, Predicate } from 'is-kit';
+
+${valueAndTypeChecks}
+const moduleMeta: ImportMeta = import.meta;
+void moduleMeta;
+`;
+
+  // WHY: import-equals-require is valid only in CommonJS and resolves through
+  // the package require condition. It fails if NodeNext treats this file as
+  // an ES module.
+  const cjsTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
+import type { ParseResult, Predicate } from 'is-kit';
+import isKit = require('is-kit');
+
+${valueAndTypeChecks}
+const requiredResult: isKit.ParseResult<string> = isKit.safeParse(
+  isKit.isString,
+  'value'
+);
+void requiredResult;
+`;
+
+  writeTypeScriptProject('types-esm.mts', 'tsconfig.esm.json', esmTypeSmoke);
+  writeTypeScriptProject('types-cjs.cts', 'tsconfig.cjs.json', cjsTypeSmoke);
 
   run(process.execPath, ['esm-smoke.mjs']);
   run(process.execPath, ['cjs-smoke.cjs']);
-  run(process.execPath, [
-    resolve(repositoryRoot, 'node_modules/typescript/bin/tsc'),
-    '--project',
-    'tsconfig.json',
-    '--pretty',
-    'false'
-  ]);
+  compileTypeScript('tsconfig.esm.json');
+  compileTypeScript('tsconfig.cjs.json');
 
-  console.log('Package smoke test passed for ESM, CJS, and TypeScript.');
+  console.log(
+    'Package smoke test passed for ESM, CJS, and TypeScript ESM/CJS.'
+  );
 } finally {
   rmSync(temporaryRoot, { recursive: true, force: true });
 }
