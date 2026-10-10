@@ -69,6 +69,7 @@ export function optionalKey<G extends Predicate<unknown>>(
  * @param options When `{ exact: true }`, disallows own enumerable string-key
  * properties not in `schema`.
  * @returns Predicate that narrows to the inferred struct type.
+ * @throws {TypeError} If `schema` has own symbol-keyed fields.
  */
 export function struct<const S extends SchemaShape<S>>(
   schema: StructSchemaShape<S>,
@@ -82,6 +83,12 @@ export function createStruct<S extends SchemaShape<S>>(
   schema: S,
   options?: StructOptions
 ): Predicate<InferSchema<S>> {
+  // WHY: A schema can be widened to `Schema` (or arrive from JavaScript), which
+  // erases symbol keys from its static type while runtime enumeration still skips them.
+  if (Object.getOwnPropertySymbols(schema).length > 0) {
+    throw new TypeError('struct schema fields cannot use symbol keys');
+  }
+
   // WHY: Split required and optional fields once per builder so each
   // invocation only performs property lookups and guard calls.
   const requiredEntries: SchemaEntry[] = [];

@@ -1,6 +1,7 @@
 import { optionalKey, struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { optional } from '@/core/nullish';
+import type { Schema } from '@/types';
 
 describe('struct', () => {
   const schema = { id: isString, age: isNumber } as const;
@@ -89,6 +90,15 @@ describe('struct', () => {
     const guard = struct(schema, { exact: true });
 
     expect(guard(input)).toBe(true);
+  });
+
+  it('rejects symbol-keyed schemas whose type has been widened', () => {
+    const symbolKey = Symbol('symbol-key');
+    const schema: Schema = { [symbolKey]: isString };
+
+    expect(() => struct(schema)).toThrow(
+      'struct schema fields cannot use symbol keys'
+    );
   });
 
   it('ignores non-enumerable keys in exact mode', () => {
