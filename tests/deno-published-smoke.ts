@@ -1,4 +1,12 @@
-import { isNumber, isString, or, struct } from '@nyaomaru/is-kit';
+const version = Deno.env.get('IS_KIT_VERSION')?.replace(/^v/, '');
+
+if (!version) {
+  throw new Error('IS_KIT_VERSION must identify the published JSR package');
+}
+
+const { isNumber, isString, or, struct } = await import(
+  `jsr:@nyaomaru/is-kit@${version}`
+);
 
 const isId = or(isString, isNumber);
 

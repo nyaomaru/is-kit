@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@/": "../../src/",
+    "@nyaomaru/is-kit": "../../src/index.ts"
+  }
+}
