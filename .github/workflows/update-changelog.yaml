@@ -17,9 +17,12 @@ jobs:
       provider: openai
       release_tag: ${{ github.ref_name }}
       why: 'true'
+      # WHY: Jev selects explicit rationale evidence without generating new WHY text.
+      why_engine: jev
       why_confidence: medium
       why_label: Why
       dry_run: 'false'
     secrets:
       REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
