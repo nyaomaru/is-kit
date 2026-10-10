@@ -35,6 +35,20 @@ export type SchemaShape<S extends object> = Readonly<{
   [K in keyof S]: SchemaField;
 }>;
 
+/**
+ * Schema shape accepted by `struct`, limited to JavaScript string and numeric keys.
+ *
+ * Numeric keys are included because JavaScript normalizes them to string property
+ * keys during enumeration. Symbol keys are excluded because `struct` does not
+ * enumerate them at runtime.
+ */
+export type StructSchemaShape<S extends SchemaShape<S>> = Extract<
+  keyof S,
+  symbol
+> extends never
+  ? S
+  : never;
+
 type Simplify<T> = { [K in keyof T]: T[K] };
 
 type InferSchemaField<F> =

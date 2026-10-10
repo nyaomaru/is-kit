@@ -3,6 +3,7 @@ import type {
   OptionalSchemaField,
   Predicate,
   SchemaShape,
+  StructSchemaShape,
   StructOptions
 } from '@/types';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
@@ -59,16 +60,25 @@ export function optionalKey<G extends Predicate<unknown>>(
 }
 
 /**
- * Validates an object against a field-to-guard schema.
- * Keys in the schema are required unless wrapped with `optionalKey`; optionally
+ * Validates an object against a field-to-guard schema with string runtime keys.
+ * Numeric schema keys are normalized to strings by JavaScript; symbol-keyed fields
+ * are not supported. Keys are required unless wrapped with `optionalKey`; optionally
  * rejects extra keys when `exact: true`.
  *
- * @param schema Record of property guards.
+ * @param schema Record of string- or numeric-keyed property guards.
  * @param options When `{ exact: true }`, disallows own enumerable string-key
  * properties not in `schema`.
  * @returns Predicate that narrows to the inferred struct type.
  */
 export function struct<const S extends SchemaShape<S>>(
+  schema: StructSchemaShape<S>,
+  options?: StructOptions
+): Predicate<InferSchema<S>> {
+  return createStruct<S>(schema, options);
+}
+
+/** @internal Shared implementation for string-keyed schema builders. */
+export function createStruct<S extends SchemaShape<S>>(
   schema: S,
   options?: StructOptions
 ): Predicate<InferSchema<S>> {

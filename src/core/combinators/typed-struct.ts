@@ -5,7 +5,7 @@ import type {
   TypedStructFields,
   TypedStructShape
 } from '@/types';
-import { struct } from './struct';
+import { createStruct } from './struct';
 
 /**
  * Creates a `struct` builder checked against an existing string-keyed object
@@ -24,7 +24,7 @@ export function typedStruct<T extends object>() {
     fields: TypedStructFields<T, S>,
     options?: StructOptions
   ): Predicate<InferSchema<TypedStructFields<T, S>>> =>
-    // WHY: `typedStruct` keeps `struct` runtime behavior while using the target
-    // type only to check that hand-written guard fields stay in sync.
-    struct(fields, options);
+    // WHY: `TypedStructShape` only permits string keys, so it can share struct's
+    // runtime implementation without widening the public `struct` schema contract.
+    createStruct(fields, options);
 }
