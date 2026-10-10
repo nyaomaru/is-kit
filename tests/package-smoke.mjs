@@ -33,6 +33,48 @@ const run = (command, args, cwd = consumerDirectory) =>
 const writeConsumerFile = (name, contents) =>
   writeFileSync(join(consumerDirectory, name), contents);
 
+const typescriptCli = resolve(
+  repositoryRoot,
+  'node_modules/typescript/bin/tsc'
+);
+
+// WHY: `types: []` keeps parent `node_modules/@types` packages, such as Jest,
+// out of this compile. The consumer has to type-check from the packed package
+// alone, including when the temp directory is created inside the workspace.
+// @see https://github.com/nyaomaru/is-kit/issues/322
+const nodeNextCompilerOptions = {
+  module: 'NodeNext',
+  moduleResolution: 'NodeNext',
+  noEmit: true,
+  strict: true,
+  target: 'ES2022',
+  types: []
+};
+
+const writeTypeScriptProject = (fileName, projectName, source) => {
+  writeConsumerFile(fileName, source);
+  writeConsumerFile(
+    projectName,
+    `${JSON.stringify(
+      {
+        compilerOptions: nodeNextCompilerOptions,
+        files: [fileName]
+      },
+      null,
+      2
+    )}\n`
+  );
+};
+
+const compileTypeScript = (projectName) =>
+  run(process.execPath, [
+    typescriptCli,
+    '--project',
+    projectName,
+    '--pretty',
+    'false'
+  ]);
+
 try {
   mkdirSync(packageDirectory, { recursive: true });
   mkdirSync(consumerDirectory, { recursive: true });
@@ -99,48 +141,55 @@ assert.equal(arrayOf(isString)(['a', 1]), false);
 `
   );
 
-  writeConsumerFile(
-    'types-smoke.ts',
-    `import { arrayOf, isString, safeParse } from 'is-kit';
+  // WHY: This consumer is `"type": "module"`, so a `.ts` file is ESM only by
+  // package context. Separate `.mts` and `.cts` projects force NodeNext into
+  // ESM and CJS resolution modes. Both modes still match the published `types`
+  // condition; each fixture below is the full file compiled for that mode.
+  const esmTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
 import type { ParseResult, Predicate } from 'is-kit';
 
 const isStringArray: Predicate<readonly string[]> = arrayOf(isString);
 const result: ParseResult<string> = safeParse(isString, 'value');
+const moduleMeta: ImportMeta = import.meta;
 
 void isStringArray;
 void result;
-`
-  );
+void moduleMeta;
+`;
 
-  writeConsumerFile(
-    'tsconfig.json',
-    `${JSON.stringify(
-      {
-        compilerOptions: {
-          module: 'NodeNext',
-          moduleResolution: 'NodeNext',
-          noEmit: true,
-          strict: true,
-          target: 'ES2022'
-        },
-        files: ['types-smoke.ts']
-      },
-      null,
-      2
-    )}\n`
-  );
+  // WHY: import-equals-require is rejected in an ES module, so this compile
+  // fails when NodeNext does not classify the file as CommonJS.
+  const cjsTypeSmoke = `import { arrayOf, isString, safeParse } from 'is-kit';
+import type { ParseResult, Predicate } from 'is-kit';
+import isKit = require('is-kit');
+
+const isStringArray: Predicate<readonly string[]> = arrayOf(isString);
+const result: ParseResult<string> = safeParse(isString, 'value');
+const requiredStringArray: Predicate<readonly string[]> = isKit.arrayOf(
+  isKit.isString
+);
+const requiredResult: isKit.ParseResult<string> = isKit.safeParse(
+  isKit.isString,
+  'value'
+);
+
+void isStringArray;
+void result;
+void requiredStringArray;
+void requiredResult;
+`;
+
+  writeTypeScriptProject('types-esm.mts', 'tsconfig.esm.json', esmTypeSmoke);
+  writeTypeScriptProject('types-cjs.cts', 'tsconfig.cjs.json', cjsTypeSmoke);
 
   run(process.execPath, ['esm-smoke.mjs']);
   run(process.execPath, ['cjs-smoke.cjs']);
-  run(process.execPath, [
-    resolve(repositoryRoot, 'node_modules/typescript/bin/tsc'),
-    '--project',
-    'tsconfig.json',
-    '--pretty',
-    'false'
-  ]);
+  compileTypeScript('tsconfig.esm.json');
+  compileTypeScript('tsconfig.cjs.json');
 
-  console.log('Package smoke test passed for ESM, CJS, and TypeScript.');
+  console.log(
+    'Package smoke test passed for ESM, CJS, and TypeScript ESM/CJS.'
+  );
 } finally {
   rmSync(temporaryRoot, { recursive: true, force: true });
 }

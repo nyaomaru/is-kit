@@ -1,8 +1,9 @@
 # Test Packed Artifacts From a Consumer Project
 
 **Captured:** 2026-08-02
+**Updated:** 2026-10-09
 **Context:** Verifying that the npm artifact consumers install matches the source-level public API contract.
-**Tags:** release-safety, packaging, npm, esm, commonjs, typescript, smoke-testing, ci
+**Tags:** release-safety, packaging, npm, esm, commonjs, typescript, smoke-testing, ci, nodenext
 
 ## Problem
 
@@ -23,8 +24,17 @@ package name:
 
 1. Import runtime exports from an ESM file.
 2. Require runtime exports from a CommonJS file.
-3. Compile a strict `NodeNext` TypeScript file importing public values and
-   types.
+3. Compile two strict `NodeNext` TypeScript projects from that same install:
+   an explicit `.mts` ES module and an explicit `.cts` CommonJS module. A
+   `.ts` file in a `"type": "module"` package is only implicitly ESM.
+
+Set `compilerOptions.types` to `[]` so `@types` packages in parent directories
+cannot leak into the consumer. Keep one install; do not pack or install a
+second tarball for the second module format.
+
+NodeNext still matches the published `types` condition from both modes. A
+single `./dist/index.d.ts` can be valid for both. Add `.d.mts` / `.d.cts`
+export targets only when one of these compiles fails.
 
 Use a temporary npm cache so the smoke test does not depend on or mutate the
 developer's global cache. Install only the local tarball with lifecycle scripts,
@@ -43,7 +53,8 @@ run('npm', ['install', '--ignore-scripts', '--no-audit', tarballPath]);
 
 run(process.execPath, ['esm-smoke.mjs']);
 run(process.execPath, ['cjs-smoke.cjs']);
-run(process.execPath, [typescriptCli, '--project', 'tsconfig.json']);
+run(process.execPath, [typescriptCli, '--project', 'tsconfig.esm.json']);
+run(process.execPath, [typescriptCli, '--project', 'tsconfig.cjs.json']);
 ```
 
 Discover the generated `.tgz` in the isolated package directory instead of
