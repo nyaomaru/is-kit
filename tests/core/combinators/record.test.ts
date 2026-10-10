@@ -42,6 +42,7 @@ describe('recordOf (key/value guards)', () => {
   it('can restrict keys to a specific union of string literals', () => {
     const guard = recordOf(isABKey, isNumber);
 
+    expect(guard({ a: 1 })).toBe(true);
     expect(guard({ a: 1, b: 2 })).toBe(true);
     expect(guard({ a: 1, c: 3 } as Record<string, number>)).toBe(false);
     expect(guard({ c: 3 } as Record<string, number>)).toBe(false);
