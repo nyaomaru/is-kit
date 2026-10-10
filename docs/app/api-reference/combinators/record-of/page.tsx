@@ -20,7 +20,9 @@ export default function RecordOfPage() {
         <Stack gap='xs'>
           <Heading variant='h1'>recordOf</Heading>
           <Paragraph>
-            Guard for records with guards for keys and values.
+            Guard for plain-object records with guards for keys and values. The
+            key guard limits which keys may be present; it does not require
+            every key represented by its type.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

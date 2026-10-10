@@ -28,13 +28,16 @@ const isLiteralABKey = define<'a' | 'b'>(
 );
 
 const literalKeyNumberRecordGuard = recordOf(isLiteralABKey, isNumber);
-expectType<Predicate<Readonly<Record<'a' | 'b', number>>>>(
+expectType<Predicate<Readonly<Partial<Record<'a' | 'b', number>>>>>(
   literalKeyNumberRecordGuard
 );
 declare const literalKeyRecordCandidate: unknown;
 
 if (literalKeyNumberRecordGuard(literalKeyRecordCandidate)) {
-  expectType<Readonly<Record<'a' | 'b', number>>>(literalKeyRecordCandidate);
+  expectType<Readonly<Partial<Record<'a' | 'b', number>>>>(
+    literalKeyRecordCandidate
+  );
+  expectType<number | undefined>(literalKeyRecordCandidate.b);
 
   const literalKeys = Object.keys(literalKeyRecordCandidate) as Array<
     'a' | 'b'
@@ -48,13 +51,16 @@ const isNumericKey = define<`${number}`>(
 );
 
 const numericKeyNumberRecordGuard = recordOf(isNumericKey, isNumber);
-expectType<Predicate<Readonly<Record<`${number}`, number>>>>(
+expectType<Predicate<Readonly<Partial<Record<`${number}`, number>>>>>(
   numericKeyNumberRecordGuard
 );
 declare const numericKeyRecordCandidate: unknown;
 
 if (numericKeyNumberRecordGuard(numericKeyRecordCandidate)) {
-  expectType<Readonly<Record<`${number}`, number>>>(numericKeyRecordCandidate);
+  expectType<Readonly<Partial<Record<`${number}`, number>>>>(
+    numericKeyRecordCandidate
+  );
+  expectType<number | undefined>(numericKeyRecordCandidate['0']);
   const numericKeys = Object.keys(
     numericKeyRecordCandidate
   ) as Array<`${number}`>;
