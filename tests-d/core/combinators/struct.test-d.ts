@@ -1,4 +1,4 @@
-import { expectType } from 'tsd';
+import { expectError, expectType } from 'tsd';
 import { isString, isNumber } from '@/core/primitive';
 import { optionalKey, struct } from '@/core/combinators';
 import { optional } from '@/core/nullish';
@@ -30,6 +30,14 @@ if (userWithOptionalNickname(optionalCandidate)) {
   expectType<Readonly<{ id: string; nickname?: string }>>(optionalCandidate);
   expectType<string | undefined>(optionalCandidate.nickname);
 }
+
+// it: rejects symbol-keyed schemas because struct only enumerates string keys
+const symbolKey = Symbol('symbol-key');
+expectError(struct({ [symbolKey]: isString }));
+
+// it: preserves numeric schema keys because JavaScript normalizes them to strings
+const numericKeyStructGuard = struct({ 1: isString } as const);
+expectType<Predicate<Readonly<{ 1: string }>>>(numericKeyStructGuard);
 
 // it: composes key-level and value-level optional semantics
 const userWithOptionalUndefinedNickname = struct({
