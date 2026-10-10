@@ -6,6 +6,30 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.15.2] - 2026-10-10
+
+### Fixed
+
+- reject symbol-keyed struct schemas by @nyaomaru in [#329](https://github.com/nyaomaru/is-kit/pull/329)
+  - Why: Reject symbol-keyed struct schemas.
+
+### Docs
+
+- 1.15.1 by [bot] by @github-actions in [#321](https://github.com/nyaomaru/is-kit/pull/321)
+- note cloud agent toolchain and docs host by @nyaomaru in [#326](https://github.com/nyaomaru/is-kit/pull/326)
+
+### Test
+
+- typecheck the packed package from ESM and CJS by @nyaomaru in [#327](https://github.com/nyaomaru/is-kit/pull/327)
+
+### Chore
+
+- Release: 1.15.2 by [bot] by @github-actions in [#330](https://github.com/nyaomaru/is-kit/pull/330)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.15.1...v1.15.2
+
+[v1.15.2]: https://github.com/nyaomaru/is-kit/compare/v1.15.1...v1.15.2
+
 ## [v1.15.1] - 2026-10-03
 
 ### Fixed
@@ -1879,7 +1903,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.15.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.15.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
