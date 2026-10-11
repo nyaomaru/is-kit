@@ -89,7 +89,8 @@ describe('core/object guards', () => {
       weakSet: new WeakSet(),
       arrayBuffer: new ArrayBuffer(8),
       dataView: new DataView(new ArrayBuffer(8)),
-      typedArray: new Uint16Array(2)
+      typedArray: new Uint16Array(2),
+      error: new Error('cross-realm')
     })`) as Record<string, unknown>;
 
     expect(isDate(values.date)).toBe(true);
@@ -101,6 +102,7 @@ describe('core/object guards', () => {
     expect(isArrayBuffer(values.arrayBuffer)).toBe(true);
     expect(isDataView(values.dataView)).toBe(true);
     expect(isTypedArray(values.typedArray)).toBe(true);
+    expect(isError(values.error)).toBe(true);
   });
 
   it('accepts built-in subclasses while preserving valid Date semantics', () => {
@@ -112,6 +114,7 @@ describe('core/object guards', () => {
     class WeakSetSubclass extends WeakSet {}
     class ArrayBufferSubclass extends ArrayBuffer {}
     class DataViewSubclass extends DataView {}
+    class ErrorSubclass extends Error {}
 
     expect(isDate(new DateSubclass())).toBe(true);
     expect(isDate(new DateSubclass('invalid'))).toBe(false);
@@ -122,6 +125,7 @@ describe('core/object guards', () => {
     expect(isWeakSet(new WeakSetSubclass())).toBe(true);
     expect(isArrayBuffer(new ArrayBufferSubclass(8))).toBe(true);
     expect(isDataView(new DataViewSubclass(new ArrayBuffer(8)))).toBe(true);
+    expect(isError(new ErrorSubclass('subclass'))).toBe(true);
   });
 
   it('detects iterable and async iterable', () => {
@@ -200,6 +204,74 @@ describe('core/object guards', () => {
 
     expect(ArrayBuffer.isView(detachedTypedArray)).toBe(true);
     expect(isTypedArray(detachedTypedArray)).toBe(true);
+  });
+
+  it('uses Error.isError when available', () => {
+    const originalIsError = Object.getOwnPropertyDescriptor(Error, 'isError');
+    const localError = new Error('local');
+    const crossRealmError = runInNewContext('new Error("cross-realm")');
+    const subclassError = new (class extends Error {})('subclass');
+    const nativeIsError = jest.fn(
+      (value: unknown) =>
+        value === localError ||
+        value === crossRealmError ||
+        value === subclassError
+    );
+
+    try {
+      Object.defineProperty(Error, 'isError', {
+        configurable: true,
+        value: nativeIsError
+      });
+
+      jest.isolateModules(() => {
+        const objectGuards =
+          jest.requireActual<typeof import('@/core/object')>('@/core/object');
+
+        expect(objectGuards.isError(localError)).toBe(true);
+        expect(objectGuards.isError(crossRealmError)).toBe(true);
+        expect(objectGuards.isError(subclassError)).toBe(true);
+        expect(objectGuards.isError({ [Symbol.toStringTag]: 'Error' })).toBe(
+          false
+        );
+      });
+
+      expect(nativeIsError).toHaveBeenCalledTimes(4);
+    } finally {
+      if (originalIsError) {
+        Object.defineProperty(Error, 'isError', originalIsError);
+      } else {
+        Reflect.deleteProperty(Error, 'isError');
+      }
+    }
+  });
+
+  it('preserves the cross-realm fallback when Error.isError is unavailable', () => {
+    const originalIsError = Object.getOwnPropertyDescriptor(Error, 'isError');
+
+    try {
+      Object.defineProperty(Error, 'isError', {
+        configurable: true,
+        value: undefined
+      });
+
+      jest.isolateModules(() => {
+        const objectGuards =
+          jest.requireActual<typeof import('@/core/object')>('@/core/object');
+        const crossRealmError = runInNewContext('new Error("cross-realm")');
+
+        expect(objectGuards.isError(crossRealmError)).toBe(true);
+        expect(objectGuards.isError({ [Symbol.toStringTag]: 'Error' })).toBe(
+          true
+        );
+      });
+    } finally {
+      if (originalIsError) {
+        Object.defineProperty(Error, 'isError', originalIsError);
+      } else {
+        Reflect.deleteProperty(Error, 'isError');
+      }
+    }
   });
 
   it('detects Error, URL, Blob, File', () => {
