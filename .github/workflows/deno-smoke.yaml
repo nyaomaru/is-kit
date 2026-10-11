@@ -1,0 +1,24 @@
+name: Deno Smoke Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  deno-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Verify local JSR package
+        run: npx jsr publish --dry-run --allow-slow-types
+      - name: Run local JSR package smoke test
+        run: deno run --no-lock --no-check --sloppy-imports --config tests/deno-smoke/deno.json tests/deno-smoke.ts
