@@ -2,6 +2,10 @@ import { define } from './define';
 import type { Guard } from '@/types';
 import { getTag, OBJECT_TAG_ERROR } from '@/utils/object-tags';
 
+type ErrorConstructorWithIsError = ErrorConstructor & {
+  isError?: (value: unknown) => boolean;
+};
+
 // WHY: DOM constructors such as URL and Blob are declared as constructor
 // objects with a prototype, not as the full Function interface. The helper
 // only needs the prototype for typing; it checks function-ness at runtime
@@ -11,6 +15,7 @@ type InstanceCheckTarget<T> = { readonly prototype: T };
 type AnyFunction = (...args: never[]) => unknown;
 
 const BUILTIN_BRAND_SENTINEL = Object.freeze({});
+const nativeIsError = (Error as ErrorConstructorWithIsError).isError;
 
 // WHY: Calling captured built-in intrinsics verifies internal slots. Unlike
 // object tags, this rejects Symbol.toStringTag spoofing while still accepting
@@ -226,13 +231,23 @@ export const isTypedArray = define<ArrayBufferView>(
 );
 
 /**
- * Checks whether a value is an `Error` (instance of Error or plain Error object tag).
+ * Checks whether a value is an `Error`.
  *
  * @returns Predicate narrowing to `Error`.
+ * @see https://github.com/nyaomaru/is-kit/issues/325
  */
-export const isError = define<Error>(
-  (value) => value instanceof Error || getTag(value) === OBJECT_TAG_ERROR
-);
+// WHY: Error.isError verifies the internal Error brand across realms without
+// trusting Symbol.toStringTag. Older runtimes lack it, so retain the tag
+// fallback and its spoofing limitation there to preserve cross-realm compatibility.
+export const isError = define<Error>((value) => {
+  try {
+    return typeof nativeIsError === 'function'
+      ? nativeIsError(value)
+      : value instanceof Error || getTag(value) === OBJECT_TAG_ERROR;
+  } catch {
+    return false;
+  }
+});
 
 /**
  * Checks whether a value is a `URL` (in environments with URL available).
