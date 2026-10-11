@@ -1,5 +1,6 @@
 import { define } from './define';
 import type { Guard } from '@/types';
+import { getTag, OBJECT_TAG_ERROR } from '@/utils/object-tags';
 
 type ErrorConstructorWithIsError = ErrorConstructor & {
   isError?: (value: unknown) => boolean;
@@ -238,12 +239,15 @@ export const isTypedArray = define<ArrayBufferView>(
 // WHY: Error.isError verifies the internal Error brand across realms without
 // trusting Symbol.toStringTag. Older runtimes lack it, so retain the tag
 // fallback and its spoofing limitation there to preserve cross-realm compatibility.
-export const isError = define<Error>((value) =>
-  typeof nativeIsError === 'function'
-    ? nativeIsError(value)
-    : value instanceof Error ||
-      Object.prototype.toString.call(value) === '[object Error]'
-);
+export const isError = define<Error>((value) => {
+  try {
+    return typeof nativeIsError === 'function'
+      ? nativeIsError(value)
+      : value instanceof Error || getTag(value) === OBJECT_TAG_ERROR;
+  } catch {
+    return false;
+  }
+});
 
 /**
  * Checks whether a value is a `URL` (in environments with URL available).

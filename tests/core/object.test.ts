@@ -211,12 +211,25 @@ describe('core/object guards', () => {
     const localError = new Error('local');
     const crossRealmError = runInNewContext('new Error("cross-realm")');
     const subclassError = new (class extends Error {})('subclass');
-    const nativeIsError = jest.fn(
-      (value: unknown) =>
+    const throwingValue = new Proxy(
+      {},
+      {
+        getPrototypeOf: () => {
+          throw new Error('unexpected proxy inspection');
+        }
+      }
+    );
+    const nativeIsError = jest.fn((value: unknown) => {
+      if (value === throwingValue) {
+        throw new Error('unexpected native Error.isError failure');
+      }
+
+      return (
         value === localError ||
         value === crossRealmError ||
         value === subclassError
-    );
+      );
+    });
 
     try {
       Object.defineProperty(Error, 'isError', {
@@ -234,9 +247,11 @@ describe('core/object guards', () => {
         expect(objectGuards.isError({ [Symbol.toStringTag]: 'Error' })).toBe(
           false
         );
+        expect(() => objectGuards.isError(throwingValue)).not.toThrow();
+        expect(objectGuards.isError(throwingValue)).toBe(false);
       });
 
-      expect(nativeIsError).toHaveBeenCalledTimes(4);
+      expect(nativeIsError).toHaveBeenCalledTimes(6);
     } finally {
       if (originalIsError) {
         Object.defineProperty(Error, 'isError', originalIsError);
@@ -259,11 +274,44 @@ describe('core/object guards', () => {
         const objectGuards =
           jest.requireActual<typeof import('@/core/object')>('@/core/object');
         const crossRealmError = runInNewContext('new Error("cross-realm")');
+        const throwingValue = new Proxy(
+          {},
+          {
+            getPrototypeOf: () => {
+              throw new Error('unexpected proxy inspection');
+            }
+          }
+        );
+        const originalToString = Object.getOwnPropertyDescriptor(
+          Object.prototype,
+          'toString'
+        );
 
         expect(objectGuards.isError(crossRealmError)).toBe(true);
         expect(objectGuards.isError({ [Symbol.toStringTag]: 'Error' })).toBe(
           true
         );
+        expect(() => objectGuards.isError(throwingValue)).not.toThrow();
+        expect(objectGuards.isError(throwingValue)).toBe(false);
+
+        try {
+          Object.defineProperty(Object.prototype, 'toString', {
+            configurable: true,
+            value: () => '[object Object]'
+          });
+
+          expect(objectGuards.isError(crossRealmError)).toBe(true);
+        } finally {
+          if (originalToString) {
+            Object.defineProperty(
+              Object.prototype,
+              'toString',
+              originalToString
+            );
+          } else {
+            Reflect.deleteProperty(Object.prototype, 'toString');
+          }
+        }
       });
     } finally {
       if (originalIsError) {
