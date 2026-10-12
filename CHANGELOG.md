@@ -6,6 +6,36 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.15.3] - 2026-10-12
+
+### Fixed
+
+- use Jev for changelog WHY selection by @nyaomaru in [#332](https://github.com/nyaomaru/is-kit/pull/332)
+- align recordOf literal-key narrowing by @nyaomaru in [#333](https://github.com/nyaomaru/is-kit/pull/333)
+  - Why: Return `Readonly<Partial<Record<K, V>>>` for literal and template-literal key domains, because matching keys may be absent.
+- use native Error brand checks by @nyaomaru in [#336](https://github.com/nyaomaru/is-kit/pull/336)
+
+### Changed
+
+- optimize required-only exact validation by @nyaomaru in [#341](https://github.com/nyaomaru/is-kit/pull/341)
+  - Why: Required-only `struct(..., { exact: true })` schemas currently check every enumerable key with `Set.has` after validating their required fields. This adds a fast path that skips th
+
+### Docs
+
+- 1.15.2 by [bot] by @github-actions in [#331](https://github.com/nyaomaru/is-kit/pull/331)
+
+### Test
+
+- add Deno JSR smoke test by @nyaomaru in [#335](https://github.com/nyaomaru/is-kit/pull/335)
+
+### Chore
+
+- Release: 1.15.3 by [bot] by @github-actions in [#342](https://github.com/nyaomaru/is-kit/pull/342)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.15.2...v1.15.3
+
+[v1.15.3]: https://github.com/nyaomaru/is-kit/compare/v1.15.2...v1.15.3
+
 ## [v1.15.2] - 2026-10-10
 
 ### Fixed
@@ -1903,7 +1933,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.15.2...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.15.3...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
