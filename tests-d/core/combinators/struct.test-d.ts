@@ -16,6 +16,19 @@ if (userStructGuard(structCandidate)) {
   expectType<Readonly<{ id: string; age: number }>>(structCandidate);
 }
 
+// it: preserves required-only inference and narrowing in exact mode
+const exactUserStructGuard = struct({ id: isString, age: isNumber } as const, {
+  exact: true
+});
+expectType<Predicate<Readonly<{ id: string; age: number }>>>(
+  exactUserStructGuard
+);
+
+declare let exactStructCandidate: unknown;
+if (exactUserStructGuard(exactStructCandidate)) {
+  expectType<Readonly<{ id: string; age: number }>>(exactStructCandidate);
+}
+
 // it: marks optionalKey fields as optional properties
 const userWithOptionalNickname = struct({
   id: isString,
