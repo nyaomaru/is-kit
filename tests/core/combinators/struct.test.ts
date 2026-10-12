@@ -206,6 +206,61 @@ describe('struct', () => {
       expect(calls).toEqual(['id', 'age', 'keys']);
     });
 
+    it('short-circuits before later getters and key enumeration on failure', () => {
+      const laterField = jest.fn(() => {
+        throw new Error('later field must not be read');
+      });
+      const ownKeys = jest.fn(() => {
+        throw new Error('keys must not be enumerated');
+      });
+      const input = new Proxy(
+        {
+          id: 123,
+          get age() {
+            return laterField();
+          }
+        },
+        { ownKeys }
+      );
+
+      expect(guard(input)).toBe(false);
+      expect(laterField).not.toHaveBeenCalled();
+      expect(ownKeys).not.toHaveBeenCalled();
+    });
+
+    it('preserves exceptions from exact key enumeration', () => {
+      const input = new Proxy(
+        { id: 'abc', age: 20 },
+        {
+          ownKeys() {
+            throw new Error('enumeration failed');
+          }
+        }
+      );
+
+      expect(() => guard(input)).toThrow('enumeration failed');
+    });
+
+    it('preserves validation order when a guard removes an earlier field', () => {
+      const input: { id?: string; age: number } = { id: 'abc', age: 20 };
+      const mutatingGuard = struct(
+        {
+          id: isString,
+          age: (value: unknown): value is number => {
+            delete input.id;
+            return isNumber(value);
+          }
+        },
+        { exact: true }
+      );
+
+      // WHY: The original implementation validates required fields once, then
+      // checks only the remaining enumerable keys. Rechecking id would change
+      // the existing behavior for a user guard with side effects.
+      expect(mutatingGuard(input)).toBe(true);
+      expect(input).toEqual({ age: 20 });
+    });
+
     it('enumerates the object after a getter changes its keys', () => {
       const input = {
         get id() {

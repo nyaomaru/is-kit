@@ -32,4 +32,18 @@ describe('typedStruct', () => {
 
     expect(isUser({ id: 'u1', name: 'Ada', extra: true })).toBe(false);
   });
+
+  it('preserves required-only exact semantics through the shared builder', () => {
+    const guard = typedStruct<{ id: string; name: string }>()(
+      { id: isString, name: isString },
+      { exact: true }
+    );
+    const hiddenId = Object.defineProperty({ name: 'Ada' }, 'id', {
+      value: 'u1'
+    });
+
+    expect(guard({ name: 'Ada', id: 'u1' })).toBe(true);
+    expect(guard(hiddenId)).toBe(true);
+    expect(guard(Object.assign(hiddenId, { extra: true }))).toBe(false);
+  });
 });

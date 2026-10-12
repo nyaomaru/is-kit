@@ -19,3 +19,9 @@ The script compares the actual built packages, alternates measurement order,
 and checks match counts. See [setup and results](struct-exact-results.md) for
 the baseline revision, reproduction steps, compatibility constraints, and
 measurements.
+
+`node bench/struct-exact-mixed.mjs <baseline-index.mjs>` broadens that comparison
+to 64-object corpora, mixed valid/invalid payloads, different object layouts,
+and wider schemas. `node tests/struct-exact-compatibility.mjs <baseline-index.mjs>`
+compares return values, exceptions, getters, and Proxy traps across a systematic
+fixture matrix. Both commands use the same saved baseline bundle.

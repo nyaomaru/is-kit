@@ -102,3 +102,84 @@ identical to the baseline.
   keys, key reordering, numeric keys, null-prototype objects, inherited fields,
   symbols, non-enumerable extra fields, empty schemas, getter-driven key
   mutation, enumeration order relative to validation, and nested exact structs.
+
+## Post-commit review
+
+Reviewed implementation commit `4a48080` against its parent. No behavior
+mismatch was found. The fast path still enumerates with `Object.keys` after
+required-field validation. A key-count overflow necessarily contains an
+extra key, while a positional match necessarily belongs to the private
+schema-key snapshot. Every other key goes through the original set. This
+remains true when guards or getters remove fields, change enumerability,
+or add fields during validation.
+
+The initial tests did not explicitly cover early-failure suppression of
+later getters and enumeration, enumeration exceptions, removal of an
+already-validated required field by a guard, or required-only exact
+`typedStruct` schemas. Added regression tests for those cases without
+changing the implementation.
+
+`tests/struct-exact-compatibility.mjs` matched 248,837 baseline/current cases:
+all combinations of three key sets (ordinary, special names, and numeric),
+required/optional masks, exact/non-exact modes, missing/valid/invalid/hidden/
+getter/throwing fields, three prototype layouts, forward/reverse key order,
+and four extra-key configurations. Selected cases also compare every Proxy
+trap, and five cases exercise guard-driven mutation. Both implementations
+receive independently constructed fixtures so mutations cannot contaminate
+the comparison.
+
+The additional corpus benchmark rotates 64 inputs per workload rather than
+repeatedly validating one object. Objects are constructed before timing;
+11 alternating paired samples follow 128,000 warm-up calls, with 1,024,000
+calls per measured sample. Match counts are checked against the known
+accepted fraction on every warm-up and sample.
+
+| Workload                             | Baseline ns/call | Current ns/call | Speedup |
+| ------------------------------------ | ---------------: | --------------: | ------: |
+| 64 valid JSON payloads               |           106.79 |           93.16 |   1.15x |
+| 64 mixed payloads (75% valid)        |            99.35 |           85.71 |   1.16x |
+| 64 heterogeneous valid objects       |           126.39 |          115.71 |   1.09x |
+| 64 reversed-key valid objects        |           110.10 |          107.81 |   1.02x |
+| 64 nested valid JSON payloads        |           196.26 |          170.06 |   1.15x |
+| 64 wide valid objects (16 fields)    |           379.52 |          334.60 |   1.13x |
+| 64 reversed wide objects (16 fields) |           379.13 |          389.92 |   0.97x |
+| 64 optional-key valid payloads       |           118.50 |          119.90 |   0.99x |
+| 64 non-exact mixed payloads          |            78.66 |           81.16 |   0.97x |
+
+The target benefit holds for varied inputs and for mixed validation results,
+but this is not a universal speedup: the wide reversed-key control is about
+3% slower, as is the non-exact mixed control. The optimization favors
+required-only exact objects whose key order matches the schema.
+
+A second full-corpus process run again improved valid JSON payloads
+(109.35 → 99.75 ns/call), mixed payloads (101.55 → 88.31), nested payloads
+(194.98 → 166.86), and same-order wide objects (380.79 → 334.25).
+The non-exact control remained slightly slower (78.13 → 79.87).
+Reversed wide objects varied substantially in that run (454.98 → 397.31),
+so this particular full-run result should not be treated as a stable win.
+
+Fresh processes filtered to individual workloads confirmed valid flat JSON
+payloads at 108.66 → 95.38 ns/call and nested JSON payloads at
+196.07 → 171.93 ns/call, both about 12% faster in elapsed time. A process
+filtered to reversed wide objects measured 304.28 → 312.56 ns/call, about
+3% slower. Absolute timings depend on the process and earlier workload
+profile; the data supports a targeted speedup rather than universal gains.
+The filtered non-exact control measured 80.20 → 80.89 ns/call (about 1%
+slower), a smaller cost than the roughly 2–4% seen in full-workload runs.
+
+Reproduce the review using the baseline saved above:
+
+```sh
+mise exec -- node tests/struct-exact-compatibility.mjs /tmp/is-kit-337-baseline.mjs
+mise exec -- node tests/struct-exact-compatibility.mjs /tmp/is-kit-337-baseline.mjs dist/index.js
+mise exec -- node bench/struct-exact-mixed.mjs /tmp/is-kit-337-baseline.mjs
+mise exec -- node bench/struct-exact-mixed.mjs /tmp/is-kit-337-baseline.mjs 'valid JSON'
+mise exec -- node bench/struct-exact-mixed.mjs /tmp/is-kit-337-baseline.mjs 'reversed wide'
+```
+
+After the additional regression tests, all 24 runtime suites / 224 tests,
+type tests, build, focused runtime-test type checking, and lint excluding
+the pre-existing `example.ts` errors passed. Generated ESM and CJS public
+declarations remain byte-for-byte identical to the baseline declarations.
+The differential matrix passed independently for both the current ESM
+and CJS bundles, 248,837 comparisons per format.
