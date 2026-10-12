@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const baselinePath = process.argv[2];
+const [baselinePath, currentPath] = process.argv.slice(2);
 if (!baselinePath) {
   throw new Error(
     'Usage: node tests/struct-exact-compatibility.mjs <baseline-index.mjs> [current-bundle]'
@@ -10,11 +10,33 @@ if (!baselinePath) {
 }
 const beforeModule = await import(pathToFileURL(resolve(baselinePath)).href);
 const before = beforeModule.default ?? beforeModule;
-const currentPath = process.argv[3];
 const afterModule = await import(
   currentPath ? pathToFileURL(resolve(currentPath)).href : '../dist/index.mjs'
 );
 const after = afterModule.default ?? afterModule;
+
+const VALID_FIELD_VALUE = 1;
+const INVALID_FIELD_VALUE = 'wrong';
+const KEY_OPTIONALITY_COUNT = 2;
+const FIELD_STATE = {
+  MISSING: 'missing',
+  VALID: 'valid',
+  HIDDEN: 'hidden',
+  INVALID: 'invalid',
+  GETTER: 'getter',
+  THROWING_GETTER: 'throwing-getter'
+};
+const FIELD_STATES = Object.values(FIELD_STATE);
+const FIELD_STATE_COUNT = FIELD_STATES.length;
+// WHY: Sampling every N+1 combinations keeps ordinary objects as the majority
+// and is coprime to the state count, so the sample covers every field state.
+const PROXY_SAMPLE_INTERVAL = FIELD_STATE_COUNT + 1;
+
+// WHY: Each base-N digit selects one field's state, covering every tuple once.
+const fieldStateAt = (combination, index) =>
+  FIELD_STATES[
+    Math.floor(combination / FIELD_STATE_COUNT ** index) % FIELD_STATE_COUNT
+  ];
 
 let checked = 0;
 const keySets = [
@@ -33,15 +55,19 @@ const capture = (guard, makeInput) => {
 };
 
 const fieldDescriptor = (state, key, trace) => {
-  const descriptor = { configurable: true, enumerable: state !== 2 };
-  if (state === 4 || state === 5) {
+  const descriptor = {
+    configurable: true,
+    enumerable: state !== FIELD_STATE.HIDDEN
+  };
+  if (state === FIELD_STATE.GETTER || state === FIELD_STATE.THROWING_GETTER) {
     descriptor.get = () => {
       trace.push(`get:${key}`);
-      if (state === 5) throw new Error('field error');
-      return 1;
+      if (state === FIELD_STATE.THROWING_GETTER) throw new Error('field error');
+      return VALID_FIELD_VALUE;
     };
   } else {
-    descriptor.value = state === 3 ? 'wrong' : 1;
+    descriptor.value =
+      state === FIELD_STATE.INVALID ? INVALID_FIELD_VALUE : VALID_FIELD_VALUE;
   }
   return descriptor;
 };
@@ -74,7 +100,7 @@ const traceProxy = (input, trace) =>
   });
 
 const createFixture = (
-  { keys, states, prototypeKind, reversed, extra },
+  { keys, stateCombination, prototypeKind, reversed, extra },
   trace
 ) => {
   const prototypes = {
@@ -82,14 +108,15 @@ const createFixture = (
     null: null,
     inherited: Object.assign(
       Object.create(null),
-      Object.fromEntries(keys.map((key) => [key, 1]))
+      Object.fromEntries(keys.map((key) => [key, VALID_FIELD_VALUE]))
     )
   };
   const input = Object.create(prototypes[prototypeKind]);
-  const order = reversed ? [2, 1, 0] : [0, 1, 2];
+  const order = keys.map((_, index) => index);
+  if (reversed) order.reverse();
   for (const index of order) {
-    const state = Math.floor(states / 6 ** index) % 6;
-    if (state === 0) continue;
+    const state = fieldStateAt(stateCombination, index);
+    if (state === FIELD_STATE.MISSING) continue;
     Object.defineProperty(
       input,
       keys[index],
@@ -99,11 +126,19 @@ const createFixture = (
   addExtra(input, extra);
   // WHY: Sample proxy traps in the same matrix while keeping ordinary objects
   // as the majority, and build fresh fixtures for guards with side effects.
-  return states % 7 === 0 ? traceProxy(input, trace) : input;
+  return stateCombination % PROXY_SAMPLE_INTERVAL === 0
+    ? traceProxy(input, trace)
+    : input;
 };
 
 for (const keys of keySets) {
-  for (let optionalMask = 0; optionalMask < 8; optionalMask += 1) {
+  const optionalMaskCount = KEY_OPTIONALITY_COUNT ** keys.length;
+  const fieldStateCombinationCount = FIELD_STATE_COUNT ** keys.length;
+  for (
+    let optionalMask = 0;
+    optionalMask < optionalMaskCount;
+    optionalMask += 1
+  ) {
     for (const exact of [false, true]) {
       const guards = [before, after].map((library) => {
         const schema = Object.create(null);
@@ -116,13 +151,17 @@ for (const keys of keySets) {
         return library.struct(schema, { exact });
       });
 
-      for (let states = 0; states < 216; states += 1) {
+      for (
+        let stateCombination = 0;
+        stateCombination < fieldStateCombinationCount;
+        stateCombination += 1
+      ) {
         for (const prototypeKind of ['plain', 'null', 'inherited']) {
           for (const reversed of [false, true]) {
             for (const extra of ['none', 'enumerable', 'hidden', 'symbol']) {
               const makeInput = (trace) =>
                 createFixture(
-                  { keys, states, prototypeKind, reversed, extra },
+                  { keys, stateCombination, prototypeKind, reversed, extra },
                   trace
                 );
               const oldResult = capture(guards[0], makeInput);
@@ -134,7 +173,9 @@ for (const keys of keySets) {
                   keys,
                   optionalMask,
                   exact,
-                  states,
+                  fieldStates: keys.map((_, index) =>
+                    fieldStateAt(stateCombination, index)
+                  ),
                   prototypeKind,
                   reversed,
                   extra
@@ -172,17 +213,17 @@ const mutations = {
 for (const [mutation, mutate] of Object.entries(mutations)) {
   const run = (library) => {
     const trace = [];
-    const input = { a: 1, b: 1 };
+    const input = { a: VALID_FIELD_VALUE, b: VALID_FIELD_VALUE };
     const guard = library.struct(
       {
         a: (value) => {
           trace.push('a');
-          return value === 1;
+          return value === VALID_FIELD_VALUE;
         },
         b: (value) => {
           trace.push('b');
           mutate(input);
-          return value === 1;
+          return value === VALID_FIELD_VALUE;
         }
       },
       { exact: true }
