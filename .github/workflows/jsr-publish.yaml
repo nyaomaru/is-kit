@@ -21,4 +21,6 @@ jobs:
       - name: Smoke-test published package
         env:
           IS_KIT_VERSION: ${{ github.ref_name }}
-        run: deno run --no-lock --allow-env=IS_KIT_VERSION --allow-import=jsr.io tests/deno-published-smoke.ts
+        # WHY: This smoke test imports the version just published above, so it
+        # must bypass the dependency-age delay for this invocation.
+        run: deno run --no-lock --minimum-dependency-age=0 --allow-env=IS_KIT_VERSION --allow-import=jsr.io tests/deno-published-smoke.ts
