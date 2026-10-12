@@ -44,6 +44,21 @@ const hasOnlyAllowedKeys = (
   allowed: ReadonlySet<string>
 ): boolean => Object.keys(obj).every((key) => allowed.has(key));
 
+const hasOnlyRequiredKeys = (
+  obj: Record<string, unknown>,
+  schemaKeys: readonly string[],
+  allowed: ReadonlySet<string>
+): boolean => {
+  const keys = Object.keys(obj);
+  // WHY: Own required fields may be non-enumerable, so equal key counts alone
+  // cannot prove exactness. Matching schema order avoids Set lookups; other
+  // orders and non-enumerable required fields retain the membership check.
+  return (
+    keys.length <= schemaKeys.length &&
+    keys.every((key, index) => key === schemaKeys[index] || allowed.has(key))
+  );
+};
+
 /**
  * Marks a struct schema field as optional at the key level.
  *
@@ -110,12 +125,16 @@ export function createStruct<S extends SchemaShape<S>>(
   }
 
   const allowed = options?.exact ? new Set(schemaKeys) : null;
+  const requiredOnly = optionalEntries.length === 0;
 
   return define<InferSchema<S>>((input) => {
     if (!isPlainObject(input)) return false;
     const obj = input;
 
     if (!hasRequiredKeys(obj, requiredEntries)) return false;
+    if (allowed && requiredOnly) {
+      return hasOnlyRequiredKeys(obj, schemaKeys, allowed);
+    }
     if (!hasValidOptionalKeys(obj, optionalEntries)) return false;
     if (!allowed) return true;
     return hasOnlyAllowedKeys(obj, allowed);

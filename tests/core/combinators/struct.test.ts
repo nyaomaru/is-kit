@@ -112,6 +112,189 @@ describe('struct', () => {
     expect(guard(input)).toBe(true);
   });
 
+  describe('required-only exact schemas', () => {
+    const guard = struct(schema, { exact: true });
+
+    it.each([
+      [true, true],
+      [true, false],
+      [false, true],
+      [false, false]
+    ])(
+      'preserves exactness with id enumerable=%s and age enumerable=%s',
+      (idEnumerable, ageEnumerable) => {
+        const input = Object.defineProperties(
+          {},
+          {
+            id: { value: 'abc', enumerable: idEnumerable },
+            age: { value: 20, enumerable: ageEnumerable }
+          }
+        );
+
+        expect(guard(input)).toBe(true);
+        // WHY: Extra keys can leave the enumerable count equal to, or even
+        // smaller than, the schema count when required fields are hidden.
+        Object.defineProperty(input, 'extra', {
+          value: true,
+          enumerable: true
+        });
+        expect(guard(input)).toBe(false);
+      }
+    );
+
+    it('accepts required keys in a different enumeration order', () => {
+      expect(guard({ age: 20, id: 'abc' })).toBe(true);
+      expect(guard({ extra: true, age: 20, id: 'abc' })).toBe(false);
+    });
+
+    it('handles numeric keys in JavaScript enumeration order', () => {
+      const numericGuard = struct(
+        { label: isString, 2: isNumber, 1: isString },
+        { exact: true }
+      );
+
+      expect(numericGuard({ 1: 'one', 2: 2, label: 'numbers' })).toBe(true);
+      expect(numericGuard({ 1: 'one', 2: 2, label: 'numbers', 3: 3 })).toBe(
+        false
+      );
+    });
+
+    it('checks own required fields on null-prototype objects', () => {
+      const input = Object.assign(Object.create(null), { age: 20, id: 'abc' });
+      expect(guard(input)).toBe(true);
+      delete input.id;
+      expect(guard(input)).toBe(false);
+
+      const prototype = Object.assign(Object.create(null), { id: 'abc' });
+      const inherited = Object.assign(Object.create(prototype), { age: 20 });
+      expect(guard(inherited)).toBe(false);
+    });
+
+    it('preserves empty-schema exactness', () => {
+      const emptyGuard = struct({}, { exact: true });
+      const hidden = Object.defineProperty({}, 'hidden', { value: true });
+
+      expect(emptyGuard({})).toBe(true);
+      expect(emptyGuard({ [Symbol('extra')]: true })).toBe(true);
+      expect(emptyGuard(hidden)).toBe(true);
+      expect(emptyGuard({ extra: true })).toBe(false);
+    });
+
+    it('validates all fields before enumerating extra keys', () => {
+      const calls: string[] = [];
+      const input = new Proxy(
+        {
+          get id() {
+            calls.push('id');
+            return 'abc';
+          },
+          get age() {
+            calls.push('age');
+            return 20;
+          },
+          extra: true
+        },
+        {
+          ownKeys(target) {
+            calls.push('keys');
+            return Reflect.ownKeys(target);
+          }
+        }
+      );
+
+      expect(guard(input)).toBe(false);
+      expect(calls).toEqual(['id', 'age', 'keys']);
+    });
+
+    it('short-circuits before later getters and key enumeration on failure', () => {
+      const laterField = jest.fn(() => {
+        throw new Error('later field must not be read');
+      });
+      const ownKeys = jest.fn(() => {
+        throw new Error('keys must not be enumerated');
+      });
+      const input = new Proxy(
+        {
+          id: 123,
+          get age() {
+            return laterField();
+          }
+        },
+        { ownKeys }
+      );
+
+      expect(guard(input)).toBe(false);
+      expect(laterField).not.toHaveBeenCalled();
+      expect(ownKeys).not.toHaveBeenCalled();
+    });
+
+    it('preserves exceptions from exact key enumeration', () => {
+      const input = new Proxy(
+        { id: 'abc', age: 20 },
+        {
+          ownKeys() {
+            throw new Error('enumeration failed');
+          }
+        }
+      );
+
+      expect(() => guard(input)).toThrow('enumeration failed');
+    });
+
+    it('preserves validation order when a guard removes an earlier field', () => {
+      const input: { id?: string; age: number } = { id: 'abc', age: 20 };
+      const mutatingGuard = struct(
+        {
+          id: isString,
+          age: (value: unknown): value is number => {
+            delete input.id;
+            return isNumber(value);
+          }
+        },
+        { exact: true }
+      );
+
+      // WHY: The original implementation validates required fields once, then
+      // checks only the remaining enumerable keys. Rechecking id would change
+      // the existing behavior for a user guard with side effects.
+      expect(mutatingGuard(input)).toBe(true);
+      expect(input).toEqual({ age: 20 });
+    });
+
+    it('enumerates the object after a getter changes its keys', () => {
+      const input = {
+        get id() {
+          delete input.age;
+          input.extra = true;
+          return 'abc';
+        },
+        age: 20 as number | undefined,
+        extra: undefined as boolean | undefined
+      };
+      delete input.extra;
+      const getterGuard = struct(
+        { age: isNumber, id: isString },
+        { exact: true }
+      );
+
+      // WHY: Required fields were already validated when the getter replaced
+      // age with an extra key. Equal counts must not bypass membership checks.
+      expect(getterGuard(input)).toBe(false);
+    });
+
+    it('preserves nested exact validation', () => {
+      const nestedGuard = struct({ user: guard }, { exact: true });
+
+      expect(nestedGuard({ user: { age: 20, id: 'abc' } })).toBe(true);
+      expect(nestedGuard({ user: { id: 'abc', age: 20, extra: true } })).toBe(
+        false
+      );
+      expect(nestedGuard({ user: { id: 'abc', age: 20 }, extra: true })).toBe(
+        false
+      );
+    });
+  });
+
   it('works with nested struct', () => {
     const address = struct({ city: isString, zip: isString } as const);
     const user = struct({ id: isString, age: isNumber, address } as const);
