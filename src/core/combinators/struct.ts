@@ -24,7 +24,10 @@ const hasInheritedStringKeys = (schema: object): boolean => {
   // A class prototype's own constructor also is not an instance field in `keyof`.
   // Every other prototype key is checked because TypeScript includes inherited
   // members in `keyof`, while struct validates only own enumerable fields.
-  while (prototype !== null && prototype !== Object.prototype) {
+  // WHY: Every realm has its own Object.prototype. Its prototype is always null,
+  // so that shape identifies the terminal prototype without rejecting schemas
+  // created in an iframe or node:vm context.
+  while (prototype !== null && Object.getPrototypeOf(prototype) !== null) {
     const hasSchemaKey = Object.getOwnPropertyNames(prototype).some((key) => {
       if (key !== 'constructor') return true;
 

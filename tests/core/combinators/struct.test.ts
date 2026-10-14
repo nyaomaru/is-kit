@@ -1,3 +1,4 @@
+import { runInNewContext } from 'node:vm';
 import { optionalKey, struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { optional } from '@/core/nullish';
@@ -139,6 +140,16 @@ describe('struct', () => {
     }
 
     const guard = struct(new UserSchema());
+
+    expect(guard({ id: 'abc' })).toBe(true);
+    expect(guard({ id: 123 })).toBe(false);
+  });
+
+  it('accepts schemas created in another realm', () => {
+    const crossRealmSchema = runInNewContext('({ id: isString })', {
+      isString
+    }) as { id: typeof isString };
+    const guard = struct(crossRealmSchema);
 
     expect(guard({ id: 'abc' })).toBe(true);
     expect(guard({ id: 123 })).toBe(false);
