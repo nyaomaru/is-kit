@@ -101,6 +101,49 @@ describe('struct', () => {
     );
   });
 
+  it('rejects non-enumerable own schema fields', () => {
+    const hiddenSchema = { id: isString };
+    Object.defineProperty(hiddenSchema, 'id', { enumerable: false });
+
+    expect(() => struct(hiddenSchema)).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
+  it('rejects inherited schema fields', () => {
+    const inheritedFields = { id: isString };
+    const inheritedSchema = Object.create(
+      inheritedFields
+    ) as typeof inheritedFields;
+
+    expect(() => struct(inheritedSchema)).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
+  it('rejects non-enumerable inherited schema fields', () => {
+    class UserSchema {
+      get id() {
+        return isString;
+      }
+    }
+
+    expect(() => struct(new UserSchema())).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
+  it('accepts class schemas with own enumerable fields', () => {
+    class UserSchema {
+      id = isString;
+    }
+
+    const guard = struct(new UserSchema());
+
+    expect(guard({ id: 'abc' })).toBe(true);
+    expect(guard({ id: 123 })).toBe(false);
+  });
+
   it('ignores non-enumerable keys in exact mode', () => {
     const input = { id: 'abc', age: 20 };
     Object.defineProperty(input, 'extra', {

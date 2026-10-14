@@ -48,6 +48,31 @@ if (userWithOptionalNickname(optionalCandidate)) {
 const symbolKey = Symbol('symbol-key');
 expectError(struct({ [symbolKey]: isString }));
 
+// it: preserves inferred fields for schemas rejected only by runtime metadata
+// Note: TypeScript does not model property ownership or enumerability. Runtime
+// validation rejects these schemas before either inferred field can be claimed.
+const nonEnumerableSchema = { id: isString };
+Object.defineProperty(nonEnumerableSchema, 'id', { enumerable: false });
+expectType<Predicate<Readonly<{ id: string }>>>(struct(nonEnumerableSchema));
+
+const inheritedSchema = Object.create({ id: isString }) as {
+  id: typeof isString;
+};
+expectType<Predicate<Readonly<{ id: string }>>>(struct(inheritedSchema));
+
+class InheritedSchema {
+  get id() {
+    return isString;
+  }
+}
+expectType<Predicate<Readonly<{ id: string }>>>(struct(new InheritedSchema()));
+
+// it: accepts own enumerable class fields
+class OwnFieldSchema {
+  id = isString;
+}
+expectType<Predicate<Readonly<{ id: string }>>>(struct(new OwnFieldSchema()));
+
 // it: preserves numeric schema keys because JavaScript normalizes them to strings
 const numericKeyStructGuard = struct({ 1: isString } as const);
 expectType<Predicate<Readonly<{ 1: string }>>>(numericKeyStructGuard);
