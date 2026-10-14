@@ -102,6 +102,27 @@ describe('struct', () => {
     );
   });
 
+  it('rejects schemas with inherited symbol-keyed fields', () => {
+    const symbolKey = Symbol('symbol-key');
+    const schema = Object.create({ [symbolKey]: isString }) as Schema;
+
+    expect(() => struct(schema)).toThrow(
+      'struct schema fields cannot use symbol keys'
+    );
+  });
+
+  it('rejects inherited fields on null-prototype schemas', () => {
+    const inheritedFields = Object.create(null) as {
+      id: typeof isString;
+    };
+    inheritedFields.id = isString;
+    const schema = Object.create(inheritedFields) as typeof inheritedFields;
+
+    expect(() => struct(schema)).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
   it('rejects non-enumerable own schema fields', () => {
     const hiddenSchema = { id: isString };
     Object.defineProperty(hiddenSchema, 'id', { enumerable: false });

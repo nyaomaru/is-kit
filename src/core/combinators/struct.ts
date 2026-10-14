@@ -12,6 +12,23 @@ import { isFunction, isObject, isPlainObject } from '../object';
 
 type SchemaEntry = readonly [key: string, guard: Predicate<unknown>];
 
+const OBJECT_CONSTRUCTOR_SOURCE = Function.prototype.toString.call(Object);
+
+const isObjectPrototype = (prototype: object): boolean => {
+  const constructor = Object.getOwnPropertyDescriptor(
+    prototype,
+    'constructor'
+  )?.value;
+
+  // WHY: Object.prototype differs across realms, so identity cannot identify
+  // it. Its native Object constructor always points back to that prototype.
+  return (
+    typeof constructor === 'function' &&
+    constructor.prototype === prototype &&
+    Function.prototype.toString.call(constructor) === OBJECT_CONSTRUCTOR_SOURCE
+  );
+};
+
 const hasOnlyEnumerableOwnStringKeys = (schema: object): boolean =>
   Object.getOwnPropertyNames(schema).every((key) =>
     Object.prototype.propertyIsEnumerable.call(schema, key)
@@ -24,10 +41,7 @@ const hasInheritedStringKeys = (schema: object): boolean => {
   // A class prototype's own constructor also is not an instance field in `keyof`.
   // Every other prototype key is checked because TypeScript includes inherited
   // members in `keyof`, while struct validates only own enumerable fields.
-  // WHY: Every realm has its own Object.prototype. Its prototype is always null,
-  // so that shape identifies the terminal prototype without rejecting schemas
-  // created in an iframe or node:vm context.
-  while (prototype !== null && Object.getPrototypeOf(prototype) !== null) {
+  while (prototype !== null && !isObjectPrototype(prototype)) {
     const hasSchemaKey = Object.getOwnPropertyNames(prototype).some((key) => {
       if (key !== 'constructor') return true;
 
@@ -46,8 +60,22 @@ const hasInheritedStringKeys = (schema: object): boolean => {
   return false;
 };
 
+const hasInheritedSymbolKeys = (schema: object): boolean => {
+  let prototype = Object.getPrototypeOf(schema);
+
+  while (prototype !== null && !isObjectPrototype(prototype)) {
+    if (Object.getOwnPropertySymbols(prototype).length > 0) return true;
+    prototype = Object.getPrototypeOf(prototype);
+  }
+
+  return false;
+};
+
 const assertValidSchemaKeys = (schema: object): void => {
-  if (Object.getOwnPropertySymbols(schema).length > 0) {
+  if (
+    Object.getOwnPropertySymbols(schema).length > 0 ||
+    hasInheritedSymbolKeys(schema)
+  ) {
     throw new TypeError('struct schema fields cannot use symbol keys');
   }
 
