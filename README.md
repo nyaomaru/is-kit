@@ -386,6 +386,10 @@ Use `struct(schema, { exact: true })` when extra own enumerable string keys
 should be rejected. Exact mode follows `Object.keys(...)` semantics, so symbol
 keys and non-enumerable properties are outside its key matching.
 
+Schemas themselves must use own enumerable string keys. `struct` rejects
+symbol-keyed, non-enumerable, and inherited schema fields so its runtime checks
+match the inferred type.
+
 If the property must exist but the value may be `undefined`, use `optional(guard)` instead.
 
 ### 5. Validate arrays, tuples, maps, sets, and records
