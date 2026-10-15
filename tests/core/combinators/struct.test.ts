@@ -1,3 +1,4 @@
+import { runInNewContext } from 'node:vm';
 import { optionalKey, struct } from '@/core/combinators';
 import { isString, isNumber } from '@/core/primitive';
 import { optional } from '@/core/nullish';
@@ -99,6 +100,80 @@ describe('struct', () => {
     expect(() => struct(schema)).toThrow(
       'struct schema fields cannot use symbol keys'
     );
+  });
+
+  it('rejects schemas with inherited symbol-keyed fields', () => {
+    const symbolKey = Symbol('symbol-key');
+    const schema = Object.create({ [symbolKey]: isString }) as Schema;
+
+    expect(() => struct(schema)).toThrow(
+      'struct schema fields cannot use symbol keys'
+    );
+  });
+
+  it('rejects inherited fields on null-prototype schemas', () => {
+    const inheritedFields = Object.create(null) as {
+      id: typeof isString;
+    };
+    inheritedFields.id = isString;
+    const schema = Object.create(inheritedFields) as typeof inheritedFields;
+
+    expect(() => struct(schema)).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
+  it('rejects non-enumerable own schema fields', () => {
+    const hiddenSchema = { id: isString };
+    Object.defineProperty(hiddenSchema, 'id', { enumerable: false });
+
+    expect(() => struct(hiddenSchema)).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
+  it('rejects inherited schema fields', () => {
+    const inheritedFields = { id: isString };
+    const inheritedSchema = Object.create(
+      inheritedFields
+    ) as typeof inheritedFields;
+
+    expect(() => struct(inheritedSchema)).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
+  it('rejects non-enumerable inherited schema fields', () => {
+    class UserSchema {
+      get id() {
+        return isString;
+      }
+    }
+
+    expect(() => struct(new UserSchema())).toThrow(
+      'struct schema fields must be own enumerable string keys'
+    );
+  });
+
+  it('accepts class schemas with own enumerable fields', () => {
+    class UserSchema {
+      id = isString;
+    }
+
+    const guard = struct(new UserSchema());
+
+    expect(guard({ id: 'abc' })).toBe(true);
+    expect(guard({ id: 123 })).toBe(false);
+  });
+
+  it('accepts schemas created in another realm', () => {
+    const crossRealmSchema = runInNewContext('({ id: isString })', {
+      isString
+    }) as { id: typeof isString };
+    const guard = struct(crossRealmSchema);
+
+    expect(guard({ id: 'abc' })).toBe(true);
+    expect(guard({ id: 123 })).toBe(false);
   });
 
   it('ignores non-enumerable keys in exact mode', () => {

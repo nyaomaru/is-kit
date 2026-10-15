@@ -74,6 +74,11 @@ export default function StructPage() {
             Shape guard for objects; supports exact key checking and key-level
             optional fields via <code>optionalKey(...)</code>.
           </Paragraph>
+          <Paragraph>
+            Schema fields must be own enumerable string keys.{' '}
+            <code>struct</code> rejects symbol-keyed, non-enumerable, and
+            inherited fields so runtime validation matches its inferred type.
+          </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />
       </Stack>

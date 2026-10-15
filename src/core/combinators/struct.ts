@@ -12,6 +12,83 @@ import { isFunction, isObject, isPlainObject } from '../object';
 
 type SchemaEntry = readonly [key: string, guard: Predicate<unknown>];
 
+const OBJECT_CONSTRUCTOR_SOURCE = Function.prototype.toString.call(Object);
+
+const isObjectPrototype = (prototype: object): boolean => {
+  const constructor = Object.getOwnPropertyDescriptor(
+    prototype,
+    'constructor'
+  )?.value;
+
+  // WHY: Object.prototype differs across realms, so identity cannot identify
+  // it. Its native Object constructor always points back to that prototype.
+  return (
+    typeof constructor === 'function' &&
+    constructor.prototype === prototype &&
+    Function.prototype.toString.call(constructor) === OBJECT_CONSTRUCTOR_SOURCE
+  );
+};
+
+const hasOnlyEnumerableOwnStringKeys = (schema: object): boolean =>
+  Object.getOwnPropertyNames(schema).every((key) =>
+    Object.prototype.propertyIsEnumerable.call(schema, key)
+  );
+
+const hasInheritedStringKeys = (schema: object): boolean => {
+  let prototype = Object.getPrototypeOf(schema);
+
+  // WHY: Object.prototype supplies standard object behavior, not schema fields.
+  // A class prototype's own constructor also is not an instance field in `keyof`.
+  // Every other prototype key is checked because TypeScript includes inherited
+  // members in `keyof`, while struct validates only own enumerable fields.
+  while (prototype !== null && !isObjectPrototype(prototype)) {
+    const hasSchemaKey = Object.getOwnPropertyNames(prototype).some((key) => {
+      if (key !== 'constructor') return true;
+
+      const descriptor = Object.getOwnPropertyDescriptor(prototype, key);
+      // WHY: A real class or function constructor points back to its prototype.
+      // Other `constructor` properties can be inferred schema fields and must fail.
+      return !(
+        typeof descriptor?.value === 'function' &&
+        descriptor.value.prototype === prototype
+      );
+    });
+    if (hasSchemaKey) return true;
+    prototype = Object.getPrototypeOf(prototype);
+  }
+
+  return false;
+};
+
+const hasInheritedSymbolKeys = (schema: object): boolean => {
+  let prototype = Object.getPrototypeOf(schema);
+
+  while (prototype !== null && !isObjectPrototype(prototype)) {
+    if (Object.getOwnPropertySymbols(prototype).length > 0) return true;
+    prototype = Object.getPrototypeOf(prototype);
+  }
+
+  return false;
+};
+
+const assertValidSchemaKeys = (schema: object): void => {
+  if (
+    Object.getOwnPropertySymbols(schema).length > 0 ||
+    hasInheritedSymbolKeys(schema)
+  ) {
+    throw new TypeError('struct schema fields cannot use symbol keys');
+  }
+
+  if (
+    !hasOnlyEnumerableOwnStringKeys(schema) ||
+    hasInheritedStringKeys(schema)
+  ) {
+    throw new TypeError(
+      'struct schema fields must be own enumerable string keys'
+    );
+  }
+};
+
 const isOptionalSchemaField = define<OptionalSchemaField<Predicate<unknown>>>(
   // WHY: Optional fields are represented as a small tagged object so `struct`
   // can distinguish schema metadata from plain predicate functions up front.
@@ -75,16 +152,17 @@ export function optionalKey<G extends Predicate<unknown>>(
 }
 
 /**
- * Validates an object against a field-to-guard schema with string runtime keys.
- * Numeric schema keys are normalized to strings by JavaScript; symbol-keyed fields
- * are not supported. Keys are required unless wrapped with `optionalKey`; optionally
- * rejects extra keys when `exact: true`.
+ * Validates an object against a field-to-guard schema with own enumerable string
+ * keys. Numeric schema keys are normalized to strings by JavaScript; symbol,
+ * non-enumerable, and inherited fields are not supported. Keys are required unless
+ * wrapped with `optionalKey`; optionally rejects extra keys when `exact: true`.
  *
  * @param schema Record of string- or numeric-keyed property guards.
  * @param options When `{ exact: true }`, disallows own enumerable string-key
  * properties not in `schema`.
  * @returns Predicate that narrows to the inferred struct type.
- * @throws {TypeError} If `schema` has own symbol-keyed fields.
+ * @throws {TypeError} If `schema` has symbol-keyed, non-enumerable, or inherited
+ * string-keyed fields.
  */
 export function struct<const S extends SchemaShape<S>>(
   schema: StructSchemaShape<S>,
@@ -98,11 +176,10 @@ export function createStruct<S extends SchemaShape<S>>(
   schema: S,
   options?: StructOptions
 ): Predicate<InferSchema<S>> {
-  // WHY: A schema can be widened to `Schema` (or arrive from JavaScript), which
-  // erases symbol keys from its static type while runtime enumeration still skips them.
-  if (Object.getOwnPropertySymbols(schema).length > 0) {
-    throw new TypeError('struct schema fields cannot use symbol keys');
-  }
+  // WHY: Property ownership and enumerability are not expressible in TypeScript
+  // object types. Reject fields runtime enumeration would skip before deriving an
+  // inferred predicate that could otherwise claim to have validated them.
+  assertValidSchemaKeys(schema);
 
   // WHY: Split required and optional fields once per builder so each
   // invocation only performs property lookups and guard calls.
