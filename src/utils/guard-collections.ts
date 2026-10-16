@@ -1,6 +1,5 @@
 type BooleanPredicate<T> = (value: T) => boolean;
 
-const arrayValues = Array.prototype.values;
 const mapEntries = Map.prototype.entries;
 const setValues = Set.prototype.values;
 
@@ -40,12 +39,19 @@ export const everyArrayValue = (
 
 /**
  * Checks built-in Array data without invoking an instance-provided iterator.
- * WHY: An Array subclass or instance may override its public iterator and throw.
+ * WHY: Indexed reads preserve hole-as-undefined semantics while avoiding iterator
+ * allocation on this hot path. They also bypass iterator overrides on subclasses.
  */
 export const everyBrandedArrayValue = (
   values: readonly unknown[],
   predicate: BooleanPredicate<unknown>
-): boolean => everyIterableValue(arrayValues.call(values), predicate);
+): boolean => {
+  for (let index = 0; index < values.length; index += 1) {
+    if (!predicate(values[index])) return false;
+  }
+
+  return true;
+};
 
 /**
  * Checks whether a tuple matches the provided element predicates in order.

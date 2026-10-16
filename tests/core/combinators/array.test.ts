@@ -41,8 +41,10 @@ describe('arrayOf (runtime)', () => {
     expect(is2DStringArray('nope' as unknown)).toBe(false);
   });
 
-  it('uses the intrinsic iterator for arrays with an overridden iterator', () => {
-    const values = ['a'];
+  it('bypasses overridden iterators on array subclasses', () => {
+    class StringArray extends Array<string> {}
+
+    const values = new StringArray('a');
     Object.defineProperty(values, Symbol.iterator, {
       value: () => {
         throw new Error('custom iterator should not run');
@@ -70,13 +72,22 @@ describe('nonEmptyArrayOf (runtime)', () => {
     expect(isNonEmptyStringArray(['a', 1 as unknown as string])).toBe(false);
   });
 
+  it('rejects sparse arrays if the hole makes predicate fail', () => {
+    const values = [] as unknown[];
+    values[1] = 'a';
+
+    expect(isNonEmptyStringArray(values)).toBe(false);
+  });
+
   it('rejects non-array inputs', () => {
     expect(isNonEmptyStringArray('not array' as unknown)).toBe(false);
     expect(isNonEmptyStringArray({ 0: 'a', length: 1 } as unknown)).toBe(false);
   });
 
-  it('uses the intrinsic iterator for arrays with an overridden iterator', () => {
-    const values = ['a'];
+  it('bypasses overridden iterators on array subclasses', () => {
+    class StringArray extends Array<string> {}
+
+    const values = new StringArray('a');
     Object.defineProperty(values, Symbol.iterator, {
       value: () => {
         throw new Error('custom iterator should not run');
