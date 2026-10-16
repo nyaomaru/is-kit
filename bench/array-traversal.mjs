@@ -1,4 +1,4 @@
-import { arrayOf, isNumber, nonEmptyArrayOf } from '../dist/index.mjs';
+import { arrayOf, define, isNumber, nonEmptyArrayOf } from '../dist/index.mjs';
 
 const WARMUP_ITERATIONS = 10_000;
 const MEASURED_ITERATIONS = 50_000;
@@ -47,13 +47,17 @@ const everyIteratorArrayValue = (values, predicate) => {
   return true;
 };
 
-const iteratorArrayOf = (input) =>
-  Array.isArray(input) && everyIteratorArrayValue(input, countedIsNumber);
+const iteratorArrayOf = define(
+  (input) =>
+    Array.isArray(input) && everyIteratorArrayValue(input, countedIsNumber)
+);
 
-const iteratorNonEmptyArrayOf = (input) =>
-  Array.isArray(input) &&
-  input.length > 0 &&
-  everyIteratorArrayValue(input, countedIsNumber);
+const iteratorNonEmptyArrayOf = define(
+  (input) =>
+    Array.isArray(input) &&
+    input.length > 0 &&
+    everyIteratorArrayValue(input, countedIsNumber)
+);
 
 const indexedArrayOf = arrayOf(countedIsNumber);
 const indexedNonEmptyArrayOf = nonEmptyArrayOf(countedIsNumber);
