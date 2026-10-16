@@ -111,6 +111,7 @@ try {
   const rootExport = installedPackageJson.exports['.'];
 
   assert.deepEqual(installedPackageJson.dependencies ?? {}, {});
+  assert.deepEqual(installedPackageJson.engines, { node: '>=22' });
   assert.equal(rootExport.types, './dist/index.d.ts');
   assert.equal(rootExport.import, './dist/index.mjs');
   assert.equal(rootExport.require, './dist/index.js');

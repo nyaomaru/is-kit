@@ -789,6 +789,12 @@ For detailed API pages and more examples, see:
 Start with [How to safely filter null and undefined from arrays in
 TypeScript](https://is-kit.dev/guides/filter-null-and-undefined).
 
+## Compatibility
+
+is-kit requires Node.js 22 or later. CI validates the packed npm artifact on
+Node.js 22.x and 24.x with native ESM, CommonJS, and strict TypeScript
+NodeNext consumers.
+
 ## 👨‍💻 Development
 
 Requires Node 22.22.0 and pnpm 11.2.2.

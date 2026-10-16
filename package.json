@@ -60,6 +60,9 @@
   "homepage": "https://is-kit.dev/",
   "author": "nyaomaru",
   "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
   "packageManager": "pnpm@11.2.2",
   "devDependencies": {
     "@types/jest": "^30.0.0",

@@ -1,0 +1,37 @@
+name: Package Compatibility
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  packed-consumer:
+    name: Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # WHY: The package supports Node 22+, while 22.x and 24.x are the
+        # maintained LTS lines that define the supported consumer boundary.
+        node:
+          - '22.x'
+          - '24.x'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.2.2
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build package
+        run: pnpm build
+      - name: Test packed package consumer
+        run: pnpm test:package
