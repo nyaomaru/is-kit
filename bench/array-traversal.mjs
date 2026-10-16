@@ -3,6 +3,10 @@ import { arrayOf, isNumber, nonEmptyArrayOf } from '../dist/index.mjs';
 const WARMUP_ITERATIONS = 10_000;
 const MEASURED_ITERATIONS = 50_000;
 const SAMPLE_COUNT = 7;
+const predicateCalls = new Int32Array(
+  new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT)
+);
+const arrayValues = Array.prototype.values;
 
 const shortValid = [1, 2, 3, 4];
 const longValid = Array.from({ length: 1_024 }, (_, index) => index);
@@ -28,11 +32,38 @@ const median = (values) => {
   return sorted[Math.floor(sorted.length / 2)];
 };
 
-const measure = (name, guard, input) => {
+const countedIsNumber = (value) => {
+  // WHY: Atomics makes every predicate invocation observable, preventing V8
+  // from replacing a repeated guard call over a constant input with a constant.
+  Atomics.add(predicateCalls, 0, 1);
+  return isNumber(value);
+};
+
+const everyIteratorArrayValue = (values, predicate) => {
+  for (const value of arrayValues.call(values)) {
+    if (!predicate(value)) return false;
+  }
+
+  return true;
+};
+
+const iteratorArrayOf = (input) =>
+  Array.isArray(input) && everyIteratorArrayValue(input, countedIsNumber);
+
+const iteratorNonEmptyArrayOf = (input) =>
+  Array.isArray(input) &&
+  input.length > 0 &&
+  everyIteratorArrayValue(input, countedIsNumber);
+
+const indexedArrayOf = arrayOf(countedIsNumber);
+const indexedNonEmptyArrayOf = nonEmptyArrayOf(countedIsNumber);
+
+const measure = (guard, input, expectedChecks) => {
   for (let index = 0; index < WARMUP_ITERATIONS; index += 1) {
     guard(input);
   }
 
+  Atomics.store(predicateCalls, 0, 0);
   const samples = [];
   let matches = 0;
 
@@ -48,24 +79,44 @@ const measure = (name, guard, input) => {
     samples.push((elapsedMilliseconds * 1_000_000) / MEASURED_ITERATIONS);
   }
 
-  return { name, matches, nanosecondsPerCall: median(samples) };
+  const calls = Atomics.load(predicateCalls, 0);
+  const expectedCalls = expectedChecks * MEASURED_ITERATIONS * SAMPLE_COUNT;
+  if (calls !== expectedCalls) {
+    throw new Error(
+      `Expected ${expectedCalls} predicate calls, received ${calls}`
+    );
+  }
+
+  return { matches, nanosecondsPerCall: median(samples) };
 };
 
-const isNumberArray = arrayOf(isNumber);
-const isNonEmptyNumberArray = nonEmptyArrayOf(isNumber);
-const results = [
-  measure('arrayOf short valid', isNumberArray, shortValid),
-  measure('arrayOf long valid', isNumberArray, longValid),
-  measure('arrayOf failure at index 0', isNumberArray, failsAtStart),
-  measure('arrayOf failure in the middle', isNumberArray, failsInMiddle),
-  measure('arrayOf failure at the last index', isNumberArray, failsAtEnd),
-  measure('arrayOf sparse array', isNumberArray, sparse),
-  measure(
-    'arrayOf subclass with overridden iterator',
-    isNumberArray,
-    overriddenIterator
-  ),
-  measure('nonEmptyArrayOf long valid', isNonEmptyNumberArray, longValid)
+const cases = [
+  { name: 'arrayOf short valid', input: shortValid, checks: 4 },
+  { name: 'arrayOf long valid', input: longValid, checks: 1_024 },
+  { name: 'arrayOf failure at index 0', input: failsAtStart, checks: 1 },
+  {
+    name: 'arrayOf failure in the middle',
+    input: failsInMiddle,
+    checks: 513
+  },
+  {
+    name: 'arrayOf failure at the last index',
+    input: failsAtEnd,
+    checks: 1_024
+  },
+  { name: 'arrayOf sparse array', input: sparse, checks: 513 },
+  {
+    name: 'arrayOf subclass with overridden iterator',
+    input: overriddenIterator,
+    checks: 4
+  },
+  {
+    name: 'nonEmptyArrayOf long valid',
+    input: longValid,
+    checks: 1_024,
+    iteratorGuard: iteratorNonEmptyArrayOf,
+    indexedGuard: indexedNonEmptyArrayOf
+  }
 ];
 
 console.log(`Node ${process.version} on ${process.platform}/${process.arch}`);
@@ -73,8 +124,23 @@ console.log(
   `Median of ${SAMPLE_COUNT} samples after ${WARMUP_ITERATIONS.toLocaleString()} warm-up calls; ${MEASURED_ITERATIONS.toLocaleString()} calls per sample.`
 );
 
-for (const result of results) {
+for (const benchmarkCase of cases) {
+  const iterator = measure(
+    benchmarkCase.iteratorGuard ?? iteratorArrayOf,
+    benchmarkCase.input,
+    benchmarkCase.checks
+  );
+  const indexed = measure(
+    benchmarkCase.indexedGuard ?? indexedArrayOf,
+    benchmarkCase.input,
+    benchmarkCase.checks
+  );
+  const improvement =
+    ((iterator.nanosecondsPerCall - indexed.nanosecondsPerCall) /
+      iterator.nanosecondsPerCall) *
+    100;
+
   console.log(
-    `${result.name}: ${result.nanosecondsPerCall.toFixed(2)} ns/call (${result.matches} matches/sample)`
+    `${benchmarkCase.name}: ${iterator.nanosecondsPerCall.toFixed(2)} -> ${indexed.nanosecondsPerCall.toFixed(2)} ns/call (${improvement.toFixed(1)}% faster; ${indexed.matches} matches/sample)`
   );
 }
