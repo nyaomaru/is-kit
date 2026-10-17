@@ -147,11 +147,38 @@ type FallbackDiscriminant<
       : never
     : never;
 
+type RuntimePropertyKey<Key extends PropertyKey> = Key extends symbol
+  ? Key
+  : Key extends string | number
+    ? `${Key}`
+    : never;
+
+type OmitRuntimeKey<Data extends object, Key extends PropertyKey> = {
+  [
+    Property in keyof Data as RuntimePropertyKey<Property> extends RuntimePropertyKey<Key>
+      ? never
+      : Property
+  ]: Data[Property];
+};
+
+type HasBroadIndexSignature<Data extends object> = Data extends unknown
+  ? string extends keyof Data
+    ? true
+    : number extends keyof Data
+      ? true
+      : symbol extends keyof Data
+        ? true
+        : false
+  : never;
+
+type FiniteFallbackData<Data extends object> =
+  true extends HasBroadIndexSignature<Data> ? never : unknown;
+
 type FallbackVariant<
   K extends PropertyKey,
   Value extends DiscriminantValue,
   Data extends Record<PropertyKey, unknown>
-> = Data extends unknown ? Omit<Data, K> & Record<K, Value> : never;
+> = Data extends unknown ? OmitRuntimeKey<Data, K> & Record<K, Value> : never;
 
 type FallbackTagConfig = { readonly tag: unknown };
 
@@ -167,6 +194,24 @@ type FallbackVariantConfig<
   ) => Data | undefined;
 };
 
+type Decoder<Output> = (input: unknown) => ParseResult<Output>;
+
+// WHY: A generic constrained to Record<PropertyKey, unknown> appears to have
+// broad index signatures before TypeScript infers its concrete payload type.
+// Deferring that check to the decoder return type keeps factory inference while
+// making dictionary payloads unusable as fallback classifiers.
+function defineFallbackClassifier<
+  Data extends Record<PropertyKey, unknown>,
+  Output
+>(
+  classifier: Decoder<Output>
+): FiniteFallbackData<Data> extends never ? never : Decoder<Output>;
+function defineFallbackClassifier(
+  classifier: Decoder<unknown>
+): Decoder<unknown> {
+  return classifier;
+}
+
 // WHY: TypeScript cannot preserve a generic, distributive payload through a
 // computed-property copy. The overload keeps that type boundary here while the
 // implementation preserves every own payload descriptor except the overridden
@@ -176,7 +221,7 @@ function createFallbackVariant<
   Value extends DiscriminantValue,
   Data extends Record<PropertyKey, unknown>
 >(
-  fallbackData: Data,
+  fallbackData: Record<PropertyKey, unknown>,
   discriminant: K,
   tag: Value
 ): FallbackVariant<K, Value, Data>;
@@ -359,17 +404,20 @@ export function discriminatedUnionWithFallback<T extends object>() {
       NonCollidingDiscriminants<T, K> &
       GuardsMatchDiscriminantValues<K, Values[number], G>,
     fallback: FallbackVariantConfig<Values[number], FallbackValue, FallbackData>
-  ): ((
-    input: unknown
-  ) => ParseResult<
-    GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
-  >) => {
+  ): FiniteFallbackData<FallbackData> extends never
+    ? never
+    : Decoder<
+        GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
+      > => {
     assertSafeProtoBranch(values, guards);
     assertSafeFallbackTag(values, fallback);
     const declaredKeys = assertBranchKeys(values, guards);
     const declaredValues = new Set<DiscriminantValue>(values);
 
-    return (input) => {
+    return defineFallbackClassifier<
+      FallbackData,
+      GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
+    >((input) => {
       const value = getOwnDiscriminantValue(input, discriminant);
       if (value === undefined) return { valid: false };
 
@@ -397,6 +445,6 @@ export function discriminatedUnionWithFallback<T extends object>() {
 
       const guard = guards[key as keyof G] as Predicate<GuardedOf<G[keyof G]>>;
       return guard(input) ? { valid: true, value: input } : { valid: false };
-    };
+    });
   };
 }

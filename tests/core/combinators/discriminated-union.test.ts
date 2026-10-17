@@ -194,6 +194,37 @@ describe('discriminatedUnion', () => {
     );
   });
 
+  it('overrides fallback properties with the same runtime key as the discriminant', () => {
+    type NumericKeyEvent =
+      | { 1: 'click'; value: number }
+      | { 1: 'scroll'; value: number };
+
+    const classifyNumericKeyEvent =
+      discriminatedUnionWithFallback<NumericKeyEvent>()(
+        1,
+        ['click', 'scroll'],
+        {
+          click: (input): input is Extract<NumericKeyEvent, { 1: 'click' }> =>
+            typeof input === 'object' &&
+            input !== null &&
+            (input as { 1?: unknown })[1] === 'click',
+          scroll: (input): input is Extract<NumericKeyEvent, { 1: 'scroll' }> =>
+            typeof input === 'object' &&
+            input !== null &&
+            (input as { 1?: unknown })[1] === 'scroll'
+        },
+        {
+          tag: 'unknown',
+          create: () => ({ '1': 'discarded', message: 'Unknown event.' })
+        }
+      );
+
+    expect(classifyNumericKeyEvent({ 1: 'hover' })).toEqual({
+      valid: true,
+      value: { 1: 'unknown', message: 'Unknown event.' }
+    });
+  });
+
   it('rejects non-plain fallback payloads', () => {
     const nonPlainPayloads = [
       new Date(),

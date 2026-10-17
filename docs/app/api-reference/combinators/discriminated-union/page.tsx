@@ -65,8 +65,9 @@ export default function DiscriminatedUnionPage() {
             <code>'1'</code>. The fallback factory creates a plain-record
             payload for that variant or returns <code>undefined</code> to mark
             the input invalid; malformed known branches and non-plain payloads
-            never produce a fallback. The classifier returns the standard tagged
-            parse result.
+            never produce a fallback. Payload types must have a finite property
+            shape, not a string, number, or symbol index signature. The
+            classifier returns the standard tagged parse result.
           </Paragraph>
           <Paragraph>
             The value tuple and branch map must each contain every discriminant

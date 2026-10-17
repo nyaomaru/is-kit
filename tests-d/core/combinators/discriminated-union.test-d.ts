@@ -195,6 +195,75 @@ if (
   }
 }
 
+// it: rejects fallback payloads with broad index signatures
+declare const stringDictionaryPayload: Record<string, string>;
+expectType<never>(
+  discriminatedUnionWithFallback<Event>()(
+    'kind',
+    ['click', 'scroll'],
+    { click: isClickEvent, scroll: isScrollEvent },
+    { tag: true, create: () => stringDictionaryPayload }
+  )
+);
+declare const numberDictionaryPayload: Record<number, string>;
+expectType<never>(
+  discriminatedUnionWithFallback<Event>()(
+    'kind',
+    ['click', 'scroll'],
+    { click: isClickEvent, scroll: isScrollEvent },
+    { tag: true, create: () => numberDictionaryPayload }
+  )
+);
+declare const symbolDictionaryPayload: Record<symbol, string>;
+expectType<never>(
+  discriminatedUnionWithFallback<Event>()(
+    'kind',
+    ['click', 'scroll'],
+    { click: isClickEvent, scroll: isScrollEvent },
+    { tag: true, create: () => symbolDictionaryPayload }
+  )
+);
+declare const mixedDictionaryPayload:
+  | Record<string, string>
+  | { message: string };
+expectType<never>(
+  discriminatedUnionWithFallback<Event>()(
+    'kind',
+    ['click', 'scroll'],
+    { click: isClickEvent, scroll: isScrollEvent },
+    { tag: true, create: () => mixedDictionaryPayload }
+  )
+);
+
+// it: replaces a string property whose runtime key matches a numeric discriminant
+type NumericKeyEvent =
+  | { 1: 'click'; value: number }
+  | { 1: 'scroll'; value: number };
+type NumericKeyClickEvent = Extract<NumericKeyEvent, { 1: 'click' }>;
+type NumericKeyScrollEvent = Extract<NumericKeyEvent, { 1: 'scroll' }>;
+declare const isNumericKeyClickEvent: Predicate<NumericKeyClickEvent>;
+declare const isNumericKeyScrollEvent: Predicate<NumericKeyScrollEvent>;
+const classifyNumericKeyEvent =
+  discriminatedUnionWithFallback<NumericKeyEvent>()(
+    1,
+    ['click', 'scroll'],
+    { click: isNumericKeyClickEvent, scroll: isNumericKeyScrollEvent },
+    {
+      tag: 'unknown',
+      create: () => ({ '1': 'discarded', message: 'Unknown event.' })
+    }
+  );
+declare const classifiedNumericKeyEvent: ReturnType<
+  typeof classifyNumericKeyEvent
+>;
+if (
+  classifiedNumericKeyEvent.valid &&
+  classifiedNumericKeyEvent.value[1] === 'unknown'
+) {
+  expectType<'unknown'>(classifiedNumericKeyEvent.value['1']);
+  expectType<'Unknown event.'>(classifiedNumericKeyEvent.value.message);
+}
+
 // it: preserves branch guards that narrow beyond the target member type
 type Content =
   | { type: 'text'; value: string | number }
