@@ -168,8 +168,14 @@ type InvalidFallbackKey<Key extends PropertyKey> = Key extends unknown
     : never
   : never;
 
+type InvalidFallbackData<Data extends object> = Data extends unknown
+  ? [InvalidFallbackKey<keyof Data & PropertyKey>] extends [never]
+    ? never
+    : Data
+  : never;
+
 type FiniteFallbackData<Data extends object> = [
-  InvalidFallbackKey<keyof Data & PropertyKey>
+  InvalidFallbackData<Data>
 ] extends [never]
   ? unknown
   : never;

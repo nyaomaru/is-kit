@@ -58,6 +58,7 @@ expectAssignable<
     input: unknown
   ) => ParseResult<Readonly<ClickEvent> | Readonly<ScrollEvent> | UnknownEvent>
 >(classifyEvent);
+expectAssignable<(input: unknown) => ParseResult<unknown>>(classifyEvent);
 
 declare const classified: ReturnType<typeof classifyEvent>;
 if (classified.valid) {
@@ -229,7 +230,7 @@ const classifyStringDictionaryPayload = discriminatedUnionWithFallback<Event>()(
   { tag: true, create: () => stringDictionaryPayload }
 );
 // @ts-expect-error: A dictionary fallback classifier is not a decoder.
-const fakeStringDecoder: (input: unknown) => ParseResult<string> =
+const fakeStringDecoder: (input: unknown) => ParseResult<unknown> =
   classifyStringDictionaryPayload;
 
 declare const numberDictionaryPayload: Record<number, string>;
@@ -240,7 +241,7 @@ const classifyNumberDictionaryPayload = discriminatedUnionWithFallback<Event>()(
   { tag: true, create: () => numberDictionaryPayload }
 );
 // @ts-expect-error: A dictionary fallback classifier is not a decoder.
-const fakeNumberDecoder: (input: unknown) => ParseResult<string> =
+const fakeNumberDecoder: (input: unknown) => ParseResult<unknown> =
   classifyNumberDictionaryPayload;
 
 declare const symbolDictionaryPayload: Record<symbol, string>;
@@ -251,7 +252,7 @@ const classifySymbolDictionaryPayload = discriminatedUnionWithFallback<Event>()(
   { tag: true, create: () => symbolDictionaryPayload }
 );
 // @ts-expect-error: A dictionary fallback classifier is not a decoder.
-const fakeSymbolDecoder: (input: unknown) => ParseResult<string> =
+const fakeSymbolDecoder: (input: unknown) => ParseResult<unknown> =
   classifySymbolDictionaryPayload;
 
 type PatternedKeyEvent =
@@ -270,7 +271,7 @@ const classifyPatternedDictionaryPayload =
     { tag: true, create: () => patternedDictionaryPayload }
   );
 // @ts-expect-error: Patterned key domains cannot safely receive a fallback tag.
-const fakePatternedDecoder: (input: unknown) => ParseResult<string> =
+const fakePatternedDecoder: (input: unknown) => ParseResult<unknown> =
   classifyPatternedDictionaryPayload;
 
 declare const mixedDictionaryPayload:
@@ -283,7 +284,7 @@ const classifyMixedDictionaryPayload = discriminatedUnionWithFallback<Event>()(
   { tag: true, create: () => mixedDictionaryPayload }
 );
 // @ts-expect-error: Every possible dictionary payload makes the classifier invalid.
-const fakeMixedDecoder: (input: unknown) => ParseResult<string> =
+const fakeMixedDecoder: (input: unknown) => ParseResult<unknown> =
   classifyMixedDictionaryPayload;
 
 // it: replaces a string property whose runtime key matches a numeric discriminant
