@@ -227,6 +227,51 @@ describe('discriminatedUnion', () => {
     }
   });
 
+  it('preserves non-enumerable fallback payload fields', () => {
+    const fallbackPayload = Object.defineProperty(
+      {} as { message: string },
+      'message',
+      {
+        configurable: false,
+        enumerable: false,
+        value: 'Unsupported event kind.',
+        writable: false
+      }
+    );
+    const classifyEvent = discriminatedUnionWithFallback<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      {
+        click: typedStruct<ClickEvent>()({
+          kind: (value): value is 'click' => value === 'click',
+          x: isNumber,
+          y: isNumber
+        }),
+        scroll: typedStruct<ScrollEvent>()({
+          kind: (value): value is 'scroll' => value === 'scroll',
+          delta: isNumber
+        })
+      },
+      { tag: 'unknown', create: () => fallbackPayload }
+    );
+
+    const result = classifyEvent({ kind: 'hover' });
+    expect(result).toMatchObject({
+      valid: true,
+      value: { kind: 'unknown', message: 'Unsupported event kind.' }
+    });
+    if (result.valid) {
+      expect(
+        Object.getOwnPropertyDescriptor(result.value, 'message')
+      ).toMatchObject({
+        configurable: false,
+        enumerable: false,
+        value: 'Unsupported event kind.',
+        writable: false
+      });
+    }
+  });
+
   it('rejects branches omitted from the declared values tuple', () => {
     type HoverEvent = { kind: 'hover'; target: string };
 

@@ -168,8 +168,9 @@ type FallbackVariantConfig<
 };
 
 // WHY: TypeScript cannot preserve a generic, distributive payload through a
-// computed-property spread. The overload keeps that type boundary here while
-// the implementation accurately represents the runtime operation as a record.
+// computed-property copy. The overload keeps that type boundary here while the
+// implementation preserves every own payload descriptor except the overridden
+// discriminant.
 function createFallbackVariant<
   K extends PropertyKey,
   Value extends DiscriminantValue,
@@ -184,7 +185,26 @@ function createFallbackVariant(
   discriminant: PropertyKey,
   tag: DiscriminantValue
 ): Record<PropertyKey, unknown> {
-  return { ...fallbackData, [discriminant]: tag };
+  const fallbackVariant: Record<PropertyKey, unknown> = {};
+  const discriminantKey =
+    typeof discriminant === 'symbol' ? discriminant : String(discriminant);
+
+  for (const key of Reflect.ownKeys(fallbackData)) {
+    if (key === discriminantKey) continue;
+
+    const descriptor = Object.getOwnPropertyDescriptor(fallbackData, key);
+    if (descriptor !== undefined) {
+      Object.defineProperty(fallbackVariant, key, descriptor);
+    }
+  }
+
+  Object.defineProperty(fallbackVariant, discriminantKey, {
+    configurable: true,
+    enumerable: true,
+    value: tag,
+    writable: true
+  });
+  return fallbackVariant;
 }
 
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
