@@ -197,19 +197,28 @@ type FallbackVariantConfig<
 
 type Decoder<Output> = (input: unknown) => ParseResult<Output>;
 
-// WHY: A generic constrained to Record<PropertyKey, unknown> appears to have
-// broad index signatures before TypeScript infers its concrete payload type.
-// Deferring that check to the decoder return type keeps factory inference while
-// making dictionary payloads unusable as fallback classifiers.
+declare const invalidFallbackClassifier: unique symbol;
+
+type InvalidFallbackClassifier = {
+  readonly [invalidFallbackClassifier]:
+    'Fallback payloads cannot have broad index signatures.';
+};
+
+// WHY: A callback's return type is inferred while its parameters receive
+// contextual types. Intersecting that callback parameter with `never` creates
+// a circular inference that rejects ordinary object literals. Keep inference
+// intact and make invalid payloads explicitly non-callable and non-assignable.
 function defineFallbackClassifier<
   Data extends Record<PropertyKey, unknown>,
   Output
 >(
   classifier: Decoder<Output>
-): FiniteFallbackData<Data> extends never ? never : Decoder<Output>;
+): FiniteFallbackData<Data> extends never
+  ? InvalidFallbackClassifier
+  : Decoder<Output>;
 function defineFallbackClassifier(
   classifier: Decoder<unknown>
-): Decoder<unknown> {
+): Decoder<unknown> | InvalidFallbackClassifier {
   return classifier;
 }
 
@@ -406,7 +415,7 @@ export function discriminatedUnionWithFallback<T extends object>() {
       GuardsMatchDiscriminantValues<K, Values[number], G>,
     fallback: FallbackVariantConfig<Values[number], FallbackValue, FallbackData>
   ): FiniteFallbackData<FallbackData> extends never
-    ? never
+    ? InvalidFallbackClassifier
     : Decoder<
         GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
       > => {

@@ -220,45 +220,52 @@ if (
   }
 }
 
-// it: rejects fallback payloads with broad index signatures
+// it: makes fallback classifiers with broad index signatures non-assignable
 declare const stringDictionaryPayload: Record<string, string>;
-expectType<never>(
-  discriminatedUnionWithFallback<Event>()(
-    'kind',
-    ['click', 'scroll'],
-    { click: isClickEvent, scroll: isScrollEvent },
-    { tag: true, create: () => stringDictionaryPayload }
-  )
+const classifyStringDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => stringDictionaryPayload }
 );
+// @ts-expect-error: A dictionary fallback classifier is not a decoder.
+const fakeStringDecoder: (input: unknown) => ParseResult<string> =
+  classifyStringDictionaryPayload;
+
 declare const numberDictionaryPayload: Record<number, string>;
-expectType<never>(
-  discriminatedUnionWithFallback<Event>()(
-    'kind',
-    ['click', 'scroll'],
-    { click: isClickEvent, scroll: isScrollEvent },
-    { tag: true, create: () => numberDictionaryPayload }
-  )
+const classifyNumberDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => numberDictionaryPayload }
 );
+// @ts-expect-error: A dictionary fallback classifier is not a decoder.
+const fakeNumberDecoder: (input: unknown) => ParseResult<string> =
+  classifyNumberDictionaryPayload;
+
 declare const symbolDictionaryPayload: Record<symbol, string>;
-expectType<never>(
-  discriminatedUnionWithFallback<Event>()(
-    'kind',
-    ['click', 'scroll'],
-    { click: isClickEvent, scroll: isScrollEvent },
-    { tag: true, create: () => symbolDictionaryPayload }
-  )
+const classifySymbolDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => symbolDictionaryPayload }
 );
+// @ts-expect-error: A dictionary fallback classifier is not a decoder.
+const fakeSymbolDecoder: (input: unknown) => ParseResult<string> =
+  classifySymbolDictionaryPayload;
+
 declare const mixedDictionaryPayload:
   | Record<string, string>
   | { message: string };
-expectType<never>(
-  discriminatedUnionWithFallback<Event>()(
-    'kind',
-    ['click', 'scroll'],
-    { click: isClickEvent, scroll: isScrollEvent },
-    { tag: true, create: () => mixedDictionaryPayload }
-  )
+const classifyMixedDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => mixedDictionaryPayload }
 );
+// @ts-expect-error: Every possible dictionary payload makes the classifier invalid.
+const fakeMixedDecoder: (input: unknown) => ParseResult<string> =
+  classifyMixedDictionaryPayload;
 
 // it: replaces a string property whose runtime key matches a numeric discriminant
 type NumericKeyEvent =
