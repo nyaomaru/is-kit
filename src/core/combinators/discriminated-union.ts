@@ -167,6 +167,26 @@ type FallbackVariantConfig<
   ) => Data | undefined;
 };
 
+// WHY: TypeScript cannot preserve a generic, distributive payload through a
+// computed-property spread. The overload keeps that type boundary here while
+// the implementation accurately represents the runtime operation as a record.
+function createFallbackVariant<
+  K extends PropertyKey,
+  Value extends DiscriminantValue,
+  Data extends Record<PropertyKey, unknown>
+>(
+  fallbackData: Data,
+  discriminant: K,
+  tag: Value
+): FallbackVariant<K, Value, Data>;
+function createFallbackVariant(
+  fallbackData: Record<PropertyKey, unknown>,
+  discriminant: PropertyKey,
+  tag: DiscriminantValue
+): Record<PropertyKey, unknown> {
+  return { ...fallbackData, [discriminant]: tag };
+}
+
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isString(value) ||
   isNumberPrimitive(value) ||
@@ -340,13 +360,11 @@ export function discriminatedUnionWithFallback<T extends object>() {
 
         return {
           valid: true,
-          // WHY: TypeScript cannot prove that spreading a generic union preserves
-          // each member, but isPlainObject has already excluded values whose
-          // runtime shape differs from their spread result.
-          value: {
-            ...fallbackData,
-            [discriminant]: fallback.tag
-          } as unknown as FallbackVariant<K, FallbackValue, FallbackData>
+          value: createFallbackVariant<K, FallbackValue, FallbackData>(
+            fallbackData,
+            discriminant,
+            fallback.tag
+          )
         };
       }
 
