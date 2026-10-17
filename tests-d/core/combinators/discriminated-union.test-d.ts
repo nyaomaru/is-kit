@@ -254,6 +254,25 @@ const classifySymbolDictionaryPayload = discriminatedUnionWithFallback<Event>()(
 const fakeSymbolDecoder: (input: unknown) => ParseResult<string> =
   classifySymbolDictionaryPayload;
 
+type PatternedKeyEvent =
+  | { 'field-kind': 'a'; value: number }
+  | { 'field-kind': 'b'; value: string };
+type PatternedKeyAEvent = Extract<PatternedKeyEvent, { 'field-kind': 'a' }>;
+type PatternedKeyBEvent = Extract<PatternedKeyEvent, { 'field-kind': 'b' }>;
+declare const isPatternedKeyAEvent: Predicate<PatternedKeyAEvent>;
+declare const isPatternedKeyBEvent: Predicate<PatternedKeyBEvent>;
+declare const patternedDictionaryPayload: Record<`field-${string}`, string>;
+const classifyPatternedDictionaryPayload =
+  discriminatedUnionWithFallback<PatternedKeyEvent>()(
+    'field-kind',
+    ['a', 'b'],
+    { a: isPatternedKeyAEvent, b: isPatternedKeyBEvent },
+    { tag: true, create: () => patternedDictionaryPayload }
+  );
+// @ts-expect-error: Patterned key domains cannot safely receive a fallback tag.
+const fakePatternedDecoder: (input: unknown) => ParseResult<string> =
+  classifyPatternedDictionaryPayload;
+
 declare const mixedDictionaryPayload:
   | Record<string, string>
   | { message: string };

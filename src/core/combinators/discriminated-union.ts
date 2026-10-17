@@ -162,18 +162,17 @@ type OmitRuntimeKey<Data extends object, Key extends PropertyKey> = {
   ]: Data[Property];
 };
 
-type HasBroadIndexSignature<Data extends object> = Data extends unknown
-  ? string extends keyof Data
-    ? true
-    : number extends keyof Data
-      ? true
-      : symbol extends keyof Data
-        ? true
-        : false
+type InvalidFallbackKey<Key extends PropertyKey> = Key extends unknown
+  ? SinglePropertyKey<Key> extends never
+    ? Key
+    : never
   : never;
 
-type FiniteFallbackData<Data extends object> =
-  true extends HasBroadIndexSignature<Data> ? never : unknown;
+type FiniteFallbackData<Data extends object> = [
+  InvalidFallbackKey<keyof Data & PropertyKey>
+] extends [never]
+  ? unknown
+  : never;
 
 type FallbackVariant<
   K extends PropertyKey,
@@ -201,7 +200,7 @@ declare const invalidFallbackClassifier: unique symbol;
 
 type InvalidFallbackClassifier = {
   readonly [invalidFallbackClassifier]:
-    'Fallback payloads cannot have broad index signatures.';
+    'Fallback payloads must have finite property keys.';
 };
 
 // WHY: A callback's return type is inferred while its parameters receive

@@ -629,8 +629,8 @@ primitive discriminant instead calls `fallback.create`, which returns payload
 for one canonical fallback tag or `undefined` to mark the input invalid. The
 payload must be a plain record; arrays, dates, functions, and class instances
 are rejected so the decoded value always matches its object shape. Dictionary
-payload _types_ with string, number, or symbol index signatures are also
-unsupported; use a finite object shape for each fallback variant.
+payload _types_ with broad or patterned index signatures are also unsupported;
+use a finite object shape for each fallback variant.
 
 ```ts
 const classifyEvent = discriminatedUnionWithFallback<Event>()(

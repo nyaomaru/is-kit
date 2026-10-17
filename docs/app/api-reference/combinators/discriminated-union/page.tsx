@@ -66,7 +66,7 @@ export default function DiscriminatedUnionPage() {
             payload for that variant or returns <code>undefined</code> to mark
             the input invalid; malformed known branches and non-plain payloads
             never produce a fallback. Payload types must have a finite property
-            shape, not a string, number, or symbol index signature. The
+            shape, not a broad or patterned index signature. The
             classifier returns the standard tagged parse result.
           </Paragraph>
           <Paragraph>
