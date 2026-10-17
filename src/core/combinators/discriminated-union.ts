@@ -155,6 +155,18 @@ type FallbackVariant<
 
 type FallbackTagConfig = { readonly tag: unknown };
 
+type FallbackVariantConfig<
+  Values extends DiscriminantValue,
+  Value extends DiscriminantValue,
+  Data extends Record<PropertyKey, unknown>
+> = {
+  readonly tag: Value & FallbackDiscriminant<Values, Value>;
+  readonly create: (
+    input: unknown,
+    discriminant: DiscriminantValue
+  ) => Data | undefined;
+};
+
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isString(value) ||
   isNumberPrimitive(value) ||
@@ -305,13 +317,7 @@ export function discriminatedUnionWithFallback<T extends object>() {
     guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K, Values[number]>> &
       NonCollidingDiscriminants<T, K> &
       GuardsMatchDiscriminantValues<K, Values[number], G>,
-    fallback: {
-      tag: FallbackValue & FallbackDiscriminant<Values[number], FallbackValue>;
-      create: (
-        input: unknown,
-        discriminant: DiscriminantValue
-      ) => FallbackData | undefined;
-    }
+    fallback: FallbackVariantConfig<Values[number], FallbackValue, FallbackData>
   ): ((
     input: unknown
   ) => ParseResult<
