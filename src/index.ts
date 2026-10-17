@@ -66,7 +66,10 @@ export {
 
 // Combinators
 export { arrayOf, nonEmptyArrayOf } from './core/combinators/array';
-export { discriminatedUnion } from './core/combinators/discriminated-union';
+export {
+  discriminatedUnion,
+  discriminatedUnionWithFallback
+} from './core/combinators/discriminated-union';
 export { mapOf } from './core/combinators/map';
 export { oneOf } from './core/combinators/one-of';
 export { oneOfValues } from './core/combinators/one-of-values';
