@@ -1,11 +1,12 @@
 import { expectAssignable, expectType } from 'tsd';
 import {
   discriminatedUnion,
+  discriminatedUnionWithFallback,
   oneOfValues,
   typedStruct
 } from '@/core/combinators';
 import { isBoolean, isNumber, isString, isSymbol } from '@/core/primitive';
-import type { Predicate } from '@/types';
+import type { ParseResult, Predicate } from '@/types';
 
 type Event =
   | { kind: 'click'; x: number; y: number }
@@ -33,6 +34,78 @@ const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
 });
 expectType<Predicate<Readonly<ClickEvent> | Readonly<ScrollEvent>>>(isEvent);
 expectAssignable<Predicate<Event>>(isEvent);
+
+// it: classifies undeclared discriminants as one explicit fallback variant
+const classifyEvent = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  },
+  {
+    tag: 'unknown',
+    create: (input, originalKind) => ({ input, originalKind })
+  }
+);
+type UnknownEvent = {
+  readonly kind: 'unknown';
+  readonly input: unknown;
+  readonly originalKind: string | number | symbol | boolean;
+};
+expectAssignable<
+  (
+    input: unknown
+  ) => ParseResult<Readonly<ClickEvent> | Readonly<ScrollEvent> | UnknownEvent>
+>(classifyEvent);
+
+declare const classified: ReturnType<typeof classifyEvent>;
+if (classified.valid) {
+  const classifiedEvent = classified.value;
+  switch (classifiedEvent.kind) {
+    case 'click':
+      expectType<number>(classifiedEvent.x);
+      break;
+    case 'scroll':
+      expectType<number>(classifiedEvent.delta);
+      break;
+    case 'unknown':
+      expectAssignable<UnknownEvent>(classifiedEvent);
+      break;
+    default:
+      expectType<never>(classifiedEvent);
+  }
+}
+
+// it: rejects a fallback tag that overlaps a known discriminant
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  },
+  {
+    // @ts-expect-error: The fallback tag must differ from every known discriminant.
+    tag: 'click',
+    create: () => ({})
+  }
+);
+
+// it: rejects a broad fallback tag because it would overlap known cases
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  },
+  {
+    // @ts-expect-error: The fallback tag must be one literal.
+    tag: 'unknown' as string,
+    create: (input, originalKind) => ({ input, originalKind })
+  }
+);
 
 // it: preserves branch guards that narrow beyond the target member type
 type Content =

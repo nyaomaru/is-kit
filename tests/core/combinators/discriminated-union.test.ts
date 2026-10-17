@@ -1,4 +1,8 @@
-import { discriminatedUnion, typedStruct } from '@/core/combinators';
+import {
+  discriminatedUnion,
+  discriminatedUnionWithFallback,
+  typedStruct
+} from '@/core/combinators';
 import { isNumber, isString } from '@/core/primitive';
 
 describe('discriminatedUnion', () => {
@@ -30,6 +34,106 @@ describe('discriminatedUnion', () => {
     expect(isEvent({ kind: 'hover', target: 'button' })).toBe(false);
     expect(isEvent({ x: 12, y: 24 })).toBe(false);
     expect(isEvent(Object.create({ kind: 'click' }))).toBe(false);
+  });
+
+  it('classifies undeclared discriminants with an explicit fallback variant', () => {
+    let fallbackCalls = 0;
+    const classifyEvent = discriminatedUnionWithFallback<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      {
+        click: typedStruct<ClickEvent>()({
+          kind: (value): value is 'click' => value === 'click',
+          x: isNumber,
+          y: isNumber
+        }),
+        scroll: typedStruct<ScrollEvent>()({
+          kind: (value): value is 'scroll' => value === 'scroll',
+          delta: isNumber
+        })
+      },
+      {
+        tag: 'unknown',
+        create: (input, originalKind) => {
+          fallbackCalls += 1;
+          return { input, originalKind };
+        }
+      }
+    );
+    const unknownEvent = { kind: 'hover', target: 'button' };
+
+    expect(classifyEvent({ kind: 'click', x: 12, y: 24 })).toEqual({
+      valid: true,
+      value: { kind: 'click', x: 12, y: 24 }
+    });
+    expect(classifyEvent(unknownEvent)).toEqual({
+      valid: true,
+      value: {
+        kind: 'unknown',
+        input: unknownEvent,
+        originalKind: 'hover'
+      }
+    });
+    expect(fallbackCalls).toBe(1);
+  });
+
+  it('does not send malformed known or invalid inputs to the fallback', () => {
+    let fallbackCalls = 0;
+    const classifyEvent = discriminatedUnionWithFallback<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      {
+        click: typedStruct<ClickEvent>()({
+          kind: (value): value is 'click' => value === 'click',
+          x: isNumber,
+          y: isNumber
+        }),
+        scroll: typedStruct<ScrollEvent>()({
+          kind: (value): value is 'scroll' => value === 'scroll',
+          delta: isNumber
+        })
+      },
+      {
+        tag: 'unknown',
+        create: (input, originalKind) => {
+          fallbackCalls += 1;
+          return { input, originalKind };
+        }
+      }
+    );
+
+    expect(classifyEvent({ kind: 'click', x: 12, y: '24' })).toEqual({
+      valid: false
+    });
+    expect(classifyEvent({ x: 12, y: 24 })).toEqual({ valid: false });
+    expect(classifyEvent(Object.create({ kind: 'hover' }))).toEqual({
+      valid: false
+    });
+    expect(classifyEvent({ kind: {} })).toEqual({ valid: false });
+    expect(fallbackCalls).toBe(0);
+  });
+
+  it('allows the fallback factory to reject an undeclared discriminant', () => {
+    const classifyEvent = discriminatedUnionWithFallback<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      {
+        click: typedStruct<ClickEvent>()({
+          kind: (value): value is 'click' => value === 'click',
+          x: isNumber,
+          y: isNumber
+        }),
+        scroll: typedStruct<ScrollEvent>()({
+          kind: (value): value is 'scroll' => value === 'scroll',
+          delta: isNumber
+        })
+      },
+      { tag: 'unknown', create: () => undefined }
+    );
+
+    expect(classifyEvent({ kind: 'hover', target: 'button' })).toEqual({
+      valid: false
+    });
   });
 
   it('rejects branches omitted from the declared values tuple', () => {

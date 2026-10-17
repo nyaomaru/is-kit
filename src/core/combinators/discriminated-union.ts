@@ -1,4 +1,4 @@
-import type { GuardedOf, NoExtraKeys, Predicate } from '@/types';
+import type { GuardedOf, NoExtraKeys, ParseResult, Predicate } from '@/types';
 import { define } from '../define';
 import { isFunction, isObject } from '../object';
 import { isBoolean, isNumberPrimitive, isString, isSymbol } from '../primitive';
@@ -135,6 +135,24 @@ type GuardsMatchDiscriminantValues<
   ? unknown
   : never;
 
+type FallbackDiscriminant<
+  Values extends DiscriminantValue,
+  Value extends DiscriminantValue
+> =
+  IsFiniteDiscriminantValue<Value> extends true
+    ? IsUnion<Value> extends false
+      ? [Value & Values] extends [never]
+        ? unknown
+        : never
+      : never
+    : never;
+
+type FallbackVariant<
+  K extends PropertyKey,
+  Value extends DiscriminantValue,
+  Data extends object
+> = Omit<Data, K> & Record<K, Value>;
+
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isString(value) ||
   isNumberPrimitive(value) ||
@@ -143,6 +161,21 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
 
 const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
   isSymbol(value) ? value : String(value);
+
+const getOwnDiscriminantValue = (
+  input: unknown,
+  discriminant: PropertyKey
+): DiscriminantValue | undefined => {
+  if (
+    (!isObject(input) && !isFunction(input)) ||
+    !hasOwnPropertyKey(input, discriminant)
+  ) {
+    return undefined;
+  }
+
+  const value = Reflect.get(input, discriminant);
+  return isDiscriminantValue(value) ? value : undefined;
+};
 
 const assertSafeProtoBranch = (
   values: readonly DiscriminantValue[],
@@ -215,17 +248,8 @@ export function discriminatedUnion<T extends object>() {
     const declaredKeys = assertBranchKeys(values, guards);
 
     return define<GuardedOf<G[keyof G]>>((input) => {
-      if (
-        (!isObject(input) && !isFunction(input)) ||
-        !hasOwnPropertyKey(input, discriminant)
-      ) {
-        return false;
-      }
-
-      const value = Reflect.get(input, discriminant);
-      if (!isDiscriminantValue(value)) {
-        return false;
-      }
+      const value = getOwnDiscriminantValue(input, discriminant);
+      if (value === undefined) return false;
 
       const key = toRuntimeKey(value);
       if (!declaredKeys.has(key) || !hasOwnPropertyKey(guards, key)) {
@@ -235,5 +259,70 @@ export function discriminatedUnion<T extends object>() {
       const guard: Predicate<unknown> = guards[key as keyof G];
       return guard(input);
     });
+  };
+}
+
+/**
+ * Classifies a finite discriminated union and explicitly transforms undeclared values into one fallback variant.
+ * Known values remain exhaustive: a malformed known member fails instead of reaching the fallback.
+ * @param discriminant Required property that identifies each known union member.
+ * @param values Finite tuple containing every known discriminant value.
+ * @param guards Branch guards keyed by the known discriminant values.
+ * @param fallback Canonical fallback tag and factory for its payload; return `undefined` to reject the input.
+ * @returns Decoder that returns a guarded known member or fallback variant when valid.
+ */
+export function discriminatedUnionWithFallback<T extends object>() {
+  return <
+    const K extends DiscriminantKey<T>,
+    const Values extends readonly DiscriminantValue[],
+    const G extends DiscriminatedUnionGuardMap<T, K, Values[number]>,
+    const FallbackValue extends DiscriminantValue,
+    const FallbackData extends object
+  >(
+    discriminant: K,
+    values: Values & ExactDiscriminantValues<T, K, Values>,
+    guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K, Values[number]>> &
+      NonCollidingDiscriminants<T, K> &
+      GuardsMatchDiscriminantValues<K, Values[number], G>,
+    fallback: {
+      tag: FallbackValue & FallbackDiscriminant<Values[number], FallbackValue>;
+      create: (
+        input: unknown,
+        discriminant: DiscriminantValue
+      ) => FallbackData | undefined;
+    }
+  ): ((
+    input: unknown
+  ) => ParseResult<
+    GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
+  >) => {
+    assertSafeProtoBranch(values, guards);
+    const declaredKeys = assertBranchKeys(values, guards);
+
+    return (input) => {
+      const value = getOwnDiscriminantValue(input, discriminant);
+      if (value === undefined) return { valid: false };
+
+      const key = toRuntimeKey(value);
+      if (!declaredKeys.has(key)) {
+        const fallbackData = fallback.create(input, value);
+        if (fallbackData === undefined) return { valid: false };
+
+        return {
+          valid: true,
+          value: {
+            ...fallbackData,
+            [discriminant]: fallback.tag
+          } as FallbackVariant<K, FallbackValue, FallbackData>
+        };
+      }
+
+      if (!hasOwnPropertyKey(guards, key)) {
+        return { valid: false };
+      }
+
+      const guard = guards[key as keyof G] as Predicate<GuardedOf<G[keyof G]>>;
+      return guard(input) ? { valid: true, value: input } : { valid: false };
+    };
   };
 }

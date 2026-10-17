@@ -583,7 +583,13 @@ Use `discriminatedUnion<T>()` with `typedStruct` to keep both the branch
 fields and the union coverage aligned with an existing TypeScript type.
 
 ```ts
-import { discriminatedUnion, isNumber, oneOfValues, typedStruct } from 'is-kit';
+import {
+  discriminatedUnion,
+  discriminatedUnionWithFallback,
+  isNumber,
+  oneOfValues,
+  typedStruct
+} from 'is-kit';
 
 type Event =
   { kind: 'click'; x: number; y: number } | { kind: 'scroll'; delta: number };
@@ -614,6 +620,47 @@ are rejected because they cannot be represented as separate branches.
 For a `__proto__` discriminant, write the branch as `['__proto__']: guard` (or
 use a null-prototype map); the uncomputed object-literal form changes the
 object's prototype instead of creating a branch entry.
+
+#### Classify explicit fallback variants
+
+Use `discriminatedUnionWithFallback<T>()` when an input may contain future
+discriminant values. Known branches remain exhaustive. An undeclared own
+primitive discriminant instead calls `fallback.create`, which returns payload
+for one canonical fallback tag or `undefined` to mark the input invalid.
+
+```ts
+const classifyEvent = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: typedStruct<Extract<Event, { kind: 'click' }>>()({
+      kind: oneOfValues('click'),
+      x: isNumber,
+      y: isNumber
+    }),
+    scroll: typedStruct<Extract<Event, { kind: 'scroll' }>>()({
+      kind: oneOfValues('scroll'),
+      delta: isNumber
+    })
+  },
+  {
+    tag: 'unknown',
+    create: (input, originalKind) => ({ input, originalKind })
+  }
+);
+
+const result = classifyEvent(value);
+if (result.valid) {
+  const event = result.value;
+  // Event member | { kind: 'unknown'; input: unknown; originalKind: PropertyKey | boolean }
+}
+```
+
+The fallback tag must be one literal distinct from every known discriminant.
+The classifier writes that tag after creating the payload, so a raw unexpected
+value never overlaps a handled branch. A malformed known branch, missing or
+inherited discriminant, and non-primitive discriminant all return
+`{ valid: false }` without calling the fallback.
 
 ### 12. Narrow object keys
 
