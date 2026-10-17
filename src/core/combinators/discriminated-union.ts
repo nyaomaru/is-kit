@@ -186,8 +186,9 @@ function createFallbackVariant(
   tag: DiscriminantValue
 ): Record<PropertyKey, unknown> {
   const fallbackVariant: Record<PropertyKey, unknown> = {};
-  const discriminantKey =
-    typeof discriminant === 'symbol' ? discriminant : String(discriminant);
+  const discriminantKey = isSymbol(discriminant)
+    ? discriminant
+    : String(discriminant);
 
   for (const key of Reflect.ownKeys(fallbackData)) {
     if (key === discriminantKey) continue;
