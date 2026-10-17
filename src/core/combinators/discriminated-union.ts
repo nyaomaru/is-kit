@@ -153,6 +153,8 @@ type FallbackVariant<
   Data extends Record<PropertyKey, unknown>
 > = Data extends unknown ? Omit<Data, K> & Record<K, Value> : never;
 
+type FallbackTagConfig = { readonly tag: unknown };
+
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isString(value) ||
   isNumberPrimitive(value) ||
@@ -164,7 +166,7 @@ const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
 
 const assertSafeFallbackTag = (
   values: readonly DiscriminantValue[],
-  fallback: { readonly tag: unknown }
+  fallback: FallbackTagConfig
 ): void => {
   const tag = fallback.tag;
   if (!isDiscriminantValue(tag)) {
