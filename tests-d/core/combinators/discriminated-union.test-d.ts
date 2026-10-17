@@ -77,6 +77,31 @@ if (classified.valid) {
   }
 }
 
+// it: requires one concrete discriminant property for a fallback variant
+type MultiDiscriminantEvent =
+  | { kind: 'create'; type: 'create'; value: number }
+  | { kind: 'remove'; type: 'remove'; value: string };
+type CreateEvent = Extract<MultiDiscriminantEvent, { kind: 'create' }>;
+type RemoveEvent = Extract<MultiDiscriminantEvent, { kind: 'remove' }>;
+const isCreateEvent = typedStruct<CreateEvent>()({
+  kind: oneOfValues('create'),
+  type: oneOfValues('create'),
+  value: isNumber
+});
+const isRemoveEvent = typedStruct<RemoveEvent>()({
+  kind: oneOfValues('remove'),
+  type: oneOfValues('remove'),
+  value: isString
+});
+declare const ambiguousFallbackDiscriminant: 'kind' | 'type';
+discriminatedUnionWithFallback<MultiDiscriminantEvent>()(
+  // @ts-expect-error: A fallback variant writes only one concrete discriminant property.
+  ambiguousFallbackDiscriminant,
+  ['create', 'remove'],
+  { create: isCreateEvent, remove: isRemoveEvent },
+  { tag: 'unknown', create: () => ({ message: 'Unknown event.' }) }
+);
+
 // it: rejects a fallback tag that overlaps a known discriminant
 discriminatedUnionWithFallback<Event>()(
   'kind',

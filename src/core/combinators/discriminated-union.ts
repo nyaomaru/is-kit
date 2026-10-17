@@ -1,5 +1,6 @@
 import type { GuardedOf, NoExtraKeys, ParseResult, Predicate } from '@/types';
 import { define } from '../define';
+import type { SinglePropertyKey } from '../key-internals';
 import { isFunction, isObject, isPlainObject } from '../object';
 import { isBoolean, isNumberPrimitive, isString, isSymbol } from '../primitive';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
@@ -398,7 +399,7 @@ export function discriminatedUnionWithFallback<T extends object>() {
     const FallbackValue extends DiscriminantValue,
     const FallbackData extends Record<PropertyKey, unknown>
   >(
-    discriminant: K,
+    discriminant: K & SinglePropertyKey<K>,
     values: Values & ExactDiscriminantValues<T, K, Values>,
     guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K, Values[number]>> &
       NonCollidingDiscriminants<T, K> &
