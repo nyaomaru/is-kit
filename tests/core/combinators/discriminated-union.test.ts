@@ -136,6 +136,97 @@ describe('discriminatedUnion', () => {
     });
   });
 
+  it('uses raw discriminant values to select the fallback', () => {
+    type NumericEvent = { kind: 1; value: number } | { kind: 2; value: number };
+    type BooleanEvent =
+      | { kind: true; value: number }
+      | { kind: false; value: number };
+
+    const numericGuards = {
+      1: typedStruct<Extract<NumericEvent, { kind: 1 }>>()({
+        kind: (value): value is 1 => value === 1,
+        value: isNumber
+      }),
+      2: typedStruct<Extract<NumericEvent, { kind: 2 }>>()({
+        kind: (value): value is 2 => value === 2,
+        value: isNumber
+      })
+    };
+    const classifyNumericEvent = discriminatedUnionWithFallback<NumericEvent>()(
+      'kind',
+      [1, 2],
+      numericGuards,
+      { tag: 'unknown', create: (input) => ({ input }) }
+    );
+    const classifyBooleanEvent = discriminatedUnionWithFallback<BooleanEvent>()(
+      'kind',
+      [true, false],
+      {
+        true: typedStruct<Extract<BooleanEvent, { kind: true }>>()({
+          kind: (value): value is true => value === true,
+          value: isNumber
+        }),
+        false: typedStruct<Extract<BooleanEvent, { kind: false }>>()({
+          kind: (value): value is false => value === false,
+          value: isNumber
+        })
+      },
+      { tag: 'unknown', create: (input) => ({ input }) }
+    );
+
+    expect(classifyNumericEvent({ kind: '1' })).toEqual({
+      valid: true,
+      value: { kind: 'unknown', input: { kind: '1' } }
+    });
+    expect(classifyBooleanEvent({ kind: 'true' })).toEqual({
+      valid: true,
+      value: { kind: 'unknown', input: { kind: 'true' } }
+    });
+    expect(() =>
+      discriminatedUnionWithFallback<NumericEvent>()(
+        'kind',
+        [1, 2],
+        numericGuards,
+        { tag: '1' as never, create: () => ({}) }
+      )
+    ).toThrow(
+      'Fallback discriminatedUnion tag collides with a branch value: 1.'
+    );
+  });
+
+  it('rejects non-plain fallback payloads', () => {
+    const nonPlainPayloads = [
+      new Date(),
+      [1, 2],
+      () => undefined,
+      new (class Payload {})()
+    ];
+
+    for (const payload of nonPlainPayloads) {
+      const classifyEvent = discriminatedUnionWithFallback<Event>()(
+        'kind',
+        ['click', 'scroll'],
+        {
+          click: typedStruct<ClickEvent>()({
+            kind: (value): value is 'click' => value === 'click',
+            x: isNumber,
+            y: isNumber
+          }),
+          scroll: typedStruct<ScrollEvent>()({
+            kind: (value): value is 'scroll' => value === 'scroll',
+            delta: isNumber
+          })
+        },
+        {
+          tag: 'unknown',
+          create: () => payload as unknown as Record<PropertyKey, unknown>
+        }
+      );
+
+      expect(classifyEvent({ kind: 'hover' })).toEqual({ valid: false });
+    }
+  });
+
   it('rejects branches omitted from the declared values tuple', () => {
     type HoverEvent = { kind: 'hover'; target: string };
 

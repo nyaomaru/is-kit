@@ -1,6 +1,6 @@
 import type { GuardedOf, NoExtraKeys, ParseResult, Predicate } from '@/types';
 import { define } from '../define';
-import { isFunction, isObject } from '../object';
+import { isFunction, isObject, isPlainObject } from '../object';
 import { isBoolean, isNumberPrimitive, isString, isSymbol } from '../primitive';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
 
@@ -141,17 +141,17 @@ type FallbackDiscriminant<
 > =
   IsFiniteDiscriminantValue<Value> extends true
     ? IsUnion<Value> extends false
-      ? [Value & Values] extends [never]
-        ? unknown
-        : never
+      ? DiscriminantRuntimeKey<Value> extends DiscriminantRuntimeKey<Values>
+        ? never
+        : unknown
       : never
     : never;
 
 type FallbackVariant<
   K extends PropertyKey,
   Value extends DiscriminantValue,
-  Data extends object
-> = Omit<Data, K> & Record<K, Value>;
+  Data extends Record<PropertyKey, unknown>
+> = Data extends unknown ? Omit<Data, K> & Record<K, Value> : never;
 
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isString(value) ||
@@ -161,6 +161,25 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
 
 const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
   isSymbol(value) ? value : String(value);
+
+const assertSafeFallbackTag = (
+  values: readonly DiscriminantValue[],
+  fallback: { readonly tag: unknown }
+): void => {
+  const tag = fallback.tag;
+  if (!isDiscriminantValue(tag)) {
+    throw new TypeError(
+      'discriminatedUnion fallback tag must be a string, number, symbol, or boolean.'
+    );
+  }
+
+  const fallbackKey = toRuntimeKey(tag);
+  if (values.some((value) => toRuntimeKey(value) === fallbackKey)) {
+    throw new TypeError(
+      `Fallback discriminatedUnion tag collides with a branch value: ${String(tag)}.`
+    );
+  }
+};
 
 const getOwnDiscriminantValue = (
   input: unknown,
@@ -277,7 +296,7 @@ export function discriminatedUnionWithFallback<T extends object>() {
     const Values extends readonly DiscriminantValue[],
     const G extends DiscriminatedUnionGuardMap<T, K, Values[number]>,
     const FallbackValue extends DiscriminantValue,
-    const FallbackData extends object
+    const FallbackData extends Record<PropertyKey, unknown>
   >(
     discriminant: K,
     values: Values & ExactDiscriminantValues<T, K, Values>,
@@ -297,25 +316,33 @@ export function discriminatedUnionWithFallback<T extends object>() {
     GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
   >) => {
     assertSafeProtoBranch(values, guards);
+    assertSafeFallbackTag(values, fallback);
     const declaredKeys = assertBranchKeys(values, guards);
+    const declaredValues = new Set<DiscriminantValue>(values);
 
     return (input) => {
       const value = getOwnDiscriminantValue(input, discriminant);
       if (value === undefined) return { valid: false };
 
-      const key = toRuntimeKey(value);
-      if (!declaredKeys.has(key)) {
+      if (!declaredValues.has(value)) {
         const fallbackData = fallback.create(input, value);
-        if (fallbackData === undefined) return { valid: false };
+        if (fallbackData === undefined || !isPlainObject(fallbackData)) {
+          return { valid: false };
+        }
 
         return {
           valid: true,
+          // WHY: TypeScript cannot prove that spreading a generic union preserves
+          // each member, but isPlainObject has already excluded values whose
+          // runtime shape differs from their spread result.
           value: {
             ...fallbackData,
             [discriminant]: fallback.tag
-          } as FallbackVariant<K, FallbackValue, FallbackData>
+          } as unknown as FallbackVariant<K, FallbackValue, FallbackData>
         };
       }
+
+      const key = toRuntimeKey(value);
 
       if (!hasOwnPropertyKey(guards, key)) {
         return { valid: false };

@@ -626,7 +626,9 @@ object's prototype instead of creating a branch entry.
 Use `discriminatedUnionWithFallback<T>()` when an input may contain future
 discriminant values. Known branches remain exhaustive. An undeclared own
 primitive discriminant instead calls `fallback.create`, which returns payload
-for one canonical fallback tag or `undefined` to mark the input invalid.
+for one canonical fallback tag or `undefined` to mark the input invalid. The
+payload must be a plain record; arrays, dates, functions, and class instances
+are rejected so the decoded value always matches its object shape.
 
 ```ts
 const classifyEvent = discriminatedUnionWithFallback<Event>()(
@@ -656,11 +658,13 @@ if (result.valid) {
 }
 ```
 
-The fallback tag must be one literal distinct from every known discriminant.
-The classifier writes that tag after creating the payload, so a raw unexpected
-value never overlaps a handled branch. A malformed known branch, missing or
-inherited discriminant, and non-primitive discriminant all return
-`{ valid: false }` without calling the fallback.
+The fallback tag must be one literal with a distinct runtime key from every
+known discriminant, so a known `1` also reserves the tag `'1'` (and `true`
+reserves `'true'`). The classifier determines whether a raw discriminant is
+known before converting it to a branch key, then writes the fallback tag after
+creating its payload. A malformed known branch, missing or inherited
+discriminant, non-primitive discriminant, or non-plain fallback payload returns
+`{ valid: false }` without producing a fallback variant.
 
 ### 12. Narrow object keys
 

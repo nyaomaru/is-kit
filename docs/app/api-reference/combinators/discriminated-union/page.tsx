@@ -60,11 +60,13 @@ export default function DiscriminatedUnionPage() {
           <Paragraph>
             For open inputs, <code>discriminatedUnionWithFallback</code>{' '}
             classifies undeclared discriminants into one explicit, canonical
-            fallback variant. Its fallback tag must be a literal distinct from
-            the known branch values. The fallback factory creates payload for
-            that variant or returns <code>undefined</code> to mark the input
-            invalid; malformed known branches never reach it. The classifier
-            returns the standard tagged parse result.
+            fallback variant. Its fallback tag must have a distinct runtime key
+            from the known branch values, so <code>1</code> also reserves{' '}
+            <code>'1'</code>. The fallback factory creates a plain-record
+            payload for that variant or returns <code>undefined</code> to mark
+            the input invalid; malformed known branches and non-plain payloads
+            never produce a fallback. The classifier returns the standard tagged
+            parse result.
           </Paragraph>
           <Paragraph>
             The value tuple and branch map must each contain every discriminant

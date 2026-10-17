@@ -107,6 +107,94 @@ discriminatedUnionWithFallback<Event>()(
   }
 );
 
+// it: rejects fallback tags that collide with known runtime keys
+type NumericEvent = { kind: 1; value: number } | { kind: 2; value: number };
+const isNumericEvent = {
+  1: typedStruct<Extract<NumericEvent, { kind: 1 }>>()({
+    kind: oneOfValues(1),
+    value: isNumber
+  }),
+  2: typedStruct<Extract<NumericEvent, { kind: 2 }>>()({
+    kind: oneOfValues(2),
+    value: isNumber
+  })
+};
+discriminatedUnionWithFallback<NumericEvent>()('kind', [1, 2], isNumericEvent, {
+  // @ts-expect-error: The string runtime key collides with numeric branch 1.
+  tag: '1',
+  create: () => ({})
+});
+
+// it: accepts only plain-record fallback payloads
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Date instances are not plain records.
+    create: () => new Date()
+  }
+);
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Arrays are not plain records.
+    create: () => [1, 2]
+  }
+);
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Functions are not plain records.
+    create: () => () => undefined
+  }
+);
+class FallbackPayloadInstance {}
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Class instances are not plain records.
+    create: () => new FallbackPayloadInstance()
+  }
+);
+
+// it: preserves each member of a union fallback payload
+type FallbackPayload = { message: string } | { code: number };
+declare const fallbackPayload: FallbackPayload;
+const classifyEventWithUnionPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    create: () => fallbackPayload
+  }
+);
+declare const classifiedWithUnionPayload: ReturnType<
+  typeof classifyEventWithUnionPayload
+>;
+if (
+  classifiedWithUnionPayload.valid &&
+  classifiedWithUnionPayload.value.kind === 'unknown'
+) {
+  const fallbackEvent = classifiedWithUnionPayload.value;
+  if ('message' in fallbackEvent) {
+    expectType<string>(fallbackEvent.message);
+  } else {
+    expectType<number>(fallbackEvent.code);
+  }
+}
+
 // it: preserves branch guards that narrow beyond the target member type
 type Content =
   | { type: 'text'; value: string | number }
