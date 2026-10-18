@@ -627,9 +627,10 @@ Use `discriminatedUnionWithFallback<T>()` when an input may contain future
 discriminant values. Known branches remain exhaustive. An undeclared own
 primitive discriminant instead calls `fallback.create`, which returns payload
 for one canonical fallback tag or `undefined` to mark the input invalid. The
-payload must be an own-field plain record with an `Object.prototype` or null
-prototype; arrays, dates, functions, class instances, and custom prototypes
-are rejected so the decoded value always matches its object shape. Dictionary
+payload must be an own data-field plain record with an `Object.prototype` or
+null prototype; arrays, dates, functions, class instances, custom prototypes,
+and accessor fields are rejected so the decoded value always matches its object
+shape. Dictionary
 payload _types_ with broad or patterned index signatures are also unsupported;
 use a finite object shape for each fallback variant.
 
