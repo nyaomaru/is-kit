@@ -273,9 +273,16 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isSymbol(value) ||
   isBoolean(value);
 
+const isFallbackDataDescriptor = (
+  descriptor: PropertyDescriptor | undefined
+): descriptor is PropertyDescriptor & { value: unknown } =>
+  descriptor !== undefined &&
+  'value' in descriptor &&
+  !isFunction(descriptor.value);
+
 // WHY: Fallback variants copy only own data-property descriptors. A custom
-// prototype or accessor can provide fields represented by the payload type but
-// omitted or changed on the decoded value, so reject both forms.
+// prototype, accessor, or method can provide fields represented by the payload
+// type but omitted or changed on the decoded value, so reject all three forms.
 const isFallbackPayload = (
   value: unknown
 ): value is Record<PropertyKey, unknown> => {
@@ -286,7 +293,9 @@ const isFallbackPayload = (
 
   for (const key of Reflect.ownKeys(value)) {
     const descriptor = Object.getOwnPropertyDescriptor(value, key);
-    if (descriptor === undefined || !('value' in descriptor)) return false;
+    if (!isFallbackDataDescriptor(descriptor)) {
+      return false;
+    }
   }
 
   return true;
@@ -419,7 +428,7 @@ export function discriminatedUnion<T extends object>() {
  * @param discriminant Required property that identifies each known union member.
  * @param values Finite tuple containing every known discriminant value.
  * @param guards Branch guards keyed by the known discriminant values.
- * @param fallback Canonical fallback tag and receiver-free factory for an own data-field payload; return `undefined` to reject the input.
+ * @param fallback Canonical fallback tag and receiver-free factory for an own non-function data-field payload; return `undefined` to reject the input.
  * @returns Decoder that returns a guarded known member or fallback variant when valid.
  */
 export function discriminatedUnionWithFallback<T extends object>() {
