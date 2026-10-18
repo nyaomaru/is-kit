@@ -78,6 +78,24 @@ if (classified.valid) {
   }
 }
 
+// it: requires a receiver-free fallback factory
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    create(input, originalKind) {
+      return {
+        input,
+        originalKind,
+        // @ts-expect-error: Fallback factories cannot depend on mutable config state.
+        seenTag: this.tag
+      };
+    }
+  }
+);
+
 // it: requires one concrete discriminant property for a fallback variant
 type MultiDiscriminantEvent =
   | { kind: 'create'; type: 'create'; value: number }
