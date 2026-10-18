@@ -186,8 +186,6 @@ type FallbackVariant<
   Data extends Record<PropertyKey, unknown>
 > = Data extends unknown ? OmitRuntimeKey<Data, K> & Record<K, Value> : never;
 
-type FallbackTagConfig = { readonly tag: unknown };
-
 type FallbackVariantConfig<
   Values extends DiscriminantValue,
   Value extends DiscriminantValue,
@@ -291,9 +289,8 @@ const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
 
 const assertSafeFallbackTag = (
   values: readonly DiscriminantValue[],
-  fallback: FallbackTagConfig
+  tag: unknown
 ): void => {
-  const tag = fallback.tag;
   if (!isDiscriminantValue(tag)) {
     throw new TypeError(
       'discriminatedUnion fallback tag must be a string, number, symbol, or boolean.'
@@ -437,7 +434,11 @@ export function discriminatedUnionWithFallback<T extends object>() {
         GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
       > => {
     assertSafeProtoBranch(values, guards);
-    assertSafeFallbackTag(values, fallback);
+    // WHY: Validate and retain one config snapshot so later mutation (or a
+    // getter that changes on read) cannot invalidate the decoder's output type.
+    const fallbackTag = fallback.tag;
+    const createFallback = fallback.create;
+    assertSafeFallbackTag(values, fallbackTag);
     const declaredKeys = assertBranchKeys(values, guards);
     const declaredValues = new Set<DiscriminantValue>(values);
 
@@ -449,7 +450,7 @@ export function discriminatedUnionWithFallback<T extends object>() {
       if (value === undefined) return { valid: false };
 
       if (!declaredValues.has(value)) {
-        const fallbackData = fallback.create(input, value);
+        const fallbackData = createFallback(input, value);
         if (fallbackData === undefined || !isFallbackPayload(fallbackData)) {
           return { valid: false };
         }
@@ -459,7 +460,7 @@ export function discriminatedUnionWithFallback<T extends object>() {
           value: createFallbackVariant<K, FallbackValue, FallbackData>(
             fallbackData,
             discriminant,
-            fallback.tag
+            fallbackTag
           )
         };
       }

@@ -77,6 +77,52 @@ describe('discriminatedUnion', () => {
     expect(fallbackCalls).toBe(1);
   });
 
+  it('snapshots fallback configuration before decoding', () => {
+    const fallback = {
+      tag: 'unknown',
+      create: (
+        input: unknown,
+        originalKind: string | number | symbol | boolean
+      ) => ({ input, originalKind })
+    } as const;
+    const classifyEvent = discriminatedUnionWithFallback<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      {
+        click: typedStruct<ClickEvent>()({
+          kind: (value): value is 'click' => value === 'click',
+          x: isNumber,
+          y: isNumber
+        }),
+        scroll: typedStruct<ScrollEvent>()({
+          kind: (value): value is 'scroll' => value === 'scroll',
+          delta: isNumber
+        })
+      },
+      fallback
+    );
+    const tagAlias: { tag: string } = fallback;
+    tagAlias.tag = 'click';
+    const factoryAlias: {
+      create: (
+        input: unknown,
+        originalKind: string | number | symbol | boolean
+      ) =>
+        | {
+            input: unknown;
+            originalKind: string | number | symbol | boolean;
+          }
+        | { message: string };
+    } = fallback;
+    factoryAlias.create = () => ({ message: 'Replacement payload.' });
+    const unknownEvent = { kind: 'hover', target: 'button' };
+
+    expect(classifyEvent(unknownEvent)).toEqual({
+      valid: true,
+      value: { kind: 'unknown', input: unknownEvent, originalKind: 'hover' }
+    });
+  });
+
   it('does not send malformed known or invalid inputs to the fallback', () => {
     let fallbackCalls = 0;
     const classifyEvent = discriminatedUnionWithFallback<Event>()(
