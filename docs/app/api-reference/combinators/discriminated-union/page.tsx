@@ -64,7 +64,8 @@ export default function DiscriminatedUnionPage() {
             from the known branch values, so <code>1</code> also reserves{' '}
             <code>'1'</code>. The fallback factory creates a plain-record
             payload for that variant or returns <code>undefined</code> to mark
-            the input invalid; malformed known branches and non-plain payloads
+            the input invalid; malformed known branches, non-plain payloads,
+            and payloads with custom prototypes
             never produce a fallback. Payload types must have a finite property
             shape, not a broad or patterned index signature. The
             classifier returns the standard tagged parse result.

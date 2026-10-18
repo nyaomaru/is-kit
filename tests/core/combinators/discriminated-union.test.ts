@@ -258,6 +258,33 @@ describe('discriminatedUnion', () => {
     }
   });
 
+  it('rejects fallback payloads with inherited custom fields', () => {
+    const fallbackPrototype = Object.assign(Object.create(null), {
+      message: 'Unsupported event kind.'
+    });
+    const fallbackPayload = Object.create(fallbackPrototype) as {
+      message: string;
+    };
+    const classifyEvent = discriminatedUnionWithFallback<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      {
+        click: typedStruct<ClickEvent>()({
+          kind: (value): value is 'click' => value === 'click',
+          x: isNumber,
+          y: isNumber
+        }),
+        scroll: typedStruct<ScrollEvent>()({
+          kind: (value): value is 'scroll' => value === 'scroll',
+          delta: isNumber
+        })
+      },
+      { tag: 'unknown', create: () => fallbackPayload }
+    );
+
+    expect(classifyEvent({ kind: 'hover' })).toEqual({ valid: false });
+  });
+
   it('preserves non-enumerable fallback payload fields', () => {
     const fallbackPayload = Object.defineProperty(
       {} as { message: string },

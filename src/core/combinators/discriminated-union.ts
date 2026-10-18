@@ -274,6 +274,18 @@ const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isSymbol(value) ||
   isBoolean(value);
 
+// WHY: Fallback variants copy only own payload properties. A custom prototype
+// can therefore provide fields represented by the payload type but omitted
+// from the decoded value. Restrict payloads to records with no custom fields.
+const isFallbackPayload = (
+  value: unknown
+): value is Record<PropertyKey, unknown> => {
+  if (!isPlainObject(value)) return false;
+
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === null || prototype === Object.prototype;
+};
+
 const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
   isSymbol(value) ? value : String(value);
 
@@ -402,7 +414,7 @@ export function discriminatedUnion<T extends object>() {
  * @param discriminant Required property that identifies each known union member.
  * @param values Finite tuple containing every known discriminant value.
  * @param guards Branch guards keyed by the known discriminant values.
- * @param fallback Canonical fallback tag and factory for its payload; return `undefined` to reject the input.
+ * @param fallback Canonical fallback tag and factory for an own-field payload; return `undefined` to reject the input.
  * @returns Decoder that returns a guarded known member or fallback variant when valid.
  */
 export function discriminatedUnionWithFallback<T extends object>() {
@@ -438,7 +450,7 @@ export function discriminatedUnionWithFallback<T extends object>() {
 
       if (!declaredValues.has(value)) {
         const fallbackData = fallback.create(input, value);
-        if (fallbackData === undefined || !isPlainObject(fallbackData)) {
+        if (fallbackData === undefined || !isFallbackPayload(fallbackData)) {
           return { valid: false };
         }
 
