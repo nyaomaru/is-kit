@@ -411,7 +411,8 @@ export function discriminatedUnion<T extends object>() {
  * @param discriminant Required property that identifies each known union member.
  * @param values Finite tuple containing every known discriminant value.
  * @param guards Branch guards keyed by the known discriminant values.
- * @param fallback Canonical fallback tag and factory for an own-field payload; return `undefined` to reject the input.
+ * @param fallback Canonical fallback tag and factory for an own-field payload.
+ * The factory receives this config as `this` and may return `undefined` to reject the input.
  * @returns Decoder that returns a guarded known member or fallback variant when valid.
  */
 export function discriminatedUnionWithFallback<T extends object>() {
@@ -450,7 +451,12 @@ export function discriminatedUnionWithFallback<T extends object>() {
       if (value === undefined) return { valid: false };
 
       if (!declaredValues.has(value)) {
-        const fallbackData = createFallback(input, value);
+        // WHY: Snapshot the factory but keep the config as its receiver so
+        // method-syntax factories retain their documented `this` behavior.
+        const fallbackData = Reflect.apply(createFallback, fallback, [
+          input,
+          value
+        ]);
         if (fallbackData === undefined || !isFallbackPayload(fallbackData)) {
           return { valid: false };
         }

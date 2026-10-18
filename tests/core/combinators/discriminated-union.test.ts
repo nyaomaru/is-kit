@@ -123,6 +123,45 @@ describe('discriminatedUnion', () => {
     });
   });
 
+  it('preserves the fallback factory method receiver', () => {
+    const fallback = {
+      tag: 'unknown',
+      create(
+        input: unknown,
+        originalKind: string | number | symbol | boolean
+      ) {
+        return { input, originalKind, seenTag: this.tag };
+      }
+    } as const;
+    const classifyEvent = discriminatedUnionWithFallback<Event>()(
+      'kind',
+      ['click', 'scroll'],
+      {
+        click: typedStruct<ClickEvent>()({
+          kind: (value): value is 'click' => value === 'click',
+          x: isNumber,
+          y: isNumber
+        }),
+        scroll: typedStruct<ScrollEvent>()({
+          kind: (value): value is 'scroll' => value === 'scroll',
+          delta: isNumber
+        })
+      },
+      fallback
+    );
+    const unknownEvent = { kind: 'hover', target: 'button' };
+
+    expect(classifyEvent(unknownEvent)).toEqual({
+      valid: true,
+      value: {
+        kind: 'unknown',
+        input: unknownEvent,
+        originalKind: 'hover',
+        seenTag: 'unknown'
+      }
+    });
+  });
+
   it('does not send malformed known or invalid inputs to the fallback', () => {
     let fallbackCalls = 0;
     const classifyEvent = discriminatedUnionWithFallback<Event>()(
