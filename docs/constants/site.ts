@@ -7,7 +7,7 @@ export const SITE_TITLE = 'is-kit Docs — TypeScript Type Guard Toolkit';
 export const SITE_DESCRIPTION =
   'Documentation for is-kit, a lightweight, zero-dependency toolkit for building composable TypeScript type guards.';
 
-export const SITE_SOCIAL_IMAGE = '/iskit-logo_700_500.png';
+export const SITE_SOCIAL_IMAGE = '/iskit_ogp_1200_630.png';
 
 export const SITE_OPEN_GRAPH = {
   type: 'website',
@@ -15,10 +15,10 @@ export const SITE_OPEN_GRAPH = {
   images: [
     {
       url: SITE_SOCIAL_IMAGE,
-      width: 2917,
-      height: 2084,
+      width: 1200,
+      height: 630,
       type: 'image/png',
-      alt: 'is-kit logo'
+      alt: 'is-kit documentation'
     }
   ]
 } satisfies NonNullable<Metadata['openGraph']>;
