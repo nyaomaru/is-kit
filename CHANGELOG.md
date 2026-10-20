@@ -6,6 +6,166 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.16.0] - 2026-10-20
+
+### Added
+
+- add explicit fallback variants for discriminated union by @nyaomaru in [#349](https://github.com/nyaomaru/is-kit/pull/349)
+
+### Fixed
+
+- allow freshly published JSR smoke tests by @nyaomaru in [#344](https://github.com/nyaomaru/is-kit/pull/344)
+  - Why: The post-publish Deno smoke test fails when the newly published JSR version is younger than Deno's minimum dependency age. Add `--minimum-dependency-age=0` to this invocation so th
+- reject invalid struct schema fields by @nyaomaru in [#346](https://github.com/nyaomaru/is-kit/pull/346)
+- use dedicated OGP image by @nyaomaru in [#350](https://github.com/nyaomaru/is-kit/pull/350)
+
+### Changed
+
+- iterate array guards by index by @nyaomaru in [#347](https://github.com/nyaomaru/is-kit/pull/347)
+
+### Docs
+
+- 1.15.3 by @github-actions[bot] in [#343](https://github.com/nyaomaru/is-kit/pull/343)
+
+### Test
+
+- add packed package compatibility matrix by @nyaomaru in [#348](https://github.com/nyaomaru/is-kit/pull/348)
+
+### Chore
+
+- Release: 1.16.0 by @github-actions[bot] in [#351](https://github.com/nyaomaru/is-kit/pull/351)
+
+### What's new 🚀
+
+#### Classify future discriminant values with an explicit fallback
+
+`discriminatedUnionWithFallback` adds an explicit fallback path for discriminated unions whose input may contain variants that the current application does not know about yet.
+
+This is useful at open boundaries such as:
+
+- versioned APIs that may introduce new event types
+- webhook or event-stream consumers
+- plugin or protocol messages
+- AST or schema versions where newer node kinds may appear
+
+Known variants are still validated exhaustively with their existing guards. If an input uses a known discriminant but has an invalid shape, validation fails as usual.
+
+Only an undeclared discriminant reaches the fallback factory.
+
+The fallback is then transformed into one canonical variant, keeping the resulting union closed enough for an exhaustive `switch`.
+
+```ts
+import {
+  discriminatedUnionWithFallback,
+  isNumber,
+  oneOfValues,
+  typedStruct
+} from 'is-kit';
+
+type Event =
+  | { kind: 'click'; x: number; y: number }
+  | { kind: 'scroll'; delta: number };
+
+const classifyEvent = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: typedStruct<Extract<Event, { kind: 'click' }>>()({
+      kind: oneOfValues('click'),
+      x: isNumber,
+      y: isNumber
+    }),
+    scroll: typedStruct<Extract<Event, { kind: 'scroll' }>>()({
+      kind: oneOfValues('scroll'),
+      delta: isNumber
+    })
+  },
+  {
+    tag: 'unknown',
+    create: (input, originalKind) => ({
+      input,
+      originalKind
+    })
+  }
+);
+
+const result = classifyEvent({
+  kind: 'hover',
+  target: 'button'
+});
+
+if (result.valid) {
+  switch (result.value.kind) {
+    case 'click':
+      result.value.x;
+      break;
+
+    case 'scroll':
+      result.value.delta;
+      break;
+
+    case 'unknown':
+      result.value.originalKind; // 'hover'
+      result.value.input;
+      break;
+  }
+}
+```
+
+For an undeclared input such as
+
+```ts
+{ kind: 'hover', target: 'button' }
+```
+
+the decoder produces a canonical fallback variant
+
+```ts
+{
+  kind: 'unknown',
+  originalKind: 'hover',
+  input: { kind: 'hover', target: 'button' }
+}
+```
+
+This differs from silently accepting an open union, downstream code still sees a finite set of variants `click`, `scroll`, or `unknown`.
+
+A malformed known branch does not fall through to `unknown`
+
+```ts
+classifyEvent({
+  kind: 'click',
+  x: 'invalid',
+  y: 24
+});
+// { valid: false }
+```
+
+The fallback factory can also reject an undeclared variant explicitly by returning `undefined`.
+
+```ts
+const classifyEvent = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  guards,
+  {
+    tag: 'unknown',
+    create: (_input, originalKind) =>
+      originalKind === 'experimental'
+        ? undefined
+        : { originalKind }
+  }
+);
+```
+
+Because fallback handling transforms the original input into a new canonical variant, 
+
+`discriminatedUnionWithFallback` returns a `ParseResult` decoder rather than a type guard. 👍
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.15.3...v1.16.0
+
+[v1.16.0]: https://github.com/nyaomaru/is-kit/compare/v1.15.3...v1.16.0
+
 ## [v1.15.3] - 2026-10-12
 
 ### Fixed
@@ -1933,7 +2093,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.15.3...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.16.0...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
