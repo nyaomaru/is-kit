@@ -583,7 +583,13 @@ Use `discriminatedUnion<T>()` with `typedStruct` to keep both the branch
 fields and the union coverage aligned with an existing TypeScript type.
 
 ```ts
-import { discriminatedUnion, isNumber, oneOfValues, typedStruct } from 'is-kit';
+import {
+  discriminatedUnion,
+  discriminatedUnionWithFallback,
+  isNumber,
+  oneOfValues,
+  typedStruct
+} from 'is-kit';
 
 type Event =
   { kind: 'click'; x: number; y: number } | { kind: 'scroll'; delta: number };
@@ -614,6 +620,55 @@ are rejected because they cannot be represented as separate branches.
 For a `__proto__` discriminant, write the branch as `['__proto__']: guard` (or
 use a null-prototype map); the uncomputed object-literal form changes the
 object's prototype instead of creating a branch entry.
+
+#### Classify explicit fallback variants
+
+Use `discriminatedUnionWithFallback<T>()` when an input may contain future
+discriminant values. Known branches remain exhaustive. An undeclared own
+primitive discriminant instead calls `fallback.create`, which returns payload
+for one canonical fallback tag or `undefined` to mark the input invalid. The
+payload must be an own data-field plain record with an `Object.prototype` or
+null prototype; arrays, dates, functions, class instances, custom prototypes,
+accessor fields, and function fields are rejected so the decoded value always
+matches its object shape. Dictionary
+payload _types_ with broad or patterned index signatures are also unsupported;
+use a finite object shape for each fallback variant.
+
+```ts
+const classifyEvent = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: typedStruct<Extract<Event, { kind: 'click' }>>()({
+      kind: oneOfValues('click'),
+      x: isNumber,
+      y: isNumber
+    }),
+    scroll: typedStruct<Extract<Event, { kind: 'scroll' }>>()({
+      kind: oneOfValues('scroll'),
+      delta: isNumber
+    })
+  },
+  {
+    tag: 'unknown',
+    create: (input, originalKind) => ({ input, originalKind })
+  }
+);
+
+const result = classifyEvent(value);
+if (result.valid) {
+  const event = result.value;
+  // Event member | { kind: 'unknown'; input: unknown; originalKind: PropertyKey | boolean }
+}
+```
+
+The fallback tag must be one literal with a distinct runtime key from every
+known discriminant, so a known `1` also reserves the tag `'1'` (and `true`
+reserves `'true'`). The classifier determines whether a raw discriminant is
+known before converting it to a branch key, then writes the fallback tag after
+creating its payload. A malformed known branch, missing or inherited
+discriminant, non-primitive discriminant, or non-plain fallback payload returns
+`{ valid: false }` without producing a fallback variant.
 
 ### 12. Narrow object keys
 

@@ -1,11 +1,12 @@
 import { expectAssignable, expectType } from 'tsd';
 import {
   discriminatedUnion,
+  discriminatedUnionWithFallback,
   oneOfValues,
   typedStruct
 } from '@/core/combinators';
 import { isBoolean, isNumber, isString, isSymbol } from '@/core/primitive';
-import type { Predicate } from '@/types';
+import type { ParseResult, Predicate } from '@/types';
 
 type Event =
   | { kind: 'click'; x: number; y: number }
@@ -33,6 +34,305 @@ const isEvent = discriminatedUnion<Event>()('kind', ['click', 'scroll'], {
 });
 expectType<Predicate<Readonly<ClickEvent> | Readonly<ScrollEvent>>>(isEvent);
 expectAssignable<Predicate<Event>>(isEvent);
+
+// it: classifies undeclared discriminants as one explicit fallback variant
+const classifyEvent = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  },
+  {
+    tag: 'unknown',
+    create: (input, originalKind) => ({ input, originalKind })
+  }
+);
+type UnknownEvent = {
+  readonly kind: 'unknown';
+  readonly input: unknown;
+  readonly originalKind: string | number | symbol | boolean;
+};
+expectAssignable<
+  (
+    input: unknown
+  ) => ParseResult<Readonly<ClickEvent> | Readonly<ScrollEvent> | UnknownEvent>
+>(classifyEvent);
+expectAssignable<(input: unknown) => ParseResult<unknown>>(classifyEvent);
+
+declare const classified: ReturnType<typeof classifyEvent>;
+if (classified.valid) {
+  const classifiedEvent = classified.value;
+  switch (classifiedEvent.kind) {
+    case 'click':
+      expectType<number>(classifiedEvent.x);
+      break;
+    case 'scroll':
+      expectType<number>(classifiedEvent.delta);
+      break;
+    case 'unknown':
+      expectAssignable<UnknownEvent>(classifiedEvent);
+      break;
+    default:
+      expectType<never>(classifiedEvent);
+  }
+}
+
+// it: requires a receiver-free fallback factory
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    create(input, originalKind) {
+      return {
+        input,
+        originalKind,
+        // @ts-expect-error: Fallback factories cannot depend on mutable config state.
+        seenTag: this.tag
+      };
+    }
+  }
+);
+
+// it: requires one concrete discriminant property for a fallback variant
+type MultiDiscriminantEvent =
+  | { kind: 'create'; type: 'create'; value: number }
+  | { kind: 'remove'; type: 'remove'; value: string };
+type CreateEvent = Extract<MultiDiscriminantEvent, { kind: 'create' }>;
+type RemoveEvent = Extract<MultiDiscriminantEvent, { kind: 'remove' }>;
+const isCreateEvent = typedStruct<CreateEvent>()({
+  kind: oneOfValues('create'),
+  type: oneOfValues('create'),
+  value: isNumber
+});
+const isRemoveEvent = typedStruct<RemoveEvent>()({
+  kind: oneOfValues('remove'),
+  type: oneOfValues('remove'),
+  value: isString
+});
+declare const ambiguousFallbackDiscriminant: 'kind' | 'type';
+discriminatedUnionWithFallback<MultiDiscriminantEvent>()(
+  // @ts-expect-error: A fallback variant writes only one concrete discriminant property.
+  ambiguousFallbackDiscriminant,
+  ['create', 'remove'],
+  { create: isCreateEvent, remove: isRemoveEvent },
+  { tag: 'unknown', create: () => ({ message: 'Unknown event.' }) }
+);
+
+// it: rejects a fallback tag that overlaps a known discriminant
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  },
+  {
+    // @ts-expect-error: The fallback tag must differ from every known discriminant.
+    tag: 'click',
+    create: () => ({})
+  }
+);
+
+// it: rejects a broad fallback tag because it would overlap known cases
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  {
+    click: isClickEvent,
+    scroll: isScrollEvent
+  },
+  {
+    // @ts-expect-error: The fallback tag must be one literal.
+    tag: 'unknown' as string,
+    create: (input, originalKind) => ({ input, originalKind })
+  }
+);
+
+// it: rejects fallback tags that collide with known runtime keys
+type NumericEvent = { kind: 1; value: number } | { kind: 2; value: number };
+const isNumericEvent = {
+  1: typedStruct<Extract<NumericEvent, { kind: 1 }>>()({
+    kind: oneOfValues(1),
+    value: isNumber
+  }),
+  2: typedStruct<Extract<NumericEvent, { kind: 2 }>>()({
+    kind: oneOfValues(2),
+    value: isNumber
+  })
+};
+discriminatedUnionWithFallback<NumericEvent>()('kind', [1, 2], isNumericEvent, {
+  // @ts-expect-error: The string runtime key collides with numeric branch 1.
+  tag: '1',
+  create: () => ({})
+});
+
+// it: accepts only plain-record fallback payloads
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Date instances are not plain records.
+    create: () => new Date()
+  }
+);
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Arrays are not plain records.
+    create: () => [1, 2]
+  }
+);
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Functions are not plain records.
+    create: () => () => undefined
+  }
+);
+class FallbackPayloadInstance {}
+discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    // @ts-expect-error: Class instances are not plain records.
+    create: () => new FallbackPayloadInstance()
+  }
+);
+
+// it: preserves each member of a union fallback payload
+type FallbackPayload = { message: string } | { code: number };
+declare const fallbackPayload: FallbackPayload;
+const classifyEventWithUnionPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    create: () => fallbackPayload
+  }
+);
+declare const classifiedWithUnionPayload: ReturnType<
+  typeof classifyEventWithUnionPayload
+>;
+if (
+  classifiedWithUnionPayload.valid &&
+  classifiedWithUnionPayload.value.kind === 'unknown'
+) {
+  const fallbackEvent = classifiedWithUnionPayload.value;
+  if ('message' in fallbackEvent) {
+    expectType<string>(fallbackEvent.message);
+  } else {
+    expectType<number>(fallbackEvent.code);
+  }
+}
+
+// it: makes fallback classifiers with broad index signatures non-assignable
+declare const stringDictionaryPayload: Record<string, string>;
+const classifyStringDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => stringDictionaryPayload }
+);
+// @ts-expect-error: A dictionary fallback classifier is not a decoder.
+const fakeStringDecoder: (input: unknown) => ParseResult<unknown> =
+  classifyStringDictionaryPayload;
+
+declare const numberDictionaryPayload: Record<number, string>;
+const classifyNumberDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => numberDictionaryPayload }
+);
+// @ts-expect-error: A dictionary fallback classifier is not a decoder.
+const fakeNumberDecoder: (input: unknown) => ParseResult<unknown> =
+  classifyNumberDictionaryPayload;
+
+declare const symbolDictionaryPayload: Record<symbol, string>;
+const classifySymbolDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => symbolDictionaryPayload }
+);
+// @ts-expect-error: A dictionary fallback classifier is not a decoder.
+const fakeSymbolDecoder: (input: unknown) => ParseResult<unknown> =
+  classifySymbolDictionaryPayload;
+
+type PatternedKeyEvent =
+  | { 'field-kind': 'a'; value: number }
+  | { 'field-kind': 'b'; value: string };
+type PatternedKeyAEvent = Extract<PatternedKeyEvent, { 'field-kind': 'a' }>;
+type PatternedKeyBEvent = Extract<PatternedKeyEvent, { 'field-kind': 'b' }>;
+declare const isPatternedKeyAEvent: Predicate<PatternedKeyAEvent>;
+declare const isPatternedKeyBEvent: Predicate<PatternedKeyBEvent>;
+declare const patternedDictionaryPayload: Record<`field-${string}`, string>;
+const classifyPatternedDictionaryPayload =
+  discriminatedUnionWithFallback<PatternedKeyEvent>()(
+    'field-kind',
+    ['a', 'b'],
+    { a: isPatternedKeyAEvent, b: isPatternedKeyBEvent },
+    { tag: true, create: () => patternedDictionaryPayload }
+  );
+// @ts-expect-error: Patterned key domains cannot safely receive a fallback tag.
+const fakePatternedDecoder: (input: unknown) => ParseResult<unknown> =
+  classifyPatternedDictionaryPayload;
+
+declare const mixedDictionaryPayload:
+  | Record<string, string>
+  | { message: string };
+const classifyMixedDictionaryPayload = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  { tag: true, create: () => mixedDictionaryPayload }
+);
+// @ts-expect-error: Every possible dictionary payload makes the classifier invalid.
+const fakeMixedDecoder: (input: unknown) => ParseResult<unknown> =
+  classifyMixedDictionaryPayload;
+
+// it: replaces a string property whose runtime key matches a numeric discriminant
+type NumericKeyEvent =
+  | { 1: 'click'; value: number }
+  | { 1: 'scroll'; value: number };
+type NumericKeyClickEvent = Extract<NumericKeyEvent, { 1: 'click' }>;
+type NumericKeyScrollEvent = Extract<NumericKeyEvent, { 1: 'scroll' }>;
+declare const isNumericKeyClickEvent: Predicate<NumericKeyClickEvent>;
+declare const isNumericKeyScrollEvent: Predicate<NumericKeyScrollEvent>;
+const classifyNumericKeyEvent =
+  discriminatedUnionWithFallback<NumericKeyEvent>()(
+    1,
+    ['click', 'scroll'],
+    { click: isNumericKeyClickEvent, scroll: isNumericKeyScrollEvent },
+    {
+      tag: 'unknown',
+      create: () => ({ '1': 'discarded', message: 'Unknown event.' })
+    }
+  );
+declare const classifiedNumericKeyEvent: ReturnType<
+  typeof classifyNumericKeyEvent
+>;
+if (
+  classifiedNumericKeyEvent.valid &&
+  classifiedNumericKeyEvent.value[1] === 'unknown'
+) {
+  expectType<'unknown'>(classifiedNumericKeyEvent.value['1']);
+  expectType<'Unknown event.'>(classifiedNumericKeyEvent.value.message);
+}
 
 // it: preserves branch guards that narrow beyond the target member type
 type Content =

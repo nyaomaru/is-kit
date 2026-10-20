@@ -1,6 +1,7 @@
-import type { GuardedOf, NoExtraKeys, Predicate } from '@/types';
+import type { GuardedOf, NoExtraKeys, ParseResult, Predicate } from '@/types';
 import { define } from '../define';
-import { isFunction, isObject } from '../object';
+import type { SinglePropertyKey } from '../key-internals';
+import { isFunction, isObject, isPlainObject } from '../object';
 import { isBoolean, isNumberPrimitive, isString, isSymbol } from '../primitive';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
 
@@ -135,14 +136,206 @@ type GuardsMatchDiscriminantValues<
   ? unknown
   : never;
 
+type FallbackDiscriminant<
+  Values extends DiscriminantValue,
+  Value extends DiscriminantValue
+> =
+  IsFiniteDiscriminantValue<Value> extends true
+    ? IsUnion<Value> extends false
+      ? DiscriminantRuntimeKey<Value> extends DiscriminantRuntimeKey<Values>
+        ? never
+        : unknown
+      : never
+    : never;
+
+type RuntimePropertyKey<Key extends PropertyKey> = Key extends symbol
+  ? Key
+  : Key extends string | number
+    ? `${Key}`
+    : never;
+
+type OmitRuntimeKey<Data extends object, Key extends PropertyKey> = {
+  [
+    Property in keyof Data as RuntimePropertyKey<Property> extends RuntimePropertyKey<Key>
+      ? never
+      : Property
+  ]: Data[Property];
+};
+
+type InvalidFallbackKey<Key extends PropertyKey> = Key extends unknown
+  ? SinglePropertyKey<Key> extends never
+    ? Key
+    : never
+  : never;
+
+type InvalidFallbackData<Data extends object> = Data extends unknown
+  ? [InvalidFallbackKey<keyof Data & PropertyKey>] extends [never]
+    ? never
+    : Data
+  : never;
+
+type FiniteFallbackData<Data extends object> = [
+  InvalidFallbackData<Data>
+] extends [never]
+  ? unknown
+  : never;
+
+type FallbackVariant<
+  K extends PropertyKey,
+  Value extends DiscriminantValue,
+  Data extends Record<PropertyKey, unknown>
+> = Data extends unknown ? OmitRuntimeKey<Data, K> & Record<K, Value> : never;
+
+type FallbackVariantConfig<
+  Values extends DiscriminantValue,
+  Value extends DiscriminantValue,
+  Data extends Record<PropertyKey, unknown>
+> = {
+  readonly tag: Value & FallbackDiscriminant<Values, Value>;
+  readonly create: (
+    this: void,
+    input: unknown,
+    discriminant: DiscriminantValue
+  ) => Data | undefined;
+};
+
+type Decoder<Output> = (input: unknown) => ParseResult<Output>;
+
+declare const invalidFallbackClassifier: unique symbol;
+
+type InvalidFallbackClassifier = {
+  readonly [invalidFallbackClassifier]:
+    'Fallback payloads must have finite property keys.';
+};
+
+// WHY: A callback's return type is inferred while its parameters receive
+// contextual types. Intersecting that callback parameter with `never` creates
+// a circular inference that rejects ordinary object literals. Keep inference
+// intact and make invalid payloads explicitly non-callable and non-assignable.
+function defineFallbackClassifier<
+  Data extends Record<PropertyKey, unknown>,
+  Output
+>(
+  classifier: Decoder<Output>
+): FiniteFallbackData<Data> extends never
+  ? InvalidFallbackClassifier
+  : Decoder<Output>;
+function defineFallbackClassifier(
+  classifier: Decoder<unknown>
+): Decoder<unknown> | InvalidFallbackClassifier {
+  return classifier;
+}
+
+// WHY: TypeScript cannot preserve a generic, distributive payload through a
+// computed-property copy. The overload keeps that type boundary here while the
+// implementation preserves every own payload descriptor except the overridden
+// discriminant.
+function createFallbackVariant<
+  K extends PropertyKey,
+  Value extends DiscriminantValue,
+  Data extends Record<PropertyKey, unknown>
+>(
+  fallbackData: Record<PropertyKey, unknown>,
+  discriminant: K,
+  tag: Value
+): FallbackVariant<K, Value, Data>;
+function createFallbackVariant(
+  fallbackData: Record<PropertyKey, unknown>,
+  discriminant: PropertyKey,
+  tag: DiscriminantValue
+): Record<PropertyKey, unknown> {
+  const fallbackVariant: Record<PropertyKey, unknown> = {};
+  const discriminantKey = isSymbol(discriminant)
+    ? discriminant
+    : String(discriminant);
+
+  for (const key of Reflect.ownKeys(fallbackData)) {
+    if (key === discriminantKey) continue;
+
+    const descriptor = Object.getOwnPropertyDescriptor(fallbackData, key);
+    if (descriptor !== undefined) {
+      Object.defineProperty(fallbackVariant, key, descriptor);
+    }
+  }
+
+  Object.defineProperty(fallbackVariant, discriminantKey, {
+    configurable: true,
+    enumerable: true,
+    value: tag,
+    writable: true
+  });
+  return fallbackVariant;
+}
+
 const isDiscriminantValue = (value: unknown): value is DiscriminantValue =>
   isString(value) ||
   isNumberPrimitive(value) ||
   isSymbol(value) ||
   isBoolean(value);
 
+const isFallbackDataDescriptor = (
+  descriptor: PropertyDescriptor | undefined
+): descriptor is PropertyDescriptor & { value: unknown } =>
+  descriptor !== undefined &&
+  'value' in descriptor &&
+  !isFunction(descriptor.value);
+
+// WHY: Fallback variants copy only own data-property descriptors. A custom
+// prototype, accessor, or method can provide fields represented by the payload
+// type but omitted or changed on the decoded value, so reject all three forms.
+const isFallbackPayload = (
+  value: unknown
+): value is Record<PropertyKey, unknown> => {
+  if (!isPlainObject(value)) return false;
+
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== null && prototype !== Object.prototype) return false;
+
+  for (const key of Reflect.ownKeys(value)) {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (!isFallbackDataDescriptor(descriptor)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 const toRuntimeKey = (value: DiscriminantValue): PropertyKey =>
   isSymbol(value) ? value : String(value);
+
+const assertSafeFallbackTag = (
+  values: readonly DiscriminantValue[],
+  tag: unknown
+): void => {
+  if (!isDiscriminantValue(tag)) {
+    throw new TypeError(
+      'discriminatedUnion fallback tag must be a string, number, symbol, or boolean.'
+    );
+  }
+
+  const fallbackKey = toRuntimeKey(tag);
+  if (values.some((value) => toRuntimeKey(value) === fallbackKey)) {
+    throw new TypeError(
+      `Fallback discriminatedUnion tag collides with a branch value: ${String(tag)}.`
+    );
+  }
+};
+
+const getOwnDiscriminantValue = (
+  input: unknown,
+  discriminant: PropertyKey
+): DiscriminantValue | undefined => {
+  if (
+    (!isObject(input) && !isFunction(input)) ||
+    !hasOwnPropertyKey(input, discriminant)
+  ) {
+    return undefined;
+  }
+
+  const value = Reflect.get(input, discriminant);
+  return isDiscriminantValue(value) ? value : undefined;
+};
 
 const assertSafeProtoBranch = (
   values: readonly DiscriminantValue[],
@@ -215,17 +408,8 @@ export function discriminatedUnion<T extends object>() {
     const declaredKeys = assertBranchKeys(values, guards);
 
     return define<GuardedOf<G[keyof G]>>((input) => {
-      if (
-        (!isObject(input) && !isFunction(input)) ||
-        !hasOwnPropertyKey(input, discriminant)
-      ) {
-        return false;
-      }
-
-      const value = Reflect.get(input, discriminant);
-      if (!isDiscriminantValue(value)) {
-        return false;
-      }
+      const value = getOwnDiscriminantValue(input, discriminant);
+      if (value === undefined) return false;
 
       const key = toRuntimeKey(value);
       if (!declaredKeys.has(key) || !hasOwnPropertyKey(guards, key)) {
@@ -234,6 +418,78 @@ export function discriminatedUnion<T extends object>() {
 
       const guard: Predicate<unknown> = guards[key as keyof G];
       return guard(input);
+    });
+  };
+}
+
+/**
+ * Classifies a finite discriminated union and explicitly transforms undeclared values into one fallback variant.
+ * Known values remain exhaustive: a malformed known member fails instead of reaching the fallback.
+ * @param discriminant Required property that identifies each known union member.
+ * @param values Finite tuple containing every known discriminant value.
+ * @param guards Branch guards keyed by the known discriminant values.
+ * @param fallback Canonical fallback tag and receiver-free factory for an own non-function data-field payload; return `undefined` to reject the input.
+ * @returns Decoder that returns a guarded known member or fallback variant when valid.
+ */
+export function discriminatedUnionWithFallback<T extends object>() {
+  return <
+    const K extends DiscriminantKey<T>,
+    const Values extends readonly DiscriminantValue[],
+    const G extends DiscriminatedUnionGuardMap<T, K, Values[number]>,
+    const FallbackValue extends DiscriminantValue,
+    const FallbackData extends Record<PropertyKey, unknown>
+  >(
+    discriminant: K & SinglePropertyKey<K>,
+    values: Values & ExactDiscriminantValues<T, K, Values>,
+    guards: NoExtraKeys<G, DiscriminatedUnionGuardMap<T, K, Values[number]>> &
+      NonCollidingDiscriminants<T, K> &
+      GuardsMatchDiscriminantValues<K, Values[number], G>,
+    fallback: FallbackVariantConfig<Values[number], FallbackValue, FallbackData>
+  ): FiniteFallbackData<FallbackData> extends never
+    ? InvalidFallbackClassifier
+    : Decoder<
+        GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
+      > => {
+    assertSafeProtoBranch(values, guards);
+    // WHY: Validate and retain one config snapshot so later mutation (or a
+    // getter that changes on read) cannot invalidate the decoder's output type.
+    const fallbackTag = fallback.tag;
+    const createFallback = fallback.create;
+    assertSafeFallbackTag(values, fallbackTag);
+    const declaredKeys = assertBranchKeys(values, guards);
+    const declaredValues = new Set<DiscriminantValue>(values);
+
+    return defineFallbackClassifier<
+      FallbackData,
+      GuardedOf<G[keyof G]> | FallbackVariant<K, FallbackValue, FallbackData>
+    >((input) => {
+      const value = getOwnDiscriminantValue(input, discriminant);
+      if (value === undefined) return { valid: false };
+
+      if (!declaredValues.has(value)) {
+        const fallbackData = createFallback(input, value);
+        if (fallbackData === undefined || !isFallbackPayload(fallbackData)) {
+          return { valid: false };
+        }
+
+        return {
+          valid: true,
+          value: createFallbackVariant<K, FallbackValue, FallbackData>(
+            fallbackData,
+            discriminant,
+            fallbackTag
+          )
+        };
+      }
+
+      const key = toRuntimeKey(value);
+
+      if (!hasOwnPropertyKey(guards, key)) {
+        return { valid: false };
+      }
+
+      const guard = guards[key as keyof G] as Predicate<GuardedOf<G[keyof G]>>;
+      return guard(input) ? { valid: true, value: input } : { valid: false };
     });
   };
 }
