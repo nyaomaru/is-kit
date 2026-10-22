@@ -852,7 +852,7 @@ NodeNext consumers.
 
 ## 👨‍💻 Development
 
-Requires Node 22.22.0 and pnpm 11.2.2.
+Requires Node 22.23.4 and pnpm 11.2.2.
 
 - `pnpm lint`
 - `pnpm build`

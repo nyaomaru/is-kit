@@ -76,7 +76,7 @@ CI runs lint, build, unit tests, and type tests on PRs against `main`.
 
 ## Tips & Notes
 
-- Node: CI uses Node 22.22.0 and `pnpm@11.2.2`.
+- Node: CI uses Node 22.23.4 and `pnpm@11.2.2`.
 - Public API: prefer adding exports in `src/index.ts`; keep internal helpers unexported.
 - New combinator example: add `src/core/combinators/<name>.ts`, export it in `src/core/combinators/index.ts`, add `tests/<name>.test.ts` and `tests-d/<name>.test-d.ts`.
 - `struct` supports `{ exact?: boolean }` to disallow extra keys when `exact: true`.
@@ -213,7 +213,7 @@ Note: See `.github/prompts/jsdoc.prompt.md` for additional tone/phrasing inspira
 
 ## Cursor Cloud specific instructions
 
-- Tool versions live in `mise.toml` (Node 22.22.0 and pnpm 11.2.2). Run `mise exec -- pnpm …` or `mise run <task>` so commands use that toolchain.
+- Tool versions live in `mise.toml` (Node 22.23.4 and pnpm 11.2.2). Run `mise exec -- pnpm …` or `mise run <task>` so commands use that toolchain.
 - The docs site is `pnpm --filter ./docs dev` on port 3000. Open `http://localhost:3000`. Next.js 16 blocks dev-client resources for `127.0.0.1`, so code tabs and other client UI do not hydrate on that host.
 - Docs pages import the workspace package from `dist/`. After changing `src/`, run `mise exec -- pnpm build` before checking the site.
 - `next dev` writes `docs/AGENTS.md` and `docs/CLAUDE.md` when they are missing. Those files are regenerated locally and are not part of the library API.
