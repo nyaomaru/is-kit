@@ -8,6 +8,7 @@ type Dict = {
   top: {
     title: string;
     description: string;
+    hero: { primary: string; secondary: string };
     button: { playground: string };
     installation: { title: string };
     usage: { title: string };
@@ -28,6 +29,12 @@ const en: Dict = {
     title: 'is-kit',
     description:
       'Keep runtime checks aligned with your existing TypeScript object types. Refine values, validate exhaustive unions, and safely handle unknown input.',
+    hero: {
+      primary:
+        'Keep runtime checks aligned with your existing TypeScript object types.',
+      secondary:
+        'Refine values, validate exhaustive unions, and safely handle unknown input.'
+    },
     button: { playground: 'Open Playground' },
     installation: { title: 'Installation' },
     usage: { title: 'Usage' },
@@ -71,6 +78,12 @@ const nl: Dict = {
     title: 'is-kit',
     description:
       'Houd runtimecontroles afgestemd op je bestaande TypeScript-objecttypen. Verfijn waarden, valideer exhaustieve unions en verwerk onbekende input veilig.',
+    hero: {
+      primary:
+        'Houd runtimecontroles afgestemd op je bestaande TypeScript-objecttypen.',
+      secondary:
+        'Verfijn waarden, valideer exhaustieve unions en verwerk onbekende input veilig.'
+    },
     button: { playground: 'Playground openen' },
     installation: { title: 'Installatie' },
     usage: { title: 'Gebruik' },

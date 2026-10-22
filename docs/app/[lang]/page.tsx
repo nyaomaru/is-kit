@@ -54,7 +54,10 @@ export default async function DocsPage({ params }: DocsPageProps) {
 
   return (
     <div className='container mx-auto px-4 py-12'>
-      <HeroSection description={dict.top.description} />
+      <HeroSection
+        primary={dict.top.hero.primary}
+        secondary={dict.top.hero.secondary}
+      />
 
       <section
         id='installation'
