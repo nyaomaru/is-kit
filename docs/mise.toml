@@ -5,7 +5,7 @@
 
 # Tool versions to match local dev and CI
 [tools]
-node = "22.22.0"
+node = "22.23.4"
 pnpm = "11.2.2"
 
 [tasks.dev]
