@@ -9,22 +9,22 @@ export const INSTALL_COMMANDS: Record<InstallTab, string> = {
 };
 
 export const USAGE_TABS = [
+  'compose-guards',
   'existing-types',
   'property-refinement',
   'exhaustive-unions',
   'open-inputs',
-  'handle-unknown-input',
-  'compose-guards'
+  'handle-unknown-input'
 ] as const;
 export type UsageTab = (typeof USAGE_TABS)[number];
 
 export const USAGE_TAB_LABELS: Record<UsageTab, string> = {
+  'compose-guards': 'Compose guards',
   'existing-types': 'Existing types',
   'property-refinement': 'Property refinement',
   'exhaustive-unions': 'Exhaustive unions',
   'open-inputs': 'Open inputs',
-  'handle-unknown-input': 'Handle unknown input',
-  'compose-guards': 'Compose guards'
+  'handle-unknown-input': 'Handle unknown input'
 };
 
 export const USAGE_SNIPPETS: Record<UsageTab, string> = {
