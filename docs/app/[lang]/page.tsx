@@ -79,34 +79,29 @@ export default async function DocsPage({ params }: DocsPageProps) {
         title={dict.top.features.title}
         items={[
           {
-            id: 'feature-type-safe',
-            title: dict.top.features.stringDivision.title,
-            description: dict.top.features.stringDivision.description
+            id: 'feature-existing-types',
+            title: dict.top.features.existingTypes.title,
+            description: dict.top.features.existingTypes.description
           },
           {
-            id: 'feature-logic',
-            title: dict.top.features.arrayProcessing.title,
-            description: dict.top.features.arrayProcessing.description
+            id: 'feature-property-refinement',
+            title: dict.top.features.propertyRefinement.title,
+            description: dict.top.features.propertyRefinement.description
           },
           {
-            id: 'feature-collections',
-            title: dict.top.features.nestedArray.title,
-            description: dict.top.features.nestedArray.description
+            id: 'feature-exhaustive-unions',
+            title: dict.top.features.exhaustiveUnions.title,
+            description: dict.top.features.exhaustiveUnions.description
           },
           {
-            id: 'feature-nullable',
-            title: dict.top.features.flexibleOutput.title,
-            description: dict.top.features.flexibleOutput.description
+            id: 'feature-unknown-input-boundaries',
+            title: dict.top.features.unknownInputBoundaries.title,
+            description: dict.top.features.unknownInputBoundaries.description
           },
           {
-            id: 'feature-parse',
-            title: dict.top.features.flatteningOption.title,
-            description: dict.top.features.flatteningOption.description
-          },
-          {
-            id: 'feature-tiny',
-            title: dict.top.features.mixedDelimiters.title,
-            description: dict.top.features.mixedDelimiters.description
+            id: 'feature-zero-dependency-composition',
+            title: dict.top.features.zeroDependencyComposition.title,
+            description: dict.top.features.zeroDependencyComposition.description
           }
         ]}
         variant='tabs'

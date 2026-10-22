@@ -1,6 +1,7 @@
 'use client';
 
 import { CodeTabs } from '@/components/code/code-tabs';
+import { USAGE_TAB_LABELS } from '@/constants/docs';
 import { usageTabs, usageCode } from '@/lib/docs';
 
 export type UsageSectionProps = {
@@ -17,7 +18,7 @@ export function UsageSection({
     <CodeTabs
       items={usageTabs.map((tab) => ({
         value: tab,
-        label: `${tab}`,
+        label: USAGE_TAB_LABELS[tab],
         code: usageCode(tab),
         language: 'ts'
       }))}

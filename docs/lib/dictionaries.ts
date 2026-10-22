@@ -13,12 +13,11 @@ type Dict = {
     usage: { title: string };
     features: {
       title: string;
-      stringDivision: { title: string; description: string };
-      arrayProcessing: { title: string; description: string };
-      nestedArray: { title: string; description: string };
-      flexibleOutput: { title: string; description: string };
-      flatteningOption: { title: string; description: string };
-      mixedDelimiters: { title: string; description: string };
+      existingTypes: { title: string; description: string };
+      propertyRefinement: { title: string; description: string };
+      exhaustiveUnions: { title: string; description: string };
+      unknownInputBoundaries: { title: string; description: string };
+      zeroDependencyComposition: { title: string; description: string };
     };
     api: { title: string; fullReferenceLinkText: string };
   };
@@ -28,38 +27,36 @@ const en: Dict = {
   top: {
     title: 'is-kit',
     description:
-      'A lightweight, zero-dependency toolkit for building and composing reusable TypeScript type guards while preserving useful narrowing.',
+      'Keep runtime checks aligned with your existing TypeScript object types. Refine values, validate exhaustive unions, and safely handle unknown input.',
     button: { playground: 'Open Playground' },
     installation: { title: 'Installation' },
     usage: { title: 'Usage' },
     features: {
       title: 'Features',
-      stringDivision: {
-        title: 'Type-safe predicates',
+      existingTypes: {
+        title: 'Existing types',
         description:
-          'Author and compose predicates that refine types precisely.'
+          'Build runtime guards around the TypeScript object types you already have. typedStruct<T>() helps keep runtime validation aligned when those types change.'
       },
-      arrayProcessing: {
-        title: 'Composable logic',
+      propertyRefinement: {
+        title: 'Property refinement',
         description:
-          'Combine guards with and/or/not while preserving inference.'
+          'Refine individual properties while preserving the original parent type. Compose refinements naturally with control flow, filter, and find.'
       },
-      nestedArray: {
-        title: 'Collection helpers',
+      exhaustiveUnions: {
+        title: 'Exhaustive unions',
         description:
-          'Validate arrays, tuples, records with ergonomic combinators.'
+          'Validate finite discriminated unions with compile-time coverage for every known branch. Adding or removing a variant makes missing runtime handling visible to TypeScript.'
       },
-      flexibleOutput: {
-        title: 'Strict nullability',
-        description: 'Handle optional/nullable data with clear, typed helpers.'
+      unknownInputBoundaries: {
+        title: 'Unknown-input boundaries',
+        description:
+          'Handle evolving external input without weakening known branches. Classify undeclared discriminants explicitly, reject malformed known variants, and represent validation with tagged results.'
       },
-      flatteningOption: {
-        title: 'Parsing helpers',
-        description: 'Safely parse unknown data with typed results.'
-      },
-      mixedDelimiters: {
-        title: 'Tiny, focused',
-        description: 'Zero deps, tree-shakeable, designed for readability.'
+      zeroDependencyComposition: {
+        title: 'Zero-dependency composition',
+        description:
+          'Build larger checks from small TypeScript predicates without introducing a schema runtime or additional dependencies.'
       }
     },
     api: {
@@ -73,35 +70,36 @@ const nl: Dict = {
   top: {
     title: 'is-kit',
     description:
-      'Een lichtgewicht toolkit zonder dependencies om herbruikbare TypeScript-typeguards te bouwen en samen te stellen, met behoud van bruikbare narrowing.',
+      'Houd runtimecontroles afgestemd op je bestaande TypeScript-objecttypen. Verfijn waarden, valideer exhaustieve unions en verwerk onbekende input veilig.',
     button: { playground: 'Playground openen' },
     installation: { title: 'Installatie' },
     usage: { title: 'Gebruik' },
     features: {
       title: 'Functies',
-      stringDivision: {
-        title: 'Type-veilige predicaten',
-        description: 'Stel predicaten samen die types precies verfijnen.'
+      existingTypes: {
+        title: 'Bestaande typen',
+        description:
+          'Bouw runtimeguards rond de TypeScript-objecttypen die je al hebt. typedStruct<T>() helpt runtimevalidatie synchroon te houden wanneer die typen veranderen.'
       },
-      arrayProcessing: {
-        title: 'Combineerbare logica',
-        description: 'Combineer guards met and/or/not en behoud inferentie.'
+      propertyRefinement: {
+        title: 'Eigenschapsverfijning',
+        description:
+          'Verfijn afzonderlijke eigenschappen met behoud van het oorspronkelijke bovenliggende type. Combineer verfijningen natuurlijk met control flow, filter en find.'
       },
-      nestedArray: {
-        title: 'Collectiehulpen',
-        description: 'Valideer arrays, tuples en records met combinators.'
+      exhaustiveUnions: {
+        title: 'Exhaustieve unions',
+        description:
+          'Valideer eindige discriminated unions met compile-time-dekking voor elke bekende variant. Het toevoegen of verwijderen van een variant maakt ontbrekende runtimeafhandeling zichtbaar voor TypeScript.'
       },
-      flexibleOutput: {
-        title: 'Strikte nullability',
-        description: 'Behandel optional/nullable met duidelijke helpers.'
+      unknownInputBoundaries: {
+        title: 'Grenzen voor onbekende input',
+        description:
+          'Verwerk veranderende externe input zonder bekende branches te verzwakken. Classificeer niet-gedeclareerde discriminants expliciet, wijs ongeldige bekende varianten af en representeer validatie met getagde resultaten.'
       },
-      flatteningOption: {
-        title: 'Parseerhulpen',
-        description: 'Parseer onbekende data veilig met getypte resultaten.'
-      },
-      mixedDelimiters: {
-        title: 'Klein en gericht',
-        description: 'Geen deps, tree-shakeable, leesbaar.'
+      zeroDependencyComposition: {
+        title: 'Compositie zonder dependencies',
+        description:
+          'Bouw grotere controles uit kleine TypeScript-predicaten zonder een schema-runtime of aanvullende dependencies toe te voegen.'
       }
     },
     api: {
