@@ -9,62 +9,68 @@ export const INSTALL_COMMANDS: Record<InstallTab, string> = {
 };
 
 export const USAGE_TABS = [
-  'logic',
-  'refinement',
-  'define',
-  'struct',
-  'parse',
-  'combinators',
-  'nullability',
-  'equality'
+  'compose-guards',
+  'existing-types',
+  'property-refinement',
+  'exhaustive-unions',
+  'open-inputs',
+  'handle-unknown-input'
 ] as const;
 export type UsageTab = (typeof USAGE_TABS)[number];
+
+export const USAGE_TAB_LABELS: Record<UsageTab, string> = {
+  'compose-guards': 'Compose guards',
+  'existing-types': 'Existing types',
+  'property-refinement': 'Property refinement',
+  'exhaustive-unions': 'Exhaustive unions',
+  'open-inputs': 'Open inputs',
+  'handle-unknown-input': 'Handle unknown input'
+};
+
 export const USAGE_SNIPPETS: Record<UsageTab, string> = {
-  define: `import { define } from 'is-kit';
+  'existing-types': `import {
+  isNumber,
+  isString,
+  optionalKey,
+  safeParse,
+  typedStruct
+} from 'is-kit';
 
-const isString = define<string>((x) => typeof x === 'string');
+type User = {
+  id: number;
+  name: string;
+  nickname?: string;
+};
 
-if (isString('hello')) {
-  // narrowed to string
-}`,
-  struct: `import { optionalKey, struct, isNumber, isString } from 'is-kit';
-
-const isUser = struct({
+const isUser = typedStruct<User>()({
   id: isNumber,
   name: isString,
-  nickname: optionalKey(isString),
+  nickname: optionalKey(isString)
 });
 
-const isExactUser = struct(
-  {
-    id: isNumber,
-    name: isString,
-  },
-  { exact: true }
-);
+declare const input: unknown;
 
-isUser({ id: 1, name: 'neo' }); // true
-isUser({ id: 1, name: 'neo', nickname: 'n' }); // true
-isUser({ id: 1, name: 'neo', role: 'admin' }); // true
-isExactUser({ id: 1, name: 'neo', role: 'admin' }); // false
-isUser({ id: '1', name: 'neo' }); // false`,
-  logic: `import { and, or, not, predicateToRefine, isString, isNumber } from 'is-kit';
+const result = safeParse(isUser, input);
 
-const isShort = predicateToRefine<string>((s) => s.length <= 3);
-const isShortString = and(isString, isShort); // isShortString: (value: unknown) => value is string
-
-const evaluations = ['ok', 'toolong', 123].map((value) => isShortString(value));
-// evaluations: [true, false, false]
-or(isString, isNumber)('x'); // true
-not(isString)(42); // true`,
-  refinement: `import { isString, refineKey } from 'is-kit';
+if (result.valid) {
+  result.value.name.toUpperCase();
+}`,
+  'property-refinement': `import {
+  isString,
+  refineDefinedKey,
+  refineIndex,
+  refineKey
+} from 'is-kit';
 
 type Item = {
   value: string | number;
-  id: number;
+  label?: string;
+  tags: readonly (string | number)[];
 };
 
 const hasStringValue = refineKey('value', isString);
+const hasStringLabel = refineDefinedKey('label', isString);
+const hasStringFirstTag = refineKey('tags', refineIndex(0, isString));
 
 declare const items: Item[];
 declare const item: Item;
@@ -72,77 +78,101 @@ declare const item: Item;
 const textItems = items.filter(hasStringValue);
 // Array<Item & { value: string }>
 
-const firstTextItem = items.find(hasStringValue);
-
-if (hasStringValue(item)) {
-  item.value.toUpperCase(); // value is string; Item is preserved
+if (hasStringLabel(item) && hasStringFirstTag(item)) {
+  item.label.toUpperCase();
+  item.tags[0].toUpperCase();
 }`,
-  parse: `import { safeJsonParse, struct, isNumber, isString } from 'is-kit';
-
-const isUser = struct({
-  id: isNumber,
-  name: isString,
-});
-
-const jsonInput = '{"id":1,"name":"neo"}';
-const result = safeJsonParse(jsonInput, isUser);
-// result: ParseResult<{ id: number; name: string }>
-
-if (result.valid) {
-  const user = result.value; // { id: number; name: string }
-  user.name.toUpperCase(); // 'NEO'
-} else {
-  console.error('Invalid JSON or user data');
-}`,
-  combinators: `import {
-  arrayOf,
-  mapOf,
-  nonEmptyArrayOf,
-  recordOf,
-  setOf,
-  tupleOf,
-  isString,
-  isNumber
+  'exhaustive-unions': `import {
+  discriminatedUnion,
+  isNumber,
+  oneOfValues,
+  typedStruct
 } from 'is-kit';
 
-const stringArray = arrayOf(isString);
-const tags = nonEmptyArrayOf(isString);
-const stringSet = setOf(isString);
-const scoreMap = mapOf(isString, isNumber);
-const pair = tupleOf(isString, isNumber);
-const stringRecord = recordOf(isString, isString);
+type Event =
+  | { kind: 'click'; x: number }
+  | { kind: 'scroll'; delta: number };
 
-stringArray(['a', 'b']); // true
-tags([]); // false
-tags(['a']); // true
-stringSet(new Set(['a', 'b'])); // true
-scoreMap(new Map([['math', 98]])); // true
-pair(['id', 1]); // true
-stringRecord({ a: 'x' }); // true`,
-  nullability: `import { optional, required, nullable, nonNull, isString } from 'is-kit';
+const isClickEvent = typedStruct<Extract<Event, { kind: 'click' }>>()({
+  kind: oneOfValues('click'),
+  x: isNumber
+});
 
-const maybeString = optional(isString); // string | undefined
-maybeString(undefined); // true
-maybeString('ok'); // true
+const isScrollEvent = typedStruct<Extract<Event, { kind: 'scroll' }>>()({
+  kind: oneOfValues('scroll'),
+  delta: isNumber
+});
 
-const mustString = required(isString); // excludes undefined
-mustString(undefined); // false
+const isEvent = discriminatedUnion<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent }
+);
 
-const nullableString = nullable(isString); // string | null
-nullableString(null); // true
+// The values and guard map must cover every Event variant.`,
+  'open-inputs': `import { discriminatedUnionWithFallback } from 'is-kit';
 
-const nonNullString = nonNull(isString); // excludes null
-nonNullString(null); // false
+type Event =
+  | { kind: 'click'; x: number; y: number }
+  | { kind: 'scroll'; delta: number };
 
-// For struct key-level optional fields, use optionalKey(...).`,
-  equality: `import { equals, equalsBy, equalsKey, isString } from 'is-kit';
+declare const isClickEvent: (input: unknown) => input is Extract<
+  Event,
+  { kind: 'click' }
+>;
+declare const isScrollEvent: (input: unknown) => input is Extract<
+  Event,
+  { kind: 'scroll' }
+>;
 
-equals(1, 1); // true
-equals(NaN, NaN); // true (Object.is)
+const classifyEvent = discriminatedUnionWithFallback<Event>()(
+  'kind',
+  ['click', 'scroll'],
+  { click: isClickEvent, scroll: isScrollEvent },
+  {
+    tag: 'unknown',
+    create: (input, originalKind) => ({ input, originalKind })
+  }
+);
 
-const lengthIs3 = equalsBy(isString, (s) => s.length)(3 as const);
-lengthIs3('foo'); // true
+const result = classifyEvent({ kind: 'hover', target: 'button' });
 
-const hasNameA = equalsKey('name', 'a' as const);
-hasNameA({ id: 1, name: 'a' }); // true`
+if (result.valid && result.value.kind === 'unknown') {
+  result.value.originalKind; // 'hover'
+  result.value.input;
+}
+
+classifyEvent({ kind: 'click', x: 'invalid', y: 24 });
+// { valid: false }`,
+  'handle-unknown-input': `import { isString, safeJsonParse, safeParse } from 'is-kit';
+
+declare const input: unknown;
+declare const json: string;
+
+const valueResult = safeParse(isString, input);
+const jsonResult = safeJsonParse(json, isString);
+
+if (valueResult.valid) {
+  valueResult.value.toUpperCase();
+}
+
+if (jsonResult.valid) {
+  jsonResult.value.toUpperCase();
+}`,
+  'compose-guards': `import {
+  and,
+  isNumber,
+  isString,
+  not,
+  or,
+  predicateToRefine
+} from 'is-kit';
+
+const isShort = predicateToRefine<string>((s) => s.length <= 3);
+const isShortString = and(isString, isShort);
+
+isShortString('ok'); // true
+isShortString('toolong'); // false
+or(isString, isNumber)('x'); // true
+not(isString)(42); // true`
 };

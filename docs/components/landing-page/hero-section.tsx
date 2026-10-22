@@ -4,10 +4,12 @@ import Image from 'next/image';
 import { Paragraph } from '@/components/ui/paragraph';
 
 export type HeroSectionProps = {
-  /** Localized lead-in copy rendered under the logo. */
-  description: string;
+  /** First line of localized lead-in copy rendered under the logo. */
+  primary: string;
+  /** Supporting second line of localized lead-in copy rendered under the logo. */
+  secondary: string;
 };
-export function HeroSection({ description }: HeroSectionProps) {
+export function HeroSection({ primary, secondary }: HeroSectionProps) {
   return (
     <section className='mb-16 flex flex-col items-center text-center'>
       <Link
@@ -27,7 +29,9 @@ export function HeroSection({ description }: HeroSectionProps) {
         variant='lead'
         className='mt-4 mb-8 w-full max-w-2xl px-4 sm:px-0'
       >
-        {description}
+        {primary}
+        <br />
+        {secondary}
       </Paragraph>
     </section>
   );
