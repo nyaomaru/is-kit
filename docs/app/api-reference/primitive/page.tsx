@@ -10,6 +10,8 @@ export const metadata = createApiMetadata(API_REFERENCE_PATHS.primitive);
 const sample = `import {
   isString,
   isNumber,
+  isNumberPrimitive,
+  isFiniteNumber,
   isInteger,
   isSafeInteger,
   isPositive,
@@ -47,6 +49,8 @@ isPrimitive(NaN); // true (use isNumber for finite only)
 isPrimitive({}); // false
 
 // Numeric helpers
+isNumberPrimitive(NaN); // true
+isFiniteNumber(123); // true
 isInteger(42); // true
 isSafeInteger(2 ** 53); // false
 isPositive(0); // false
@@ -64,9 +68,13 @@ export default function PrimitivePage() {
           <Paragraph>
             Primitive value guards such as string/number/boolean and more.
             Finite numbers use <code className='mx-1'>isNumber</code> (excludes
-            NaN/±Infinity). Use <code className='mx-1'>isPrimitive</code> to
-            accept any primitive (string, number, boolean, bigint, symbol,
-            undefined, null), <code className='mx-1'>isNil</code> for a focused
+            NaN/±Infinity); use <code className='mx-1'>isNumberPrimitive</code>{' '}
+            when those number values should remain valid, or{' '}
+            <code className='mx-1'>isFiniteNumber</code> to refine a value
+            already known to be a number. Use{' '}
+            <code className='mx-1'>isPrimitive</code> to accept any primitive
+            (string, number, boolean, bigint, symbol, undefined, null),{' '}
+            <code className='mx-1'>isNil</code> for a focused{' '}
             <code>null | undefined</code> check, and{' '}
             <code className='mx-1'>isNotNil</code> for its generic inverse.
             Numeric helpers are available:{' '}
