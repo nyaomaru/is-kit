@@ -528,7 +528,7 @@ remove nullish values while preserving `Array.prototype.filter` narrowing.
 
 ### 9. Parse or assert unknown input
 
-Use `safeParse` when you want a result object, and `assert` when invalid data should stop execution.
+Use `safeParse` to check a value with a guard and return a tagged result object. It does not decode, parse, or transform the input. Use `safeJsonParse` when you need to decode JSON text before validating the resulting value. Use `assert` when invalid data should stop execution.
 
 ```ts
 import { assert, isString, safeParse } from 'is-kit';
