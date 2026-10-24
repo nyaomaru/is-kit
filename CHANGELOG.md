@@ -6,6 +6,26 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.16.1] - 2026-10-24
+
+### Changed
+
+- decouple combinators from deprecated helpers by @nyaomaru in [#361](https://github.com/nyaomaru/is-kit/pull/361)
+
+### Docs
+
+- 1.16.0 by @github-actions[bot] in [#352](https://github.com/nyaomaru/is-kit/pull/352)
+- reframe homepage around type-safe runtime boundaries by @nyaomaru in [#356](https://github.com/nyaomaru/is-kit/pull/356)
+
+### Chore
+
+- pin Node.js 22.23.4 for the October 2026 security release by @nyaomaru in [#353](https://github.com/nyaomaru/is-kit/pull/353)
+- Release: 1.16.1 by @github-actions[bot] in [#362](https://github.com/nyaomaru/is-kit/pull/362)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.16.0...v1.16.1
+
+[v1.16.1]: https://github.com/nyaomaru/is-kit/compare/v1.16.0...v1.16.1
+
 ## [v1.16.0] - 2026-10-20
 
 ### Added
@@ -2093,7 +2113,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.16.0...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.16.1...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
