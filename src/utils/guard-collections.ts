@@ -23,6 +23,30 @@ const everyKeyValueEntry = <K, V>(
   return true;
 };
 
+const hasTupleValues = (
+  values: readonly unknown[],
+  predicates: readonly BooleanPredicate<unknown>[]
+): boolean => {
+  if (values.length !== predicates.length) return false;
+
+  for (let index = 0; index < predicates.length; index += 1) {
+    const predicate = predicates[index];
+    if (!predicate(values[index])) return false;
+  }
+
+  return true;
+};
+
+const hasOwnEnumerableEntries = (
+  values: Record<string, unknown>,
+  keyPredicate: BooleanPredicate<string>,
+  valuePredicate: BooleanPredicate<unknown>
+): boolean =>
+  everyIterableValue(
+    Object.keys(values),
+    (key) => keyPredicate(key) && valuePredicate(values[key])
+  );
+
 /**
  * Checks whether every array element satisfies the provided predicate.
  *
@@ -65,16 +89,7 @@ export const everyBrandedArrayValue = (
 export const everyTupleValue = (
   values: readonly unknown[],
   predicates: readonly BooleanPredicate<unknown>[]
-): boolean => {
-  if (values.length !== predicates.length) return false;
-
-  for (let index = 0; index < predicates.length; index += 1) {
-    const predicate = predicates[index];
-    if (!predicate(values[index])) return false;
-  }
-
-  return true;
-};
+): boolean => hasTupleValues(values, predicates);
 
 /**
  * Checks whether every set value satisfies the provided predicate.
@@ -148,8 +163,10 @@ export const everyOwnEnumerableEntry = (
   values: Record<string, unknown>,
   keyPredicate: BooleanPredicate<string>,
   valuePredicate: BooleanPredicate<unknown>
-): boolean =>
-  everyIterableValue(
-    Object.keys(values),
-    (key) => keyPredicate(key) && valuePredicate(values[key])
-  );
+): boolean => hasOwnEnumerableEntries(values, keyPredicate, valuePredicate);
+
+/** @internal Runtime implementation shared by `tupleOf`. */
+export { hasTupleValues };
+
+/** @internal Runtime implementation shared by `recordOf`. */
+export { hasOwnEnumerableEntries };

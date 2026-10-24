@@ -27,6 +27,7 @@ const sample = `import {
   isError,
   isURL,
   isBlob,
+  isFile,
   isInstanceOf,
 } from 'is-kit';
 
@@ -65,6 +66,7 @@ isTypedArray(new Uint8Array([1, 2])); // true
 isError(new Error('boom')); // true
 isURL(new URL('https://example.com')); // true
 isBlob(new Blob(['hi'])); // true
+isFile(new File(['hi'], 'greeting.txt')); // true
 
 // Constructor-based guard factory
 class Animal {}
@@ -82,7 +84,10 @@ export default function ObjectPage() {
           <Paragraph>
             Object/collection/structured data guards. Includes
             <code className='mx-1'>isInstanceOf</code> for creating reusable
-            constructor-based guards.
+            constructor-based guards. <code className='mx-1'>isURL</code>,{' '}
+            <code className='mx-1'>isBlob</code>, and{' '}
+            <code className='mx-1'>isFile</code> return <code>false</code> in
+            runtimes that do not provide the corresponding constructor.
           </Paragraph>
         </Stack>
         <CodeBlock code={sample} language='ts' />

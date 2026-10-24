@@ -1,6 +1,6 @@
 import type { GuardedOf, Predicate } from '@/types';
 import { define } from '../define';
-import { everyOwnEnumerableEntry } from '@/utils/guard-collections';
+import { hasOwnEnumerableEntries } from '@/utils/guard-collections';
 import { isPlainObject } from '../object';
 
 type RecordOfResult<K extends string, V> = string extends K
@@ -27,6 +27,6 @@ export function recordOf<
   return define<RecordOfResult<GuardedOf<KF>, GuardedOf<VF>>>(
     (input) =>
       isPlainObject(input) &&
-      everyOwnEnumerableEntry(input, keyFunction, valueFunction)
+      hasOwnEnumerableEntries(input, keyFunction, valueFunction)
   );
 }
