@@ -41,11 +41,12 @@ jobs:
           fi
 
       # WHY: npm Trusted Publishing requires npm 11.5.1 or later. Set up
-      # Node 24 after mise so its bundled npm remains first on PATH.
+      # Node 24.22.1 after mise so its bundled npm remains first on PATH and
+      # its trust store rejects the compromised eMudhra intermediates.
       - name: Setup Node for trusted publishing
         uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version: '24.22.1'
           registry-url: 'https://registry.npmjs.org'
           package-manager-cache: false
 

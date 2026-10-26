@@ -12,11 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # WHY: The package supports Node 22+, while 22.x and 24.x are the
-        # maintained LTS lines that define the supported consumer boundary.
+        # WHY: These supported consumer floors include Node's eMudhra CA
+        # distrust update while retaining the package's Node 22+ boundary.
         node:
-          - '22.x'
-          - '24.x'
+          - '22.23.4'
+          - '24.22.1'
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
