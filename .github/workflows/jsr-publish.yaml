@@ -12,12 +12,18 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - name: Publish package
-        run: npx jsr publish --allow-slow-types --allow-dirty
+      # WHY: `npx jsr` makes HTTPS requests; this floor includes Node's
+      # eMudhra CA distrust update.
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.4'
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.x
+          deno-version: v2.9.8
+      - name: Publish package
+        run: npx jsr publish --allow-slow-types --allow-dirty
       - name: Smoke-test published package
         env:
           IS_KIT_VERSION: ${{ github.ref_name }}

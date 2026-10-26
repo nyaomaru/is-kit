@@ -14,10 +14,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+      # WHY: `npx jsr` makes HTTPS requests; this floor includes Node's
+      # eMudhra CA distrust update.
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.4'
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.x
+          deno-version: v2.9.8
       - name: Verify local JSR package
         run: npx jsr publish --dry-run --allow-slow-types
       - name: Run local JSR package smoke test
