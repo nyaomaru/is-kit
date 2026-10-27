@@ -102,7 +102,7 @@ const hasRequiredKeys = (
 ): boolean => {
   // WHY: Required fields must be own properties; inherited values should not
   // satisfy a schema because `struct` models object payload shape, not prototype chains.
-  // Direct entry access avoids callbacks and tuple iteration on this hot path.
+  // Direct entry access avoids callbacks and tuple destructuring on this hot path.
   for (const entry of entries) {
     const key = entry[0];
     const guard = entry[1];
