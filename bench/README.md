@@ -25,3 +25,11 @@ to 64-object corpora, mixed valid/invalid payloads, different object layouts,
 and wider schemas. `node tests/struct-exact-compatibility.mjs <baseline-index.mjs>`
 compares return values, exceptions, getters, and Proxy traps across a systematic
 fixture matrix. Both commands use the same saved baseline bundle.
+
+For required/optional `struct` field traversal, use
+`node bench/struct-loops.mjs <baseline-index.mjs> [candidate-index.mjs] [workload-filter]`.
+The candidate defaults to `dist/index.mjs`. It compares 64-input corpora for
+2-, 6-, and 20-field schemas, early/middle/late failures, absent and present
+optional keys, nested schemas, and mixed results. Exact-mode controls keep
+the existing exactness implementation fixed. See [setup and results](struct-loops-results.md)
+for the loop comparison and reproduction steps.

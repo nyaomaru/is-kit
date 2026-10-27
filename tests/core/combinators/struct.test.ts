@@ -435,4 +435,166 @@ describe('struct', () => {
     expect(guard({ id: 'abc', nickname: undefined })).toBe(true);
     expect(guard({ id: 'abc', nickname: 123 })).toBe(false);
   });
+
+  describe.each([false, true])('field traversal with exact=%s', (exact) => {
+    it.each([
+      [undefined, ['first', 'middle', 'last', 'optionalFirst', 'optionalLast']],
+      ['first', ['first']],
+      ['middle', ['first', 'middle']],
+      ['last', ['first', 'middle', 'last']],
+      ['optionalFirst', ['first', 'middle', 'last', 'optionalFirst']],
+      [
+        'optionalLast',
+        ['first', 'middle', 'last', 'optionalFirst', 'optionalLast']
+      ]
+    ])(
+      'short-circuits after %s in required-then-optional order',
+      (failed, visited) => {
+        const trace: string[] = [];
+        const field =
+          (name: string) =>
+          (value: unknown): value is number => {
+            trace.push(`guard:${name}`);
+            return isNumber(value);
+          };
+        const guard = struct(
+          {
+            optionalFirst: optionalKey(field('optionalFirst')),
+            first: field('first'),
+            middle: field('middle'),
+            optionalLast: optionalKey(field('optionalLast')),
+            last: field('last')
+          },
+          { exact }
+        );
+        const input: Record<string, unknown> = {};
+        for (const key of [
+          'first',
+          'middle',
+          'last',
+          'optionalFirst',
+          'optionalLast'
+        ]) {
+          Object.defineProperty(input, key, {
+            enumerable: true,
+            get() {
+              trace.push(`get:${key}`);
+              return key === failed ? 'invalid' : 1;
+            }
+          });
+        }
+
+        expect(guard(input)).toBe(failed === undefined);
+        expect(trace).toEqual(
+          visited.map((key) => [`get:${key}`, `guard:${key}`]).flat()
+        );
+      }
+    );
+
+    it('rejects inherited required fields without reading them or calling their guard', () => {
+      const inheritedValue = jest.fn(() => 1);
+      const inheritedGuard = jest.fn(isNumber);
+      const prototype = Object.defineProperty(Object.create(null), 'required', {
+        get: inheritedValue
+      });
+      const guard = struct(
+        {
+          required: (value: unknown): value is number => inheritedGuard(value)
+        },
+        { exact }
+      );
+
+      expect(guard(Object.create(prototype))).toBe(false);
+      expect(inheritedValue).not.toHaveBeenCalled();
+      expect(inheritedGuard).not.toHaveBeenCalled();
+    });
+
+    it('skips absent and inherited optional fields, but validates hidden own fields', () => {
+      const inheritedValue = jest.fn(() => 'invalid');
+      const optionalGuard = jest.fn(isNumber);
+      const prototype = Object.defineProperty(Object.create(null), 'optional', {
+        get: inheritedValue
+      });
+      const guard = struct(
+        {
+          optional: optionalKey((value: unknown): value is number =>
+            optionalGuard(value)
+          )
+        },
+        { exact }
+      );
+
+      expect(guard({})).toBe(true);
+      expect(guard(Object.create(prototype))).toBe(true);
+      expect(inheritedValue).not.toHaveBeenCalled();
+      expect(optionalGuard).not.toHaveBeenCalled();
+      expect(guard(Object.defineProperty({}, 'optional', { value: 1 }))).toBe(
+        true
+      );
+      expect(
+        guard(Object.defineProperty({}, 'optional', { value: 'invalid' }))
+      ).toBe(false);
+      expect(optionalGuard.mock.calls).toEqual([[1], ['invalid']]);
+    });
+
+    it('calls required and optional guards without a receiver', () => {
+      const receivers: unknown[] = [];
+      function field(this: unknown, value: unknown): value is number {
+        receivers.push(this);
+        return isNumber(value);
+      }
+      const guard = struct(
+        { required: field, optional: optionalKey(field) },
+        { exact }
+      );
+
+      expect(guard({ required: 1, optional: 2 })).toBe(true);
+      expect(receivers).toEqual([undefined, undefined]);
+    });
+
+    it('checks optional ownership after earlier guards mutate the input', () => {
+      const input: { first?: number; last?: number } = { first: 1 };
+      const lastGuard = jest.fn(isNumber);
+      const guard = struct(
+        {
+          first: optionalKey((value: unknown): value is number => {
+            delete input.first;
+            input.last = 2;
+            return isNumber(value);
+          }),
+          last: optionalKey((value: unknown): value is number =>
+            lastGuard(value)
+          )
+        },
+        { exact }
+      );
+
+      expect(guard(input)).toBe(true);
+      expect(input).toEqual({ last: 2 });
+      expect(lastGuard.mock.calls).toEqual([[2]]);
+    });
+
+    it('propagates optional guard exceptions before later reads', () => {
+      const laterValue = jest.fn(() => 2);
+      const guard = struct(
+        {
+          first: optionalKey((_value: unknown): _value is never => {
+            throw new Error('optional guard failed');
+          }),
+          last: optionalKey(isNumber)
+        },
+        { exact }
+      );
+
+      expect(() =>
+        guard({
+          first: 1,
+          get last() {
+            return laterValue();
+          }
+        })
+      ).toThrow('optional guard failed');
+      expect(laterValue).not.toHaveBeenCalled();
+    });
+  });
 });

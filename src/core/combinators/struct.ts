@@ -99,22 +99,33 @@ const isOptionalSchemaField = define<OptionalSchemaField<Predicate<unknown>>>(
 const hasRequiredKeys = (
   obj: Record<string, unknown>,
   entries: readonly SchemaEntry[]
-): boolean =>
+): boolean => {
   // WHY: Required fields must be own properties; inherited values should not
   // satisfy a schema because `struct` models object payload shape, not prototype chains.
-  entries.every(
-    ([key, guard]) => hasOwnPropertyKey(obj, key) && guard(obj[key])
-  );
+  // Direct entry access avoids callbacks and tuple destructuring on this hot path.
+  for (const entry of entries) {
+    const key = entry[0];
+    const guard = entry[1];
+    if (!hasOwnPropertyKey(obj, key) || !guard(obj[key])) return false;
+  }
+
+  return true;
+};
 
 const hasValidOptionalKeys = (
   obj: Record<string, unknown>,
   entries: readonly SchemaEntry[]
-): boolean =>
+): boolean => {
   // WHY: Optional keys are validated only when present. Missing keys stay valid
   // without forcing callers to encode `undefined` into the value guard.
-  entries.every(
-    ([key, guard]) => !hasOwnPropertyKey(obj, key) || guard(obj[key])
-  );
+  for (const entry of entries) {
+    const key = entry[0];
+    const guard = entry[1];
+    if (hasOwnPropertyKey(obj, key) && !guard(obj[key])) return false;
+  }
+
+  return true;
+};
 
 const hasOnlyAllowedKeys = (
   obj: Record<string, unknown>,
