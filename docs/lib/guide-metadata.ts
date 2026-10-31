@@ -1,6 +1,5 @@
-import type { Metadata } from 'next';
 import { GUIDE_PATHS, type GuidePath } from '@/constants/guides';
-import { SITE_OPEN_GRAPH, SITE_SOCIAL_IMAGE } from '@/constants/site';
+import { createRouteMetadata } from '@/lib/route-metadata';
 
 type GuideMetadataCopy = {
   title: string;
@@ -68,42 +67,19 @@ const GUIDE_METADATA = {
 } as const satisfies Record<GuidePath, GuideMetadataCopy>;
 
 /**
- * Build search and social metadata for a practical guide route.
+ * Builds search and social metadata for a practical guide route.
  * @param path Canonical guide path with registered metadata copy.
  * @returns Metadata with page-specific titles, descriptions, and canonical URLs.
  */
-export function createGuideMetadata(path: GuidePath): Metadata {
+export function createGuideMetadata(path: GuidePath) {
   const { title, description, image, imageAlt }: GuideMetadataCopy =
     GUIDE_METADATA[path];
 
-  return {
+  return createRouteMetadata({
+    path,
     title,
     description,
-    alternates: {
-      canonical: path
-    },
-    openGraph: {
-      ...SITE_OPEN_GRAPH,
-      title,
-      description,
-      url: path,
-      ...(image && {
-        images: [
-          {
-            url: image,
-            width: 1000,
-            height: 420,
-            type: 'image/gif',
-            alt: imageAlt ?? title
-          }
-        ]
-      })
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [image ?? SITE_SOCIAL_IMAGE]
-    }
-  };
+    image,
+    imageAlt
+  });
 }

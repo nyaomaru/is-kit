@@ -3,7 +3,7 @@ import { Source_Sans_3 } from 'next/font/google';
 import './globals.css';
 import { SiteHeader } from '@/components/navigation/site-header';
 import { SidebarLayout } from '@/components/layout/sidebar-layout';
-import { apiSections } from '@/constants/api-sections';
+import { apiSections } from '@/constants/api-catalog';
 import { guideSections } from '@/constants/guides';
 import {
   SITE_DESCRIPTION,
