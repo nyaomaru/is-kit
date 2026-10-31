@@ -144,6 +144,10 @@ const isPositiveNumber = and(
 );
 ```
 
+> **Note:** `isNumber` accepts only finite numbers. It rejects `NaN`, `Infinity`,
+> and `-Infinity`, so it is stricter than `typeof value === 'number'`.
+> Use `isNumberPrimitive` when you want the full JavaScript `number` primitive domain.
+
 You can also refine one property of an already-typed parent value.
 
 ```ts

@@ -42,6 +42,10 @@ export const isInfiniteNumber = and(
 export const isFiniteNumber = predicateToRefine<number>(Number.isFinite);
 /**
  * Checks whether a value is a finite number.
+ *
+ * Rejects `NaN`, `Infinity`, and `-Infinity`, so it is stricter than
+ * `typeof value === 'number'`. Use {@link isNumberPrimitive} for the full
+ * `number` primitive domain.
  * @returns Predicate narrowing to finite `number`.
  */
 export const isNumber = and(isNumberPrimitive, isFiniteNumber);
