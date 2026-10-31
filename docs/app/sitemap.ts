@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { API_ITEMS } from '@/constants/api-items';
+import { API_ITEMS } from '@/constants/api-catalog';
 import { GUIDE_ITEMS, GUIDE_PATHS } from '@/constants/guides';
 import {
   DEFAULT_LOCALE,

@@ -1,10 +1,4 @@
-import Link from 'next/link';
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { DocsCardGrid } from '@/components/navigation/docs-card-link';
 import { Heading } from '@/components/ui/heading';
 import { Paragraph } from '@/components/ui/paragraph';
 import { Stack } from '@/components/ui/stack';
@@ -24,29 +18,7 @@ export default function GuidesIndexPage() {
           reference.
         </Paragraph>
       </Stack>
-      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-        {GUIDE_ITEMS.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className='group block rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
-          >
-            <Card className='h-full transition-colors group-hover:border-primary'>
-              <CardHeader>
-                <div className='inline-block w-fit'>
-                  <CardTitle className='inline-block text-lg leading-snug underline-offset-4'>
-                    {item.title}
-                  </CardTitle>
-                  <div className='h-px w-0 bg-primary transition-[width] duration-500 group-hover:w-full' />
-                </div>
-                <CardDescription className='mt-3'>
-                  {item.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-        ))}
-      </div>
+      <DocsCardGrid items={GUIDE_ITEMS} titleClassName='leading-snug' />
     </Stack>
   );
 }
