@@ -166,7 +166,7 @@ The original `Item` type is preserved while its checked `value` property is
 narrowed. This lets a reusable guard carry child narrowing back to the parent
 through `filter`, `find`, and control flow.
 
-For an `unknown` value at a runtime boundary, build an object guard and parse
+For an `unknown` value at a runtime boundary, build an object guard and validate
 it.
 
 ```ts
@@ -314,7 +314,7 @@ If you are new to the library, these are the pieces to remember:
 - `predicateToRefine(fn)` upgrades an existing predicate so it can participate in narrowing chains.
 - `refineKey(key, guard)` carries a child refinement back onto its parent type.
 - `struct({...})` builds an object-shape guard.
-- `safeParse(guard, value)` gives you a small tagged result object.
+- `safeParse(guard, value)` wraps guard validation in a small tagged result object.
 - `assert(guard, value)` throws if the value does not match.
 
 ## ⚒️ Common Usage
@@ -526,7 +526,7 @@ Use `isNil` for a direct nullish check instead of hand-rolling
 `isNull(x) || isUndefined(x)`. Use `isNotNil` for the inverse check or to
 remove nullish values while preserving `Array.prototype.filter` narrowing.
 
-### 9. Parse or assert unknown input
+### 9. Validate or assert unknown input
 
 Use `safeParse` when you want a result object, and `assert` when invalid data should stop execution.
 
@@ -797,7 +797,7 @@ For the full API list and dedicated pages, use the docs site below.
 
 ### Public types
 
-Start with the primary types for guard authoring, parsing, and schema inference:
+Start with the primary types for guard authoring, validation, and schema inference:
 
 - `Predicate`, `Guard`, `Refinement`, `Refine`, `ParseResult`, `Primitive`
 - `InferSchema`, `StructOptions`, `TypedStructShape`, `TypedStructFields`
