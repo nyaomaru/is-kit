@@ -6,6 +6,34 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.16.2] - 2026-10-31
+
+### Fixed
+
+- use patched runtimes for eMudhra CA mitigation by @nyaomaru in [#364](https://github.com/nyaomaru/is-kit/pull/364)
+  - Why: Use patched runtimes for eMudhra CA mitigation.
+
+### Changed
+
+- streamline field validation loops by @nyaomaru in [#365](https://github.com/nyaomaru/is-kit/pull/365)
+- share API catalog and card navigation by @nyaomaru in [#367](https://github.com/nyaomaru/is-kit/pull/367)
+
+### Docs
+
+- 1.16.1 by @github-actions[bot] in [#363](https://github.com/nyaomaru/is-kit/pull/363)
+
+### Test
+
+- cover nested object type inference by @nyaomaru in [#366](https://github.com/nyaomaru/is-kit/pull/366)
+
+### Chore
+
+- Release: 1.16.2 by @github-actions[bot] in [#368](https://github.com/nyaomaru/is-kit/pull/368)
+
+**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.16.1...v1.16.2
+
+[v1.16.2]: https://github.com/nyaomaru/is-kit/compare/v1.16.1...v1.16.2
+
 ## [v1.16.1] - 2026-10-24
 
 ### Changed
@@ -2113,7 +2141,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.16.1...HEAD
+[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.16.2...HEAD
 [v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
