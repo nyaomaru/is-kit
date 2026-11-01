@@ -11,7 +11,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: nyaomaru/changelog-bot/.github/workflows/changelog.yaml@v0
+    uses: necoz-oss/changelog-bot/.github/workflows/changelog.yaml@v0
     with:
       changelog_path: CHANGELOG.md
       provider: openai
