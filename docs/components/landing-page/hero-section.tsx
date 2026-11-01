@@ -13,7 +13,7 @@ export function HeroSection({ primary, secondary }: HeroSectionProps) {
   return (
     <section className='mb-16 flex flex-col items-center text-center'>
       <Link
-        href='https://github.com/nyaomaru/is-kit'
+        href='https://github.com/necoz-oss/is-kit'
         className='mb-6 mt-10 inline-flex max-w-full items-center justify-center'
       >
         <Image

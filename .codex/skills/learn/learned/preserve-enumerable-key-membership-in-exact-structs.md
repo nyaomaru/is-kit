@@ -78,4 +78,4 @@ universal improvement.
 - `bench/struct-exact.mjs`
 - `bench/struct-exact-mixed.mjs`
 - `bench/struct-exact-results.md`
-- https://github.com/nyaomaru/is-kit/pull/341
+- https://github.com/necoz-oss/is-kit/pull/341

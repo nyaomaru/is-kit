@@ -32,7 +32,7 @@ export function SiteNav({
         <span className='link-underline'>Guides</span>
       </Link>
       <a
-        href='https://github.com/nyaomaru/is-kit'
+        href='https://github.com/necoz-oss/is-kit'
         target='_blank'
         rel='noreferrer'
         className='group'

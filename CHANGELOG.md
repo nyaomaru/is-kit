@@ -10,78 +10,78 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ### Fixed
 
-- use patched runtimes for eMudhra CA mitigation by @nyaomaru in [#364](https://github.com/nyaomaru/is-kit/pull/364)
+- use patched runtimes for eMudhra CA mitigation by @nyaomaru in [#364](https://github.com/necoz-oss/is-kit/pull/364)
   - Why: Use patched runtimes for eMudhra CA mitigation.
 
 ### Changed
 
-- streamline field validation loops by @nyaomaru in [#365](https://github.com/nyaomaru/is-kit/pull/365)
-- share API catalog and card navigation by @nyaomaru in [#367](https://github.com/nyaomaru/is-kit/pull/367)
+- streamline field validation loops by @nyaomaru in [#365](https://github.com/necoz-oss/is-kit/pull/365)
+- share API catalog and card navigation by @nyaomaru in [#367](https://github.com/necoz-oss/is-kit/pull/367)
 
 ### Docs
 
-- 1.16.1 by @github-actions[bot] in [#363](https://github.com/nyaomaru/is-kit/pull/363)
+- 1.16.1 by @github-actions[bot] in [#363](https://github.com/necoz-oss/is-kit/pull/363)
 
 ### Test
 
-- cover nested object type inference by @nyaomaru in [#366](https://github.com/nyaomaru/is-kit/pull/366)
+- cover nested object type inference by @nyaomaru in [#366](https://github.com/necoz-oss/is-kit/pull/366)
 
 ### Chore
 
-- Release: 1.16.2 by @github-actions[bot] in [#368](https://github.com/nyaomaru/is-kit/pull/368)
+- Release: 1.16.2 by @github-actions[bot] in [#368](https://github.com/necoz-oss/is-kit/pull/368)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.16.1...v1.16.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.16.1...v1.16.2
 
-[v1.16.2]: https://github.com/nyaomaru/is-kit/compare/v1.16.1...v1.16.2
+[v1.16.2]: https://github.com/necoz-oss/is-kit/compare/v1.16.1...v1.16.2
 
 ## [v1.16.1] - 2026-10-24
 
 ### Changed
 
-- decouple combinators from deprecated helpers by @nyaomaru in [#361](https://github.com/nyaomaru/is-kit/pull/361)
+- decouple combinators from deprecated helpers by @nyaomaru in [#361](https://github.com/necoz-oss/is-kit/pull/361)
 
 ### Docs
 
-- 1.16.0 by @github-actions[bot] in [#352](https://github.com/nyaomaru/is-kit/pull/352)
-- reframe homepage around type-safe runtime boundaries by @nyaomaru in [#356](https://github.com/nyaomaru/is-kit/pull/356)
+- 1.16.0 by @github-actions[bot] in [#352](https://github.com/necoz-oss/is-kit/pull/352)
+- reframe homepage around type-safe runtime boundaries by @nyaomaru in [#356](https://github.com/necoz-oss/is-kit/pull/356)
 
 ### Chore
 
-- pin Node.js 22.23.4 for the October 2026 security release by @nyaomaru in [#353](https://github.com/nyaomaru/is-kit/pull/353)
-- Release: 1.16.1 by @github-actions[bot] in [#362](https://github.com/nyaomaru/is-kit/pull/362)
+- pin Node.js 22.23.4 for the October 2026 security release by @nyaomaru in [#353](https://github.com/necoz-oss/is-kit/pull/353)
+- Release: 1.16.1 by @github-actions[bot] in [#362](https://github.com/necoz-oss/is-kit/pull/362)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.16.0...v1.16.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.16.0...v1.16.1
 
-[v1.16.1]: https://github.com/nyaomaru/is-kit/compare/v1.16.0...v1.16.1
+[v1.16.1]: https://github.com/necoz-oss/is-kit/compare/v1.16.0...v1.16.1
 
 ## [v1.16.0] - 2026-10-20
 
 ### Added
 
-- add explicit fallback variants for discriminated union by @nyaomaru in [#349](https://github.com/nyaomaru/is-kit/pull/349)
+- add explicit fallback variants for discriminated union by @nyaomaru in [#349](https://github.com/necoz-oss/is-kit/pull/349)
 
 ### Fixed
 
-- allow freshly published JSR smoke tests by @nyaomaru in [#344](https://github.com/nyaomaru/is-kit/pull/344)
+- allow freshly published JSR smoke tests by @nyaomaru in [#344](https://github.com/necoz-oss/is-kit/pull/344)
   - Why: The post-publish Deno smoke test fails when the newly published JSR version is younger than Deno's minimum dependency age. Add `--minimum-dependency-age=0` to this invocation so th
-- reject invalid struct schema fields by @nyaomaru in [#346](https://github.com/nyaomaru/is-kit/pull/346)
-- use dedicated OGP image by @nyaomaru in [#350](https://github.com/nyaomaru/is-kit/pull/350)
+- reject invalid struct schema fields by @nyaomaru in [#346](https://github.com/necoz-oss/is-kit/pull/346)
+- use dedicated OGP image by @nyaomaru in [#350](https://github.com/necoz-oss/is-kit/pull/350)
 
 ### Changed
 
-- iterate array guards by index by @nyaomaru in [#347](https://github.com/nyaomaru/is-kit/pull/347)
+- iterate array guards by index by @nyaomaru in [#347](https://github.com/necoz-oss/is-kit/pull/347)
 
 ### Docs
 
-- 1.15.3 by @github-actions[bot] in [#343](https://github.com/nyaomaru/is-kit/pull/343)
+- 1.15.3 by @github-actions[bot] in [#343](https://github.com/necoz-oss/is-kit/pull/343)
 
 ### Test
 
-- add packed package compatibility matrix by @nyaomaru in [#348](https://github.com/nyaomaru/is-kit/pull/348)
+- add packed package compatibility matrix by @nyaomaru in [#348](https://github.com/necoz-oss/is-kit/pull/348)
 
 ### Chore
 
-- Release: 1.16.0 by @github-actions[bot] in [#351](https://github.com/nyaomaru/is-kit/pull/351)
+- Release: 1.16.0 by @github-actions[bot] in [#351](https://github.com/necoz-oss/is-kit/pull/351)
 
 ### What's new 🚀
 
@@ -210,109 +210,109 @@ Because fallback handling transforms the original input into a new canonical var
 
 `discriminatedUnionWithFallback` returns a `ParseResult` decoder rather than a type guard. 👍
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.15.3...v1.16.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.15.3...v1.16.0
 
-[v1.16.0]: https://github.com/nyaomaru/is-kit/compare/v1.15.3...v1.16.0
+[v1.16.0]: https://github.com/necoz-oss/is-kit/compare/v1.15.3...v1.16.0
 
 ## [v1.15.3] - 2026-10-12
 
 ### Fixed
 
-- use Jev for changelog WHY selection by @nyaomaru in [#332](https://github.com/nyaomaru/is-kit/pull/332)
-- align recordOf literal-key narrowing by @nyaomaru in [#333](https://github.com/nyaomaru/is-kit/pull/333)
+- use Jev for changelog WHY selection by @nyaomaru in [#332](https://github.com/necoz-oss/is-kit/pull/332)
+- align recordOf literal-key narrowing by @nyaomaru in [#333](https://github.com/necoz-oss/is-kit/pull/333)
   - Why: Return `Readonly<Partial<Record<K, V>>>` for literal and template-literal key domains, because matching keys may be absent.
-- use native Error brand checks by @nyaomaru in [#336](https://github.com/nyaomaru/is-kit/pull/336)
+- use native Error brand checks by @nyaomaru in [#336](https://github.com/necoz-oss/is-kit/pull/336)
 
 ### Changed
 
-- optimize required-only exact validation by @nyaomaru in [#341](https://github.com/nyaomaru/is-kit/pull/341)
+- optimize required-only exact validation by @nyaomaru in [#341](https://github.com/necoz-oss/is-kit/pull/341)
   - Why: Required-only `struct(..., { exact: true })` schemas currently check every enumerable key with `Set.has` after validating their required fields. This adds a fast path that skips th
 
 ### Docs
 
-- 1.15.2 by [bot] by @github-actions in [#331](https://github.com/nyaomaru/is-kit/pull/331)
+- 1.15.2 by [bot] by @github-actions in [#331](https://github.com/necoz-oss/is-kit/pull/331)
 
 ### Test
 
-- add Deno JSR smoke test by @nyaomaru in [#335](https://github.com/nyaomaru/is-kit/pull/335)
+- add Deno JSR smoke test by @nyaomaru in [#335](https://github.com/necoz-oss/is-kit/pull/335)
 
 ### Chore
 
-- Release: 1.15.3 by [bot] by @github-actions in [#342](https://github.com/nyaomaru/is-kit/pull/342)
+- Release: 1.15.3 by [bot] by @github-actions in [#342](https://github.com/necoz-oss/is-kit/pull/342)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.15.2...v1.15.3
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.15.2...v1.15.3
 
-[v1.15.3]: https://github.com/nyaomaru/is-kit/compare/v1.15.2...v1.15.3
+[v1.15.3]: https://github.com/necoz-oss/is-kit/compare/v1.15.2...v1.15.3
 
 ## [v1.15.2] - 2026-10-10
 
 ### Fixed
 
-- reject symbol-keyed struct schemas by @nyaomaru in [#329](https://github.com/nyaomaru/is-kit/pull/329)
+- reject symbol-keyed struct schemas by @nyaomaru in [#329](https://github.com/necoz-oss/is-kit/pull/329)
   - Why: Reject symbol-keyed struct schemas.
 
 ### Docs
 
-- 1.15.1 by [bot] by @github-actions in [#321](https://github.com/nyaomaru/is-kit/pull/321)
-- note cloud agent toolchain and docs host by @nyaomaru in [#326](https://github.com/nyaomaru/is-kit/pull/326)
+- 1.15.1 by [bot] by @github-actions in [#321](https://github.com/necoz-oss/is-kit/pull/321)
+- note cloud agent toolchain and docs host by @nyaomaru in [#326](https://github.com/necoz-oss/is-kit/pull/326)
 
 ### Test
 
-- typecheck the packed package from ESM and CJS by @nyaomaru in [#327](https://github.com/nyaomaru/is-kit/pull/327)
+- typecheck the packed package from ESM and CJS by @nyaomaru in [#327](https://github.com/necoz-oss/is-kit/pull/327)
 
 ### Chore
 
-- Release: 1.15.2 by [bot] by @github-actions in [#330](https://github.com/nyaomaru/is-kit/pull/330)
+- Release: 1.15.2 by [bot] by @github-actions in [#330](https://github.com/necoz-oss/is-kit/pull/330)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.15.1...v1.15.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.15.1...v1.15.2
 
-[v1.15.2]: https://github.com/nyaomaru/is-kit/compare/v1.15.1...v1.15.2
+[v1.15.2]: https://github.com/necoz-oss/is-kit/compare/v1.15.1...v1.15.2
 
 ## [v1.15.1] - 2026-10-03
 
 ### Fixed
 
-- avoid overridden iterators in array guards by @nyaomaru in [#319](https://github.com/nyaomaru/is-kit/pull/319)
+- avoid overridden iterators in array guards by @nyaomaru in [#319](https://github.com/necoz-oss/is-kit/pull/319)
   - Why: Avoid overridden iterators in array guards.
 
 ### Changed
 
-- Release: 1.15.1 by [bot] by @github-actions in [#320](https://github.com/nyaomaru/is-kit/pull/320)
+- Release: 1.15.1 by [bot] by @github-actions in [#320](https://github.com/necoz-oss/is-kit/pull/320)
 
 ### Docs
 
-- 1.15.0 by [bot] by @github-actions in [#313](https://github.com/nyaomaru/is-kit/pull/313)
-- add documentation button in readme by @nyaomaru in [#316](https://github.com/nyaomaru/is-kit/pull/316)
-- update README more understandable by @nyaomaru in [#317](https://github.com/nyaomaru/is-kit/pull/317)
-- clarify is-kit landing page positioning by @nyaomaru in [#318](https://github.com/nyaomaru/is-kit/pull/318)
+- 1.15.0 by [bot] by @github-actions in [#313](https://github.com/necoz-oss/is-kit/pull/313)
+- add documentation button in readme by @nyaomaru in [#316](https://github.com/necoz-oss/is-kit/pull/316)
+- update README more understandable by @nyaomaru in [#317](https://github.com/necoz-oss/is-kit/pull/317)
+- clarify is-kit landing page positioning by @nyaomaru in [#318](https://github.com/necoz-oss/is-kit/pull/318)
 
 ### Chore
 
-- update non-major dependencies by @nyaomaru in [#315](https://github.com/nyaomaru/is-kit/pull/315)
+- update non-major dependencies by @nyaomaru in [#315](https://github.com/necoz-oss/is-kit/pull/315)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.15.0...v1.15.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.15.0...v1.15.1
 
-[v1.15.1]: https://github.com/nyaomaru/is-kit/compare/v1.15.0...v1.15.1
+[v1.15.1]: https://github.com/necoz-oss/is-kit/compare/v1.15.0...v1.15.1
 
 ## [v1.15.0] - 2026-09-27
 
 ### Added
 
-- exhaustive discriminated union guards by @nyaomaru in [#311](https://github.com/nyaomaru/is-kit/pull/311)
+- exhaustive discriminated union guards by @nyaomaru in [#311](https://github.com/necoz-oss/is-kit/pull/311)
   - Why: Require every discriminant branch and reject extra or incompatible branches at compile time.
 
 ### Changed
 
-- Release: 1.15.0 by [bot] by @github-actions in [#312](https://github.com/nyaomaru/is-kit/pull/312)
+- Release: 1.15.0 by [bot] by @github-actions in [#312](https://github.com/necoz-oss/is-kit/pull/312)
 
 ### Docs
 
-- 1.14.3 by [bot] by @github-actions in [#307](https://github.com/nyaomaru/is-kit/pull/307)
+- 1.14.3 by [bot] by @github-actions in [#307](https://github.com/necoz-oss/is-kit/pull/307)
 
 ### Chore
 
-- Update README.md by @nyaomaru in [#308](https://github.com/nyaomaru/is-kit/pull/308)
-- Update README.md by @nyaomaru in [#309](https://github.com/nyaomaru/is-kit/pull/309)
+- Update README.md by @nyaomaru in [#308](https://github.com/necoz-oss/is-kit/pull/308)
+- Update README.md by @nyaomaru in [#309](https://github.com/necoz-oss/is-kit/pull/309)
 
 ### What's new 🚀
 
@@ -354,107 +354,107 @@ if (isResult(input)) {
 
 It supports string, number, symbol, and boolean literal discriminants, rejects non-exhaustive domains, and prevents values that would collide as JavaScript object keys—such as 1 and '1'.
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.3...v1.15.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.14.3...v1.15.0
 
-[v1.15.0]: https://github.com/nyaomaru/is-kit/compare/v1.14.3...v1.15.0
+[v1.15.0]: https://github.com/necoz-oss/is-kit/compare/v1.14.3...v1.15.0
 
 ## [v1.14.3] - 2026-09-19
 
 ### Docs
 
-- 1.14.2 by [bot] by @github-actions in [#302](https://github.com/nyaomaru/is-kit/pull/302)
-- add recursive type guards by @nyaomaru in [#304](https://github.com/nyaomaru/is-kit/pull/304)
+- 1.14.2 by [bot] by @github-actions in [#302](https://github.com/necoz-oss/is-kit/pull/302)
+- add recursive type guards by @nyaomaru in [#304](https://github.com/necoz-oss/is-kit/pull/304)
 
 ### Chore
 
-- add core performance workloads by @nyaomaru in [#303](https://github.com/nyaomaru/is-kit/pull/303)
-- migrate build from tsup to tsdown by @nyaomaru in [#305](https://github.com/nyaomaru/is-kit/pull/305)
-- Release: 1.14.3 by [bot] by @github-actions in [#306](https://github.com/nyaomaru/is-kit/pull/306)
+- add core performance workloads by @nyaomaru in [#303](https://github.com/necoz-oss/is-kit/pull/303)
+- migrate build from tsup to tsdown by @nyaomaru in [#305](https://github.com/necoz-oss/is-kit/pull/305)
+- Release: 1.14.3 by [bot] by @github-actions in [#306](https://github.com/necoz-oss/is-kit/pull/306)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.2...v1.14.3
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.14.2...v1.14.3
 
-[v1.14.3]: https://github.com/nyaomaru/is-kit/compare/v1.14.2...v1.14.3
+[v1.14.3]: https://github.com/necoz-oss/is-kit/compare/v1.14.2...v1.14.3
 
 ## [v1.14.2] - 2026-09-12
 
 ### Fixed
 
-- export lazy from core barrel by @nyaomaru in [#299](https://github.com/nyaomaru/is-kit/pull/299)
+- export lazy from core barrel by @nyaomaru in [#299](https://github.com/necoz-oss/is-kit/pull/299)
 
 ### Changed
 
-- center generic property refinement guidance by @nyaomaru in [#293](https://github.com/nyaomaru/is-kit/pull/293)
+- center generic property refinement guidance by @nyaomaru in [#293](https://github.com/necoz-oss/is-kit/pull/293)
   - Why: Reframe the Compiler API guide around the verified TypeScript 7 behavior to clarify necessary predicates.
-- cover practical property refinement composition by @nyaomaru in [#300](https://github.com/nyaomaru/is-kit/pull/300)
+- cover practical property refinement composition by @nyaomaru in [#300](https://github.com/necoz-oss/is-kit/pull/300)
 
 ### Docs
 
-- 1.14.1 by [bot] by @github-actions in [#297](https://github.com/nyaomaru/is-kit/pull/297)
-- add eslint-plugin-is-kit integration by @nyaomaru in [#298](https://github.com/nyaomaru/is-kit/pull/298)
-- Release: 1.14.2 by [bot] by @github-actions in [#301](https://github.com/nyaomaru/is-kit/pull/301)
+- 1.14.1 by [bot] by @github-actions in [#297](https://github.com/necoz-oss/is-kit/pull/297)
+- add eslint-plugin-is-kit integration by @nyaomaru in [#298](https://github.com/necoz-oss/is-kit/pull/298)
+- Release: 1.14.2 by [bot] by @github-actions in [#301](https://github.com/necoz-oss/is-kit/pull/301)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.1...v1.14.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.14.1...v1.14.2
 
-[v1.14.2]: https://github.com/nyaomaru/is-kit/compare/v1.14.1...v1.14.2
+[v1.14.2]: https://github.com/necoz-oss/is-kit/compare/v1.14.1...v1.14.2
 
 ## [v1.14.1] - 2026-09-05
 
 ### Fixed
 
-- preserve strict nullish combinator semantics by @nyaomaru in [#294](https://github.com/nyaomaru/is-kit/pull/294)
+- preserve strict nullish combinator semantics by @nyaomaru in [#294](https://github.com/necoz-oss/is-kit/pull/294)
 
 ### Changed
 
-- simplify nullish guards by @nyaomaru in [#292](https://github.com/nyaomaru/is-kit/pull/292)
-- avoid exception-driven typed array checks by @nyaomaru in [#295](https://github.com/nyaomaru/is-kit/pull/295)
+- simplify nullish guards by @nyaomaru in [#292](https://github.com/necoz-oss/is-kit/pull/292)
+- avoid exception-driven typed array checks by @nyaomaru in [#295](https://github.com/necoz-oss/is-kit/pull/295)
 
 ### Docs
 
-- 1.14.0 by [bot] by @github-actions in [#288](https://github.com/nyaomaru/is-kit/pull/288)
-- validate hey-api types by @nyaomaru in [#289](https://github.com/nyaomaru/is-kit/pull/289)
-- clarify TypeScript 7 Compiler API compatibility by @nyaomaru in [#290](https://github.com/nyaomaru/is-kit/pull/290)
-- clarify when to compose Compiler API guards by @nyaomaru in [#291](https://github.com/nyaomaru/is-kit/pull/291)
+- 1.14.0 by [bot] by @github-actions in [#288](https://github.com/necoz-oss/is-kit/pull/288)
+- validate hey-api types by @nyaomaru in [#289](https://github.com/necoz-oss/is-kit/pull/289)
+- clarify TypeScript 7 Compiler API compatibility by @nyaomaru in [#290](https://github.com/necoz-oss/is-kit/pull/290)
+- clarify when to compose Compiler API guards by @nyaomaru in [#291](https://github.com/necoz-oss/is-kit/pull/291)
 
 ### Chore
 
-- Release: 1.14.1 by [bot] by @github-actions in [#296](https://github.com/nyaomaru/is-kit/pull/296)
+- Release: 1.14.1 by [bot] by @github-actions in [#296](https://github.com/necoz-oss/is-kit/pull/296)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.14.0...v1.14.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.14.0...v1.14.1
 
-[v1.14.1]: https://github.com/nyaomaru/is-kit/compare/v1.14.0...v1.14.1
+[v1.14.1]: https://github.com/necoz-oss/is-kit/compare/v1.14.0...v1.14.1
 
 ## [v1.14.0] - 2026-08-29
 
 ### Added
 
-- add guide thumbnail by @nyaomaru in [#279](https://github.com/nyaomaru/is-kit/pull/279)
-- add property refinement helpers by @nyaomaru in [#280](https://github.com/nyaomaru/is-kit/pull/280)
+- add guide thumbnail by @nyaomaru in [#279](https://github.com/necoz-oss/is-kit/pull/279)
+- add property refinement helpers by @nyaomaru in [#280](https://github.com/necoz-oss/is-kit/pull/280)
   - Why: These helpers cover required properties, optional properties, and indexed elements without conflating their different semantics.
 
 ### Fixed
 
-- use OIDC for npm publishing by @nyaomaru in [#278](https://github.com/nyaomaru/is-kit/pull/278)
+- use OIDC for npm publishing by @nyaomaru in [#278](https://github.com/necoz-oss/is-kit/pull/278)
   - Why: The workflow now uses Node.js 24 and npm publish, removing the long-lived NPM_TOKEN fallback.
-- require own elements in refineIndex by @nyaomaru in [#283](https://github.com/nyaomaru/is-kit/pull/283)
-- prevent key helpers from over-narrowing union key by @nyaomaru in [#284](https://github.com/nyaomaru/is-kit/pull/284)
-- use guide images in social metadata by @nyaomaru in [#286](https://github.com/nyaomaru/is-kit/pull/286)
+- require own elements in refineIndex by @nyaomaru in [#283](https://github.com/necoz-oss/is-kit/pull/283)
+- prevent key helpers from over-narrowing union key by @nyaomaru in [#284](https://github.com/necoz-oss/is-kit/pull/284)
+- use guide images in social metadata by @nyaomaru in [#286](https://github.com/necoz-oss/is-kit/pull/286)
 
 ### Changed
 
-- document property refinements and lazy by @nyaomaru in [#281](https://github.com/nyaomaru/is-kit/pull/281)
-- separate key guards from property refinements by @nyaomaru in [#285](https://github.com/nyaomaru/is-kit/pull/285)
+- document property refinements and lazy by @nyaomaru in [#281](https://github.com/necoz-oss/is-kit/pull/281)
+- separate key guards from property refinements by @nyaomaru in [#285](https://github.com/necoz-oss/is-kit/pull/285)
 
 ### Docs
 
-- 1.13.0 by [bot] by @github-actions in [#277](https://github.com/nyaomaru/is-kit/pull/277)
+- 1.13.0 by [bot] by @github-actions in [#277](https://github.com/necoz-oss/is-kit/pull/277)
 
 ### Test
 
-- add TypeScript compatibility matrix by @nyaomaru in [#282](https://github.com/nyaomaru/is-kit/pull/282)
+- add TypeScript compatibility matrix by @nyaomaru in [#282](https://github.com/necoz-oss/is-kit/pull/282)
 
 ### Chore
 
-- Release: 1.14.0 by [bot] by @github-actions in [#287](https://github.com/nyaomaru/is-kit/pull/287)
+- Release: 1.14.0 by [bot] by @github-actions in [#287](https://github.com/necoz-oss/is-kit/pull/287)
 
 ### What's new 🚀
 
@@ -524,25 +524,25 @@ Union and broad keys remain usable as runtime checks, but safely fall back to ob
 
 The published declarations are tested with TypeScript 5.7 through 7.0.
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.13.0...v1.14.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.13.0...v1.14.0
 
-[v1.14.0]: https://github.com/nyaomaru/is-kit/compare/v1.13.0...v1.14.0
+[v1.14.0]: https://github.com/necoz-oss/is-kit/compare/v1.13.0...v1.14.0
 
 ## [v1.13.0] - 2026-08-22
 
 ### Added
 
-- support known-domain refinement composition by @nyaomaru in [#274](https://github.com/nyaomaru/is-kit/pull/274)
+- support known-domain refinement composition by @nyaomaru in [#274](https://github.com/necoz-oss/is-kit/pull/274)
   - Why: Support known-domain refinement composition to enhance type safety and flexibility in type definitions.
 
 ### Docs
 
-- 1.12.1 by [bot] by @github-actions in [#269](https://github.com/nyaomaru/is-kit/pull/269)
-- add guide for keeping type guards in sync by @nyaomaru in [#270](https://github.com/nyaomaru/is-kit/pull/270)
-- add guide for validating unknown values by @nyaomaru in [#271](https://github.com/nyaomaru/is-kit/pull/271)
-- migrate documentation URLs to is-kit.dev by @nyaomaru in [#272](https://github.com/nyaomaru/is-kit/pull/272)
-- use PNG image for social previews by @nyaomaru in [#273](https://github.com/nyaomaru/is-kit/pull/273)
-- extract shared guide components by @nyaomaru in [#275](https://github.com/nyaomaru/is-kit/pull/275)
+- 1.12.1 by [bot] by @github-actions in [#269](https://github.com/necoz-oss/is-kit/pull/269)
+- add guide for keeping type guards in sync by @nyaomaru in [#270](https://github.com/necoz-oss/is-kit/pull/270)
+- add guide for validating unknown values by @nyaomaru in [#271](https://github.com/necoz-oss/is-kit/pull/271)
+- migrate documentation URLs to is-kit.dev by @nyaomaru in [#272](https://github.com/necoz-oss/is-kit/pull/272)
+- use PNG image for social previews by @nyaomaru in [#273](https://github.com/necoz-oss/is-kit/pull/273)
+- extract shared guide components by @nyaomaru in [#275](https://github.com/necoz-oss/is-kit/pull/275)
 
 ### What's new 🚀
 
@@ -716,53 +716,53 @@ type RefinementOutput = GuardedOf<StringRefinement>;
 
 The documentation is now available at [is-kit.dev](https://is-kit.dev/).
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.12.1...v1.13.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.12.1...v1.13.0
 
-[v1.13.0]: https://github.com/nyaomaru/is-kit/compare/v1.12.1...v1.13.0
+[v1.13.0]: https://github.com/necoz-oss/is-kit/compare/v1.12.1...v1.13.0
 
 ## [v1.12.1] - 2026-08-15
 
 ### Added
 
-- add vlt installation support by @nyaomaru in [#266](https://github.com/nyaomaru/is-kit/pull/266)
+- add vlt installation support by @nyaomaru in [#266](https://github.com/necoz-oss/is-kit/pull/266)
 
 ### Docs
 
-- 1.12.0 by [bot] by @github-actions in [#261](https://github.com/nyaomaru/is-kit/pull/261)
-- add API reference metadata by @nyaomaru in [#264](https://github.com/nyaomaru/is-kit/pull/264)
-- add nullish array filtering guide by @nyaomaru in [#267](https://github.com/nyaomaru/is-kit/pull/267)
+- 1.12.0 by [bot] by @github-actions in [#261](https://github.com/necoz-oss/is-kit/pull/261)
+- add API reference metadata by @nyaomaru in [#264](https://github.com/necoz-oss/is-kit/pull/264)
+- add nullish array filtering guide by @nyaomaru in [#267](https://github.com/necoz-oss/is-kit/pull/267)
 
 ### Chore
 
-- update README by @nyaomaru in [#262](https://github.com/nyaomaru/is-kit/pull/262)
-- add issue forms by @nyaomaru in [#263](https://github.com/nyaomaru/is-kit/pull/263)
-- add Google site verification file by @nyaomaru in [#265](https://github.com/nyaomaru/is-kit/pull/265)
+- update README by @nyaomaru in [#262](https://github.com/necoz-oss/is-kit/pull/262)
+- add issue forms by @nyaomaru in [#263](https://github.com/necoz-oss/is-kit/pull/263)
+- add Google site verification file by @nyaomaru in [#265](https://github.com/necoz-oss/is-kit/pull/265)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.12.0...v1.12.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.12.0...v1.12.1
 
-[v1.12.1]: https://github.com/nyaomaru/is-kit/compare/v1.12.0...v1.12.1
+[v1.12.1]: https://github.com/necoz-oss/is-kit/compare/v1.12.0...v1.12.1
 
 ## [v1.12.0] - 2026-08-08
 
 ### Added
 
-- add internal decoder by @nyaomaru in [#256](https://github.com/nyaomaru/is-kit/pull/256)
-- add Codex Marketplace skill by @nyaomaru in [#258](https://github.com/nyaomaru/is-kit/pull/258)
-- add isNotNil guard by @nyaomaru in [#259](https://github.com/nyaomaru/is-kit/pull/259)
+- add internal decoder by @nyaomaru in [#256](https://github.com/necoz-oss/is-kit/pull/256)
+- add Codex Marketplace skill by @nyaomaru in [#258](https://github.com/necoz-oss/is-kit/pull/258)
+- add isNotNil guard by @nyaomaru in [#259](https://github.com/necoz-oss/is-kit/pull/259)
   - Why: Add `isNotNil` as a dedicated generic guard for excluding `null` and `undefined` values.
 
 ### Docs
 
-- 1.11.7 by [bot] by @github-actions in [#254](https://github.com/nyaomaru/is-kit/pull/254)
-- document public type exports by @nyaomaru in [#255](https://github.com/nyaomaru/is-kit/pull/255)
+- 1.11.7 by [bot] by @github-actions in [#254](https://github.com/necoz-oss/is-kit/pull/254)
+- document public type exports by @nyaomaru in [#255](https://github.com/necoz-oss/is-kit/pull/255)
 
 ### Test
 
-- add packed package smoke coverage by @nyaomaru in [#257](https://github.com/nyaomaru/is-kit/pull/257)
+- add packed package smoke coverage by @nyaomaru in [#257](https://github.com/necoz-oss/is-kit/pull/257)
 
 ### Chore
 
-- Release: 1.12.0 by [bot] by @github-actions in [#260](https://github.com/nyaomaru/is-kit/pull/260)
+- Release: 1.12.0 by [bot] by @github-actions in [#260](https://github.com/necoz-oss/is-kit/pull/260)
 
 ### What's new 🚀
 
@@ -800,23 +800,23 @@ isNotNil(Number.NaN); // true
 
 Use `isNil` when detecting nullish values and `isNotNil` when requiring a present value or filtering nullish entries.
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.7...v1.12.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.7...v1.12.0
 
-[v1.12.0]: https://github.com/nyaomaru/is-kit/compare/v1.11.7...v1.12.0
+[v1.12.0]: https://github.com/necoz-oss/is-kit/compare/v1.11.7...v1.12.0
 
 ## [v1.11.7] - 2026-08-01
 
 ### Changed
 
-- improve metadata and search indexing by @nyaomaru in [#251](https://github.com/nyaomaru/is-kit/pull/251)
+- improve metadata and search indexing by @nyaomaru in [#251](https://github.com/necoz-oss/is-kit/pull/251)
 
 ### Docs
 
-- 1.11.6 by [bot] by @github-actions in [#250](https://github.com/nyaomaru/is-kit/pull/250)
+- 1.11.6 by [bot] by @github-actions in [#250](https://github.com/necoz-oss/is-kit/pull/250)
 
 ### Chore
 
-- deprecate utility exports v2 by @nyaomaru in [#252](https://github.com/nyaomaru/is-kit/pull/252)
+- deprecate utility exports v2 by @nyaomaru in [#252](https://github.com/necoz-oss/is-kit/pull/252)
 
 ### Deprecated utility exports
 
@@ -835,141 +835,141 @@ Use native iteration for boolean checks, or the corresponding narrowing guards:
 
 `arrayOf`, `tupleOf`, `setOf`, `mapOf`, and `recordOf`.`toBooleanPredicates` can be replaced with the original predicate array.
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.6...v1.11.7
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.6...v1.11.7
 
-[v1.11.7]: https://github.com/nyaomaru/is-kit/compare/v1.11.6...v1.11.7
+[v1.11.7]: https://github.com/necoz-oss/is-kit/compare/v1.11.6...v1.11.7
 
 ## [v1.11.6] - 2026-07-25
 
 ### Changed
 
-- use direct imports for internal utilities by @nyaomaru in [#246](https://github.com/nyaomaru/is-kit/pull/246)
+- use direct imports for internal utilities by @nyaomaru in [#246](https://github.com/necoz-oss/is-kit/pull/246)
 
 ### Docs
 
-- 1.11.5 by [bot] by @github-actions in [#244](https://github.com/nyaomaru/is-kit/pull/244)
-- add security policy by @nyaomaru in [#245](https://github.com/nyaomaru/is-kit/pull/245)
+- 1.11.5 by [bot] by @github-actions in [#244](https://github.com/necoz-oss/is-kit/pull/244)
+- add security policy by @nyaomaru in [#245](https://github.com/necoz-oss/is-kit/pull/245)
 
 ### Test
 
-- verify root entrypoint exports by @nyaomaru in [#247](https://github.com/nyaomaru/is-kit/pull/247)
-- enforce exact root export contract by @nyaomaru in [#248](https://github.com/nyaomaru/is-kit/pull/248)
+- verify root entrypoint exports by @nyaomaru in [#247](https://github.com/necoz-oss/is-kit/pull/247)
+- enforce exact root export contract by @nyaomaru in [#248](https://github.com/necoz-oss/is-kit/pull/248)
 
 ### Chore
 
-- Release: 1.11.6 by [bot] by @github-actions in [#249](https://github.com/nyaomaru/is-kit/pull/249)
+- Release: 1.11.6 by [bot] by @github-actions in [#249](https://github.com/necoz-oss/is-kit/pull/249)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.5...v1.11.6
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.5...v1.11.6
 
-[v1.11.6]: https://github.com/nyaomaru/is-kit/compare/v1.11.5...v1.11.6
+[v1.11.6]: https://github.com/necoz-oss/is-kit/compare/v1.11.5...v1.11.6
 
 ## [v1.11.5] - 2026-07-20
 
 ### Fixed
 
-- use latest package for agent setup commands by @nyaomaru in [#241](https://github.com/nyaomaru/is-kit/pull/241)
-- use intrinsic brand checks for built-ins by @nyaomaru in [#242](https://github.com/nyaomaru/is-kit/pull/242)
+- use latest package for agent setup commands by @nyaomaru in [#241](https://github.com/necoz-oss/is-kit/pull/241)
+- use intrinsic brand checks for built-ins by @nyaomaru in [#242](https://github.com/necoz-oss/is-kit/pull/242)
 
 ### Docs
 
-- 1.11.4 by [bot] by @github-actions in [#240](https://github.com/nyaomaru/is-kit/pull/240)
+- 1.11.4 by [bot] by @github-actions in [#240](https://github.com/necoz-oss/is-kit/pull/240)
 
 ### Chore
 
-- Release: 1.11.5 by [bot] by @github-actions in [#243](https://github.com/nyaomaru/is-kit/pull/243)
+- Release: 1.11.5 by [bot] by @github-actions in [#243](https://github.com/necoz-oss/is-kit/pull/243)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.4...v1.11.5
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.4...v1.11.5
 
-[v1.11.5]: https://github.com/nyaomaru/is-kit/compare/v1.11.4...v1.11.5
+[v1.11.5]: https://github.com/necoz-oss/is-kit/compare/v1.11.4...v1.11.5
 
 ## [v1.11.4] - 2026-07-19
 
 ### Added
 
-- add AI agent discovery and setup by @nyaomaru in [#238](https://github.com/nyaomaru/is-kit/pull/238)
+- add AI agent discovery and setup by @nyaomaru in [#238](https://github.com/necoz-oss/is-kit/pull/238)
 
 ### Docs
 
-- 1.11.3 by [bot] by @github-actions in [#237](https://github.com/nyaomaru/is-kit/pull/237)
+- 1.11.3 by [bot] by @github-actions in [#237](https://github.com/necoz-oss/is-kit/pull/237)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.3...v1.11.4
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.3...v1.11.4
 
-[v1.11.4]: https://github.com/nyaomaru/is-kit/compare/v1.11.3...v1.11.4
+[v1.11.4]: https://github.com/necoz-oss/is-kit/compare/v1.11.3...v1.11.4
 
 ## [v1.11.3] - 2026-07-18
 
 ### Added
 
-- export shared struct options type by @nyaomaru in [#235](https://github.com/nyaomaru/is-kit/pull/235)
+- export shared struct options type by @nyaomaru in [#235](https://github.com/necoz-oss/is-kit/pull/235)
 
 ### Docs
 
-- 1.11.2 by [bot] by @github-actions in [#233](https://github.com/nyaomaru/is-kit/pull/233)
+- 1.11.2 by [bot] by @github-actions in [#233](https://github.com/necoz-oss/is-kit/pull/233)
 
 ### Chore
 
-- upgrade docs toolcha by @nyaomaru in [#234](https://github.com/nyaomaru/is-kit/pull/234)
+- upgrade docs toolcha by @nyaomaru in [#234](https://github.com/necoz-oss/is-kit/pull/234)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.2...v1.11.3
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.2...v1.11.3
 
-[v1.11.3]: https://github.com/nyaomaru/is-kit/compare/v1.11.2...v1.11.3
+[v1.11.3]: https://github.com/necoz-oss/is-kit/compare/v1.11.2...v1.11.3
 
 ## [v1.11.2] - 2026-07-11
 
 ### Changed
 
-- expose typed struct schema types by @nyaomaru in [#231](https://github.com/nyaomaru/is-kit/pull/231)
+- expose typed struct schema types by @nyaomaru in [#231](https://github.com/necoz-oss/is-kit/pull/231)
 
 ### Docs
 
-- 1.11.1 by [bot] by @github-actions in [#230](https://github.com/nyaomaru/is-kit/pull/230)
+- 1.11.1 by [bot] by @github-actions in [#230](https://github.com/necoz-oss/is-kit/pull/230)
 
 ### Chore
 
-- Release: 1.11.2 by [bot] by @github-actions in [#232](https://github.com/nyaomaru/is-kit/pull/232)
+- Release: 1.11.2 by [bot] by @github-actions in [#232](https://github.com/necoz-oss/is-kit/pull/232)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.1...v1.11.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.1...v1.11.2
 
-[v1.11.2]: https://github.com/nyaomaru/is-kit/compare/v1.11.1...v1.11.2
+[v1.11.2]: https://github.com/necoz-oss/is-kit/compare/v1.11.1...v1.11.2
 
 ## [v1.11.1] - 2026-07-05
 
 ### Changed
 
-- centralize own property checks by @nyaomaru in [#228](https://github.com/nyaomaru/is-kit/pull/228)
+- centralize own property checks by @nyaomaru in [#228](https://github.com/necoz-oss/is-kit/pull/228)
 
 ### Docs
 
-- 1.11.0 by [bot] by @github-actions in [#226](https://github.com/nyaomaru/is-kit/pull/226)
-- guide AI guard composition by @nyaomaru in [#227](https://github.com/nyaomaru/is-kit/pull/227)
+- 1.11.0 by [bot] by @github-actions in [#226](https://github.com/necoz-oss/is-kit/pull/226)
+- guide AI guard composition by @nyaomaru in [#227](https://github.com/necoz-oss/is-kit/pull/227)
 
 ### Chore
 
-- Release: 1.11.1 by [bot] by @github-actions in [#229](https://github.com/nyaomaru/is-kit/pull/229)
+- Release: 1.11.1 by [bot] by @github-actions in [#229](https://github.com/necoz-oss/is-kit/pull/229)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.11.0...v1.11.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.11.0...v1.11.1
 
-[v1.11.1]: https://github.com/nyaomaru/is-kit/compare/v1.11.0...v1.11.1
+[v1.11.1]: https://github.com/necoz-oss/is-kit/compare/v1.11.0...v1.11.1
 
 ## [v1.11.0] - 2026-07-04
 
 ### Added
 
-- add isFile guard by @nyaomaru in [#222](https://github.com/nyaomaru/is-kit/pull/222)
+- add isFile guard by @nyaomaru in [#222](https://github.com/necoz-oss/is-kit/pull/222)
   - Why: Add `isFile` as a platform guard for `File` objects to ensure compatibility across different environments.
-- is-nil by @nyaomaru in [#223](https://github.com/nyaomaru/is-kit/pull/223)
+- is-nil by @nyaomaru in [#223](https://github.com/necoz-oss/is-kit/pull/223)
 
 ### Changed
 
-- utils internals by @nyaomaru in [#224](https://github.com/nyaomaru/is-kit/pull/224)
+- utils internals by @nyaomaru in [#224](https://github.com/necoz-oss/is-kit/pull/224)
 
 ### Docs
 
-- 1.10.0 by [bot] by @github-actions in [#221](https://github.com/nyaomaru/is-kit/pull/221)
+- 1.10.0 by [bot] by @github-actions in [#221](https://github.com/necoz-oss/is-kit/pull/221)
 
 ### Chore
 
-- Release: 1.11.0 by [bot] by @github-actions in [#225](https://github.com/nyaomaru/is-kit/pull/225)
+- Release: 1.11.0 by [bot] by @github-actions in [#225](https://github.com/necoz-oss/is-kit/pull/225)
 
 ### What's new 🚀
 
@@ -1034,23 +1034,23 @@ function displayName(name: string | null | undefined) {
 }
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.10.0...v1.11.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.10.0...v1.11.0
 
-[v1.11.0]: https://github.com/nyaomaru/is-kit/compare/v1.10.0...v1.11.0
+[v1.11.0]: https://github.com/necoz-oss/is-kit/compare/v1.10.0...v1.11.0
 
 ## [v1.10.0] - 2026-06-27
 
 ### Added
 
-- add lazy guard for recursive structures by @nyaomaru in [#219](https://github.com/nyaomaru/is-kit/pull/219)
+- add lazy guard for recursive structures by @nyaomaru in [#219](https://github.com/necoz-oss/is-kit/pull/219)
 
 ### Docs
 
-- 1.9.0 by [bot] by @github-actions in [#218](https://github.com/nyaomaru/is-kit/pull/218)
+- 1.9.0 by [bot] by @github-actions in [#218](https://github.com/necoz-oss/is-kit/pull/218)
 
 ### Chore
 
-- Release: 1.10.0 by [bot] by @github-actions in [#220](https://github.com/nyaomaru/is-kit/pull/220)
+- Release: 1.10.0 by [bot] by @github-actions in [#220](https://github.com/necoz-oss/is-kit/pull/220)
 
 ### What’s new 🚀
 
@@ -1073,28 +1073,28 @@ const isTree: Predicate<Tree> = lazy(() =>
 );
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.9.0...v1.10.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.9.0...v1.10.0
 
-[v1.10.0]: https://github.com/nyaomaru/is-kit/compare/v1.9.0...v1.10.0
+[v1.10.0]: https://github.com/necoz-oss/is-kit/compare/v1.9.0...v1.10.0
 
 ## [v1.9.0] - 2026-06-21
 
 ### Added
 
-- add safeJsonParse by @nyaomaru in [#215](https://github.com/nyaomaru/is-kit/pull/215)
+- add safeJsonParse by @nyaomaru in [#215](https://github.com/necoz-oss/is-kit/pull/215)
   - Why: To provide a type-safe decode-then-guard boundary for JSON parsing.
 
 ### Fixed
 
-- enable WHY extraction in changelog workflow by @nyaomaru in [#216](https://github.com/nyaomaru/is-kit/pull/216)
+- enable WHY extraction in changelog workflow by @nyaomaru in [#216](https://github.com/necoz-oss/is-kit/pull/216)
 
 ### Docs
 
-- 1.8.2 by [bot] by @github-actions in [#214](https://github.com/nyaomaru/is-kit/pull/214)
+- 1.8.2 by [bot] by @github-actions in [#214](https://github.com/necoz-oss/is-kit/pull/214)
 
 ### Chore
 
-- Release: 1.9.0 by [bot] by @github-actions in [#217](https://github.com/nyaomaru/is-kit/pull/217)
+- Release: 1.9.0 by [bot] by @github-actions in [#217](https://github.com/necoz-oss/is-kit/pull/217)
 
 ### What's new 🚀
 
@@ -1140,63 +1140,63 @@ safeJsonParse('{"id":1,"name":"Neko"}', isUser);
 
 `safeJsonParse` does not coerce values or depend on HTTP, OpenAPI, or another schema format. It is a small decode-then-guard helper built on the existing `ParseResult<T>` contract.
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.8.2...v1.9.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.8.2...v1.9.0
 
-[v1.9.0]: https://github.com/nyaomaru/is-kit/compare/v1.8.2...v1.9.0
+[v1.9.0]: https://github.com/necoz-oss/is-kit/compare/v1.8.2...v1.9.0
 
 ## [v1.8.2] - 2026-06-20
 
 ### Changed
 
-- stabilize struct and typedStruct contracts by @nyaomaru in [#210](https://github.com/nyaomaru/is-kit/pull/210)
+- stabilize struct and typedStruct contracts by @nyaomaru in [#210](https://github.com/necoz-oss/is-kit/pull/210)
 
 ### Docs
 
-- 1.8.1 by [bot] by @github-actions in [#209](https://github.com/nyaomaru/is-kit/pull/209)
+- 1.8.1 by [bot] by @github-actions in [#209](https://github.com/necoz-oss/is-kit/pull/209)
 
 ### Test
 
-- cover Set rejection in struct by @nyaomaru in [#211](https://github.com/nyaomaru/is-kit/pull/211)
+- cover Set rejection in struct by @nyaomaru in [#211](https://github.com/necoz-oss/is-kit/pull/211)
 
 ### Chore
 
-- update development dependencies by @nyaomaru in [#212](https://github.com/nyaomaru/is-kit/pull/212)
+- update development dependencies by @nyaomaru in [#212](https://github.com/necoz-oss/is-kit/pull/212)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.8.1...v1.8.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.8.1...v1.8.2
 
-[v1.8.2]: https://github.com/nyaomaru/is-kit/compare/v1.8.1...v1.8.2
+[v1.8.2]: https://github.com/necoz-oss/is-kit/compare/v1.8.1...v1.8.2
 
 ## [v1.8.1] - 2026-06-13
 
 ### Changed
 
-- remove typedStruct schema casts by @nyaomaru in [#207](https://github.com/nyaomaru/is-kit/pull/207)
+- remove typedStruct schema casts by @nyaomaru in [#207](https://github.com/necoz-oss/is-kit/pull/207)
 
 ### Docs
 
-- 1.8.0 by [bot] by @github-actions in [#206](https://github.com/nyaomaru/is-kit/pull/206)
+- 1.8.0 by [bot] by @github-actions in [#206](https://github.com/necoz-oss/is-kit/pull/206)
 
 ### Chore
 
-- Release: 1.8.1 by [bot] by @github-actions in [#208](https://github.com/nyaomaru/is-kit/pull/208)
+- Release: 1.8.1 by [bot] by @github-actions in [#208](https://github.com/necoz-oss/is-kit/pull/208)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.8.0...v1.8.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.8.0...v1.8.1
 
-[v1.8.1]: https://github.com/nyaomaru/is-kit/compare/v1.8.0...v1.8.1
+[v1.8.1]: https://github.com/necoz-oss/is-kit/compare/v1.8.0...v1.8.1
 
 ## [v1.8.0] - 2026-06-06
 
 ### Added
 
-- add typedStruct combinator by @nyaomaru in [#204](https://github.com/nyaomaru/is-kit/pull/204)
+- add typedStruct combinator by @nyaomaru in [#204](https://github.com/necoz-oss/is-kit/pull/204)
 
 ### Fixed
 
-- fix primary color token by @nyaomaru in [#203](https://github.com/nyaomaru/is-kit/pull/203)
+- fix primary color token by @nyaomaru in [#203](https://github.com/necoz-oss/is-kit/pull/203)
 
 ### Docs
 
-- 1.7.4 by [bot] by @github-actions in [#202](https://github.com/nyaomaru/is-kit/pull/202)
+- 1.7.4 by [bot] by @github-actions in [#202](https://github.com/necoz-oss/is-kit/pull/202)
 
 ### What's new 🚀
 
@@ -1246,101 +1246,101 @@ typedStruct<User>()({
 
 This is useful when you already have a domain DTO or generated API type and want an explicit runtime guard to stay in sync with it. It does not generate validators from types, and it does not change struct runtime behavior.
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.4...v1.8.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.7.4...v1.8.0
 
-[v1.8.0]: https://github.com/nyaomaru/is-kit/compare/v1.7.4...v1.8.0
+[v1.8.0]: https://github.com/necoz-oss/is-kit/compare/v1.7.4...v1.8.0
 
 ## [v1.7.4] - 2026-05-30
 
 ### Fixed
 
-- fix mise config by @nyaomaru in [#196](https://github.com/nyaomaru/is-kit/pull/196)
-- fix version bump by @nyaomaru in [#200](https://github.com/nyaomaru/is-kit/pull/200)
+- fix mise config by @nyaomaru in [#196](https://github.com/necoz-oss/is-kit/pull/196)
+- fix version bump by @nyaomaru in [#200](https://github.com/necoz-oss/is-kit/pull/200)
 
 ### Changed
 
-- update pnpm v11.2.2 by @nyaomaru in [#195](https://github.com/nyaomaru/is-kit/pull/195)
-- migrate linting and formatting to oxc by @nyaomaru in [#197](https://github.com/nyaomaru/is-kit/pull/197)
-- consolidate GitHub Actions setup by @nyaomaru in [#198](https://github.com/nyaomaru/is-kit/pull/198)
-- share object tag guard creation by @nyaomaru in [#199](https://github.com/nyaomaru/is-kit/pull/199)
+- update pnpm v11.2.2 by @nyaomaru in [#195](https://github.com/necoz-oss/is-kit/pull/195)
+- migrate linting and formatting to oxc by @nyaomaru in [#197](https://github.com/necoz-oss/is-kit/pull/197)
+- consolidate GitHub Actions setup by @nyaomaru in [#198](https://github.com/necoz-oss/is-kit/pull/198)
+- share object tag guard creation by @nyaomaru in [#199](https://github.com/necoz-oss/is-kit/pull/199)
 
 ### Docs
 
-- 1.7.3 by [bot] by @github-actions in [#193](https://github.com/nyaomaru/is-kit/pull/193)
+- 1.7.3 by [bot] by @github-actions in [#193](https://github.com/necoz-oss/is-kit/pull/193)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.3...v1.7.4
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.7.3...v1.7.4
 
-[v1.7.4]: https://github.com/nyaomaru/is-kit/compare/v1.7.3...v1.7.4
+[v1.7.4]: https://github.com/necoz-oss/is-kit/compare/v1.7.3...v1.7.4
 
 ## [v1.7.3] - 2026-05-23
 
 ### Changed
 
-- use isFunction in struct optional field guard by @nyaomaru in [#190](https://github.com/nyaomaru/is-kit/pull/190)
+- use isFunction in struct optional field guard by @nyaomaru in [#190](https://github.com/necoz-oss/is-kit/pull/190)
 
 ### Docs
 
-- 1.7.2 by [bot] by @github-actions in [#189](https://github.com/nyaomaru/is-kit/pull/189)
-- update pnpm version references by @nyaomaru in [#191](https://github.com/nyaomaru/is-kit/pull/191)
+- 1.7.2 by [bot] by @github-actions in [#189](https://github.com/necoz-oss/is-kit/pull/189)
+- update pnpm version references by @nyaomaru in [#191](https://github.com/necoz-oss/is-kit/pull/191)
 
 ### Chore
 
-- Release: 1.7.3 by [bot] by @github-actions in [#192](https://github.com/nyaomaru/is-kit/pull/192)
+- Release: 1.7.3 by [bot] by @github-actions in [#192](https://github.com/necoz-oss/is-kit/pull/192)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.2...v1.7.3
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.7.2...v1.7.3
 
-[v1.7.3]: https://github.com/nyaomaru/is-kit/compare/v1.7.2...v1.7.3
+[v1.7.3]: https://github.com/necoz-oss/is-kit/compare/v1.7.2...v1.7.3
 
 ## [v1.7.2] - 2026-05-16
 
 ### Changed
 
-- clean up object guard internals by @nyaomaru in [#186](https://github.com/nyaomaru/is-kit/pull/186)
-- centralize platform instance guards by @nyaomaru in [#187](https://github.com/nyaomaru/is-kit/pull/187)
+- clean up object guard internals by @nyaomaru in [#186](https://github.com/necoz-oss/is-kit/pull/186)
+- centralize platform instance guards by @nyaomaru in [#187](https://github.com/necoz-oss/is-kit/pull/187)
 
 ### Docs
 
-- 1.7.1 by [bot] by @github-actions in [#185](https://github.com/nyaomaru/is-kit/pull/185)
+- 1.7.1 by [bot] by @github-actions in [#185](https://github.com/necoz-oss/is-kit/pull/185)
 
 ### Chore
 
-- Update pnpm to v10.33.4 by [bot] by @renovate in [#183](https://github.com/nyaomaru/is-kit/pull/183)
+- Update pnpm to v10.33.4 by [bot] by @renovate in [#183](https://github.com/necoz-oss/is-kit/pull/183)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.1...v1.7.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.7.1...v1.7.2
 
-[v1.7.2]: https://github.com/nyaomaru/is-kit/compare/v1.7.1...v1.7.2
+[v1.7.2]: https://github.com/necoz-oss/is-kit/compare/v1.7.1...v1.7.2
 
 ## [v1.7.1] - 2026-05-09
 
 ### Fixed
 
-- use explicit relative exports for public entrypoint by @nyaomaru in [#182](https://github.com/nyaomaru/is-kit/pull/182)
+- use explicit relative exports for public entrypoint by @nyaomaru in [#182](https://github.com/necoz-oss/is-kit/pull/182)
 
 ### Docs
 
-- 1.7.0 by [bot] by @github-actions in [#180](https://github.com/nyaomaru/is-kit/pull/180)
+- 1.7.0 by [bot] by @github-actions in [#180](https://github.com/necoz-oss/is-kit/pull/180)
 
 ### Chore
 
-- Release: 1.7.1 by [bot] by @github-actions in [#184](https://github.com/nyaomaru/is-kit/pull/184)
+- Release: 1.7.1 by [bot] by @github-actions in [#184](https://github.com/necoz-oss/is-kit/pull/184)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.7.0...v1.7.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.7.0...v1.7.1
 
-[v1.7.1]: https://github.com/nyaomaru/is-kit/compare/v1.7.0...v1.7.1
+[v1.7.1]: https://github.com/necoz-oss/is-kit/compare/v1.7.0...v1.7.1
 
 ## [v1.7.0] - 2026-05-02
 
 ### Added
 
-- add nonEmptyArrayOf by @nyaomaru in [#178](https://github.com/nyaomaru/is-kit/pull/178)
+- add nonEmptyArrayOf by @nyaomaru in [#178](https://github.com/necoz-oss/is-kit/pull/178)
 
 ### Docs
 
-- 1.6.4 by [bot] by @github-actions in [#177](https://github.com/nyaomaru/is-kit/pull/177)
+- 1.6.4 by [bot] by @github-actions in [#177](https://github.com/necoz-oss/is-kit/pull/177)
 
 ### Chore
 
-- Release: 1.7.0 by [bot] by @github-actions in [#179](https://github.com/nyaomaru/is-kit/pull/179)
+- Release: 1.7.0 by [bot] by @github-actions in [#179](https://github.com/necoz-oss/is-kit/pull/179)
 
 ### What's New 🚀
 
@@ -1367,98 +1367,98 @@ isTagList(['news', 'tech']); // true
 isTagList(['news', 1]); // false
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.4...v1.7.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.6.4...v1.7.0
 
-[v1.7.0]: https://github.com/nyaomaru/is-kit/compare/v1.6.4...v1.7.0
+[v1.7.0]: https://github.com/necoz-oss/is-kit/compare/v1.6.4...v1.7.0
 
 ## [v1.6.4] - 2026-04-25
 
 ### Changed
 
-- use Object.hasOwn for own-property checks by @nyaomaru in [#174](https://github.com/nyaomaru/is-kit/pull/174)
-- extract reusable guard collection helpers by @nyaomaru in [#175](https://github.com/nyaomaru/is-kit/pull/175)
+- use Object.hasOwn for own-property checks by @nyaomaru in [#174](https://github.com/necoz-oss/is-kit/pull/174)
+- extract reusable guard collection helpers by @nyaomaru in [#175](https://github.com/necoz-oss/is-kit/pull/175)
 
 ### Docs
 
-- 1.6.3 by [bot] by @github-actions in [#172](https://github.com/nyaomaru/is-kit/pull/172)
+- 1.6.3 by [bot] by @github-actions in [#172](https://github.com/necoz-oss/is-kit/pull/172)
 
 ### Chore
 
-- Update pnpm to v10.33.2 by [bot] by @renovate in [#173](https://github.com/nyaomaru/is-kit/pull/173)
+- Update pnpm to v10.33.2 by [bot] by @renovate in [#173](https://github.com/necoz-oss/is-kit/pull/173)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.3...v1.6.4
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.6.3...v1.6.4
 
-[v1.6.4]: https://github.com/nyaomaru/is-kit/compare/v1.6.3...v1.6.4
+[v1.6.4]: https://github.com/necoz-oss/is-kit/compare/v1.6.3...v1.6.4
 
 ## [v1.6.3] - 2026-04-18
 
 ### Changed
 
-- object tag utils by @nyaomaru in [#170](https://github.com/nyaomaru/is-kit/pull/170)
+- object tag utils by @nyaomaru in [#170](https://github.com/necoz-oss/is-kit/pull/170)
 
 ### Docs
 
-- 1.6.2 by [bot] by @github-actions in [#167](https://github.com/nyaomaru/is-kit/pull/167)
+- 1.6.2 by [bot] by @github-actions in [#167](https://github.com/necoz-oss/is-kit/pull/167)
 
 ### Chore
 
-- Update dependency prettier to v3.8.2 by [bot] by @renovate in [#168](https://github.com/nyaomaru/is-kit/pull/168)
-- Update dependency prettier to v3.8.3 by [bot] by @renovate in [#169](https://github.com/nyaomaru/is-kit/pull/169)
+- Update dependency prettier to v3.8.2 by [bot] by @renovate in [#168](https://github.com/necoz-oss/is-kit/pull/168)
+- Update dependency prettier to v3.8.3 by [bot] by @renovate in [#169](https://github.com/necoz-oss/is-kit/pull/169)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.2...v1.6.3
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.6.2...v1.6.3
 
-[v1.6.3]: https://github.com/nyaomaru/is-kit/compare/v1.6.2...v1.6.3
+[v1.6.3]: https://github.com/necoz-oss/is-kit/compare/v1.6.2...v1.6.3
 
 ## [v1.6.2] - 2026-04-11
 
 ### Changed
 
-- refine README by @nyaomaru in [#164](https://github.com/nyaomaru/is-kit/pull/164)
-- reuse isZero in oneOfValues by @nyaomaru in [#165](https://github.com/nyaomaru/is-kit/pull/165)
+- refine README by @nyaomaru in [#164](https://github.com/necoz-oss/is-kit/pull/164)
+- reuse isZero in oneOfValues by @nyaomaru in [#165](https://github.com/necoz-oss/is-kit/pull/165)
 
 ### Docs
 
-- 1.6.1 by [bot] by @github-actions in [#162](https://github.com/nyaomaru/is-kit/pull/162)
+- 1.6.1 by [bot] by @github-actions in [#162](https://github.com/necoz-oss/is-kit/pull/162)
 
 ### Chore
 
-- update codex config by @nyaomaru in [#163](https://github.com/nyaomaru/is-kit/pull/163)
+- update codex config by @nyaomaru in [#163](https://github.com/necoz-oss/is-kit/pull/163)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.1...v1.6.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.6.1...v1.6.2
 
-[v1.6.2]: https://github.com/nyaomaru/is-kit/compare/v1.6.1...v1.6.2
+[v1.6.2]: https://github.com/necoz-oss/is-kit/compare/v1.6.1...v1.6.2
 
 ## [v1.6.1] - 2026-04-04
 
 ### Changed
 
-- wrap guard builders with define by @nyaomaru in [#159](https://github.com/nyaomaru/is-kit/pull/159)
+- wrap guard builders with define by @nyaomaru in [#159](https://github.com/necoz-oss/is-kit/pull/159)
 
 ### Docs
 
-- 1.6.0 by [bot] by @github-actions in [#158](https://github.com/nyaomaru/is-kit/pull/158)
+- 1.6.0 by [bot] by @github-actions in [#158](https://github.com/necoz-oss/is-kit/pull/158)
 
 ### Chore
 
-- enforce 48-hour minimum package age by @nyaomaru in [#160](https://github.com/nyaomaru/is-kit/pull/160)
+- enforce 48-hour minimum package age by @nyaomaru in [#160](https://github.com/necoz-oss/is-kit/pull/160)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.6.0...v1.6.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.6.0...v1.6.1
 
-[v1.6.1]: https://github.com/nyaomaru/is-kit/compare/v1.6.0...v1.6.1
+[v1.6.1]: https://github.com/necoz-oss/is-kit/compare/v1.6.0...v1.6.1
 
 ## [v1.6.0] - 2026-03-28
 
 ### Added
 
-- add mapof setof by @nyaomaru in [#156](https://github.com/nyaomaru/is-kit/pull/156)
+- add mapof setof by @nyaomaru in [#156](https://github.com/necoz-oss/is-kit/pull/156)
 
 ### Docs
 
-- 1.5.0 by [bot] by @github-actions in [#154](https://github.com/nyaomaru/is-kit/pull/154)
+- 1.5.0 by [bot] by @github-actions in [#154](https://github.com/necoz-oss/is-kit/pull/154)
 
 ### Chore
 
-- Update pnpm to v10.33.0 by [bot] by @renovate in [#155](https://github.com/nyaomaru/is-kit/pull/155)
+- Update pnpm to v10.33.0 by [bot] by @renovate in [#155](https://github.com/necoz-oss/is-kit/pull/155)
 
 ### What's New 🚀
 
@@ -1497,23 +1497,23 @@ isScores(new Map([['math', 98], ['english', 91]])); // true
 isScores(new Map([['math', '98']])); // false
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.5.0...v1.6.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.5.0...v1.6.0
 
-[v1.6.0]: https://github.com/nyaomaru/is-kit/compare/v1.5.0...v1.6.0
+[v1.6.0]: https://github.com/necoz-oss/is-kit/compare/v1.5.0...v1.6.0
 
 ## [v1.5.0] - 2026-03-21
 
 ### Added
 
-- add `optionalKey` for struct schemas by @nyaomaru in [#152](https://github.com/nyaomaru/is-kit/pull/152)
+- add `optionalKey` for struct schemas by @nyaomaru in [#152](https://github.com/necoz-oss/is-kit/pull/152)
 
 ### Docs
 
-- 1.4.2 by [bot] by @github-actions in [#151](https://github.com/nyaomaru/is-kit/pull/151)
+- 1.4.2 by [bot] by @github-actions in [#151](https://github.com/necoz-oss/is-kit/pull/151)
 
 ### Chore
 
-- Release: 1.5.0 by [bot] by @github-actions in [#153](https://github.com/nyaomaru/is-kit/pull/153)
+- Release: 1.5.0 by [bot] by @github-actions in [#153](https://github.com/necoz-oss/is-kit/pull/153)
 
 ### What's New 🚀
 
@@ -1537,59 +1537,59 @@ isUser({ id: '1', displayName: undefined }); // true
 
 `struct(...)` now infers `optionalKey(...)` fields as optional object properties, while existing `optional(...)` behavior remains unchanged.
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.4.2...v1.5.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.4.2...v1.5.0
 
-[v1.5.0]: https://github.com/nyaomaru/is-kit/compare/v1.4.2...v1.5.0
+[v1.5.0]: https://github.com/necoz-oss/is-kit/compare/v1.4.2...v1.5.0
 
 ## [v1.4.2] - 2026-03-14
 
 ### Fixed
 
-- preserve GuardedOf narrowing in equals by @nyaomaru in [#149](https://github.com/nyaomaru/is-kit/pull/149)
+- preserve GuardedOf narrowing in equals by @nyaomaru in [#149](https://github.com/necoz-oss/is-kit/pull/149)
 
 ### Docs
 
-- 1.4.1 by [bot] by @github-actions in [#147](https://github.com/nyaomaru/is-kit/pull/147)
+- 1.4.1 by [bot] by @github-actions in [#147](https://github.com/necoz-oss/is-kit/pull/147)
 
 ### Chore
 
-- Update pnpm to v10.32.1 by [bot] by @renovate in [#148](https://github.com/nyaomaru/is-kit/pull/148)
+- Update pnpm to v10.32.1 by [bot] by @renovate in [#148](https://github.com/necoz-oss/is-kit/pull/148)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.4.1...v1.4.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.4.1...v1.4.2
 
-[v1.4.2]: https://github.com/nyaomaru/is-kit/compare/v1.4.1...v1.4.2
+[v1.4.2]: https://github.com/necoz-oss/is-kit/compare/v1.4.1...v1.4.2
 
 ## [v1.4.1] - 2026-03-07
 
 ### Changed
 
-- remove oneOf cast and unify returned callbacks to arrow functions by @nyaomaru in [#145](https://github.com/nyaomaru/is-kit/pull/145)
+- remove oneOf cast and unify returned callbacks to arrow functions by @nyaomaru in [#145](https://github.com/necoz-oss/is-kit/pull/145)
 
 ### Docs
 
-- 1.4.0 by [bot] by @github-actions in [#144](https://github.com/nyaomaru/is-kit/pull/144)
+- 1.4.0 by [bot] by @github-actions in [#144](https://github.com/necoz-oss/is-kit/pull/144)
 
 ### Chore
 
-- Release: 1.4.1 by [bot] by @github-actions in [#146](https://github.com/nyaomaru/is-kit/pull/146)
+- Release: 1.4.1 by [bot] by @github-actions in [#146](https://github.com/necoz-oss/is-kit/pull/146)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.4.0...v1.4.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.4.0...v1.4.1
 
-[v1.4.1]: https://github.com/nyaomaru/is-kit/compare/v1.4.0...v1.4.1
+[v1.4.1]: https://github.com/necoz-oss/is-kit/compare/v1.4.0...v1.4.1
 
 ## [v1.4.0] - 2026-02-28
 
 ### Added
 
-- add hasKeys guard with non-empty key constraint by @nyaomaru in [#142](https://github.com/nyaomaru/is-kit/pull/142)
+- add hasKeys guard with non-empty key constraint by @nyaomaru in [#142](https://github.com/necoz-oss/is-kit/pull/142)
 
 ### Docs
 
-- 1.3.0 by [bot] by @github-actions in [#140](https://github.com/nyaomaru/is-kit/pull/140)
+- 1.3.0 by [bot] by @github-actions in [#140](https://github.com/necoz-oss/is-kit/pull/140)
 
 ### Chore
 
-- Update pnpm to v10.30.3 by [bot] by @renovate in [#141](https://github.com/nyaomaru/is-kit/pull/141)
+- Update pnpm to v10.30.3 by [bot] by @renovate in [#141](https://github.com/necoz-oss/is-kit/pull/141)
 
 ### What's New 🚀
 
@@ -1625,23 +1625,23 @@ if (isGuest(input)) {
 }
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.3.0...v1.4.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.3.0...v1.4.0
 
-[v1.4.0]: https://github.com/nyaomaru/is-kit/compare/v1.3.0...v1.4.0
+[v1.4.0]: https://github.com/necoz-oss/is-kit/compare/v1.3.0...v1.4.0
 
 ## [v1.3.0] - 2026-02-21
 
 ### Added
 
-- add isInstanceOf guard factory and update docs by @nyaomaru in [#138](https://github.com/nyaomaru/is-kit/pull/138)
+- add isInstanceOf guard factory and update docs by @nyaomaru in [#138](https://github.com/necoz-oss/is-kit/pull/138)
 
 ### Docs
 
-- 1.2.0 by [bot] by @github-actions in [#136](https://github.com/nyaomaru/is-kit/pull/136)
+- 1.2.0 by [bot] by @github-actions in [#136](https://github.com/necoz-oss/is-kit/pull/136)
 
 ### Chore
 
-- Update pnpm to v10.30.1 by [bot] by @renovate in [#137](https://github.com/nyaomaru/is-kit/pull/137)
+- Update pnpm to v10.30.1 by [bot] by @renovate in [#137](https://github.com/necoz-oss/is-kit/pull/137)
 
 ### What's New 🚀
 
@@ -1664,9 +1664,9 @@ isAnimal(new Dog()); // true
 isAnimal({}); // false
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.2.0...v1.3.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.2.0...v1.3.0
 
-[v1.3.0]: https://github.com/nyaomaru/is-kit/compare/v1.2.0...v1.3.0
+[v1.3.0]: https://github.com/necoz-oss/is-kit/compare/v1.2.0...v1.3.0
 
 ## [v1.2.0] - 2026-02-14
 
@@ -1710,34 +1710,34 @@ input.active; // true
 
 ### Added
 
-- assert by @nyaomaru in [#134](https://github.com/nyaomaru/is-kit/pull/134)
+- assert by @nyaomaru in [#134](https://github.com/necoz-oss/is-kit/pull/134)
 
 ### Docs
 
-- 1.1.13 by [bot] by @github-actions in [#131](https://github.com/nyaomaru/is-kit/pull/131)
+- 1.1.13 by [bot] by @github-actions in [#131](https://github.com/necoz-oss/is-kit/pull/131)
 
 ### Chore
 
-- Update pnpm to v10.29.1 by [bot] by @renovate in [#132](https://github.com/nyaomaru/is-kit/pull/132)
-- Update pnpm to v10.29.3 by [bot] by @renovate in [#133](https://github.com/nyaomaru/is-kit/pull/133)
+- Update pnpm to v10.29.1 by [bot] by @renovate in [#132](https://github.com/necoz-oss/is-kit/pull/132)
+- Update pnpm to v10.29.3 by [bot] by @renovate in [#133](https://github.com/necoz-oss/is-kit/pull/133)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.13...v1.2.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.13...v1.2.0
 
-[v1.2.0]: https://github.com/nyaomaru/is-kit/compare/v1.1.13...v1.2.0
+[v1.2.0]: https://github.com/necoz-oss/is-kit/compare/v1.1.13...v1.2.0
 
 ## [v1.1.13] - 2026-02-07
 
 ### Added
 
-- add hasKey helper by @nyaomaru in [#129](https://github.com/nyaomaru/is-kit/pull/129)
+- add hasKey helper by @nyaomaru in [#129](https://github.com/necoz-oss/is-kit/pull/129)
 
 ### Docs
 
-- 1.1.12 by [bot] by @github-actions in [#128](https://github.com/nyaomaru/is-kit/pull/128)
+- 1.1.12 by [bot] by @github-actions in [#128](https://github.com/necoz-oss/is-kit/pull/128)
 
 ### Chore
 
-- Release: 1.1.13 by [bot] by @github-actions in [#130](https://github.com/nyaomaru/is-kit/pull/130)
+- Release: 1.1.13 by [bot] by @github-actions in [#130](https://github.com/necoz-oss/is-kit/pull/130)
 
 ### What's new 🚀
 
@@ -1754,106 +1754,106 @@ if (hasRole(value)) {
 }
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.12...v1.1.13
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.12...v1.1.13
 
-[v1.1.13]: https://github.com/nyaomaru/is-kit/compare/v1.1.12...v1.1.13
+[v1.1.13]: https://github.com/necoz-oss/is-kit/compare/v1.1.12...v1.1.13
 
 ## [v1.1.12] - 2026-01-31
 
 ### Fixed
 
-- fix npm publish workflow by @nyaomaru in [#125](https://github.com/nyaomaru/is-kit/pull/125)
+- fix npm publish workflow by @nyaomaru in [#125](https://github.com/necoz-oss/is-kit/pull/125)
 
 ### Changed
 
-- remove andAll assertion via predicate helper by @nyaomaru in [#126](https://github.com/nyaomaru/is-kit/pull/126)
+- remove andAll assertion via predicate helper by @nyaomaru in [#126](https://github.com/necoz-oss/is-kit/pull/126)
 
 ### Docs
 
-- 1.1.11 by [bot] by @github-actions in [#123](https://github.com/nyaomaru/is-kit/pull/123)
+- 1.1.11 by [bot] by @github-actions in [#123](https://github.com/necoz-oss/is-kit/pull/123)
 
 ### Chore
 
-- Update pnpm to v10.28.2 by [bot] by @renovate in [#124](https://github.com/nyaomaru/is-kit/pull/124)
+- Update pnpm to v10.28.2 by [bot] by @renovate in [#124](https://github.com/necoz-oss/is-kit/pull/124)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.11...v1.1.12
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.11...v1.1.12
 
-[v1.1.12]: https://github.com/nyaomaru/is-kit/compare/v1.1.11...v1.1.12
+[v1.1.12]: https://github.com/necoz-oss/is-kit/compare/v1.1.11...v1.1.12
 
 ## [v1.1.11] - 2026-01-24
 
 ### Changed
 
-- remove redundant casts after object guards by @nyaomaru in [#120](https://github.com/nyaomaru/is-kit/pull/120)
-- prettier format by @nyaomaru in [#121](https://github.com/nyaomaru/is-kit/pull/121)
+- remove redundant casts after object guards by @nyaomaru in [#120](https://github.com/necoz-oss/is-kit/pull/120)
+- prettier format by @nyaomaru in [#121](https://github.com/necoz-oss/is-kit/pull/121)
 
 ### Docs
 
-- 1.1.10 by [bot] by @github-actions in [#117](https://github.com/nyaomaru/is-kit/pull/117)
+- 1.1.10 by [bot] by @github-actions in [#117](https://github.com/necoz-oss/is-kit/pull/117)
 
 ### Chore
 
-- Update pnpm to v10.28.1 by [bot] by @renovate in [#118](https://github.com/nyaomaru/is-kit/pull/118)
-- Update dependency prettier to v3.8.1 by [bot] by @renovate in [#119](https://github.com/nyaomaru/is-kit/pull/119)
+- Update pnpm to v10.28.1 by [bot] by @renovate in [#118](https://github.com/necoz-oss/is-kit/pull/118)
+- Update dependency prettier to v3.8.1 by [bot] by @renovate in [#119](https://github.com/necoz-oss/is-kit/pull/119)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.10...v1.1.11
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.10...v1.1.11
 
-[v1.1.11]: https://github.com/nyaomaru/is-kit/compare/v1.1.10...v1.1.11
+[v1.1.11]: https://github.com/necoz-oss/is-kit/compare/v1.1.10...v1.1.11
 
 ## [v1.1.10] - 2026-01-17
 
 ### Fixed
 
-- fix parallel setting by @nyaomaru in [#112](https://github.com/nyaomaru/is-kit/pull/112)
-- fix web_search config by @nyaomaru in [#114](https://github.com/nyaomaru/is-kit/pull/114)
-- eslint warnings by @nyaomaru in [#115](https://github.com/nyaomaru/is-kit/pull/115)
+- fix parallel setting by @nyaomaru in [#112](https://github.com/necoz-oss/is-kit/pull/112)
+- fix web_search config by @nyaomaru in [#114](https://github.com/necoz-oss/is-kit/pull/114)
+- eslint warnings by @nyaomaru in [#115](https://github.com/necoz-oss/is-kit/pull/115)
 
 ### Chore
 
-- Update dependency prettier to v3.8.0 by [bot] by @renovate in [#113](https://github.com/nyaomaru/is-kit/pull/113)
+- Update dependency prettier to v3.8.0 by [bot] by @renovate in [#113](https://github.com/necoz-oss/is-kit/pull/113)
 
 ### Docs
 
-- 1.1.9 by [bot] by @github-actions in [#111](https://github.com/nyaomaru/is-kit/pull/111)
+- 1.1.9 by [bot] by @github-actions in [#111](https://github.com/necoz-oss/is-kit/pull/111)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.9...v1.1.10
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.9...v1.1.10
 
-[v1.1.10]: https://github.com/nyaomaru/is-kit/compare/v1.1.9...v1.1.10
+[v1.1.10]: https://github.com/necoz-oss/is-kit/compare/v1.1.9...v1.1.10
 
 ## [v1.1.9] - 2026-01-11
 
 ### Fixed
 
-- fix eslint by @nyaomaru in [#107](https://github.com/nyaomaru/is-kit/pull/107)
-- fix eslint tsx by @nyaomaru in [#108](https://github.com/nyaomaru/is-kit/pull/108)
+- fix eslint by @nyaomaru in [#107](https://github.com/necoz-oss/is-kit/pull/107)
+- fix eslint tsx by @nyaomaru in [#108](https://github.com/necoz-oss/is-kit/pull/108)
 
 ### Docs
 
-- 1.1.8 by [bot] by @github-actions in [#105](https://github.com/nyaomaru/is-kit/pull/105)
+- 1.1.8 by [bot] by @github-actions in [#105](https://github.com/necoz-oss/is-kit/pull/105)
 
 ### Chore
 
-- Update pnpm to v10.28.0 by [bot] by @renovate in [#106](https://github.com/nyaomaru/is-kit/pull/106)
-- add lefthook by @nyaomaru in [#109](https://github.com/nyaomaru/is-kit/pull/109)
+- Update pnpm to v10.28.0 by [bot] by @renovate in [#106](https://github.com/necoz-oss/is-kit/pull/106)
+- add lefthook by @nyaomaru in [#109](https://github.com/necoz-oss/is-kit/pull/109)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.8...v1.1.9
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.8...v1.1.9
 
-[v1.1.9]: https://github.com/nyaomaru/is-kit/compare/v1.1.8...v1.1.9
+[v1.1.9]: https://github.com/necoz-oss/is-kit/compare/v1.1.8...v1.1.9
 
 ## [v1.1.8] - 2026-01-03
 
 ### Added
 
-- add numeric primitive guards by @nyaomaru in [#102](https://github.com/nyaomaru/is-kit/pull/102)
+- add numeric primitive guards by @nyaomaru in [#102](https://github.com/necoz-oss/is-kit/pull/102)
 
 ### Docs
 
-- 1.1.7 by [bot] by @github-actions in [#100](https://github.com/nyaomaru/is-kit/pull/100)
+- 1.1.7 by [bot] by @github-actions in [#100](https://github.com/necoz-oss/is-kit/pull/100)
 
 ### Chore
 
-- Update pnpm to v10.27.0 by [bot] by @renovate in [#101](https://github.com/nyaomaru/is-kit/pull/101)
-- Update jdx/mise-action action to v3 by [bot] by @renovate in [#103](https://github.com/nyaomaru/is-kit/pull/103)
+- Update pnpm to v10.27.0 by [bot] by @renovate in [#101](https://github.com/necoz-oss/is-kit/pull/101)
+- Update jdx/mise-action action to v3 by [bot] by @renovate in [#103](https://github.com/necoz-oss/is-kit/pull/103)
 
 ### What’s new 🚀
 
@@ -1874,23 +1874,23 @@ isZero(-0); // true
 isZero(1); // false
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.7...v1.1.8
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.7...v1.1.8
 
-[v1.1.8]: https://github.com/nyaomaru/is-kit/compare/v1.1.7...v1.1.8
+[v1.1.8]: https://github.com/necoz-oss/is-kit/compare/v1.1.7...v1.1.8
 
 ## [v1.1.7] - 2025-12-27
 
 ### Added
 
-- add isInteger, isSafeInteger, isPositive, isNegative by @nyaomaru in [#98](https://github.com/nyaomaru/is-kit/pull/98)
+- add isInteger, isSafeInteger, isPositive, isNegative by @nyaomaru in [#98](https://github.com/necoz-oss/is-kit/pull/98)
 
 ### Docs
 
-- 1.1.6 by [bot] by @github-actions in [#96](https://github.com/nyaomaru/is-kit/pull/96)
+- 1.1.6 by [bot] by @github-actions in [#96](https://github.com/necoz-oss/is-kit/pull/96)
 
 ### Chore
 
-- Update pnpm to v10.26.2 by [bot] by @renovate in [#97](https://github.com/nyaomaru/is-kit/pull/97)
+- Update pnpm to v10.26.2 by [bot] by @renovate in [#97](https://github.com/necoz-oss/is-kit/pull/97)
 
 ### What’s New 🚀
 
@@ -1901,101 +1901,101 @@ isZero(1); // false
   - `isPositive` accepts finite numbers strictly greater than 0 (excludes NaN/±Infinity; -0 is not positive).
   - `isNegative` accepts finite numbers strictly less than 0 (excludes NaN/±Infinity; -0 is not negative).
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.6...v1.1.7
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.6...v1.1.7
 
-[v1.1.7]: https://github.com/nyaomaru/is-kit/compare/v1.1.6...v1.1.7
+[v1.1.7]: https://github.com/necoz-oss/is-kit/compare/v1.1.6...v1.1.7
 
 ## [v1.1.6] - 2025-12-20
 
 ### Changed
 
-- use toBooleanPredicates in oneOf to align with or by @nyaomaru in [#91](https://github.com/nyaomaru/is-kit/pull/91)
+- use toBooleanPredicates in oneOf to align with or by @nyaomaru in [#91](https://github.com/necoz-oss/is-kit/pull/91)
 
 ### Docs
 
-- 1.1.5 by [bot] by @github-actions in [#82](https://github.com/nyaomaru/is-kit/pull/82)
+- 1.1.5 by [bot] by @github-actions in [#82](https://github.com/necoz-oss/is-kit/pull/82)
 
 ### Test
 
-- rename test files by @nyaomaru in [#86](https://github.com/nyaomaru/is-kit/pull/86)
+- rename test files by @nyaomaru in [#86](https://github.com/necoz-oss/is-kit/pull/86)
 
 ### Chore
 
-- Update dependency next to v14.2.35 by [bot] by @renovate in [#84](https://github.com/nyaomaru/is-kit/pull/84)
-- Update dependency autoprefixer to v10.4.23 by [bot] by @renovate in [#83](https://github.com/nyaomaru/is-kit/pull/83)
-- Update dependency tailwindcss to v3.4.19 by [bot] by @renovate in [#85](https://github.com/nyaomaru/is-kit/pull/85)
-- Update eslint monorepo to v9.39.2 by [bot] by @renovate in [#87](https://github.com/nyaomaru/is-kit/pull/87)
-- Update dependency lucide-react to ^0.562.0 by [bot] by @renovate in [#88](https://github.com/nyaomaru/is-kit/pull/88)
-- Update dependency prettier to v3.7.4 by [bot] by @renovate in [#89](https://github.com/nyaomaru/is-kit/pull/89)
-- Update pnpm to v10.26.1 by [bot] by @renovate in [#90](https://github.com/nyaomaru/is-kit/pull/90)
-- Update actions/cache action to v5 by [bot] by @renovate in [#92](https://github.com/nyaomaru/is-kit/pull/92)
-- Update actions/checkout action to v6 by [bot] by @renovate in [#93](https://github.com/nyaomaru/is-kit/pull/93)
-- Update actions/setup-node action to v6 by [bot] by @renovate in [#94](https://github.com/nyaomaru/is-kit/pull/94)
+- Update dependency next to v14.2.35 by [bot] by @renovate in [#84](https://github.com/necoz-oss/is-kit/pull/84)
+- Update dependency autoprefixer to v10.4.23 by [bot] by @renovate in [#83](https://github.com/necoz-oss/is-kit/pull/83)
+- Update dependency tailwindcss to v3.4.19 by [bot] by @renovate in [#85](https://github.com/necoz-oss/is-kit/pull/85)
+- Update eslint monorepo to v9.39.2 by [bot] by @renovate in [#87](https://github.com/necoz-oss/is-kit/pull/87)
+- Update dependency lucide-react to ^0.562.0 by [bot] by @renovate in [#88](https://github.com/necoz-oss/is-kit/pull/88)
+- Update dependency prettier to v3.7.4 by [bot] by @renovate in [#89](https://github.com/necoz-oss/is-kit/pull/89)
+- Update pnpm to v10.26.1 by [bot] by @renovate in [#90](https://github.com/necoz-oss/is-kit/pull/90)
+- Update actions/cache action to v5 by [bot] by @renovate in [#92](https://github.com/necoz-oss/is-kit/pull/92)
+- Update actions/checkout action to v6 by [bot] by @renovate in [#93](https://github.com/necoz-oss/is-kit/pull/93)
+- Update actions/setup-node action to v6 by [bot] by @renovate in [#94](https://github.com/necoz-oss/is-kit/pull/94)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.5...v1.1.6
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.5...v1.1.6
 
-[v1.1.6]: https://github.com/nyaomaru/is-kit/compare/v1.1.5...v1.1.6
+[v1.1.6]: https://github.com/necoz-oss/is-kit/compare/v1.1.5...v1.1.6
 
 ## [v1.1.5] - 2025-12-13
 
 ### Fixed
 
-- support tuple-array and varargs in oneOfValues by @nyaomaru in [#80](https://github.com/nyaomaru/is-kit/pull/80)
+- support tuple-array and varargs in oneOfValues by @nyaomaru in [#80](https://github.com/necoz-oss/is-kit/pull/80)
 
 ### Docs
 
-- 1.1.4 by [bot] by @github-actions in [#77](https://github.com/nyaomaru/is-kit/pull/77)
+- 1.1.4 by [bot] by @github-actions in [#77](https://github.com/necoz-oss/is-kit/pull/77)
 
 ### Chore
 
-- Update dependency ts-jest to v29.4.6 by [bot] by @renovate in [#78](https://github.com/nyaomaru/is-kit/pull/78)
-- Update dependency lucide-react to ^0.561.0 by [bot] by @renovate in [#79](https://github.com/nyaomaru/is-kit/pull/79)
+- Update dependency ts-jest to v29.4.6 by [bot] by @renovate in [#78](https://github.com/necoz-oss/is-kit/pull/78)
+- Update dependency lucide-react to ^0.561.0 by [bot] by @renovate in [#79](https://github.com/necoz-oss/is-kit/pull/79)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.4...v1.1.5
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.4...v1.1.5
 
-[v1.1.5]: https://github.com/nyaomaru/is-kit/compare/v1.1.4...v1.1.5
+[v1.1.5]: https://github.com/necoz-oss/is-kit/compare/v1.1.4...v1.1.5
 
 ## [v1.1.4] - 2025-12-07
 
 ### Changed
 
-- file name by @nyaomaru in [#73](https://github.com/nyaomaru/is-kit/pull/73)
-- simplify equalsBy generics and constraints by @nyaomaru in [#74](https://github.com/nyaomaru/is-kit/pull/74)
-- remove unsafe assertion by @nyaomaru in [#75](https://github.com/nyaomaru/is-kit/pull/75)
+- file name by @nyaomaru in [#73](https://github.com/necoz-oss/is-kit/pull/73)
+- simplify equalsBy generics and constraints by @nyaomaru in [#74](https://github.com/necoz-oss/is-kit/pull/74)
+- remove unsafe assertion by @nyaomaru in [#75](https://github.com/necoz-oss/is-kit/pull/75)
 
 ### Docs
 
-- 1.1.3 by [bot] by @github-actions in [#70](https://github.com/nyaomaru/is-kit/pull/70)
+- 1.1.3 by [bot] by @github-actions in [#70](https://github.com/necoz-oss/is-kit/pull/70)
 
 ### Chore
 
-- Update dependency typedoc to v0.28.15 by [bot] by @renovate in [#71](https://github.com/nyaomaru/is-kit/pull/71)
-- Update dependency lucide-react to ^0.555.0 by [bot] by @renovate in [#72](https://github.com/nyaomaru/is-kit/pull/72)
+- Update dependency typedoc to v0.28.15 by [bot] by @renovate in [#71](https://github.com/necoz-oss/is-kit/pull/71)
+- Update dependency lucide-react to ^0.555.0 by [bot] by @renovate in [#72](https://github.com/necoz-oss/is-kit/pull/72)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.3...v1.1.4
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.3...v1.1.4
 
-[v1.1.4]: https://github.com/nyaomaru/is-kit/compare/v1.1.3...v1.1.4
+[v1.1.4]: https://github.com/necoz-oss/is-kit/compare/v1.1.3...v1.1.4
 
 ## [v1.1.3] - 2025-11-29
 
 ### Added
 
-- add isPrimitive guard preset by @nyaomaru in [#66](https://github.com/nyaomaru/is-kit/pull/66)
+- add isPrimitive guard preset by @nyaomaru in [#66](https://github.com/necoz-oss/is-kit/pull/66)
 
 ### Fixed
 
-- remove release name by @nyaomaru in [#67](https://github.com/nyaomaru/is-kit/pull/67)
+- remove release name by @nyaomaru in [#67](https://github.com/necoz-oss/is-kit/pull/67)
 
 ### Changed
 
-- precompute schema keys and allowed set by @nyaomaru in [#68](https://github.com/nyaomaru/is-kit/pull/68)
+- precompute schema keys and allowed set by @nyaomaru in [#68](https://github.com/necoz-oss/is-kit/pull/68)
 
 ### Chore
 
-- v1.1.2 by [bot] by @github-actions in [#63](https://github.com/nyaomaru/is-kit/pull/63)
-- Update dependency /react to v18.3.27 by @renovate[bot] by @types in [#64](https://github.com/nyaomaru/is-kit/pull/64)
-- Update dependency lucide-react to ^0.554.0 - autoclosed by [bot] by @renovate in [#65](https://github.com/nyaomaru/is-kit/pull/65)
-- Release: 1.1.3 by [bot] by @github-actions in [#69](https://github.com/nyaomaru/is-kit/pull/69)
+- v1.1.2 by [bot] by @github-actions in [#63](https://github.com/necoz-oss/is-kit/pull/63)
+- Update dependency /react to v18.3.27 by @renovate[bot] by @types in [#64](https://github.com/necoz-oss/is-kit/pull/64)
+- Update dependency lucide-react to ^0.554.0 - autoclosed by [bot] by @renovate in [#65](https://github.com/necoz-oss/is-kit/pull/65)
+- Release: 1.1.3 by [bot] by @github-actions in [#69](https://github.com/necoz-oss/is-kit/pull/69)
 
 ### What's New 🚀
 
@@ -2011,26 +2011,26 @@ isPrimitive(NaN); // true (use isNumber for finite only)
 isPrimitive({}); // false`;
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.2...v1.1.3
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.2...v1.1.3
 
-[v1.1.3]: https://github.com/nyaomaru/is-kit/compare/v1.1.2...v1.1.3
+[v1.1.3]: https://github.com/necoz-oss/is-kit/compare/v1.1.2...v1.1.3
 
 ## [v1.1.2] - 2025-11-22
 
 ### Added
 
-- isWeakMap and isWeakSet by @nyaomaru in [#61](https://github.com/nyaomaru/is-kit/pull/61)
+- isWeakMap and isWeakSet by @nyaomaru in [#61](https://github.com/necoz-oss/is-kit/pull/61)
 
 ### Fixed
 
-- changelog workflow permission error by @nyaomaru in [#58](https://github.com/nyaomaru/is-kit/pull/58)
+- changelog workflow permission error by @nyaomaru in [#58](https://github.com/necoz-oss/is-kit/pull/58)
 
 ### Chore
 
-- Release: 1.1.1 by [bot] by @github-actions in [#57](https://github.com/nyaomaru/is-kit/pull/57)
-- Update dependency autoprefixer to v10.4.22 by [bot] by @renovate in [#59](https://github.com/nyaomaru/is-kit/pull/59)
-- Update dependency tsup to v8.5.1 by [bot] by @renovate in [#60](https://github.com/nyaomaru/is-kit/pull/60)
-- Release: 1.1.2 by [bot] by @github-actions in [#62](https://github.com/nyaomaru/is-kit/pull/62)
+- Release: 1.1.1 by [bot] by @github-actions in [#57](https://github.com/necoz-oss/is-kit/pull/57)
+- Update dependency autoprefixer to v10.4.22 by [bot] by @renovate in [#59](https://github.com/necoz-oss/is-kit/pull/59)
+- Update dependency tsup to v8.5.1 by [bot] by @renovate in [#60](https://github.com/necoz-oss/is-kit/pull/60)
+- Release: 1.1.2 by [bot] by @github-actions in [#62](https://github.com/necoz-oss/is-kit/pull/62)
 
 ### What's New 🚀
 
@@ -2041,49 +2041,49 @@ isWeakMap(new WeakMap()); // true
 isWeakSet(new WeakSet()); // true
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.1...v1.1.2
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.1...v1.1.2
 
-[v1.1.2]: https://github.com/nyaomaru/is-kit/compare/v1.1.1...v1.1.2
+[v1.1.2]: https://github.com/necoz-oss/is-kit/compare/v1.1.1...v1.1.2
 
 ## [v1.1.1] - 2025-11-15
 
 ### Changed
 
-- use define and add comment by @nyaomaru in [#55](https://github.com/nyaomaru/is-kit/pull/55)
+- use define and add comment by @nyaomaru in [#55](https://github.com/necoz-oss/is-kit/pull/55)
 
 ### Chore
 
-- Update dependency /react-label to v2.1.8 by @renovate[bot] by @radix-ui in [#53](https://github.com/nyaomaru/is-kit/pull/53)
-- Update dependency lucide-react to ^0.553.0 by [bot] by @renovate in [#54](https://github.com/nyaomaru/is-kit/pull/54)
-- Update pnpm to v10.22.0 by [bot] by @renovate in [#48](https://github.com/nyaomaru/is-kit/pull/48)
-- Update eslint monorepo to v9.39.1 by [bot] by @renovate in [#47](https://github.com/nyaomaru/is-kit/pull/47)
-- update README badge by @nyaomaru in [#56](https://github.com/nyaomaru/is-kit/pull/56)
+- Update dependency /react-label to v2.1.8 by @renovate[bot] by @radix-ui in [#53](https://github.com/necoz-oss/is-kit/pull/53)
+- Update dependency lucide-react to ^0.553.0 by [bot] by @renovate in [#54](https://github.com/necoz-oss/is-kit/pull/54)
+- Update pnpm to v10.22.0 by [bot] by @renovate in [#48](https://github.com/necoz-oss/is-kit/pull/48)
+- Update eslint monorepo to v9.39.1 by [bot] by @renovate in [#47](https://github.com/necoz-oss/is-kit/pull/47)
+- update README badge by @nyaomaru in [#56](https://github.com/necoz-oss/is-kit/pull/56)
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.1.0...v1.1.1
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.1.0...v1.1.1
 
-[v1.1.1]: https://github.com/nyaomaru/is-kit/compare/v1.1.0...v1.1.1
+[v1.1.1]: https://github.com/necoz-oss/is-kit/compare/v1.1.0...v1.1.1
 
 ## [v1.1.0] - 2025-11-04
 
 ### Added
 
-- add narrowKeyTo for key literal narrowing by @nyaomaru in [#49](https://github.com/nyaomaru/is-kit/pull/49)
-- narrow key description by @nyaomaru in [#50](https://github.com/nyaomaru/is-kit/pull/50)
+- add narrowKeyTo for key literal narrowing by @nyaomaru in [#49](https://github.com/necoz-oss/is-kit/pull/49)
+- narrow key description by @nyaomaru in [#50](https://github.com/necoz-oss/is-kit/pull/50)
 
 ### Fixed
 
-- update changelog workflow by @nyaomaru in [#45](https://github.com/nyaomaru/is-kit/pull/45)
-- release workflow by @nyaomaru in [#52](https://github.com/nyaomaru/is-kit/pull/52)
+- update changelog workflow by @nyaomaru in [#45](https://github.com/necoz-oss/is-kit/pull/45)
+- release workflow by @nyaomaru in [#52](https://github.com/necoz-oss/is-kit/pull/52)
 
 ### Chore
 
-- Release: 1.0.5 by [bot] by @github-actions in [#44](https://github.com/nyaomaru/is-kit/pull/44)
-- changelog v1.0.5 by @nyaomaru in [#46](https://github.com/nyaomaru/is-kit/pull/46)
-- Release: 1.1.0 by [bot] by @github-actions in [#51](https://github.com/nyaomaru/is-kit/pull/51)
+- Release: 1.0.5 by [bot] by @github-actions in [#44](https://github.com/necoz-oss/is-kit/pull/44)
+- changelog v1.0.5 by @nyaomaru in [#46](https://github.com/necoz-oss/is-kit/pull/46)
+- Release: 1.1.0 by [bot] by @github-actions in [#51](https://github.com/necoz-oss/is-kit/pull/51)
 
 ### What's new 🚀
 
-- Add `narrowKeyTo` for key literal narrowing ✨ in [#49](https://github.com/nyaomaru/is-kit/pull/49)
+- Add `narrowKeyTo` for key literal narrowing ✨ in [#49](https://github.com/necoz-oss/is-kit/pull/49)
   - `equalsBy` preserves the base type and doesn’t narrow selected fields to literals, leading to confusion and
     boilerplate type predicates.
   - `narrowKeyTo` provides a small, composable helper aligned with is-kit’s ergonomics for property-based
@@ -2115,9 +2115,9 @@ if (isGuestOrTrial(input)) {
 }
 ```
 
-**Full Changelog**: https://github.com/nyaomaru/is-kit/compare/v1.0.5...v1.1.0
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.0.5...v1.1.0
 
-[v1.1.0]: https://github.com/nyaomaru/is-kit/compare/v1.0.5...v1.1.0
+[v1.1.0]: https://github.com/necoz-oss/is-kit/compare/v1.0.5...v1.1.0
 
 ## [v1.0.5] - 2025-11-02
 
@@ -2141,8 +2141,8 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.16.2...HEAD
-[v1.0.5]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...v1.0.5
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.16.2...HEAD
+[v1.0.5]: https://github.com/necoz-oss/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
 
@@ -2162,8 +2162,8 @@ if (isGuestOrTrial(input)) {
 - Updated dependency typescript to v5.9.3 (#34)
 - Updated dependency typedoc to v0.28.14 (#33)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.4...HEAD
-[1.0.4]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.4
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/necoz-oss/is-kit/releases/tag/v1.0.4
 
 ---
 
@@ -2177,8 +2177,8 @@ if (isGuestOrTrial(input)) {
 
 - Reused `isObject` and `isFunction` (#29)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.3...HEAD
-[1.0.3]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.3
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/necoz-oss/is-kit/releases/tag/v1.0.3
 
 ---
 
@@ -2205,8 +2205,8 @@ if (isGuestOrTrial(input)) {
 - Updated dependency ts-jest to v29.4.5 (#24)
 - Updated dependency @types/react to v18.3.26 (#23)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.2...HEAD
-[1.0.2]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.2
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/necoz-oss/is-kit/releases/tag/v1.0.2
 
 ---
 
@@ -2230,8 +2230,8 @@ if (isGuestOrTrial(input)) {
 - Added release workflow for automated tagging and publishing (#11)
 - Automated release: v1.0.1 by @github-actions[bot] (#13)
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.1...HEAD
-[1.0.1]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.1
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/necoz-oss/is-kit/releases/tag/v1.0.1
 
 ---
 
@@ -2251,5 +2251,5 @@ if (isGuestOrTrial(input)) {
 
 - Docs site (Next.js + shadcn/ui), quick start & API Reference
 
-[Unreleased]: https://github.com/nyaomaru/is-kit/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/nyaomaru/is-kit/releases/tag/v1.0.0
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/necoz-oss/is-kit/releases/tag/v1.0.0

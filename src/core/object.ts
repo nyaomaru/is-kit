@@ -234,7 +234,7 @@ export const isTypedArray = define<ArrayBufferView>(
  * Checks whether a value is an `Error`.
  *
  * @returns Predicate narrowing to `Error`.
- * @see https://github.com/nyaomaru/is-kit/issues/325
+ * @see https://github.com/necoz-oss/is-kit/issues/325
  */
 // WHY: Error.isError verifies the internal Error brand across realms without
 // trusting Symbol.toStringTag. Older runtimes lack it, so retain the tag
