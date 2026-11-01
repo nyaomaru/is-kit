@@ -6,6 +6,49 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.16.3] - 2026-11-01
+
+### Docs
+
+- 1.16.2 by @github-actions[bot] in [#369](https://github.com/necoz-oss/is-kit/pull/369)
+- clarify safeParse tagged-result semantics (#359) by @guhcostan in [#370](https://github.com/necoz-oss/is-kit/pull/370)
+- clarify isNumber finite-number semantics by @nuriadevs in [#371](https://github.com/necoz-oss/is-kit/pull/371)
+
+### Test
+
+- strengthen refineKey type-level regression coverage by @AmirAbaris in [#372](https://github.com/necoz-oss/is-kit/pull/372)
+
+### Chore
+
+- point GitHub links at necoz-oss by @nyaomaru in [#373](https://github.com/necoz-oss/is-kit/pull/373)
+- Release: 1.16.3 by @github-actions[bot] in [#374](https://github.com/necoz-oss/is-kit/pull/374)
+
+### What's new 🚀
+
+This release includes documentation improvements, stronger type-level regression coverage, and our move to the **Necoz** organization! 😸
+
+### Welcome, New Contributors! 🎉
+
+A big welcome and thank you to our three new contributors!
+
+- **@guhcostan** improved the documentation for `safeParse`, making tagged-result semantics easier to understand. Thank you for helping make is-kit clearer! 😸
+- **@nuriadevs** clarified the finite-number semantics of `isNumber`, helping developers better understand its behavior. Thanks for the thoughtful documentation improvement! 🙌
+- **@AmirAbaris** strengthened the type-level regression tests for `refineKey`, helping us keep TypeScript inference reliable. Thank you for improving is-kit's robustness! 💪
+
+We're happy to have you contributing to `is-kit` and the Necoz community!
+
+**Stay a Good Cat! 😸**
+
+### New Contributors
+
+* @guhcostan made their first contribution in https://github.com/necoz-oss/is-kit/pull/370
+* @nuriadevs made their first contribution in https://github.com/necoz-oss/is-kit/pull/371
+* @AmirAbaris made their first contribution in https://github.com/necoz-oss/is-kit/pull/372
+
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.16.2...v1.16.3
+
+[v1.16.3]: https://github.com/necoz-oss/is-kit/compare/v1.16.2...v1.16.3
+
 ## [v1.16.2] - 2026-10-31
 
 ### Fixed
@@ -2141,7 +2184,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.16.2...HEAD
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.16.3...HEAD
 [v1.0.5]: https://github.com/necoz-oss/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
