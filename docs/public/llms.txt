@@ -102,8 +102,8 @@ const isTree: Predicate<Tree> = lazy(() =>
 - [Advanced property refinement with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)
 - [Validate unknown without a schema library](https://is-kit.dev/guides/validate-unknown-without-schema-library)
 - [API reference](https://is-kit.dev/api-reference)
-- [README and usage guide](https://github.com/nyaomaru/is-kit#readme)
-- [AI agent rules](https://github.com/nyaomaru/is-kit/blob/main/docs/agent-rules.md)
+- [README and usage guide](https://github.com/necoz-oss/is-kit#readme)
+- [AI agent rules](https://github.com/necoz-oss/is-kit/blob/main/docs/agent-rules.md)
 - [npm package](https://www.npmjs.com/package/is-kit)
 - [JSR package](https://jsr.io/@nyaomaru/is-kit)
 
@@ -112,7 +112,7 @@ const isTree: Predicate<Tree> = lazy(() =>
 The recommended setup for Codex is the `is-kit` Marketplace plugin:
 
 ```bash
-codex plugin marketplace add nyaomaru/is-kit
+codex plugin marketplace add necoz-oss/is-kit
 codex plugin add is-kit@is-kit
 ```
 

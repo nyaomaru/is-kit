@@ -52,10 +52,10 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nyaomaru/is-kit.git"
+    "url": "git+https://github.com/necoz-oss/is-kit.git"
   },
   "bugs": {
-    "url": "https://github.com/nyaomaru/is-kit/issues"
+    "url": "https://github.com/necoz-oss/is-kit/issues"
   },
   "homepage": "https://is-kit.dev/",
   "author": "nyaomaru",

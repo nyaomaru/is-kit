@@ -1,6 +1,6 @@
 # Required-only Exact Struct Benchmark
 
-Issue: [#337](https://github.com/nyaomaru/is-kit/issues/337).
+Issue: [#337](https://github.com/necoz-oss/is-kit/issues/337).
 
 ## Compatibility constraint
 

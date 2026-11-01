@@ -2,7 +2,7 @@
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/nyaomaru/is-kit/main/docs/public/iskit_image.png"
+    src="https://raw.githubusercontent.com/necoz-oss/is-kit/main/docs/public/iskit_image.png"
     width="600"
     alt="is-kit logo"
   />
@@ -18,7 +18,7 @@
   <a href="https://www.npmjs.com/package/is-kit">
     <img src="https://img.shields.io/npm/dt/is-kit.svg" alt="npm downloads">
   </a>
-  <a href="https://github.com/nyaomaru/is-kit/blob/main/LICENSE">
+  <a href="https://github.com/necoz-oss/is-kit/blob/main/LICENSE">
     <img src="https://img.shields.io/npm/l/is-kit.svg?sanitize=true" alt="License">
   </a>
 </p>
@@ -282,7 +282,7 @@ const isSlug = (value: unknown): value is string =>
 Install the `is-kit` plugin from this repository's Codex Marketplace:
 
 ```bash
-codex plugin marketplace add nyaomaru/is-kit
+codex plugin marketplace add necoz-oss/is-kit
 codex plugin add is-kit@is-kit
 ```
 
@@ -870,10 +870,10 @@ Pick a guard, compose it, and ship with confidence 🚀
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=nyaomaru%2Fis-kit&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=necoz-oss%2Fis-kit&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=nyaomaru/is-kit&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=nyaomaru/is-kit&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=nyaomaru/is-kit&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=necoz-oss/is-kit&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=necoz-oss/is-kit&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=necoz-oss/is-kit&type=date&legend=top-left" />
  </picture>
 </a>

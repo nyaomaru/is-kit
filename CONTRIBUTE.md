@@ -31,7 +31,7 @@ pnpm build
 2. Clone your forked repository
 
 ```sh
-git clone https://github.com/nyaomaru/is-kit.git
+git clone https://github.com/necoz-oss/is-kit.git
 cd is-kit
 ```
 

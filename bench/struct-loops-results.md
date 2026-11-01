@@ -1,6 +1,6 @@
 # Struct Field Traversal Benchmark
 
-Issue: [#339](https://github.com/nyaomaru/is-kit/issues/339).
+Issue: [#339](https://github.com/necoz-oss/is-kit/issues/339).
 
 ## Scope and decision
 
