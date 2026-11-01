@@ -147,6 +147,98 @@ if (hasNumericValue(numericProperty)) {
   expectType<string>(numericProperty[0]);
 }
 
+// it: preserves unrelated parent properties across primitives, objects, arrays, and functions
+declare let multiPropertyObject: {
+  readonly name: string | number;
+  readonly count: number;
+  readonly nested: { readonly active: boolean };
+  readonly tags: readonly string[];
+  readonly transform: (input: string) => number;
+};
+if (hasStringName(multiPropertyObject)) {
+  expectType<string>(multiPropertyObject.name);
+  expectType<number>(multiPropertyObject.count);
+  expectType<{ readonly active: boolean }>(multiPropertyObject.nested);
+  expectType<readonly string[]>(multiPropertyObject.tags);
+  expectType<(input: string) => number>(multiPropertyObject.transform);
+  expectNotAssignable<number>(multiPropertyObject.name);
+}
+
+// it: preserves mutable property modifiers
+declare let mutablePropertyObject: {
+  name: string | number;
+  count: number;
+};
+if (hasStringName(mutablePropertyObject)) {
+  expectType<string>(mutablePropertyObject.name);
+  expectType<number>(mutablePropertyObject.count);
+  mutablePropertyObject.name = 'updated';
+}
+
+// it: rejects optional properties (refineDefinedKey is required instead)
+declare let optionalTarget: {
+  readonly name?: string | number;
+  readonly id: number;
+};
+// @ts-expect-error: refineKey requires the property to be required, not optional.
+hasStringName(optionalTarget);
+
+// it: rejects objects missing the required key
+declare let missingTarget: { readonly id: number };
+// @ts-expect-error: Property 'name' is missing in target object.
+hasStringName(missingTarget);
+
+// it: preserves and narrows intersection types
+type BaseEntity = { readonly id: number; readonly active: boolean };
+type NamedEntity = { readonly name: string | number };
+declare let intersectedEntity: BaseEntity & NamedEntity;
+if (hasStringName(intersectedEntity)) {
+  expectType<string>(intersectedEntity.name);
+  expectType<number>(intersectedEntity.id);
+  expectType<boolean>(intersectedEntity.active);
+  expectAssignable<BaseEntity>(intersectedEntity);
+}
+
+// it: narrows property on union types while preserving branches
+type VariantA = {
+  readonly kind: 'a';
+  readonly name: string | number;
+  readonly aValue: number;
+};
+type VariantB = {
+  readonly kind: 'b';
+  readonly name: string;
+  readonly bValue: boolean;
+};
+type VariantUnion = VariantA | VariantB;
+declare let unionCandidate: VariantUnion;
+if (hasStringName(unionCandidate)) {
+  expectType<string>(unionCandidate.name);
+  if (unionCandidate.kind === 'a') {
+    expectType<number>(unionCandidate.aValue);
+  } else {
+    expectType<boolean>(unionCandidate.bValue);
+  }
+}
+
+// it: preserves generic parent types
+function refineGenericProperty<
+  T extends { readonly name: string | number; readonly flag: boolean }
+>(input: T) {
+  if (hasStringName(input)) {
+    expectType<string>(input.name);
+    expectType<boolean>(input.flag);
+    expectAssignable<T>(input);
+  }
+}
+
+// it: rejects incompatible property refinement domains
+declare const isStrictPositive: Refinement<number, number>;
+const hasStrictPositive = refineKey('count', isStrictPositive);
+declare let stringCountObject: { readonly count: string };
+// @ts-expect-error: Argument of type string is not assignable to parameter of type number.
+hasStrictPositive(stringCountObject);
+
 // =============================================
 // describe: refineDefinedKey
 // =============================================
