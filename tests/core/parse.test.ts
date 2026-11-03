@@ -45,6 +45,75 @@ describe('safeParse (with plain predicate overload)', () => {
   });
 });
 
+describe('safeParse (identity and exceptions)', () => {
+  it('preserves the original object reference on success', () => {
+    const input = { id: '1' };
+    const isObject = (x: unknown): x is { id: string } =>
+      typeof x === 'object' && x !== null;
+
+    const r = safeParse(isObject, input);
+
+    expect(r.valid).toBe(true);
+    if (r.valid) {
+      expect(r.value).toBe(input);
+    }
+  });
+
+  it('propagates exceptions thrown by the guard', () => {
+    const throwingGuard = (_value: unknown): _value is string => {
+      throw new Error('guard failed');
+    };
+
+    expect(() => safeParse(throwingGuard, 'x')).toThrow('guard failed');
+  });
+
+  it('propagates exceptions thrown by a plain predicate', () => {
+    const throwingPredicate = (_value: unknown): boolean => {
+      throw new Error('predicate failed');
+    };
+
+    expect(() => safeParse(throwingPredicate, 'x')).toThrow('predicate failed');
+  });
+});
+
+describe('safeParseWith (reuse and exceptions)', () => {
+  it('does not retain a previous result across inputs', () => {
+    const parseString = safeParseWith(isString);
+
+    const first = parseString('a');
+    const second = parseString(1);
+    const third = parseString('b');
+
+    expect(first).toEqual({ valid: true, value: 'a' });
+    expect(second).toEqual({ valid: false });
+    expect(third).toEqual({ valid: true, value: 'b' });
+    expect(first).not.toBe(third);
+  });
+
+  it('preserves the original object reference on success', () => {
+    const input = { id: '1' };
+    const parseObject = safeParseWith(
+      (x: unknown): x is { id: string } => typeof x === 'object' && x !== null
+    );
+
+    const r = parseObject(input);
+
+    expect(r.valid).toBe(true);
+    if (r.valid) {
+      expect(r.value).toBe(input);
+    }
+  });
+
+  it('propagates exceptions thrown by the guard', () => {
+    const throwingGuard = (_value: unknown): _value is string => {
+      throw new Error('guard failed');
+    };
+    const parse = safeParseWith(throwingGuard);
+
+    expect(() => parse('x')).toThrow('guard failed');
+  });
+});
+
 describe('safeParseWith', () => {
   it('wraps a Guard and returns a parser', () => {
     const parseString = safeParseWith(isString);
