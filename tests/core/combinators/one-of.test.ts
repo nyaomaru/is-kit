@@ -44,4 +44,69 @@ describe('oneOf', () => {
 
     expect(never('value')).toBe(false);
   });
+
+  it('should evaluate refinements in order and stop after the first match', () => {
+    const calls: string[] = [];
+    const first = jest.fn((value: unknown): value is string => {
+      calls.push('first');
+      return value === 'match';
+    });
+    const second = jest.fn((value: unknown): value is number => {
+      calls.push('second');
+      return typeof value === 'number';
+    });
+    const third = jest.fn((value: unknown): value is boolean => {
+      calls.push('third');
+      return typeof value === 'boolean';
+    });
+
+    const isMatch = oneOf(first, second, third);
+
+    expect(isMatch('match')).toBe(true);
+    expect(calls).toEqual(['first']);
+    expect(first).toHaveBeenCalledTimes(1);
+    expect(second).not.toHaveBeenCalled();
+    expect(third).not.toHaveBeenCalled();
+  });
+
+  it('should call each refinement once in order when none matches', () => {
+    const calls: string[] = [];
+    const first = jest.fn((value: unknown): value is string => {
+      calls.push('first');
+      return typeof value === 'string';
+    });
+    const second = jest.fn((value: unknown): value is number => {
+      calls.push('second');
+      return typeof value === 'number';
+    });
+    const third = jest.fn((value: unknown): value is boolean => {
+      calls.push('third');
+      return typeof value === 'boolean';
+    });
+
+    const isMatch = oneOf(first, second, third);
+
+    expect(isMatch({ value: 'no match' })).toBe(false);
+    expect(calls).toEqual(['first', 'second', 'third']);
+    expect(first).toHaveBeenCalledTimes(1);
+    expect(second).toHaveBeenCalledTimes(1);
+    expect(third).toHaveBeenCalledTimes(1);
+  });
+
+  it('should propagate errors thrown by an invoked refinement', () => {
+    const error = new Error('refinement failed');
+    const throwingRefinement = jest.fn(
+      (_value: unknown): _value is string => {
+        throw error;
+      }
+    );
+    const laterRefinement = jest.fn(
+      (value: unknown): value is number => typeof value === 'number'
+    );
+    const isMatch = oneOf(throwingRefinement, laterRefinement);
+
+    expect(() => isMatch('value')).toThrow(error);
+    expect(throwingRefinement).toHaveBeenCalledTimes(1);
+    expect(laterRefinement).not.toHaveBeenCalled();
+  });
 });
