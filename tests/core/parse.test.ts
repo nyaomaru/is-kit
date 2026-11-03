@@ -1,7 +1,19 @@
 import { safeJsonParse, safeParse, safeParseWith } from '@/core/parse';
 import type { Refine } from '@/types';
+import { isObject } from '@/core/object';
 import { isString } from '@/core/primitive';
 import { typedStruct } from '@/core/combinators/typed-struct';
+
+const NO_THROW = Symbol('no-throw');
+
+const captureThrown = (run: () => unknown): unknown => {
+  try {
+    run();
+    return NO_THROW;
+  } catch (thrown) {
+    return thrown;
+  }
+};
 
 describe('safeParse (with Guard)', () => {
   it('returns valid=true and value when guard passes', () => {
@@ -12,6 +24,43 @@ describe('safeParse (with Guard)', () => {
   it('returns valid=false when guard fails', () => {
     const r = safeParse(isString, 123 as unknown);
     expect(r).toEqual({ valid: false });
+  });
+
+  it('returns the original object reference when the guard passes', () => {
+    const value = { id: '1' };
+    const r = safeParse(isObject, value);
+
+    expect(r).toEqual({ valid: true, value });
+    if (r.valid) {
+      expect(r.value).toBe(value);
+    }
+  });
+
+  it.each([null, undefined, 0, 'text', false])(
+    'returns valid=false for non-object input %p without throwing',
+    (value) => {
+      expect(safeParse(isObject, value)).toEqual({ valid: false });
+    }
+  );
+
+  it('propagates an Error thrown by the guard', () => {
+    const error = new Error('guard failed');
+    const throwingGuard = (_value: unknown): _value is string => {
+      throw error;
+    };
+
+    expect(captureThrown(() => safeParse(throwingGuard, 'value'))).toBe(error);
+  });
+
+  it('propagates a non-Error value thrown by the guard', () => {
+    const thrownValue = { reason: 'not an Error' };
+    const throwingGuard = (_value: unknown): _value is string => {
+      throw thrownValue;
+    };
+
+    expect(captureThrown(() => safeParse(throwingGuard, 'value'))).toBe(
+      thrownValue
+    );
   });
 });
 
@@ -64,6 +113,23 @@ describe('safeParseWith', () => {
 
     expect(parseActive(u1)).toEqual({ valid: true, value: u1 });
     expect(parseActive(u2)).toEqual({ valid: false });
+  });
+
+  it('can be reused across inputs without retaining previous results', () => {
+    const parseString = safeParseWith(isString);
+
+    expect(parseString('first')).toEqual({ valid: true, value: 'first' });
+    expect(parseString(1)).toEqual({ valid: false });
+    expect(parseString('second')).toEqual({ valid: true, value: 'second' });
+  });
+
+  it('propagates an Error thrown by the wrapped guard', () => {
+    const error = new Error('wrapped guard failed');
+    const parseThrowing = safeParseWith((_value: unknown): _value is string => {
+      throw error;
+    });
+
+    expect(captureThrown(() => parseThrowing('value'))).toBe(error);
   });
 });
 
