@@ -214,7 +214,8 @@ export const isArrayBuffer = defineIntrinsicBrandGuard<ArrayBuffer>((value) =>
  *
  * @returns Predicate narrowing to `DataView`.
  */
-export const isDataView = defineIntrinsicBrandGuard<DataView>((value) =>
+// WHY: Preserve the non-generic spelling in emitted declarations for TS 5.4–5.6.
+export const isDataView: Guard<DataView> = defineIntrinsicBrandGuard((value) =>
   dataViewBuffer.call(value)
 );
 
@@ -226,7 +227,8 @@ export const isDataView = defineIntrinsicBrandGuard<DataView>((value) =>
 // WHY: The captured %TypedArray%.prototype @@toStringTag getter checks the
 // internal TypedArray name without trusting a spoofable property. It returns
 // undefined for DataView and other values instead of rejecting them by exception.
-export const isTypedArray = define<ArrayBufferView>(
+// WHY: Preserve the non-generic spelling in emitted declarations for TS 5.4–5.6.
+export const isTypedArray: Guard<ArrayBufferView> = define<ArrayBufferView>(
   (value) => typedArrayName?.call(value) !== undefined
 );
 
