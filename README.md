@@ -103,8 +103,8 @@ vlt install is-kit
 ```
 
 ESM and CJS builds are available for npm consumers, and bundled types are included.
-The published declarations support TypeScript 5.7 and newer. CI compiles the
-packed package against every TypeScript minor from 5.7 through the current
+The published declarations support TypeScript 5.4 and newer. CI compiles the
+packed package against every TypeScript minor from 5.4 through the current
 stable release.
 
 TypeScript 7 can type-check is-kit declarations, but TypeScript 7.0 does not

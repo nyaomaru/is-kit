@@ -4,6 +4,8 @@ import {
   equalsKey,
   hasKey,
   hasKeys,
+  isDataView,
+  isTypedArray,
   narrowKeyTo,
   oneOf,
   refineDefinedKey,
@@ -16,6 +18,17 @@ import {
 // =============================================
 // Note: This fixture compiles against the packed package and the selected
 // TypeScript version, not against source aliases or the workspace compiler.
+
+// it: preserves built-in view narrowing across TypeScript library versions
+declare const candidateView: unknown;
+if (isDataView(candidateView)) {
+  const view: DataView = candidateView;
+  void view;
+}
+if (isTypedArray(candidateView)) {
+  const view: ArrayBufferView = candidateView;
+  void view;
+}
 
 // it: composes Compiler API refinements over a known input domain
 const isCallWithIdentifierExpression = and(

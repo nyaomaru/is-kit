@@ -25,6 +25,9 @@ jobs:
       fail-fast: false
       matrix:
         typescript:
+          - '5.4'
+          - '5.5'
+          - '5.6'
           - '5.7'
           - '5.8'
           - '5.9'
