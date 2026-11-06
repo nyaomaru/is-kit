@@ -1,5 +1,5 @@
-import { arrayOf, nonEmptyArrayOf } from '@/core/combinators';
-import { isString, isNumber } from '@/core/primitive';
+import { arrayOf, nonEmptyArrayOf, oneOf } from '@/core/combinators';
+import { isString, isNumber, isUndefined } from '@/core/primitive';
 
 describe('arrayOf (runtime)', () => {
   const isStringArray = arrayOf(isString);
@@ -31,6 +31,24 @@ describe('arrayOf (runtime)', () => {
     arr[1] = 'a';
 
     expect(isStringArray(arr)).toBe(false);
+  });
+
+  it('accepts sparse arrays when the element guard accepts undefined', () => {
+    const isStringOrUndefinedArray = arrayOf(oneOf(isString, isUndefined));
+    const values = [] as unknown[];
+    values[1] = 'a';
+
+    expect(0 in values).toBe(false);
+    expect(isStringOrUndefinedArray(values)).toBe(true);
+  });
+
+  it('rejects sparse arrays when a present element fails the guard', () => {
+    const isStringOrUndefinedArray = arrayOf(oneOf(isString, isUndefined));
+    const values = [] as unknown[];
+    values[0] = 'a';
+    values[2] = 1;
+
+    expect(isStringOrUndefinedArray(values)).toBe(false);
   });
 
   it('supports nested arrays (arrayOf(arrayOf(isString)))', () => {
@@ -77,6 +95,28 @@ describe('nonEmptyArrayOf (runtime)', () => {
     values[1] = 'a';
 
     expect(isNonEmptyStringArray(values)).toBe(false);
+  });
+
+  it('accepts sparse arrays when the element guard accepts undefined', () => {
+    const isNonEmptyStringOrUndefinedArray = nonEmptyArrayOf(
+      oneOf(isString, isUndefined)
+    );
+    const values = [] as unknown[];
+    values[1] = 'a';
+
+    expect(0 in values).toBe(false);
+    expect(isNonEmptyStringOrUndefinedArray(values)).toBe(true);
+  });
+
+  it('rejects sparse arrays when a present element fails the guard', () => {
+    const isNonEmptyStringOrUndefinedArray = nonEmptyArrayOf(
+      oneOf(isString, isUndefined)
+    );
+    const values = [] as unknown[];
+    values[0] = 'a';
+    values[2] = 1;
+
+    expect(isNonEmptyStringOrUndefinedArray(values)).toBe(false);
   });
 
   it('rejects non-array inputs', () => {
