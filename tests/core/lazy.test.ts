@@ -55,4 +55,27 @@ describe('core/lazy', () => {
     expect(isLazyString('value')).toBe(true);
     expect(factory).toHaveBeenCalledTimes(2);
   });
+
+  it('keeps the initialized predicate cached after invocation errors', () => {
+    const error = new Error('evaluation failed');
+    const predicate = jest
+      .fn<Predicate<string>>()
+      .mockImplementation(isString)
+      .mockImplementationOnce(() => {
+        throw error;
+      });
+    const factory = jest.fn(() => predicate);
+    const isLazyString = lazy(factory);
+
+    expect(() => isLazyString('first')).toThrow(error);
+    expect(factory).toHaveBeenCalledTimes(1);
+    expect(predicate).toHaveBeenNthCalledWith(1, 'first');
+
+    expect(isLazyString('next')).toBe(true);
+    expect(isLazyString(1)).toBe(false);
+    expect(factory).toHaveBeenCalledTimes(1);
+    expect(predicate).toHaveBeenCalledTimes(3);
+    expect(predicate).toHaveBeenNthCalledWith(2, 'next');
+    expect(predicate).toHaveBeenNthCalledWith(3, 1);
+  });
 });
