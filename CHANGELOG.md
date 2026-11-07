@@ -6,6 +6,63 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.16.4] - 2026-11-06
+
+### Fixed
+
+- support TypeScript 5.4 declarations by @nyaomaru in [#391](https://github.com/necoz-oss/is-kit/pull/391)
+
+### Docs
+
+- 1.16.3 by @github-actions[bot] in [#375](https://github.com/necoz-oss/is-kit/pull/375)
+
+### Test
+
+- cover tupleOf edge cases and guard evaluation by @diyaryavuz in [#377](https://github.com/necoz-oss/is-kit/pull/377)
+- expand safeParse and safeParseWith edge-case coverage by @Pratham2511 in [#384](https://github.com/necoz-oss/is-kit/pull/384)
+- verify oneOf evaluation order and short-circuiting by @Aaqibhafeezkhan in [#385](https://github.com/necoz-oss/is-kit/pull/385)
+- cover predicateToRefine call behavior by @crims0n in [#386](https://github.com/necoz-oss/is-kit/pull/386)
+- preserve cached predicate after invocation errors by @Doomguy-BFG9000 in [#392](https://github.com/necoz-oss/is-kit/pull/392)
+- cover sparse arrays with undefined-accepting guards by @Pratham2511 in [#393](https://github.com/necoz-oss/is-kit/pull/393)
+- improve define predicate coverage by @psjdeveloper in [#394](https://github.com/necoz-oss/is-kit/pull/394)
+
+### Chore
+
+- Release: 1.16.4 by @github-actions[bot] in [#395](https://github.com/necoz-oss/is-kit/pull/395)
+
+### Welcome, New Contributors! 🎉
+
+A big welcome and thank you to our new contributors in this release! 😸
+
+- **@diyaryavuz** strengthened `tupleOf` with additional edge-case and guard-evaluation coverage in [[#377](https://github.com/necoz-oss/is-kit/pull/377)](https://github.com/necoz-oss/is-kit/pull/377). Thanks for helping make tuple validation behavior more robust and predictable! 🙌
+
+- **@Pratham2511** expanded the regression coverage for `safeParse` and `safeParseWith` in [[#384](https://github.com/necoz-oss/is-kit/pull/384)](https://github.com/necoz-oss/is-kit/pull/384), then came back with additional sparse-array coverage for `arrayOf` and `nonEmptyArrayOf` in [[#393](https://github.com/necoz-oss/is-kit/pull/393)](https://github.com/necoz-oss/is-kit/pull/393). Really happy to see you jumping in again! 🐈
+
+- **@Aaqibhafeezkhan** added focused tests for `oneOf` evaluation order, short-circuiting, and error propagation in [[#385](https://github.com/necoz-oss/is-kit/pull/385)](https://github.com/necoz-oss/is-kit/pull/385). Thanks for helping lock down these important runtime semantics! 👍
+
+- **@crims0n** strengthened `predicateToRefine` runtime coverage in [[#386](https://github.com/necoz-oss/is-kit/pull/386)](https://github.com/necoz-oss/is-kit/pull/386), including predicate calls and composition with `and`. Thanks for improving the reliability of this small but useful building block! 🙌
+
+- **@Doomguy-BFG9000** added regression coverage for `lazy` to ensure initialized predicates remain cached even when predicate evaluation throws in [[#392](https://github.com/necoz-oss/is-kit/pull/392)](https://github.com/necoz-oss/is-kit/pull/392). Thanks for the thoughtful test coverage and careful validation! 😸
+
+- **@psjdeveloper** improved the runtime coverage for `define` in [[#394](https://github.com/necoz-oss/is-kit/pull/394)](https://github.com/necoz-oss/is-kit/pull/394), covering boolean coercion, input forwarding, and predicate invocation behavior. Thanks for taking the initiative and contributing! 🎉
+
+We're really happy to have all of you contributing to `is-kit` and the Necoz community.
+
+Thanks and we hope to see you around again! 😸
+
+### New Contributors
+
+* @diyaryavuz made their first contribution in https://github.com/necoz-oss/is-kit/pull/377
+* @Pratham2511 made their first contribution in https://github.com/necoz-oss/is-kit/pull/384
+* @Aaqibhafeezkhan made their first contribution in https://github.com/necoz-oss/is-kit/pull/385
+* @crims0n made their first contribution in https://github.com/necoz-oss/is-kit/pull/386
+* @Doomguy-BFG9000 made their first contribution in https://github.com/necoz-oss/is-kit/pull/392
+* @psjdeveloper made their first contribution in https://github.com/necoz-oss/is-kit/pull/394
+
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.16.3...v1.16.4
+
+[v1.16.4]: https://github.com/necoz-oss/is-kit/compare/v1.16.3...v1.16.4
+
 ## [v1.16.3] - 2026-11-01
 
 ### Docs
@@ -2184,7 +2241,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.16.3...HEAD
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.16.4...HEAD
 [v1.0.5]: https://github.com/necoz-oss/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
