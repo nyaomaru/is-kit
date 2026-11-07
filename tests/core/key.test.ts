@@ -11,6 +11,7 @@ import { isString, isNumber } from '@/core/primitive';
 import { oneOfValues } from '@/core/combinators/one-of-values';
 import { and, andAll } from '@/core/logic';
 import { equals } from '@/core/equals';
+import { isObject } from '@/core/object';
 
 const isUser = struct({
   id: isString,
@@ -367,5 +368,46 @@ describe('key: practical property refinement composition', () => {
     { payload: { kind: 'text', status: 'ready', body: new Uint8Array() } }
   ])('rejects a payload that misses one nested refinement', (value) => {
     expect(hasReadyTextPayload(value)).toBe(false);
+  });
+});
+
+describe('key: nested unknown boundaries', () => {
+  const hasNestedStringName = and(
+    isObject,
+    refineDefinedKey('child', and(isObject, refineDefinedKey('name', isString)))
+  );
+
+  it.each([
+    null,
+    undefined,
+    false,
+    42,
+    'child',
+    [],
+    {},
+    { child: undefined },
+    { child: null },
+    { child: 42 },
+    { child: [] },
+    { child: {} },
+    { child: { name: undefined } },
+    { child: { name: null } },
+    { child: { name: 42 } }
+  ])(
+    'rejects an invalid nested input without throwing: %p',
+    (value: unknown) => {
+      expect(hasNestedStringName(value)).toBe(false);
+    }
+  );
+
+  it('accepts an empty string and leaves frozen parent and nested data intact', () => {
+    const metadata = Object.freeze({ source: 'api' });
+    const child = Object.freeze({ name: '', count: 2 });
+    const value = Object.freeze({ child, metadata });
+
+    expect(hasNestedStringName(value)).toBe(true);
+    expect(value.child).toBe(child);
+    expect(value.metadata).toBe(metadata);
+    expect(value.child).toEqual({ name: '', count: 2 });
   });
 });

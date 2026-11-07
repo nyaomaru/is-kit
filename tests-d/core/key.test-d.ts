@@ -1,4 +1,9 @@
-import { expectAssignable, expectNotAssignable, expectType } from 'tsd';
+import {
+  expectAssignable,
+  expectNotAssignable,
+  expectType,
+  expectError
+} from 'tsd';
 import {
   hasKey,
   hasKeys,
@@ -10,6 +15,8 @@ import {
   isString,
   isNumber,
   oneOfValues,
+  and,
+  isObject,
   andAll,
   equals
 } from 'is-kit';
@@ -406,3 +413,37 @@ refineKey('name', returnsBoolean);
 refineDefinedKey('name', returnsBoolean);
 // @ts-expect-error: refineIndex requires a type predicate.
 refineIndex(0, returnsBoolean);
+
+// =============================================
+// describe: nested optional and nullish property boundaries
+// =============================================
+const hasNestedStringName = and(
+  isObject,
+  refineDefinedKey('child', and(isObject, refineDefinedKey('name', isString)))
+);
+
+declare const unknownEnvelope: unknown;
+if (hasNestedStringName(unknownEnvelope)) {
+  expectType<string>(unknownEnvelope.child.name);
+}
+
+// it: preserves unrelated readonly data when optional nested fields are refined
+declare const optionalEnvelope: {
+  readonly id: 'job-1';
+  readonly metadata: { readonly source: 'api' };
+  readonly child?: {
+    readonly name?: string | number | null;
+    readonly tags: readonly string[];
+  } | null;
+};
+
+if (hasNestedStringName(optionalEnvelope)) {
+  expectType<string>(optionalEnvelope.child.name);
+  expectType<'job-1'>(optionalEnvelope.id);
+  expectType<'api'>(optionalEnvelope.metadata.source);
+  expectType<readonly string[]>(optionalEnvelope.child.tags);
+  expectError((optionalEnvelope.id = 'job-1'));
+  expectError((optionalEnvelope.metadata.source = 'api'));
+  expectError((optionalEnvelope.child.tags = []));
+  expectError(optionalEnvelope.child.tags.push('new'));
+}
