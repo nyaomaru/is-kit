@@ -69,7 +69,12 @@ export function oneOfValues<const T extends ReadonlyArray<Primitive>>(
 export function oneOfValues(
   ...args: readonly Primitive[] | [readonly Primitive[]]
 ): Predicate<Primitive> {
-  const items = normalizeValues(args);
+  // WHY: Snapshot the values at guard creation. The single-array overload
+  // receives a live array by reference, so a caller may mutate it after the
+  // guard has been created. The linear-scan predicate would otherwise read
+  // the mutated array on every invocation and accept values outside the
+  // literal union the guard was created with.
+  const items = [...normalizeValues(args)];
 
   return items.length <= ONE_OF_VALUES_LINEAR_SCAN_MAX
     ? createLinearPredicate(items)

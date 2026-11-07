@@ -45,4 +45,28 @@ describe('oneOfValues', () => {
     expect(isRole('member')).toBe(true);
     expect(isRole('guest' as unknown)).toBe(false);
   });
+
+  it('snapshots a small single-array input so mutating it after creation does not change the guard', () => {
+    const values: ['a'] = ['a'];
+    const alias: string[] = values;
+    const isA = oneOfValues(values);
+
+    expect(isA('a')).toBe(true);
+
+    alias.push('b');
+
+    expect(isA('b')).toBe(false);
+  });
+
+  it('snapshots a large single-array input so mutating it after creation does not change the guard', () => {
+    const values = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+    const isA = oneOfValues(values);
+
+    expect(isA('i')).toBe(true);
+
+    values.push('j');
+
+    expect(isA('j')).toBe(false);
+    expect(isA('i')).toBe(true);
+  });
 });
