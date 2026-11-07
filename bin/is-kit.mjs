@@ -27,19 +27,39 @@ const fileExists = async (path) => {
   }
 };
 
+const validateTargetValue = (value) => {
+  if (value === undefined || value.length === 0) {
+    throw new Error('Missing value for --target');
+  }
+
+  if (!Object.hasOwn(TARGET_FILES, value)) {
+    throw new Error(`Unknown target: ${value}`);
+  }
+
+  return value;
+};
+
 const parseTarget = (args) => {
-  const targetIndex = args.indexOf('--target');
+  let target;
 
-  if (targetIndex === -1) {
-    return 'agents';
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+
+    if (arg === '--target' || arg.startsWith('--target=')) {
+      if (target !== undefined) {
+        throw new Error('Repeated --target option');
+      }
+
+      const isInline = arg.startsWith('--target=');
+      const value = isInline ? arg.slice('--target='.length) : args[++index];
+      target = validateTargetValue(value);
+      continue;
+    }
+
+    throw new Error(`Unknown option: ${arg}`);
   }
 
-  const target = args[targetIndex + 1];
-  if (!Object.hasOwn(TARGET_FILES, target)) {
-    throw new Error(`Unknown target: ${target ?? '(missing)'}`);
-  }
-
-  return target;
+  return target ?? 'agents';
 };
 
 const updateManagedSection = (existingContent, rules) => {

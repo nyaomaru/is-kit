@@ -74,4 +74,28 @@ describe('is-kit init-agent', () => {
       '# is-kit Agent Rules'
     );
   });
+
+  it.each([
+    [['--targt', 'claude'], 'Unknown option: --targt'],
+    [['--target'], 'Missing value for --target'],
+    [['--target='], 'Missing value for --target'],
+    [['--target', 'unknown'], 'Unknown target: unknown'],
+    [['--target=unknown'], 'Unknown target: unknown'],
+    [['--target', 'claude', '--target', 'agents'], 'Repeated --target option'],
+    [['--target', 'claude', 'extra'], 'Unknown option: extra']
+  ])(
+    'rejects invalid arguments %j and creates no files',
+    (args, expectedError) => {
+      const directory = createTemporaryDirectory();
+
+      expect(() => runCli(directory, 'init-agent', ...args)).toThrow(
+        expect.objectContaining({
+          message: expect.stringContaining(expectedError),
+          status: 1
+        })
+      );
+      expect(existsSync(join(directory, 'AGENTS.md'))).toBe(false);
+      expect(existsSync(join(directory, 'CLAUDE.md'))).toBe(false);
+    }
+  );
 });
