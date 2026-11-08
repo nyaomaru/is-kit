@@ -1,6 +1,7 @@
 import { define } from './define';
 import type { Guard } from '@/types';
 import { getTag, OBJECT_TAG_ERROR } from '@/utils/object-tags';
+import { isObjectPrototype } from '@/utils/object-prototype';
 
 type ErrorConstructorWithIsError = ErrorConstructor & {
   isError?: (value: unknown) => boolean;
@@ -105,7 +106,10 @@ const readObjectProperty = (value: unknown, key: PropertyKey): unknown => {
 export const isPlainObject = define<Record<string, unknown>>((value) => {
   if (!isObject(value)) return false;
   const proto = Object.getPrototypeOf(value);
-  return proto === null || Object.getPrototypeOf(proto) === null;
+  if (proto === null || proto === Object.prototype) return true;
+  // WHY: A parent with a null prototype is only plain when it is a
+  // cross-realm Object.prototype, not an arbitrary Object.create(null) parent.
+  return Object.getPrototypeOf(proto) === null && isObjectPrototype(proto);
 });
 
 /**

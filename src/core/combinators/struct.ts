@@ -6,28 +6,12 @@ import type {
   StructSchemaShape,
   StructOptions
 } from '@/types';
+import { isObjectPrototype } from '@/utils/object-prototype';
 import { hasOwnPropertyKey } from '@/utils/own-properties';
 import { define } from '../define';
 import { isFunction, isObject, isPlainObject } from '../object';
 
 type SchemaEntry = readonly [key: string, guard: Predicate<unknown>];
-
-const OBJECT_CONSTRUCTOR_SOURCE = Function.prototype.toString.call(Object);
-
-const isObjectPrototype = (prototype: object): boolean => {
-  const constructor = Object.getOwnPropertyDescriptor(
-    prototype,
-    'constructor'
-  )?.value;
-
-  // WHY: Object.prototype differs across realms, so identity cannot identify
-  // it. Its native Object constructor always points back to that prototype.
-  return (
-    typeof constructor === 'function' &&
-    constructor.prototype === prototype &&
-    Function.prototype.toString.call(constructor) === OBJECT_CONSTRUCTOR_SOURCE
-  );
-};
 
 const hasOnlyEnumerableOwnStringKeys = (schema: object): boolean =>
   Object.getOwnPropertyNames(schema).every((key) =>

@@ -13,6 +13,15 @@ describe('recordOf (key/value guards)', () => {
     expect(guard({})).toBe(true);
   });
 
+  it('rejects objects inheriting fields from a custom null-prototype parent', () => {
+    const parent = Object.create(null);
+    parent.inherited = 'value';
+    const value = Object.create(parent);
+    value.own = 1;
+
+    expect(recordOf(isString, isNumber)(value)).toBe(false);
+  });
+
   it('validates all keys as string and all values as number', () => {
     const guard = recordOf(isString, isNumber);
     expect(guard({ a: 1, b: 2 })).toBe(true);

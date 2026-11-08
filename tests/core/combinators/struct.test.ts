@@ -525,7 +525,7 @@ describe('struct', () => {
       );
 
       expect(guard({})).toBe(true);
-      expect(guard(Object.create(prototype))).toBe(true);
+      expect(guard(Object.create(prototype))).toBe(false);
       expect(inheritedValue).not.toHaveBeenCalled();
       expect(optionalGuard).not.toHaveBeenCalled();
       expect(guard(Object.defineProperty({}, 'optional', { value: 1 }))).toBe(
