@@ -39,6 +39,20 @@ describe('core/object guards', () => {
     expect(isPlainObject(new X())).toBe(false);
   });
 
+  it('accepts cross-realm plain objects', () => {
+    expect(isPlainObject(runInNewContext('({ a: 1 })'))).toBe(true);
+    expect(isPlainObject(runInNewContext('Object.create(null)'))).toBe(true);
+  });
+
+  it('rejects objects inheriting from a custom null-prototype parent', () => {
+    const parent = Object.create(null);
+    parent.inherited = 'value';
+    const value = Object.create(parent);
+
+    expect(value.inherited).toBe('value');
+    expect(isPlainObject(value)).toBe(false);
+  });
+
   it('checks common built-ins', () => {
     expect(isArray([])).toBe(true);
     expect(isArray('not')).toBe(false);
