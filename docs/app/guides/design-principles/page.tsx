@@ -79,33 +79,34 @@ export default function DesignPrinciplesGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Design principles'
+        media={
+          <div className='my-4 flex flex-col gap-8 rounded-xl border border-primary/40 bg-primary/5 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-12'>
+            <div>
+              <p className='text-xs font-semibold tracking-[0.18em] uppercase text-primary'>
+                The idea
+              </p>
+              <p className='mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-5xl'>
+                Build small guards.
+                <br />
+                Compose them.
+              </p>
+              <p className='mt-5 max-w-xl text-base leading-relaxed text-muted-foreground'>
+                Reusable runtime checks, trustworthy types, and ordinary
+                TypeScript control flow.
+              </p>
+            </div>
+            <Image
+              src='/iskit_logo1.svg'
+              alt=''
+              width={488}
+              height={420}
+              className='w-24 shrink-0 self-end sm:w-32 sm:self-center lg:w-40'
+            />
+          </div>
+        }
         title='Design principles and non-goals'
         description='A practical reference for deciding what belongs in is-kit, and why.'
       />
-
-      <div className='flex flex-col gap-8 rounded-xl border border-primary/40 bg-primary/5 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-12'>
-        <div>
-          <p className='text-xs font-semibold tracking-[0.18em] uppercase text-primary'>
-            The idea
-          </p>
-          <p className='mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-5xl'>
-            Build small guards.
-            <br />
-            Compose them.
-          </p>
-          <p className='mt-5 max-w-xl text-base leading-relaxed text-muted-foreground'>
-            Reusable runtime checks, trustworthy types, and ordinary TypeScript
-            control flow.
-          </p>
-        </div>
-        <Image
-          src='/iskit_logo1.svg'
-          alt=''
-          width={488}
-          height={420}
-          className='w-24 shrink-0 self-end sm:w-32 sm:self-center lg:w-40'
-        />
-      </div>
 
       <GuideSection title='The principles at a glance'>
         <ul className='grid gap-3 sm:grid-cols-2'>
@@ -118,7 +119,7 @@ export default function DesignPrinciplesGuidePage() {
                 <span className='link-underline inline-block font-semibold tabular-nums'>
                   0{index + 1}: {principle.title}
                 </span>
-                <span className='mt-1 block text-sm text-muted-foreground'>
+                <span className='mt-3 block text-sm text-muted-foreground'>
                   {principle.description}
                 </span>
               </a>
