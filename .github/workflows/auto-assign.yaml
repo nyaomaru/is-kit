@@ -1,0 +1,31 @@
+name: Assign PR author
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  assign:
+    if: github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign author
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const author = context.payload.pull_request.user.login;
+            const { data } = await github.rest.issues.addAssignees({
+              owner,
+              repo,
+              issue_number,
+              assignees: [author]
+            });
+
+            if (!data.assignees.some((assignee) => assignee.login === author)) {
+              core.warning(`GitHub could not assign PR author ${author}.`);
+            }
