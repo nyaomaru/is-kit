@@ -1,11 +1,13 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
   GuideHeader,
-  GuideList,
   GuideSection
 } from '@/components/guides/guide-layout';
 import { GuidePager } from '@/components/guides/pager';
+import { GuideTable } from '@/components/guides/guide-table';
 import { Paragraph } from '@/components/ui/paragraph';
 import { TextLink } from '@/components/ui/text-link';
 import { GUIDE_PATHS } from '@/constants/guides';
@@ -42,25 +44,58 @@ export default function BestPracticesGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Best practices'
+        media={
+          <Image
+            src='/iskit_best_practice.png'
+            alt='is-kit logo and pixel-art mascot wearing glasses'
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 h-auto w-full rounded-xl border'
+          />
+        }
         title='Best Practices for Using is-kit in Real Projects'
         description='Put checks where trust changes, keep useful guards close to their purpose, and let ordinary TypeScript handle the rest.'
       />
 
-      <GuideSection title='Validate at a trust boundary'>
+      <GuideSection title='Two jobs, two starting points'>
+        <div className='grid gap-4 sm:grid-cols-2'>
+          <div className='rounded-lg border border-primary/50 bg-primary/5 p-5'>
+            <p className='text-xs font-semibold tracking-wider uppercase text-primary'>
+              External data
+            </p>
+            <p className='mt-3 text-lg font-semibold'>
+              Unknown → validate → use
+            </p>
+            <p className='mt-2 text-sm leading-relaxed text-muted-foreground'>
+              Check what entered the application before trusting its shape.
+            </p>
+          </div>
+          <div className='rounded-lg border p-5'>
+            <p className='text-xs font-semibold tracking-wider uppercase text-primary'>
+              Known data
+            </p>
+            <p className='mt-3 text-lg font-semibold'>Typed → refine → use</p>
+            <p className='mt-2 text-sm leading-relaxed text-muted-foreground'>
+              Keep the existing type and narrow only what you need.
+            </p>
+          </div>
+        </div>
+      </GuideSection>
+
+      <GuideSection title='Validate where trust changes'>
         <Paragraph>
-          HTTP responses, storage, messages, and third-party SDK results can
-          contain values your application has not verified. Keep uncertain data
-          as <code>unknown</code>, check it near the entry point, and pass the
-          accepted value to application code. A type assertion such as{' '}
+          HTTP responses, storage, and messages can contain unexpected values.
+          Keep them <code>unknown</code> until a guard accepts them;{' '}
           <code>input as User</code> performs no runtime check.
         </Paragraph>
         <CodeBlock code={boundaryExample} language='ts' />
         <Paragraph>
-          Choose failure handling for the boundary: reject a required response,
-          or return a fallback for recoverable stored data. Handle decoding and
-          transport failures as well as guard mismatches. Validate once when
-          possible; recheck if a value crosses another trust boundary or can
-          change in the meantime. See{' '}
+          Reject a required response or choose a fallback for recoverable data.
+          Handle decoding and transport failures too. Pass the accepted value
+          onward; recheck if it can change or crosses another trust boundary.
+          See{' '}
           <TextLink href={GUIDE_PATHS.validateUnknown}>
             validating unknown values
           </TextLink>{' '}
@@ -70,24 +105,34 @@ export default function BestPracticesGuidePage() {
 
       <GuideSection title='Keep guards near their purpose'>
         <Paragraph>
-          Name and reuse a guard when it represents a meaningful application
-          concept. That makes intent and runtime semantics consistent, and gives
-          tests one place to exercise edge cases. A trivial one-off check can
-          stay inline.
+          A named guard gives a meaningful check one home for reuse and tests.
+          Trivial one-off checks can stay inline. Place guards where their
+          purpose is easiest to find:
+        </Paragraph>
+        <GuideTable
+          columns={['Guard', 'A useful home']}
+          rows={[
+            {
+              key: 'api',
+              cells: ['Response shape', 'Beside the API function']
+            },
+            { key: 'storage', cells: ['Stored state', 'Near its reader'] },
+            {
+              key: 'domain',
+              cells: ['Shared domain rule', 'With the domain or shared guards']
+            }
+          ]}
+        />
+        <Paragraph>
+          A small <code>utils/is.ts</code> is fine to start; split it when
+          unrelated guards become hard to find. A shared facade can help, but
+          direct imports work too. The boundary matters more than the folder
+          name.
         </Paragraph>
         <Paragraph>
-          Keep a response guard beside its API function, a storage guard near
-          its reader, or a shared domain guard with the domain it describes. A
-          small <code>utils/is.ts</code> can be enough initially; split it when
-          unrelated domains make it hard to navigate. A shared module or facade
-          can expose common composed guards, but direct is-kit imports are also
-          reasonable. The boundary matters more than the folder name.
-        </Paragraph>
-        <Paragraph>
-          Compose small checks for shared rules, then build the shape needed at
-          each boundary. For an existing object type, <code>typedStruct</code>{' '}
-          can help detect drift; use <code>struct</code> when the accepted
-          boundary shape is deliberately different. See{' '}
+          Compose small checks. Use <code>typedStruct</code> to help detect
+          drift from an existing type, or <code>struct</code> when the accepted
+          boundary shape differs. See{' '}
           <TextLink href={GUIDE_PATHS.syncTypeGuards}>
             keeping guards in sync
           </TextLink>{' '}
@@ -101,9 +146,8 @@ export default function BestPracticesGuidePage() {
 
       <GuideSection title='Refine known values instead of validating again'>
         <Paragraph>
-          Internal values may already have a useful type. If the task is to
-          select one variant or narrow a property, refine that information
-          rather than rebuilding a guard for the entire object.
+          If an internal value already has a useful type, narrow the property
+          you need instead of validating the whole object again.
         </Paragraph>
         <CodeBlock code={refinementExample} language='ts' />
         <Paragraph>
@@ -112,23 +156,15 @@ export default function BestPracticesGuidePage() {
           <TextLink href={GUIDE_PATHS.propertyRefinement}>
             property refinement guide
           </TextLink>{' '}
-          for optional and nested properties. Not every TypeScript type needs a
-          runtime guard: add one where runtime uncertainty or a reusable
-          refinement calls for it.
+          for optional and nested properties.
         </Paragraph>
       </GuideSection>
 
-      <GuideSection title='A quick review'>
-        <GuideList>
-          <li>Keep external values unknown until a suitable check succeeds.</li>
-          <li>Put meaningful named guards near their domain or boundary.</li>
-          <li>
-            Pass accepted values onward instead of repeatedly parsing them.
-          </li>
-          <li>Use refinements for known types and compose existing guards.</li>
-        </GuideList>
+      <GuideSection title='Keep the toolkit small'>
         <Paragraph>
-          The library decisions behind this guidance are in the{' '}
+          Add guards where runtime uncertainty or reusable refinement calls for
+          them. You do not need a guard for every TypeScript type. The library
+          decisions behind this guidance are in the{' '}
           <TextLink href={GUIDE_PATHS.designPrinciples}>
             design principles and non-goals
           </TextLink>
