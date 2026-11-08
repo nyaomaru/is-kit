@@ -14,6 +14,16 @@ const GUIDE_METADATA = {
     description:
       'Practical guides for filtering, narrowing, and validating TypeScript values with small reusable type guards.'
   },
+  [GUIDE_PATHS.designPrinciples]: {
+    title: 'Design Principles and Non-goals | is-kit',
+    description:
+      'The principles and boundaries guiding reusable type guards and future API decisions in is-kit.'
+  },
+  [GUIDE_PATHS.bestPractices]: {
+    title: 'Best Practices for Using is-kit in Real Projects | is-kit',
+    description:
+      'Organize reusable guards, validate external data at trust boundaries, and refine existing TypeScript types.'
+  },
   [GUIDE_PATHS.filterNullish]: {
     title: 'Filter null and undefined from Arrays in TypeScript | is-kit',
     description:

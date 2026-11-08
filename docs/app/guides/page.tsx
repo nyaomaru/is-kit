@@ -13,9 +13,8 @@ export default function GuidesIndexPage() {
       <Stack variant='section' gap='xs'>
         <Heading variant='h1'>Practical Guides</Heading>
         <Paragraph className='max-w-3xl text-muted-foreground'>
-          Start with a real TypeScript problem. Each guide explains the
-          tradeoffs, builds a focused solution, and links to the relevant API
-          reference.
+          Explore practical TypeScript solutions and the principles that guide
+          is-kit. Guides explain tradeoffs and link to relevant API references.
         </Paragraph>
       </Stack>
       <DocsCardGrid items={GUIDE_ITEMS} titleClassName='leading-snug' />
