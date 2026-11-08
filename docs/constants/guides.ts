@@ -2,6 +2,8 @@ import type { SidebarSection } from '@/components/navigation/sidebar';
 
 export const GUIDE_PATHS = {
   index: '/guides',
+  designPrinciples: '/guides/design-principles',
+  bestPractices: '/guides/best-practices',
   filterNullish: '/guides/filter-null-and-undefined',
   syncTypeGuards: '/guides/keep-type-guards-in-sync',
   heyApiTypedStruct: '/guides/validate-hey-api-generated-types',
@@ -21,6 +23,20 @@ export type GuideItem = {
 };
 
 export const GUIDE_ITEMS: GuideItem[] = [
+  {
+    href: GUIDE_PATHS.designPrinciples,
+    title: 'Design principles and non-goals',
+    navigationLabel: 'Design principles',
+    description:
+      'Use the principles and boundaries that guide changes to is-kit.'
+  },
+  {
+    href: GUIDE_PATHS.bestPractices,
+    title: 'Best Practices for Using is-kit in Real Projects',
+    navigationLabel: 'Best practices',
+    description:
+      'Place guards near trust boundaries and refine known types in application code.'
+  },
   {
     href: GUIDE_PATHS.filterNullish,
     title: 'Filter null and undefined from arrays in TypeScript',
