@@ -41,4 +41,34 @@ describe('assert', () => {
       'user must be active'
     );
   });
+
+  it('forwards the original value to the guard without replacing or cloning it', () => {
+    const input = { id: 'user-1' };
+    const guard = jest.fn((value: unknown) => {
+      expect(value).toBe(input);
+      return true;
+    });
+
+    assert(guard, input);
+
+    expect(guard).toHaveBeenCalledWith(input);
+  });
+
+  it('invokes the guard exactly once per assertion', () => {
+    const guard = jest.fn(() => true);
+
+    assert(guard, 'value');
+
+    expect(guard).toHaveBeenCalledTimes(1);
+  });
+
+  it('propagates errors thrown by the guard itself', () => {
+    const error = new Error('guard exploded');
+    const guard = jest.fn(() => {
+      throw error;
+    });
+
+    expect(() => assert(guard, 'value')).toThrow(error);
+    expect(guard).toHaveBeenCalledTimes(1);
+  });
 });
