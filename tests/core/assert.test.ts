@@ -41,4 +41,31 @@ describe('assert', () => {
       'user must be active'
     );
   });
+
+  it('forwards the original value to the guard unchanged', () => {
+    const input = { id: 'user-1' };
+    const guard = jest.fn((_value: unknown): _value is typeof input => true);
+
+    assert(guard, input);
+
+    expect(guard).toHaveBeenCalledWith(input);
+    expect(guard.mock.calls[0]?.[0]).toBe(input);
+  });
+
+  it('invokes the guard exactly once per assertion', () => {
+    const guard = jest.fn((_value: unknown): _value is string => true);
+
+    assert(guard, 'ok');
+
+    expect(guard).toHaveBeenCalledTimes(1);
+  });
+
+  it('propagates an error thrown by the guard unchanged', () => {
+    const guardError = new Error('guard exploded');
+    const guard = jest.fn((_value: unknown): _value is string => {
+      throw guardError;
+    });
+
+    expect(() => assert(guard, 'ok')).toThrow(guardError);
+  });
 });
