@@ -51,6 +51,57 @@ describe('mapOf (runtime)', () => {
     ).toBe(false);
   });
 
+  it('skips the value guard and later entries when a key fails', () => {
+    const keyGuard = jest.fn(isString);
+    const valueGuard = jest.fn(isNumber);
+    const isValidMap = mapOf(keyGuard, valueGuard);
+
+    expect(
+      isValidMap(
+        new Map<unknown, unknown>([
+          [42, 1],
+          ['later', 2]
+        ])
+      )
+    ).toBe(false);
+
+    expect(keyGuard).toHaveBeenCalledTimes(1);
+    expect(keyGuard).toHaveBeenCalledWith(42);
+    expect(valueGuard).not.toHaveBeenCalled();
+  });
+
+  it('stops checking later entries when a value guard fails', () => {
+    const calls: string[] = [];
+    const keyGuard = jest.fn((value: unknown): value is string => {
+      calls.push(`key:${String(value)}`);
+      return isString(value);
+    });
+    const valueGuard = jest.fn((value: unknown): value is number => {
+      calls.push(`value:${String(value)}`);
+      return isNumber(value);
+    });
+    const isValidMap = mapOf(keyGuard, valueGuard);
+
+    expect(
+      isValidMap(
+        new Map<unknown, unknown>([
+          ['first', 1],
+          ['second', 'invalid'],
+          ['later', 3]
+        ])
+      )
+    ).toBe(false);
+
+    expect(keyGuard).toHaveBeenCalledTimes(2);
+    expect(valueGuard).toHaveBeenCalledTimes(2);
+    expect(calls).toEqual([
+      'key:first',
+      'value:1',
+      'key:second',
+      'value:invalid'
+    ]);
+  });
+
   it('rejects non-map inputs', () => {
     expect(isStringNumberMap({ a: 1 } as unknown)).toBe(false);
     expect(isStringNumberMap({ [Symbol.toStringTag]: 'Map' } as unknown)).toBe(
