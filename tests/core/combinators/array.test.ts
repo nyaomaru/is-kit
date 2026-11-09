@@ -19,6 +19,17 @@ describe('arrayOf (runtime)', () => {
     expect(isNumberArray([1, '2' as unknown as number])).toBe(false);
   });
 
+  it('stops evaluating elements after the first guard failure', () => {
+    const calls: unknown[] = [];
+    const stringGuard = (value: unknown): value is string => {
+      calls.push(value);
+      return isString(value);
+    };
+
+    expect(arrayOf(stringGuard)(['a', 'b', 1, 'c'])).toBe(false);
+    expect(calls).toEqual(['a', 'b', 1]);
+  });
+
   it('rejects non-array inputs', () => {
     expect(isStringArray('not array' as unknown)).toBe(false);
     expect(isStringArray({ 0: 'a', length: 1 } as unknown)).toBe(false);
@@ -88,6 +99,17 @@ describe('nonEmptyArrayOf (runtime)', () => {
 
   it('rejects when at least one element fails the predicate', () => {
     expect(isNonEmptyStringArray(['a', 1 as unknown as string])).toBe(false);
+  });
+
+  it('stops evaluating elements after the first guard failure', () => {
+    const calls: unknown[] = [];
+    const stringGuard = (value: unknown): value is string => {
+      calls.push(value);
+      return isString(value);
+    };
+
+    expect(nonEmptyArrayOf(stringGuard)(['a', 'b', 1, 'c'])).toBe(false);
+    expect(calls).toEqual(['a', 'b', 1]);
   });
 
   it('rejects sparse arrays if the hole makes predicate fail', () => {
