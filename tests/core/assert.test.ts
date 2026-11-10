@@ -62,13 +62,20 @@ describe('assert', () => {
     expect(guard).toHaveBeenCalledTimes(1);
   });
 
-  it('propagates errors thrown by the guard itself', () => {
+  it('propagates errors thrown by the guard itself unchanged', () => {
     const error = new Error('guard exploded');
     const guard = jest.fn(() => {
       throw error;
     });
 
-    expect(() => assert(guard, 'value')).toThrow(error);
+    let thrown: unknown;
+    try {
+      assert(guard, 'value');
+    } catch (value) {
+      thrown = value;
+    }
+
+    expect(thrown).toBe(error);
     expect(guard).toHaveBeenCalledTimes(1);
   });
 });
