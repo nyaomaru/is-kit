@@ -95,11 +95,15 @@ export default function BestPracticesGuidePage() {
           Reject a required response or choose a fallback for recoverable data.
           Handle decoding and transport failures too. Pass the accepted value
           onward; recheck if it can change or crosses another trust boundary.
-          See{' '}
+          Storage, search parameters, and selected responses are shown in{' '}
+          <TextLink href={GUIDE_PATHS.trustBoundaries}>
+            where to validate
+          </TextLink>
+          . See{' '}
           <TextLink href={GUIDE_PATHS.validateUnknown}>
             validating unknown values
           </TextLink>{' '}
-          for more on boundary checks.
+          for the checks those examples use.
         </Paragraph>
       </GuideSection>
 

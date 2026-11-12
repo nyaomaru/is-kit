@@ -24,6 +24,11 @@ const GUIDE_METADATA = {
     description:
       'Organize reusable guards, validate external data at trust boundaries, and refine existing TypeScript types.'
   },
+  [GUIDE_PATHS.trustBoundaries]: {
+    title: 'Where to Validate in a Real Application | is-kit',
+    description:
+      'Validate browser storage, search parameters, and selected API or request payloads where trust changes, then use ordinary TypeScript.'
+  },
   [GUIDE_PATHS.filterNullish]: {
     title: 'Filter null and undefined from Arrays in TypeScript | is-kit',
     description:

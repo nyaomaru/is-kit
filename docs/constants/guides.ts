@@ -4,6 +4,7 @@ export const GUIDE_PATHS = {
   index: '/guides',
   designPrinciples: '/guides/design-principles',
   bestPractices: '/guides/best-practices',
+  trustBoundaries: '/guides/where-to-validate',
   filterNullish: '/guides/filter-null-and-undefined',
   syncTypeGuards: '/guides/keep-type-guards-in-sync',
   heyApiTypedStruct: '/guides/validate-hey-api-generated-types',
@@ -36,6 +37,13 @@ export const GUIDE_ITEMS: GuideItem[] = [
     navigationLabel: 'Best practices',
     description:
       'Place guards near trust boundaries and refine known types in application code.'
+  },
+  {
+    href: GUIDE_PATHS.trustBoundaries,
+    title: 'Where to validate in a real application',
+    navigationLabel: 'Where to validate',
+    description:
+      'Validate browser storage, search parameters, and selected API or request payloads where trust changes.'
   },
   {
     href: GUIDE_PATHS.filterNullish,
