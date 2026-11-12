@@ -46,4 +46,31 @@ describe('setOf (runtime)', () => {
     expect(() => isStringSet(set)).not.toThrow();
     expect(isStringSet(set)).toBe(true);
   });
+
+  it('stops validating after the first failing value', () => {
+    const seen: string[] = [];
+    const guard = jest.fn((value: string) => {
+      seen.push(value);
+      return value !== 'invalid';
+    });
+    const isValidSet = setOf(guard);
+
+    expect(isValidSet(new Set(['first', 'invalid', 'never']))).toBe(false);
+    expect(seen).toEqual(['first', 'invalid']);
+    expect(guard).toHaveBeenCalledTimes(2);
+    expect(guard).not.toHaveBeenCalledWith('never');
+  });
+
+  it('validates every value in iteration order when all pass', () => {
+    const seen: number[] = [];
+    const guard = jest.fn((value: number) => {
+      seen.push(value);
+      return value > 0;
+    });
+    const isPositiveSet = setOf(guard);
+
+    expect(isPositiveSet(new Set([3, 1, 2]))).toBe(true);
+    expect(seen).toEqual([3, 1, 2]);
+    expect(guard).toHaveBeenCalledTimes(3);
+  });
 });
