@@ -156,6 +156,75 @@ describe('or', () => {
 
     expect(never('value')).toBe(false);
   });
+
+  it('evaluates guards in order and stops at the first success', () => {
+    const calls: string[] = [];
+    const first = define<unknown>(() => {
+      calls.push('first');
+      return false;
+    });
+    const second = define<unknown>(() => {
+      calls.push('second');
+      return true;
+    });
+    const never = define<unknown>(() => {
+      calls.push('never');
+      return true;
+    });
+
+    const combined = or(first, second, never);
+
+    expect(combined('value')).toBe(true);
+    expect(calls).toEqual(['first', 'second']);
+  });
+
+  it('does not invoke later guards after an early success', () => {
+    const later = jest.fn((_value: unknown) => true);
+    const combined = or(
+      define<unknown>(() => true),
+      define<unknown>(later)
+    );
+
+    expect(combined('value')).toBe(true);
+    expect(later).not.toHaveBeenCalled();
+  });
+
+  it('invokes every guard exactly once, in order, when none match', () => {
+    const calls: string[] = [];
+    const recorder = (name: string) =>
+      jest.fn((_value: unknown) => {
+        calls.push(name);
+        return false;
+      });
+    const first = recorder('first');
+    const second = recorder('second');
+    const third = recorder('third');
+
+    const combined = or(
+      define<unknown>(first),
+      define<unknown>(second),
+      define<unknown>(third)
+    );
+
+    expect(combined('value')).toBe(false);
+    expect(calls).toEqual(['first', 'second', 'third']);
+    expect(first).toHaveBeenCalledTimes(1);
+    expect(second).toHaveBeenCalledTimes(1);
+    expect(third).toHaveBeenCalledTimes(1);
+  });
+
+  it('propagates errors thrown by an invoked guard', () => {
+    const failure = new Error('guard failed');
+    const throwing = define<unknown>(() => {
+      throw failure;
+    });
+    const later = jest.fn((_value: unknown) => true);
+
+    const combined = or(throwing, define<unknown>(later));
+
+    expect(() => combined('value')).toThrow(failure);
+    expect(later).not.toHaveBeenCalled();
+  });
 });
 
 describe('guardIn', () => {
