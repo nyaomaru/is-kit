@@ -65,6 +65,7 @@ const isPositiveIntString = and(
 function readPage(value: string | null): number {
   if (!isPositiveIntString(value)) return 1;
 
+  // The text matched an integer pattern. Number only converts it.
   const page = Number(value);
   return isSafeInteger(page) ? page : 1;
 }
@@ -114,6 +115,7 @@ const nestedField = `import {
 
 type SettingsResponse = {
   companyName: string;
+  // This field is still uncertain, so the reader checks it below.
   plans: unknown;
 };
 
@@ -133,7 +135,7 @@ function readPlans(settings: SettingsResponse) {
   return parsed.value;
 }`;
 
-const routeHandler = `import { isString, safeJsonParse, struct } from 'is-kit';
+const routeHandler = `import { isString, safeParse, struct } from 'is-kit';
 
 const isCreateMessage = struct({
   title: isString,
@@ -141,8 +143,14 @@ const isCreateMessage = struct({
 });
 
 export async function POST(request: Request) {
-  const parsed = safeJsonParse(await request.text(), isCreateMessage);
+  let payload: unknown;
+  try {
+    payload = await request.json();
+  } catch {
+    return Response.json({ error: 'Invalid request' }, { status: 400 });
+  }
 
+  const parsed = safeParse(isCreateMessage, payload);
   if (!parsed.valid) {
     return Response.json({ error: 'Invalid request' }, { status: 400 });
   }
@@ -205,9 +213,9 @@ export default function WhereToValidateGuidePage() {
             {
               key: 'response',
               cells: [
-                'Required API response',
+                'Response body you do not trust yet',
                 'Decoded response body',
-                'Reject the response'
+                'Reject that response'
               ]
             },
             {
@@ -229,36 +237,42 @@ export default function WhereToValidateGuidePage() {
           ]}
         />
         <Paragraph>
-          The checks themselves are the ones in{' '}
+          <TextLink href={GUIDE_PATHS.designPrinciples}>
+            Design principles
+          </TextLink>{' '}
+          explain why these checks stay small.{' '}
+          <TextLink href={GUIDE_PATHS.bestPractices}>Best practices</TextLink>{' '}
+          cover how to organize them.{' '}
           <TextLink href={GUIDE_PATHS.validateUnknown}>
-            validating unknown values
-          </TextLink>
-          . This page is about where to put them. The{' '}
-          <TextLink href={GUIDE_PATHS.bestPractices}>best practices</TextLink>{' '}
-          page covers how to place the guards in the codebase.
+            Validating unknown values
+          </TextLink>{' '}
+          shows how a check works. This page shows where the same boundary
+          appears in an application.
         </Paragraph>
       </GuideSection>
 
       <GuideSection title='Browser storage'>
         <Paragraph>
           <code>localStorage</code> and <code>sessionStorage</code> return a
-          string or <code>null</code>. The string may be leftover from an older
-          version of the app, edited outside the app, or not JSON at all. Parse
-          it and accept only the shape the current code still understands.
+          string or <code>null</code>. Reading that string back does not restore
+          the type the application had when it wrote the value. The text can be
+          missing, left over from an older version, edited outside the app, or
+          not JSON at all.
+        </Paragraph>
+        <Paragraph>
+          The reader follows one path: storage string, JSON decoding,{' '}
+          <code>unknown</code>, guard, then the accepted list.{' '}
+          <code>safeJsonParse</code> performs the decode and the guard together.
+          Invalid JSON and a rejected shape share the same failed result.
           Missing and unreadable drafts are recoverable, so the reader returns
           an empty list.
         </Paragraph>
         <CodeBlock code={storedDrafts} language='ts' />
         <Paragraph>
-          <code>readDrafts</code> returns the accepted list. Rendering and
-          editing that list is ordinary TypeScript. Read the same key again
-          after another write if the stored text can change.
-        </Paragraph>
-        <Paragraph>
-          Keep the guard next to the reader, and limit it to the fields that the
-          reader uses. A saved token that is only a string needs a string check,
-          such as <code>isNonEmptyString</code> in the next section. An object
-          guard would describe a shape the token does not have.
+          <code>readDrafts</code> returns that list. Rendering and editing it is
+          ordinary TypeScript. Read the key again after another write if the
+          stored text can change. Keep the guard next to the reader, and include
+          only the fields that the reader still uses.
         </Paragraph>
       </GuideSection>
 
@@ -271,12 +285,18 @@ export default function WhereToValidateGuidePage() {
         </Paragraph>
         <CodeBlock code={searchQuery} language='ts' />
         <Paragraph>
-          An unknown <code>view</code> becomes <code>&apos;list&apos;</code>. A
-          missing token stays absent. <code>page</code> is parsed only after the
-          text is a positive integer string, and <code>isSafeInteger</code>{' '}
-          rejects a number that cannot be represented exactly. The returned
-          object is the trusted query. The page that renders it can branch on{' '}
-          <code>view</code> without reading the URL again.
+          <code>view</code> and <code>token</code> stay strings. An unknown view
+          becomes <code>&apos;list&apos;</code>. A missing or blank token stays
+          absent. <code>page</code> takes a longer path:{' '}
+          <code>string | null</code>, accepted integer text, <code>Number</code>
+          , safe integer, then the application value. <code>Number</code>{' '}
+          converts text that the guard has already accepted.
+          <code>isSafeInteger</code> then rejects a number that cannot be
+          represented exactly. Missing and non-integer text use <code>1</code>.
+        </Paragraph>
+        <Paragraph>
+          The returned object is the trusted query. The page that renders it can
+          branch on <code>view</code> without reading the URL again.
         </Paragraph>
         <Paragraph>
           A required link with a missing token is a failed boundary: return the
@@ -302,46 +322,51 @@ export default function WhereToValidateGuidePage() {
           guard on the value they already received.
         </Paragraph>
         <Paragraph>
-          A generated client or another trusted application function can be the
-          boundary for fields whose runtime values match that type. Check a
-          field again when its runtime value is still uncertain, such as a
-          nested payload from another service. Leave the surrounding fields on
-          the type you already trust.
+          A generated TypeScript client does not check the response at runtime.
+          Its types are erased at build time. If the application already treats
+          that client as the trust boundary for a call, later code can use the
+          resulting fields directly. Those fields do not need another guard on
+          every use.
+        </Paragraph>
+        <Paragraph>
+          Check a field when that field is still uncertain, such as a nested
+          payload from another service. Fall back for that field, and leave the
+          surrounding values on the type the application already uses.
         </Paragraph>
         <CodeBlock code={nestedField} language='ts' />
         <Paragraph>
-          <code>companyName</code> stays on <code>SettingsResponse</code>. Only{' '}
-          <code>plans</code> is treated as <code>unknown</code>, and a mismatch
-          becomes an empty list so the rest of the screen can still render. When
-          a generated type is the source of truth for a selected payload, keep
-          the hand-written guard aligned with it using{' '}
+          <code>companyName</code> is used as a trusted field.{' '}
+          <code>plans</code> is the uncertain boundary, so a mismatch becomes an
+          empty list and the rest of the screen can still render. When a
+          selected payload should stay aligned with a generated object type, use{' '}
           <TextLink href={GUIDE_PATHS.heyApiTypedStruct}>
             <code>typedStruct</code>
           </TextLink>
-          . A guard on every SDK method repeats that generated type at runtime.
+          . That is a check for the payload you choose, not a second copy of the
+          whole client.
         </Paragraph>
       </GuideSection>
 
       <GuideSection title='A server request body'>
         <Paragraph>
-          A Next.js Route Handler sees the same kind of boundary from the
-          server. The body is untrusted text until a guard accepts it. This uses
-          the existing parse helpers; it does not add a framework adapter.
+          A Next.js Route Handler is one server-side form of the same boundary.
+          The path is <code>request.json()</code>, <code>unknown</code>, guard,
+          then ordinary application code. Invalid JSON fails at{' '}
+          <code>request.json()</code> before the guard runs.
         </Paragraph>
         <CodeBlock code={routeHandler} language='ts' />
         <Paragraph>
           After <code>parsed.valid</code>, <code>message</code> is the trusted
-          command. Persistence and domain work from there use that value
-          directly.
+          command. Persistence and domain work use that value directly.
         </Paragraph>
       </GuideSection>
 
       <GuideSection title='Decoded JSON payloads'>
         <Paragraph>
           A decoded token payload, a <code>postMessage</code> event&apos;s{' '}
-          <code>data</code>, and a value returned by a third-party SDK are the
-          same kind of input when your code did not establish their shape.
-          Decode or receive the value, then accept only the fields you use.
+          <code>data</code>, and a value returned by a third-party SDK follow
+          the same path when your code did not establish their shape. Decode or
+          receive the value, then accept only the fields this reader uses.
         </Paragraph>
         <CodeBlock code={decodedClaims} language='ts' />
         <Paragraph>
