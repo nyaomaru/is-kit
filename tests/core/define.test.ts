@@ -42,4 +42,48 @@ describe('core/define', () => {
 
     expect(predicate).toHaveBeenCalledTimes(1);
   });
+
+  it('reuses one custom guard across passing and failing inputs', () => {
+    const predicate = jest.fn(
+      (x: unknown) => typeof x === 'string' && x.startsWith('sk-')
+    );
+    const isToken = define<string>(predicate);
+
+    expect(isToken('sk-live')).toBe(true);
+    expect(isToken('sk-test')).toBe(true);
+    expect(isToken('nope')).toBe(false);
+    expect(isToken('')).toBe(false);
+    expect(isToken(42 as unknown)).toBe(false);
+    expect(isToken(null as unknown)).toBe(false);
+    expect(predicate).toHaveBeenCalledTimes(6);
+  });
+
+  it('forwards the exact input reference to the predicate unchanged', () => {
+    const predicate = jest.fn(() => true);
+    const isValid = define<unknown>(predicate);
+    const input = { nested: { count: 1 } };
+
+    isValid(input);
+
+    expect(predicate.mock.calls[0]?.[0]).toBe(input);
+  });
+
+  it('normalizes assorted truthy and falsy returns to strict booleans', () => {
+    const truthyReturns: unknown[] = [1, 'yes', {}, [], -1];
+    const falsyReturns: unknown[] = [0, '', null, undefined, Number.NaN];
+
+    for (const value of truthyReturns) {
+      const guard = define<unknown>(() => value as boolean);
+      const result = guard('input');
+      expect(result).toBe(true);
+      expect(typeof result).toBe('boolean');
+    }
+
+    for (const value of falsyReturns) {
+      const guard = define<unknown>(() => value as boolean);
+      const result = guard('input');
+      expect(result).toBe(false);
+      expect(typeof result).toBe('boolean');
+    }
+  });
 });
