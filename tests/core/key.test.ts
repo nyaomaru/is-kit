@@ -48,6 +48,47 @@ describe('key: narrowKeyTo', () => {
     expect(hasSelectedAge({ id: '1', age: 20, role: 'guest' })).toBe(true);
     expect(hasSelectedAge({ id: '1', age: 21, role: 'guest' })).toBe(false);
   });
+
+  it('does not read the selected property when the base guard fails', () => {
+    type Candidate = { readonly role: string };
+    const readRole = jest.fn(() => 'admin');
+    const input = {
+      get role() {
+        return readRole();
+      }
+    };
+    const baseGuard = jest.fn(
+      (_value: unknown): _value is Candidate => false
+    );
+
+    const isAdmin = narrowKeyTo(baseGuard, 'role')('admin');
+
+    expect(isAdmin(input)).toBe(false);
+    expect(baseGuard).toHaveBeenCalledTimes(1);
+    expect(baseGuard).toHaveBeenCalledWith(input);
+    expect(readRole).not.toHaveBeenCalled();
+  });
+
+  it('reads the selected property only after the base guard passes', () => {
+    type Candidate = { readonly role: string };
+    const readRole = jest.fn(() => 'admin');
+    const input = {
+      get role() {
+        return readRole();
+      }
+    };
+    const baseGuard = jest.fn(
+      (_value: unknown): _value is Candidate => true
+    );
+
+    const isAdmin = narrowKeyTo(baseGuard, 'role')('admin');
+    const isGuest = narrowKeyTo(baseGuard, 'role')('guest');
+
+    expect(isAdmin(input)).toBe(true);
+    expect(isGuest(input)).toBe(false);
+    expect(baseGuard).toHaveBeenCalledTimes(2);
+    expect(readRole).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe('key: hasKey', () => {
