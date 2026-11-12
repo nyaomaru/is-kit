@@ -166,8 +166,8 @@ const isSessionClaims = struct({
   exp: optionalKey(isNumber),
 });
 
-function readClaims(payloadText: string) {
-  const parsed = safeJsonParse(payloadText, isSessionClaims);
+function readClaims(payloadJson: string) {
+  const parsed = safeJsonParse(payloadJson, isSessionClaims);
   return parsed.valid ? parsed.value : undefined;
 }`;
 
@@ -365,8 +365,8 @@ export default function WhereToValidateGuidePage() {
         <Paragraph>
           A decoded token payload, a <code>postMessage</code> event&apos;s{' '}
           <code>data</code>, and a value returned by a third-party SDK follow
-          the same path when your code did not establish their shape. Decode or
-          receive the value, then accept only the fields this reader uses.
+          the same path when your code did not establish their shape. Start from
+          that JSON text, then accept only the fields this reader uses.
         </Paragraph>
         <CodeBlock code={decodedClaims} language='ts' />
         <Paragraph>
