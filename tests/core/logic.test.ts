@@ -213,7 +213,7 @@ describe('or', () => {
     expect(third).toHaveBeenCalledTimes(1);
   });
 
-  it('propagates errors thrown by an invoked guard', () => {
+  it('propagates errors thrown by an invoked guard unchanged', () => {
     const failure = new Error('guard failed');
     const throwing = define<unknown>(() => {
       throw failure;
@@ -222,7 +222,15 @@ describe('or', () => {
 
     const combined = or(throwing, define<unknown>(later));
 
-    expect(() => combined('value')).toThrow(failure);
+    let thrown: unknown;
+
+    try {
+      combined('value');
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBe(failure);
     expect(later).not.toHaveBeenCalled();
   });
 });
