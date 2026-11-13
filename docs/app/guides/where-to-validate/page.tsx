@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { CodeBlock } from '@/components/code/code-block';
 import {
   GuideArticle,
@@ -267,6 +269,17 @@ export default function WhereToValidateGuidePage() {
     <GuideArticle>
       <GuideHeader
         breadcrumbLabel='Where to validate'
+        media={
+          <Image
+            src='/iskit_guide0.png'
+            alt='Cartoon of a user ghost, a green creature, and Mr. Unknown beside a computer'
+            width={1000}
+            height={420}
+            sizes='(max-width: 896px) calc(100vw - 2rem), 864px'
+            preload
+            className='my-4 aspect-[1000/420] h-auto w-full rounded-xl border object-cover'
+          />
+        }
         title='Where to Validate in a Real Application'
         description='Check a value where trust changes. After it is accepted, ordinary TypeScript handles it until the next boundary.'
       />
