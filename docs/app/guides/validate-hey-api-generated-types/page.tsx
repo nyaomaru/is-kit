@@ -175,6 +175,11 @@ export default function ValidateHeyApiGeneratedTypesGuidePage() {
           is not enabled by default because it adds runtime work. Use{' '}
           <code>typedStruct</code> when you want a small hand-written guard for
           selected boundaries rather than generated validation across the SDK.
+          The{' '}
+          <TextLink href={GUIDE_PATHS.trustBoundaries}>
+            where to validate
+          </TextLink>{' '}
+          guide shows which of those boundaries are worth a check.
         </Paragraph>
         <Paragraph>
           See Hey API&apos;s official{' '}

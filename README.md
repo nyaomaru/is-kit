@@ -852,6 +852,7 @@ For detailed API pages and more examples, see:
 - [Practical guides](https://is-kit.dev/guides)
 - [Design principles and non-goals](https://is-kit.dev/guides/design-principles)
 - [Best practices for real projects](https://is-kit.dev/guides/best-practices)
+- [Where to validate in a real application](https://is-kit.dev/guides/where-to-validate)
 - [Keep hand-written type guards in sync with TypeScript types](https://is-kit.dev/guides/keep-type-guards-in-sync)
 - [Refine properties on existing TypeScript types](https://is-kit.dev/guides/refine-properties-on-existing-types)
 - [Advanced property refinement with the TypeScript Compiler API](https://is-kit.dev/guides/typescript-compiler-api)

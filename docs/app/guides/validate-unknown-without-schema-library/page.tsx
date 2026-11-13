@@ -202,7 +202,12 @@ export default function ValidateUnknownWithoutSchemaLibraryGuidePage() {
         <Paragraph>
           HTTP responses, parsed JSON, storage values, message payloads, and
           data from third-party code do not become trustworthy because your
-          application expects a TypeScript type.
+          application expects a TypeScript type. For where those values show up
+          in an application, see{' '}
+          <TextLink href={GUIDE_PATHS.trustBoundaries}>
+            where to validate
+          </TextLink>
+          .
         </Paragraph>
         <Paragraph>
           Model those values as <code>unknown</code>. Unlike <code>any</code>,
