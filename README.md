@@ -112,6 +112,18 @@ ship the legacy JavaScript Compiler API. Tools that need that API can follow
 the official [TypeScript 7 side-by-side guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6-0)
 and use `@typescript/typescript6` for programmatic access.
 
+### Runtime compatibility
+
+- **Node.js 22 or newer** is the supported runtime baseline, matching the
+  `engines` field in `package.json`.
+- The published TypeScript declarations support **TypeScript 5.4 and newer**.
+- Both **ESM and CommonJS** builds are published, so `import` and `require`
+  consumers are equally supported.
+
+`is-kit` may appear to run on an older Node.js version, but successful
+execution there does not imply official support: only the baseline above is
+covered by the project's compatibility guarantees and CI.
+
 vlt requires registry configuration before installing a package by name. Run
 `vlt setup` once if a registry has not been configured yet.
 
