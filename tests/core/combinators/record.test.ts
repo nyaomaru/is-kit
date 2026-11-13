@@ -74,16 +74,51 @@ describe('recordOf (key/value guards)', () => {
     expect(guard(obj)).toBe(true);
   });
 
-  it('ignores non-enumerable properties', () => {
+  it('rejects a non-enumerable property whose value fails the value guard', () => {
+    const obj: Record<string, unknown> = {};
+    Object.defineProperty(obj, 'x', {
+      value: 'not a number',
+      enumerable: false
+    });
+
+    const guard = recordOf(isString, isNumber);
+
+    // Regression: the guard used to pass here because Object.keys skips
+    // non-enumerable properties, yet the narrowed type allowed reading x.
+    expect(guard(obj)).toBe(false);
+    expect(Object.keys(obj)).toEqual([]);
+  });
+
+  it('rejects a non-enumerable property whose key fails the key guard', () => {
+    const obj: Record<string, unknown> = { a: 1 };
+    Object.defineProperty(obj, 'c', {
+      value: 3,
+      enumerable: false
+    });
+
+    expect(recordOf(isABKey, isNumber)(obj)).toBe(false);
+  });
+
+  it('accepts a non-enumerable property that passes both guards', () => {
     const obj = { a: 1 };
     Object.defineProperty(obj, 'hidden', {
-      value: 'nope',
+      value: 2,
       enumerable: false
     });
 
     const guard = recordOf(isString, isNumber);
 
     expect(guard(obj)).toBe(true);
+  });
+
+  it('validates non-enumerable properties on null-prototype records', () => {
+    const obj = Object.create(null);
+    Object.defineProperty(obj, 'hidden', {
+      value: 'nope',
+      enumerable: false
+    });
+
+    expect(recordOf(isString, isNumber)(obj)).toBe(false);
   });
 
   it('does not consider inherited properties (plain objects only)', () => {
