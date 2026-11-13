@@ -6,6 +6,87 @@ This project adheres to [Keep a Changelog](https://keepachangelog.com/) and [Sem
 
 ---
 
+## [v1.16.5] - 2026-11-13
+
+### Fixed
+
+- snapshot oneOfValues array inputs to preserve literal narrowing by @painbaba in [#400](https://github.com/necoz-oss/is-kit/pull/400)
+  - Why: oneOfValues` now captures a stable snapshot of the accepted values when the guard is created, so mutating the original single-array input afterwards no longer changes the guard's a
+- reject unknown and repeated init-agent options by @lanangptraa in [#403](https://github.com/necoz-oss/is-kit/pull/403)
+- reject custom null-prototype parents in isPlainObject by @saimskywalker in [#406](https://github.com/necoz-oss/is-kit/pull/406)
+
+### Docs
+
+- 1.16.4 by @github-actions[bot] in [#396](https://github.com/necoz-oss/is-kit/pull/396)
+- design principles and best practices by @nyaomaru in [#405](https://github.com/necoz-oss/is-kit/pull/405)
+- clarify runtime compatibility requirements by @tylrcc in [#422](https://github.com/necoz-oss/is-kit/pull/422)
+- add real-world trust boundary examples by @nyaomaru in [#421](https://github.com/necoz-oss/is-kit/pull/421)
+
+### Test
+
+- cover nested unknown and readonly refinement boundaries by @diyaryavuz in [#397](https://github.com/necoz-oss/is-kit/pull/397)
+- cover array guard short-circuiting by @GyulianoDev in [#414](https://github.com/necoz-oss/is-kit/pull/414)
+- cover mapOf short-circuit guard behavior by @BoteroAlejandro11 in [#416](https://github.com/necoz-oss/is-kit/pull/416)
+- strengthen assert runtime guard behavior by @srijavuppala in [#417](https://github.com/necoz-oss/is-kit/pull/417)
+- cover narrowKeyTo base-guard short-circuit behavior by @tylrcc in [#424](https://github.com/necoz-oss/is-kit/pull/424)
+- cover setOf short-circuit behavior by @tylrcc in [#425](https://github.com/necoz-oss/is-kit/pull/425)
+- strengthen define runtime regression coverage by @tylrcc in [#426](https://github.com/necoz-oss/is-kit/pull/426)
+
+### Chore
+
+- assign pull request authors automatically by @nyaomaru in [#407](https://github.com/necoz-oss/is-kit/pull/407)
+- Release: 1.16.5 by @github-actions[bot] in [#427](https://github.com/necoz-oss/is-kit/pull/427)
+
+### Welcome, New Contributors! 🎉
+
+- **painbaba** fixed a subtle soundness issue in `oneOfValues`, making array inputs stable even if the original array is mutated later.  
+https://github.com/necoz-oss/is-kit/pull/400
+  - Thank you for finding and fixing such an important edge case! 🙌
+- **saimskywalker** improved `isPlainObject` so objects with custom null-prototype parents are no longer incorrectly accepted.  
+https://github.com/necoz-oss/is-kit/pull/406
+  - Thanks for helping make the runtime behavior more trustworthy! 😸
+- **GyulianoDev** added regression coverage for short-circuit behavior in `arrayOf` and `nonEmptyArrayOf`.  
+https://github.com/necoz-oss/is-kit/pull/414
+  - Thank you for helping us lock down predictable evaluation behavior! 🙌
+- **BoteroAlejandro11** added focused short-circuit tests for `mapOf`, covering both key and value guard failures.  
+https://github.com/necoz-oss/is-kit/pull/416
+  - Thanks for making the collection guard behavior even more robust! 🐈
+- **srijavuppala** strengthened the runtime tests for `assert`, including exact input forwarding, single guard evaluation, and unchanged error propagation.  
+https://github.com/necoz-oss/is-kit/pull/417
+  - Thank you for helping us make these small but important runtime contracts explicit! 😸🙌
+- **tylrcc** jumped into several areas at once — documenting runtime compatibility and adding regression coverage for `narrowKeyTo`, `setOf`, and `define`.  
+https://github.com/necoz-oss/is-kit/pull/422  
+https://github.com/necoz-oss/is-kit/pull/424  
+https://github.com/necoz-oss/is-kit/pull/425  
+https://github.com/necoz-oss/is-kit/pull/426
+  - Four contributions in one release! Thank you so much for jumping in and helping strengthen both the docs and runtime behavior. 🎉🐈
+
+### 😸 And thanks again!
+
+- **diyaryavuz** came back with another contribution, adding detailed runtime and type-level coverage for nested unknown and readonly refinement boundaries.  
+https://github.com/necoz-oss/is-kit/pull/397
+  - Really appreciate you contributing again and continuing to make the refinement APIs more reliable! 🙌
+
+Thank you so much to everyone who contributed to v1.16.5!
+
+I’m really happy to see is-kit becoming something more people are helping to build together. 😸💚
+
+Stay a Good Cat! 🐈
+
+### New Contributors
+
+* @painbaba made their first contribution in https://github.com/necoz-oss/is-kit/pull/400
+* @lanangptraa made their first contribution in https://github.com/necoz-oss/is-kit/pull/403
+* @saimskywalker made their first contribution in https://github.com/necoz-oss/is-kit/pull/406
+* @GyulianoDev made their first contribution in https://github.com/necoz-oss/is-kit/pull/414
+* @BoteroAlejandro11 made their first contribution in https://github.com/necoz-oss/is-kit/pull/416
+* @srijavuppala made their first contribution in https://github.com/necoz-oss/is-kit/pull/417
+* @tylrcc made their first contribution in https://github.com/necoz-oss/is-kit/pull/422
+
+**Full Changelog**: https://github.com/necoz-oss/is-kit/compare/v1.16.4...v1.16.5
+
+[v1.16.5]: https://github.com/necoz-oss/is-kit/compare/v1.16.4...v1.16.5
+
 ## [v1.16.4] - 2026-11-06
 
 ### Fixed
@@ -2241,7 +2322,7 @@ if (isGuestOrTrial(input)) {
 - Merge pull request #39 from nyaomaru/chore/update-CHANGELOG (#39)
 - update CHANGELOG (#39)
 
-[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.16.4...HEAD
+[Unreleased]: https://github.com/necoz-oss/is-kit/compare/v1.16.5...HEAD
 [v1.0.5]: https://github.com/necoz-oss/is-kit/compare/v1.0.4...v1.0.5
 
 ## [1.0.4] - 2025-10-25
