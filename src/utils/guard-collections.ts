@@ -47,6 +47,16 @@ const hasOwnEnumerableEntries = (
     (key) => keyPredicate(key) && valuePredicate(values[key])
   );
 
+const hasOwnEntries = (
+  values: Record<string, unknown>,
+  keyPredicate: BooleanPredicate<string>,
+  valuePredicate: BooleanPredicate<unknown>
+): boolean =>
+  everyIterableValue(
+    Object.getOwnPropertyNames(values),
+    (key) => keyPredicate(key) && valuePredicate(values[key])
+  );
+
 /**
  * Checks whether every array element satisfies the provided predicate.
  *
@@ -168,5 +178,8 @@ export const everyOwnEnumerableEntry = (
 /** @internal Runtime implementation shared by `tupleOf`. */
 export { hasTupleValues };
 
-/** @internal Runtime implementation shared by `recordOf`. */
+/** @internal Runtime implementation shared by `everyOwnEnumerableEntry`. */
 export { hasOwnEnumerableEntries };
+
+/** @internal Runtime implementation shared by `recordOf`. */
+export { hasOwnEntries };
