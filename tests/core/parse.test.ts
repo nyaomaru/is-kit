@@ -163,13 +163,25 @@ describe('safeJsonParse', () => {
     expect(safeJsonParse('1', isString)).toEqual({ valid: false });
   });
 
-  it('does not catch errors thrown by the guard', () => {
+  it('propagates an Error thrown by the guard', () => {
+    const error = new Error('guard failed');
     const throwingGuard = (_value: unknown): _value is string => {
-      throw new Error('guard failed');
+      throw error;
     };
 
-    expect(() => safeJsonParse('"value"', throwingGuard)).toThrow(
-      'guard failed'
+    expect(captureThrown(() => safeJsonParse('"value"', throwingGuard))).toBe(
+      error
+    );
+  });
+
+  it('propagates a non-Error value thrown by the guard', () => {
+    const thrownValue = { reason: 'not an Error' };
+    const throwingGuard = (_value: unknown): _value is string => {
+      throw thrownValue;
+    };
+
+    expect(captureThrown(() => safeJsonParse('"value"', throwingGuard))).toBe(
+      thrownValue
     );
   });
 });
